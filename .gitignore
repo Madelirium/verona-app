@@ -1,0 +1,8 @@
+research/
+node_modules/
+data/*.tmp
+_site/
+.local/
+.env
+.env.*
+!.env.example

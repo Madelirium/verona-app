@@ -1,0 +1,16 @@
+{
+  "name": "verona-eventi",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "import:events": "node scripts/import-events.mjs && node scripts/build-calendar.mjs",
+    "import:news": "node scripts/import-news.mjs",
+    "import:bus": "node scripts/import-bus.mjs",
+    "import:places": "node scripts/import-places.mjs",
+    "build": "node scripts/build-calendar.mjs",
+    "test": "node --test",
+    "start": "node scripts/serve.mjs",
+    "start:lan": "node scripts/serve.mjs --lan"
+  },
+  "engines": { "node": ">=22" }
+}

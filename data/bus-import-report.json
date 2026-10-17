@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-17T12:50:41.348Z",
+  "sources": [
+    {
+      "key": "urban",
+      "status": "ok",
+      "count": 24
+    },
+    {
+      "key": "evening",
+      "status": "ok",
+      "count": 5
+    },
+    {
+      "key": "holiday",
+      "status": "ok",
+      "count": 9
+    },
+    {
+      "key": "rss",
+      "status": "ok",
+      "count": 20,
+      "alerts": 13
+    }
+  ]
+}

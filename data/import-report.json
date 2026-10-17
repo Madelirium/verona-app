@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-17T13:03:56.335Z",
+  "from": "2026-10-17",
+  "sources": [
+    {
+      "source": "Comune di Verona",
+      "status": "ok",
+      "count": 941
+    },
+    {
+      "source": "Veronafiere",
+      "status": "ok",
+      "count": 23
+    }
+  ]
+}

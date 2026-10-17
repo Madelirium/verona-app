@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-17T10:12:34.368Z",
+  "from": "2026-07-19",
+  "to": "2026-10-17",
+  "scope": "Prime due pagine per fonte, pubblicazioni negli ultimi 90 giorni. Non è un archivio completo.",
+  "sources": [
+    {
+      "source": "notizie",
+      "status": "ok",
+      "count": 48
+    },
+    {
+      "source": "avvisi",
+      "status": "ok",
+      "count": 13
+    }
+  ]
+}

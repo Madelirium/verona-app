@@ -1,0 +1,49 @@
+name: Pubblica Verona su GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Genera il frontend dai dati salvati
+        run: npm run build
+      - name: Verifica l'applicazione
+        run: npm test
+      - name: Prepara i soli file del sito
+        run: |
+          mkdir -p _site
+          cp public/index.html _site/index.html
+          cp public/vendor/leaflet.LICENSE _site/leaflet.LICENSE
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Pubblica il sito
+        id: deployment
+        uses: actions/deploy-pages@v4

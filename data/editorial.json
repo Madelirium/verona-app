@@ -1,0 +1,34 @@
+{
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Hostaria-XII-Festival-del-vino-2026": {
+    "localVerified": true,
+    "reviewedOn": "2026-10-17",
+    "location": "Centro storico di Verona · Piazza Bra e Piazza dei Signori",
+    "summary": "Un percorso nel centro storico tra degustazioni, iniziative culturali e intrattenimento. Consulta il programma per le singole attività e i biglietti.",
+    "priceLabel": "Biglietti sul sito dell’organizzatore",
+    "theme": "food",
+    "categoryLabel": "Gusto e festival"
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Soffitte-in-Piazza-2026": {
+    "mapDisabled": true,
+    "localVerified": true,
+    "reviewedOn": "2026-10-17",
+    "summary": "Mercatino dell’usato per curiosare fra libri, abiti, dischi e oggetti da riutilizzare. Accesso libero per il pubblico; iscrizione richiesta agli espositori.",
+    "priceLabel": "Ingresso gratuito",
+    "theme": "market",
+    "categoryLabel": "Mercatini",
+    "locationsByDay": {
+      "2026-10-17": "Lungadige XXVI Luglio 1944 · Parona, Verona",
+      "2026-11-07": "Piazza Isolo · Verona"
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Nachleben-Festival-Internazionale-di-fotografia-e-arti-visive-2026": {
+    "mapDisabled": true,
+    "localVerified": true,
+    "reviewedOn": "2026-10-17",
+    "location": "Veronetta e altre sedi a Verona · programma sulla fonte",
+    "summary": "Fotografia e arti visive in più spazi della città. Sedi e orari cambiano secondo la mostra: consulta il programma prima della visita.",
+    "priceLabel": "Condizioni di accesso nel programma",
+    "theme": "art",
+    "categoryLabel": "Arte e fotografia"
+  }
+}
