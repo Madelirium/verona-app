@@ -7,11 +7,18 @@ const districtsData=payload.districts||{items:[]};
 const districtChoices=districtsData.items.flatMap(d=>[{value:d.id+':*',name:'Tutta la circoscrizione',district:d,quarter:null},...d.quarters.map((q,i)=>({value:d.id+':'+i,name:q,district:d,quarter:q}))]);
 let districtChoice='',districtMode='news',districtSaved=false;
 try{const stored=JSON.parse(localStorage.getItem('verona-district-v1')||'null');if(districtChoices.some(c=>c.value===stored))districtChoice=stored;}catch{}
+let exploreBounds=null,placeMapFocus=null,placeTilesFailed=false;
 let exploreMode='map',exploreSaved=false,placeFavorites={},placeMap=null,placeLayer=null,placeMapSignature=null,placeReturnFocus=null,placesShown=60;
 try{placeFavorites=JSON.parse(localStorage.getItem('verona-places-v1')||'{}')||{};}catch{}
 if(typeof placeFavorites!=='object'||Array.isArray(placeFavorites))placeFavorites={};
 let busMode='lines',busFavorites={},busReturnFocus=null,busVisited=false,busAlertScope='all';
 const busQueries={lines:'',alerts:''};
+const timetableData=payload.busTimetables||{lines:[]};
+const busRouteData=payload.busRoutes||{routes:[]};
+let busRouteMap=null,busRouteLayer=null,busRouteLine=null,busRouteReturnFocus=null,busRouteMode='map',busRouteTileFailed=false;
+let timetableMapStopKey='',timetableLine=null,timetableReturnFocus=null,timetableStopChoices=[],timetableChoices={};
+try{timetableChoices=JSON.parse(localStorage.getItem('verona-timetables-v1')||'{}')||{};}catch{}
+if(typeof timetableChoices!=='object'||Array.isArray(timetableChoices))timetableChoices={};
 try{busFavorites=JSON.parse(localStorage.getItem('verona-bus-v1')||'{}')||{};}catch{}
 if(typeof busFavorites!=='object'||Array.isArray(busFavorites))busFavorites={};
 let newsMode='all',newsBookmarks={},newsReturnFocus=null;
@@ -24,6 +31,7 @@ const dayCache = new Map();
 const today = dayInRome(new Date());
 let selected = today, month = today.slice(0,7), onlySaved = false, preferences = {};
 let savedVisited=false,eventMapReturn=null,filterSnapshot=null;
+let currentUserLocation=null;const mapLocationStates=new Map();
 let eventMap=null,eventMapLayer=null,eventMapSignature=null,eventMapSaved=false,eventMapFocus=null;
 try { preferences = JSON.parse(localStorage.getItem('verona-events-v1') || '{}') || {}; } catch {}
 if(typeof preferences!=='object'||Array.isArray(preferences))preferences={};
@@ -146,11 +154,11 @@ function renderAgenda(filtered){
   for(const e of daily){
     const card=el('article','','event-card'),meta=el('div','','agenda-meta'),state=preferences[e.id];meta.append(el('span',agendaTime(e),'agenda-time'));
     if(state)meta.append(el('span',state==='going'?'✓ Partecipi':'♡ Ti interessa','agenda-state'+(state==='going'?' going':'' )));
-    card.append(meta,el('h3',e.title),el('p',e.location||'Sede da verificare sulla fonte'),el('span',e.source,'source'));
+    card.append(meta);const agendaImage=eventImage(e);if(agendaImage){const thumb=makeEventImage(e,'event-thumbnail');thumb.loading='lazy';card.append(thumb);}card.append(el('h3',e.title),el('p',e.location||'Sede da verificare sulla fonte'),el('span',e.source,'source'));
     const actions=el('div','','actions'),saveButton=el('button',state?'✓ Salvato':'♡ Salva',state?'chosen':'');
     saveButton.setAttribute('aria-label',(state?'Gestisci evento salvato: ':'Salva: ')+e.title);saveButton.onclick=()=>{if(state)openDetails(e);else{save(e.id,'interested');$('events').focus()}};
     const detail=el('button','Dettagli →');detail.setAttribute('aria-label','Dettagli: '+e.title);detail.onclick=()=>openDetails(e);
-    actions.append(saveButton,detail);card.append(actions);list.append(card);
+    actions.append(saveButton,detail);if(agendaImage)card.append(el('small',eventImageCredit(agendaImage)+' · Crediti nei dettagli','event-image-credit'));card.append(actions);list.append(card);
   }
 }
 function currentDistrict(){return districtChoices.find(c=>c.value===districtChoice)||null;}
@@ -201,17 +209,18 @@ function renderDistrict(){
   for(const item of rows){
     const card=el('article','','news-card'),meta=el('div','','news-card-meta');
     meta.append(el('span',isEvent?'Evento':item.kind,'news-kind'),el('span',isEvent?eventWhen(item):formatDay(item.publishedOn,{day:'numeric',month:'short',year:'numeric'})));
-    const title=el('button',item.title,'news-title');title.onclick=()=>isEvent?openDetails(item):openNews(item);
+    const title=el('button',item.title,'news-title');title.onclick=()=>isEvent?openDetails(item):openNews(item);if(!isEvent)appendNewsThumbnail(title,item);
     card.append(meta,title,el('p',isEvent?(item.location||'Consulta la sede sulla fonte'):item.summary),el('p',districtReason(item),'district-match'));
     if(isEvent){const actions=el('div','','actions');const state=preferences[item.id];for(const [label,value]of [['Mi interessa','interested'],['Partecipo','going']]){const b=el('button',(state===value?'✓ ':'')+label,state===value?'chosen':'');b.setAttribute('aria-pressed',String(state===value));b.onclick=()=>save(item.id,state===value?(value==='going'?'interested':null):value);actions.append(b);}if(state){const remove=el('button','Rimuovi');remove.onclick=()=>save(item.id,null);actions.append(remove);}card.append(actions);}
-    else{const bottom=el('div','','news-card-bottom');bottom.append(el('span','Comune di Verona','news-category'),newsSaveButton(item));card.append(bottom);}
+    else{appendNewsImageCredit(card,item);const bottom=el('div','','news-card-bottom');bottom.append(el('span','Comune di Verona','news-category'),newsSaveButton(item));card.append(bottom);}
     list.append(card);
   }
 }
 function eventPosition(e){const p=e.coordinates;if(e.mapDisabled||!p||!Number.isFinite(p.lat)||!Number.isFinite(p.lon)||p.lat<44.5||p.lat>46.3||p.lon<10||p.lon>12)return null;return p;}
 function eventMapEvents(){const days=Number($('event-map-period').value||1);const end=new Date(Date.parse(selected+'T12:00:00Z')+(days-1)*86400000).toISOString().slice(0,10);return visibleEvents().filter(e=>eventDay(e.startsAt)<=end&&eventDay(e.endsAt)>=selected&&(!eventMapSaved||['interested','going'].includes(preferences[e.id])));}
-function openEventMap(event=null){if(view!=='eventmap')eventMapReturn={view:['calendar','saved'].includes(view)?view:'calendar',selected,search:$('search').value,source:$('source').value,scroll:$('events').scrollTop||0};if(event){selected=eventDay(event.startsAt);month=selected.slice(0,7);eventMapFocus=event.id;eventMapSaved=false;$('search').value='';$('source').value='';$('event-map-period').value='1';}else eventMapFocus=null;setView('eventmap');}
+function openEventMap(event=null){if(view!=='eventmap')eventMapReturn={view:['calendar','saved','explore'].includes(view)?view:'calendar',selected,search:$('search').value,source:$('source').value,scroll:$('events').scrollTop||0};if(event){selected=eventDay(event.startsAt);month=selected.slice(0,7);eventMapFocus=event.id;eventMapSaved=false;$('search').value='';$('source').value='';$('event-map-period').value='1';}else eventMapFocus=null;setView('eventmap');}
 function renderEventMap(){
+  $('event-map-back').textContent=eventMapReturn?.view==='explore'?'← Esplora':'← Calendario';
   $('event-map-date').value=selected;$('event-map-saved').classList.toggle('active',eventMapSaved);$('event-map-saved').setAttribute('aria-pressed',String(eventMapSaved));
   const all=eventMapEvents(),mapped=all.filter(e=>eventPosition(e)),groups=new Map();
   for(const e of mapped){const p=eventPosition(e),key=`${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(e);}
@@ -220,7 +229,7 @@ function renderEventMap(){
   const message=$('events-map-message');
   if(typeof L==='undefined'){message.textContent='Mappa non disponibile. Gli eventi restano consultabili nel calendario.';return;}
   if(!eventMap){eventMap=L.map('events-map',{preferCanvas:true}).setView([45.4384,10.9916],13);L.tileLayer(placesData.tileUrl||'https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,updateWhenIdle:true,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).on('tileerror',()=>{message.textContent='Le strade non si caricano. Controlla la connessione o usa il calendario.';}).addTo(eventMap);eventMapLayer=L.layerGroup().addTo(eventMap);}
-  eventMap.invalidateSize();
+  installMapLocation(eventMap,'events');eventMap.invalidateSize();
   const signature=mapped.map(e=>e.id+':'+(preferences[e.id]||'')).join(',')+'|'+eventMapFocus;if(signature===eventMapSignature)return;
   eventMapSignature=signature;eventMapLayer.clearLayers();message.textContent=mapped.length?'':'Nessuna posizione disponibile con questi filtri. Cambia giorno o apri il calendario.';
   let focusMarker=null;
@@ -234,7 +243,10 @@ function renderEventMap(){
   if(focusMarker){eventMap.setView([focusMarker.position.lat,focusMarker.position.lon],16);focusMarker.marker.openPopup();}
   else if(mapped.length)eventMap.fitBounds(mapped.map(e=>[eventPosition(e).lat,eventPosition(e).lon]),{padding:[28,28],maxZoom:15});
 }
-function filteredPlaces(){const q=$('explore-search').value.trim().toLocaleLowerCase('it');return places.filter(p=>(!$('explore-category').value||p.category===$('explore-category').value)&&(!exploreSaved||placeFavorites[p.id])&&`${p.name} ${p.address||''}`.toLocaleLowerCase('it').includes(q));}
+function placeSearchText(value){return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('it').replace(/[^a-z0-9]+/g,' ').trim();}
+function filteredPlaces(){const words=placeSearchText($('explore-search').value).split(' ').filter(Boolean);return places.filter(p=>(!$('explore-category').value||p.category===$('explore-category').value)&&(!exploreSaved||placeFavorites[p.id])&&(!exploreBounds||(p.lat>=exploreBounds.south&&p.lat<=exploreBounds.north&&p.lon>=exploreBounds.west&&p.lon<=exploreBounds.east))&&words.every(word=>placeSearchText(`${p.name} ${p.address||''} ${p.category}`).includes(word)));}
+function resetExplore(){exploreBounds=null;placeMapFocus=null;exploreSaved=false;placesShown=60;$('explore-search').value='';$('explore-category').value='';placeMapSignature=null;renderExplore();}
+
 function togglePlace(id){if(placeFavorites[id])delete placeFavorites[id];else placeFavorites[id]=true;try{localStorage.setItem('verona-places-v1',JSON.stringify(placeFavorites));$('explore-feedback').textContent=placeFavorites[id]?'Attività salvata nei preferiti.':'Attività rimossa dai preferiti.';}catch{$('explore-feedback').textContent='Scelta disponibile per questa visita. Il browser non consente il salvataggio.';}render();}
 function placeStar(place){const b=el('button',placeFavorites[place.id]?'★':'☆','bus-favorite'+(placeFavorites[place.id]?' chosen':''));b.type='button';b.setAttribute('aria-label',`${placeFavorites[place.id]?'Rimuovi dai':'Aggiungi ai'} preferiti: ${place.name}`);b.setAttribute('aria-pressed',String(Boolean(placeFavorites[place.id])));b.onclick=()=>togglePlace(place.id);return b;}
 function renderExplore(){
@@ -243,27 +255,28 @@ function renderExplore(){
   $('explore-map-tab').setAttribute('aria-pressed',String(exploreMode==='map'));$('explore-list-tab').setAttribute('aria-pressed',String(exploreMode==='list'));
   $('explore-saved').classList.toggle('active',exploreSaved);$('explore-saved').setAttribute('aria-pressed',String(exploreSaved));
   $('places-map').hidden=exploreMode!=='map';$('places-list').hidden=exploreMode!=='list';$('places-map-message').hidden=exploreMode!=='map';
-  $('explore-count').textContent=`${matches.length} attività${exploreSaved?' preferite':''} · ${placesData.updatedAt?'raccolta '+formatDay(dayInRome(placesData.updatedAt),{day:'numeric',month:'short'}):'raccolta non disponibile'}${placesData.status==='error'?' · aggiornamento non riuscito':''}`;
+  $('explore-count').textContent=`${matches.length} attività${exploreSaved?' preferite':''}${exploreBounds?' · zona selezionata':''}${placesData.status==='error'?' · aggiornamento non riuscito':''}`;$('explore-reset').hidden=!exploreBounds&&!exploreSaved&&!$('explore-search').value&&!$('explore-category').value;$('explore-search-area').hidden=exploreMode!=='map';$('explore-search-area').disabled=!placeMap;
   const list=$('places-list');list.replaceChildren();
-  if(!matches.length)list.append(el('p',exploreSaved?'Nessun preferito con questi filtri. Salva un’attività con la stella.':'Nessuna attività trovata. Prova un’altra categoria o una ricerca diversa.','place-empty'));
-  for(const p of matches.slice(0,placesShown)){const card=el('article','','place-card'),open=el('button','','place-open');open.type='button';open.append(el('span',p.category,'place-category'),el('strong',p.name),el('p',p.address||'Indirizzo non indicato · posizione sulla mappa'));open.onclick=()=>openPlace(p);card.append(open,placeStar(p));list.append(card);}
+  if(!matches.length){list.append(el('p',exploreSaved?'Nessun preferito con questi filtri. Salva un’attività con la stella.':'Nessuna attività trovata. Prova un’altra categoria o una ricerca diversa.','place-empty'));const reset=el('button','Mostra tutte le attività','places-more');reset.onclick=resetExplore;list.append(reset);}
+  for(const p of matches.slice(0,placesShown)){const card=el('article','','place-card'),open=el('button','','place-open');open.type='button';open.append(el('span',p.category,'place-category'),el('strong',p.name),el('p',p.address||'Indirizzo non indicato · posizione sulla mappa'));const available=[p.website?'Sito web':'',p.phone?'Telefono':'',p.openingHours?'Orari indicati':''].filter(Boolean);if(available.length)open.append(el('small',available.join(' · '),'place-services'));open.onclick=()=>openPlace(p);card.append(open,placeStar(p));list.append(card);}
   if(matches.length>placesShown){const more=el('button','Mostra altre attività','places-more');more.onclick=()=>{placesShown+=60;renderExplore()};list.append(more);}
   if(exploreMode==='map')renderPlacesMap(matches);
 }
 function renderPlacesMap(matches){
   const message=$('places-map-message');
   if(typeof L==='undefined'){message.textContent='Mappa non disponibile. Apri Lista per consultare le attività.';return;}
-  if(!placeMap){placeMap=L.map('places-map',{preferCanvas:true}).setView([45.4384,10.9916],13);L.tileLayer(placesData.tileUrl||'https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',updateWhenIdle:true}).on('tileerror',()=>{message.textContent='Le strade non si caricano: controlla la connessione oppure usa Lista.';}).addTo(placeMap);placeLayer=L.layerGroup().addTo(placeMap);}
-  placeMap.invalidateSize();
-  const signature=matches.map(p=>p.id).join(',');if(signature===placeMapSignature)return;
-  placeMapSignature=signature;placeLayer.clearLayers();message.textContent=matches.length?'':'Nessuna attività con questi filtri. Puoi cambiare categoria o ricerca.';
+  if(!placeMap){placeMap=L.map('places-map',{preferCanvas:true}).setView([45.4384,10.9916],13);L.tileLayer(placesData.tileUrl||'https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',updateWhenIdle:true}).on('tileerror',()=>{placeTilesFailed=true;message.textContent='Le strade non si caricano: controlla la connessione oppure usa Lista.';}).addTo(placeMap);placeLayer=L.layerGroup().addTo(placeMap);}
+  installMapLocation(placeMap,'places');$('explore-search-area').disabled=false;placeMap.invalidateSize();
+  const signature=matches.map(p=>p.id).join(',')+'|'+placeMapFocus;if(signature===placeMapSignature)return;
+  placeMapSignature=signature;placeLayer.clearLayers();message.textContent=placeTilesFailed?'Le strade non si caricano: controlla la connessione oppure usa Lista.':matches.length?'':'Nessuna attività con questi filtri. Usa Ripristina per tornare a tutte le attività.';
   const colors={'Bar e caffè':'#a16c42','Ristoranti':'#ab635b','Negozi':'#536e9b','Artigiani':'#897043','Farmacie':'#4c896c','Sport':'#83719c','Servizi':'#5c7f7d'};
-  for(const p of matches){const popup=el('div','','map-popup');popup.append(el('strong',p.name),el('span',p.category));const b=el('button','Apri la scheda →');b.onclick=()=>openPlace(p);popup.append(b);L.circleMarker([p.lat,p.lon],{radius:7,color:'#fff',weight:2,fillColor:colors[p.category]||'#507447',fillOpacity:.95}).bindPopup(popup).addTo(placeLayer);}
-  if(matches.length)placeMap.fitBounds(matches.map(p=>[p.lat,p.lon]),{padding:[25,25],maxZoom:16});
+  for(const p of matches){const popup=el('div','','map-popup');popup.append(el('strong',p.name),el('span',p.category));const b=el('button','Apri la scheda →');b.onclick=()=>openPlace(p);popup.append(b);const marker=L.circleMarker([p.lat,p.lon],{radius:p.id===placeMapFocus?11:7,color:p.id===placeMapFocus?'#254f78':'#fff',weight:2,fillColor:colors[p.category]||'#507447',fillOpacity:.95}).bindPopup(popup).addTo(placeLayer);if(p.id===placeMapFocus)marker.openPopup();}
+  const focus=matches.find(p=>p.id===placeMapFocus);if(focus)placeMap.setView([focus.lat,focus.lon],17);else if(matches.length&&!exploreBounds)placeMap.fitBounds(matches.map(p=>[p.lat,p.lon]),{padding:[25,25],maxZoom:16});
 }
 function openPlace(p){
   placeReturnFocus=document.activeElement;const content=$('place-detail-content');content.replaceChildren();const title=el('h2',p.name);title.id='place-detail-title';
   content.append(el('span',p.category,'source'),title,el('p',p.address||'Indirizzo non disponibile. Usa la posizione sulla mappa.'),el('p','Dati della community OpenStreetMap, non ancora verificati dal titolare.','detail-note'));
+  const mapButton=el('button','⌖ Mostra sulla mappa','dialog-save');mapButton.onclick=()=>{$('place-detail-dialog').close();placeMapFocus=p.id;exploreMode='map';renderExplore();$('explore-map-tab').focus()};content.append(mapButton);
   if(p.openingHours)content.append(el('h3','Orari riportati nella fonte'),el('p',p.openingHours,'place-hours'));else content.append(el('p','Orari non disponibili. Verifica direttamente con l’attività.','detail-note'));
   if(p.wheelchair)content.append(el('p',`Accesso in sedia a rotelle indicato nella fonte: ${{yes:'sì',no:'no',limited:'limitato'}[p.wheelchair]}. Da verificare con l’attività.`,'detail-note'));
   const links=el('div','','place-links');const addLink=(label,url)=>{const a=el('a',label);a.href=url;a.target='_blank';a.rel='noopener noreferrer';links.append(a)};
@@ -338,17 +351,42 @@ function renderBus(){
     if(!line.directions?.length)body.append(el('p',line.route));
     const count=relatedBusAlerts(line).length;if(count)body.append(el('span',count+' avvisi recenti per questa linea','bus-alert-count'));
     open.append(el('span',line.number,'bus-number'),body);open.setAttribute('aria-label','Dettagli linea '+line.number+', '+line.serviceLabel);open.onclick=()=>openBusLine(line);
-    const actions=el('div','','bus-card-actions'),detail=el('button','Percorso e avvisi');detail.onclick=()=>openBusLine(line);detail.setAttribute('aria-label','Percorso e avvisi linea '+line.number+', '+line.serviceLabel);const timetable=officialBusLink(line.timetableUrl,'Orari PDF ↗','bus-timetable');timetable.setAttribute('aria-label','Orari PDF linea '+line.number+', '+line.serviceLabel+' · sito ATV');actions.append(timetable,detail);
+    const actions=el('div','','bus-card-actions'),detail=el('button','Percorso e avvisi');detail.onclick=()=>openBusLine(line);detail.setAttribute('aria-label','Percorso e avvisi linea '+line.number+', '+line.serviceLabel);const timetable=el('button','Orari','bus-timetable');timetable.setAttribute('aria-label','Orari nell’app linea '+line.number+', '+line.serviceLabel);timetable.onclick=()=>openTimetable(line);actions.append(timetable,detail);if(busRoutesFor(line).length){const mapButton=el('button','Mappa');mapButton.onclick=()=>openBusRoute(line);actions.append(mapButton);}
     card.append(open,busStar(line),actions);list.append(card);
   }
+}
+function timetableFor(line){return timetableData.lines.find(item=>item.lineId===line.id&&item.sourceUrl===line.timetableUrl)||null;}
+function timetableStopRows(block){const counts=new Map();return block.stops.map(stop=>{const n=(counts.get(stop.name)||0)+1;counts.set(stop.name,n);return {...stop,key:stop.name+'#'+n,label:stop.name+(n>1?' · passaggio '+n:'')};});}
+function timetableBlocks(){const direction=$('timetable-direction').value,service=$('timetable-service').value;return (timetableLine?.blocks||[]).filter(block=>block.direction===direction&&block.service===service);}
+function timetableOptions(id,items,placeholder,value=''){const select=$(id);select.replaceChildren();const empty=el('option',placeholder);empty.value='';select.append(empty);for(const item of items){const option=el('option',item.label);option.value=item.value;select.append(option)}select.value=items.some(item=>item.value===value)?value:'';}
+function timetableServices(preferred=''){const direction=$('timetable-direction').value,services=[...new Set((timetableLine?.blocks||[]).filter(b=>b.direction===direction).map(b=>b.service))];timetableOptions('timetable-service',services.map(value=>({value,label:value})),'Scegli il servizio',preferred||(services.length===1?services[0]:''));$('timetable-service').disabled=!direction;}
+function timetableStops(preferred=''){const stops=new Map();for(const block of timetableBlocks())for(const stop of timetableStopRows(block))if(!stops.has(stop.key))stops.set(stop.key,{value:stop.key,label:stop.label});timetableStopChoices=[...stops.values()];timetableOptions('timetable-stop',timetableStopChoices,'Scegli la fermata',preferred);$('timetable-stop').disabled=!$('timetable-service').value;}
+function persistTimetable(){if(!timetableLine)return;timetableChoices[timetableLine.lineId]={direction:$('timetable-direction').value,service:$('timetable-service').value,stop:$('timetable-stop').value};try{localStorage.setItem('verona-timetables-v1',JSON.stringify(timetableChoices));$('timetable-feedback').textContent='';}catch{$('timetable-feedback').textContent='Scelte disponibili per questa visita. Il browser non consente il salvataggio.';}}
+function timetableDepartures(){const key=$('timetable-stop').value,result=[],seen=new Set();for(const block of timetableBlocks()){const stops=timetableStopRows(block),stop=stops.find(item=>item.key===key);if(!stop)continue;for(let c=0;c<stop.times.length;c++){const time=stop.times[c];if(!time)continue;let previous=null,offset=0,minutes=0;for(const row of stops){const value=row.times[c];if(value){const parts=value.split(':').map(Number),clock=parts[0]*60+parts[1];if(previous!==null&&previous-clock>720)offset+=1440;previous=clock;minutes=clock+offset;}if(row.key===key)break;}if(/SERALE/i.test(block.service)&&minutes<720)minutes+=1440;const note=[block.validity[c],block.tripNotes?.[c],stop.marks[c]==='|'?'':stop.marks[c]].filter(Boolean).join(' · '),trip=block.tripIds[c],dedupe=JSON.stringify([time,minutes,trip,note]);if(trip&&seen.has(dedupe))continue;seen.add(dedupe);result.push({time,minutes,trip,note,page:block.page,nextDay:minutes>=1440});}}return result.sort((a,b)=>a.minutes-b.minutes||String(a.trip||'').localeCompare(String(b.trip||''),'it',{numeric:true}));}
+function renderTimetable(){
+  const list=$('timetable-results'),key=$('timetable-stop').value;list.replaceChildren();$('timetable-summary').textContent='';
+  if(!timetableLine){list.append(el('p','Orari interni non disponibili per questa scheda. Puoi consultare la fonte originale.','timetable-prompt'));return;}
+  if(!$('timetable-direction').value||!$('timetable-service').value||!key){list.append(el('p',!$('timetable-direction').value?'Scegli una direzione per consultare gli orari.':!$('timetable-service').value?'Scegli il giorno di servizio indicato da ATV.':'Scegli una fermata della tabella.','timetable-prompt'));return;}
+  const rows=timetableDepartures(),choice=timetableStopChoices.find(item=>item.value===key);$('timetable-summary').textContent=rows.length+' '+(rows.length===1?'orario':'orari')+' · '+(choice?.label||'');
+  if(!rows.length)list.append(el('p','Nessun orario riportato per questa fermata nel servizio scelto. Prova un’altra fermata o un altro servizio.','timetable-prompt'));
+  for(const row of rows){const entry=el('div','','timetable-row'),time=el('div');time.append(el('span',row.time,'timetable-time'));if(row.nextDay)time.append(el('small','Dopo mezzanotte · giorno successivo'));const meta=el('div','','timetable-row-meta');meta.append(el('small',row.trip?'Corsa '+row.trip:'Codice corsa non indicato'),el('small','Pagina '+row.page+' del PDF'));if(row.note)meta.append(el('small','Nota '+row.note));entry.append(time,meta);list.append(entry);}
+}
+function openTimetable(line,preset={}){
+  timetableMapStopKey=preset.stop||'';
+  timetableReturnFocus=document.activeElement;$('timetable-source').open=false;timetableLine=timetableFor(line);$('bus-timetable-title').textContent='Linea '+line.number;$('timetable-feedback').textContent='';const chosen={...(timetableChoices[line.id]||{}),...preset},directions=[...new Set((timetableLine?.blocks||[]).map(b=>b.direction))];
+  timetableOptions('timetable-direction',directions.map(value=>({value,label:value})),'Scegli la direzione',chosen.direction||(directions.length===1?directions[0]:''));$('timetable-direction').disabled=!directions.length;timetableServices(chosen.service);timetableStops(chosen.stop);const provenance=$('timetable-provenance');provenance.replaceChildren();
+  if(timetableLine){for(const label of timetableLine.validityLabels)provenance.append(el('p',label));provenance.append(el('p','PDF raccolto il '+formatDay(dayInRome(timetableLine.downloadedAt),{day:'numeric',month:'long',year:'numeric'})+'. Sono riportate le fermate della tabella, che può non elencare tutte le fermate del percorso.'));
+    const notes=[...new Set(timetableLine.blocks.flatMap(b=>b.notes))].filter(note=>!/^Note:?$/i.test(note));for(const note of notes)provenance.append(el('p',note));}
+  provenance.append(officialBusLink(line.timetableUrl,'Fonte: PDF originale ATV ↗'));renderTimetable();$('timetable-map-context').textContent='';if(preset.stop)$('timetable-map-context').textContent='Fermata: '+preset.stop.replace(/#\d+$/,'')+'. Gli orari comprendono le altre varianti della linea. Scegli il giorno di servizio.';$('timetable-results').scrollTop=0;$('bus-timetable-dialog').showModal();
 }
 function renderBusUpdates(){const q=$('bus-updates-search').value.trim().toLocaleLowerCase('it'),items=(busData.updates||[]).filter(a=>(a.title+' '+a.lines.join(' ')).toLocaleLowerCase('it').includes(q));$('bus-updates-count').textContent=items.length+' pubblicazioni ATV';const list=$('bus-updates-list');list.replaceChildren();for(const item of items)list.append(busPublicationCard(item));if(!items.length&&!q){const box=el('div','','bus-empty');box.append(el('h3','Pubblicazioni non disponibili.'),officialBusLink('https://www.atv.verona.it/','Consulta il sito ATV ↗'));list.append(box);return;}if(!items.length)busEmpty(list,'Nessuna pubblicazione trovata.','Prova una ricerca diversa.','Azzera ricerca',()=>{$('bus-updates-search').value='';renderBusUpdates()});}
 function openBusMore(){const box=$('bus-source-status');box.replaceChildren();for(const source of busData.sources){const name={urban:'Feriale',evening:'Serale',holiday:'Festivo',rss:'Pubblicazioni ATV'}[source.key]||source.key,last=source.lastSuccessAt||busData.lines.filter(line=>line.service===source.key).map(line=>line.checkedAt).sort()[0]||(source.key==='rss'?(busData.updates||[])[0]?.checkedAt:null);box.append(el('p',name+' · Ultimo successo: '+(last?formatDay(dayInRome(last),{day:'numeric',month:'short',year:'numeric'}):'non disponibile')+(source.status==='error'?' · Ultimo tentativo fallito: dati precedenti conservati.':''),'bus-source-row'));}$('bus-more-dialog').showModal();}
 function openBusLine(line){
   if(!$('bus-detail-dialog').open)busReturnFocus=document.activeElement;const content=$('bus-detail-content');content.replaceChildren();const title=el('h2','Linea '+line.number);title.id='bus-detail-title';
-  content.append(title,el('span',line.serviceLabel,'source'),officialBusLink(line.timetableUrl,'Apri gli orari ufficiali PDF ↗'));
+  const timetableButton=el('button','Consulta gli orari nell’app','dialog-save');timetableButton.onclick=()=>openTimetable(line);content.append(title,el('span',line.serviceLabel,'source'),timetableButton);
+  if(busRoutesFor(line).length){const button=el('button','Mappa e fermate · prova linea 11','dialog-save');button.onclick=()=>openBusRoute(line);content.append(button);}content.append(officialBusLink(line.timetableUrl,'PDF originale ATV ↗','bus-secondary-link'));
   for(const direction of line.directions||[{label:'Percorso indicato da ATV',path:line.route}]){const section=el('section','','bus-route-section');section.append(el('h3',direction.label),el('p',direction.path,'bus-route'));content.append(section);}
-  content.append(el('p','Percorso sintetico dalla scheda ATV, non elenco completo delle fermate. Consulta il PDF per giorni di servizio, orari e note. Non sono arrivi in tempo reale.','detail-note'),officialBusLink(line.sourceUrl,'Scheda della linea sul sito ATV ↗','bus-secondary-link'));
+  content.append(el('p','Percorso sintetico dalla scheda ATV, non elenco completo delle fermate. Nel pannello Orari scegli il servizio indicato nella tabella. Il PDF resta la fonte per note e aggiornamenti. Non sono arrivi in tempo reale.','detail-note'),officialBusLink(line.sourceUrl,'Scheda della linea sul sito ATV ↗','bus-secondary-link'));
   const star=busStar(line);star.onclick=()=>{toggleBus(line.id);star.textContent=busFavorites[line.id]?'★':'☆';star.setAttribute('aria-pressed',String(Boolean(busFavorites[line.id])));star.setAttribute('aria-label',(busFavorites[line.id]?'Rimuovi dalle tue linee: ':'Aggiungi alle tue linee: ')+line.number+', '+line.serviceLabel);star.classList.toggle('chosen',Boolean(busFavorites[line.id]));};content.append(star);
   const alerts=relatedBusAlerts(line);if(alerts.length){content.append(el('h3','Avvisi recenti per questa linea'));for(const alert of alerts)content.append(busPublicationCard(alert,line));}
   const general=busData.alerts.filter(a=>!a.lines.length);if(general.length){const button=el('button','Avvisi generali o senza linea indicata ('+general.length+')','dialog-save');button.onclick=()=>{$('bus-detail-dialog').close();setBusMode('alerts');busAlertScope='all';render()};content.append(button);}
@@ -386,17 +424,17 @@ function renderNews(){
   for(const item of items){
     const card=el('article','','news-card'),meta=el('div','','news-card-meta');
     meta.append(el('span',item.kind,'news-kind'+(item.kind==='Avviso'?' notice':'')),el('span','Pubblicata '+formatDay(item.publishedOn,{day:'numeric',month:'short',year:'numeric'})));
-    const title=el('button',item.title,'news-title');title.type='button';title.setAttribute('aria-label','Leggi: '+item.title);title.onclick=()=>openNews(item);
+    const title=el('button',item.title,'news-title');title.type='button';title.setAttribute('aria-label','Leggi: '+item.title);title.onclick=()=>openNews(item);appendNewsThumbnail(title,item);
     const tags=el('div','','news-tags');tags.append(el('span',newsTopic(item.category),'news-topic'),el('span',newsZoneLabel(item)));
     const bottom=el('div','','news-card-actions'),read=el('button','Dettagli →','news-read');read.setAttribute('aria-label','Dettagli: '+item.title);read.onclick=()=>openNews(item);bottom.append(read,newsSaveButton(item));
-    card.append(meta,title,el('p',item.summary||'Leggi la comunicazione sulla fonte ufficiale.'),tags,bottom);list.append(card);
+    card.append(meta,title,el('p',item.summary||'Leggi la comunicazione sulla fonte ufficiale.'),tags);appendNewsImageCredit(card,item);card.append(bottom);list.append(card);
   }
 }
 function openNews(item){
   newsReturnFocus=document.activeElement;
   const content=$('news-detail-content');content.replaceChildren();
   const title=el('h2',item.title);title.id='news-detail-title';
-  content.append(el('span',`Comune di Verona · ${item.kind} · Pubblicata il ${formatDay(item.publishedOn,{day:'numeric',month:'long',year:'numeric'})}`,'news-source-label'),title);
+  content.append(el('span',`Comune di Verona · ${item.kind} · Pubblicata il ${formatDay(item.publishedOn,{day:'numeric',month:'long',year:'numeric'})}`,'news-source-label'),title);appendEventPoster(content,item);
   const tags=el('div','','news-tags');tags.append(el('span',newsTopic(item.category),'news-topic'),el('span',newsZoneLabel(item)));content.append(tags,el('p',item.summary||'Leggi la pubblicazione completa sulla fonte ufficiale.'),el('p','La data indicata è quella di pubblicazione. Consulta la fonte per periodi di validità, scadenze e aggiornamenti.','detail-note'));
   try{const url=new URL(item.sourceUrl);if(url.origin==='https://www.comune.verona.it'){const link=el('a','Leggi sul sito del Comune ↗','detail-link');link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';content.append(link)}}catch{}
   const saveButton=newsSaveButton(item);saveButton.onclick=()=>{toggleNews(item.id);saveButton.textContent=newsBookmarks[item.id]?'✓ Salvata':'Salva';saveButton.setAttribute('aria-pressed',String(Boolean(newsBookmarks[item.id])));saveButton.setAttribute('aria-label',`${newsBookmarks[item.id]?'Rimuovi':'Salva'}: ${item.title}`);saveButton.classList.toggle('chosen',Boolean(newsBookmarks[item.id]));};content.append(saveButton);
@@ -461,6 +499,7 @@ function openDetails(e) {
   const content=$('detail-content');content.replaceChildren();
   const title=el('h2',e.title);title.id='detail-title';
   content.append(el('span',e.source,'source'),title,el('p',eventWhen(e)),el('p',e.location||'Sede da verificare sulla fonte ufficiale.'),el('p',e.summary||'I dettagli e il programma completo sono disponibili sulla pagina ufficiale dell’evento.'),el('p',e.priceLabel||'Prezzo e condizioni di accesso da verificare.'));
+  appendEventPoster(content,e);
   if(e.localVerified)content.append(el('p',`Luogo controllato sulla fonte il ${formatDay(e.reviewedOn,{day:'numeric',month:'long',year:'numeric'})}.`,'detail-note'));
   const point=eventPosition(e);
   if(point){const mapButton=el('button','⌖ Vedi sulla mappa','dialog-save event-map-detail-button');mapButton.onclick=()=>{closeDetails();openEventMap(e)};const directions=el('a','Indicazioni per arrivare ↗','bus-secondary-link');directions.href=`https://www.google.com/maps/dir/?api=1&destination=${point.lat},${point.lon}`;directions.target='_blank';directions.rel='noopener noreferrer';content.append(mapButton,directions,el('p','Punto indicato dalla fonte. Per manifestazioni diffuse e percorsi, verifica il luogo esatto nel programma.','detail-note'));}
@@ -485,6 +524,7 @@ function renderDiscovery() {
   }
   const e=currentDiscovery,p= presentation(e),card=el('article','','discover-card');
   const cover=el('div','',`card-cover theme-${p.theme}`);cover.setAttribute('aria-hidden','true');cover.append(el('span','Verona · da vivere','cover-label'),el('div','','cover-art'),el('span',p.label,'cover-type'));
+  const coverImage=eventImage(e);if(coverImage){const fallback=[...cover.children],image=makeEventImage(e,'event-cover-image');image.hidden=true;cover.append(image);const credit=el('span',eventImageCredit(coverImage),'event-cover-credit');credit.hidden=true;image.onload=()=>{for(const node of fallback)node.hidden=true;cover.setAttribute('aria-hidden','false');cover.style.background='var(--page-bg)';image.hidden=false;credit.hidden=false};image.onerror=()=>{image.hidden=true;credit.hidden=true;for(const node of fallback)node.hidden=false;cover.setAttribute('aria-hidden','true');cover.style.background=''};cover.append(credit);}
   const likeStamp=el('span','MI INTERESSA','swipe-stamp'),skipStamp=el('span','PASSO','swipe-stamp skip');likeStamp.setAttribute('aria-hidden','true');skipStamp.setAttribute('aria-hidden','true');
   const body=el('div','','card-body');body.append(el('span',e.localVerified?'Luogo controllato · '+e.source:'Da verificare · '+e.source,'local-label'),el('h3',e.title),el('p',eventWhen(e),'card-meta'),el('p',e.location||'Sede da verificare sulla fonte','card-meta'),el('span',e.priceLabel||'Prezzo da verificare','card-price'));
   const detail=el('button','i','details-trigger');detail.type='button';detail.setAttribute('aria-label',`Apri i dettagli di ${e.title}`);detail.title='Dettagli evento';detail.onclick=()=>openDetails(e);card.append(cover,likeStamp,skipStamp,body,detail);deck.append(card);
@@ -526,6 +566,8 @@ $('news-search').oninput=render;$('news-open-filters').onclick=openNewsFilters;$
 $('close-news-filters').onclick=()=>$('news-filters-dialog').close();
 $('apply-news-filters').onclick=()=>{newsFilters={category:$('news-category').value,type:$('news-type').value};render();$('news-filters-dialog').close()};
 $('reset-news-filters').onclick=()=>{$('news-category').value='';$('news-type').value=''};
+$('close-bus-timetable').onclick=()=>$('bus-timetable-dialog').close();$('bus-timetable-dialog').addEventListener('close',()=>{if(timetableReturnFocus?.isConnected)timetableReturnFocus.focus();else if($('bus-route-dialog').open)$('bus-route-variant').focus();else $('bus-list').focus()});
+$('timetable-direction').onchange=()=>{timetableMapStopKey='';timetableServices();timetableStops();persistTimetable();renderTimetable();$('timetable-results').scrollTop=0};$('timetable-service').onchange=()=>{timetableStops($('timetable-stop').value||timetableMapStopKey);persistTimetable();renderTimetable();$('timetable-results').scrollTop=0};$('timetable-stop').onchange=()=>{persistTimetable();renderTimetable();$('timetable-results').scrollTop=0};
 $('bus-back').onclick=()=>setView('home');$('bus-search').oninput=render;$('bus-service').onchange=render;
 for(const [id,mode]of [['bus-lines','lines'],['bus-favorites','favorites'],['bus-alerts','alerts']])$(id).onclick=()=>setBusMode(mode);
 $('bus-more').onclick=$('bus-alert-more').onclick=openBusMore;$('close-bus-more').onclick=()=>$('bus-more-dialog').close();$('bus-more-dialog').addEventListener('close',()=>$(busMode==='alerts'?'bus-alert-more':'bus-more').focus());
@@ -534,13 +576,13 @@ $('bus-updates').onclick=()=>{$('bus-more-dialog').close();renderBusUpdates();$(
 $('close-bus-detail').onclick=()=>$('bus-detail-dialog').close();$('bus-detail-dialog').addEventListener('close',()=>{if(busReturnFocus?.isConnected)busReturnFocus.focus();else $('bus-list').focus()});
 $('discover-event-map').onclick=()=>{eventMapSaved=false;openEventMap()};
 $('calendar-event-map').onclick=()=>{eventMapSaved=onlySaved;openEventMap()};
-$('event-map-back').onclick=()=>{if(eventMapReturn){selected=eventMapReturn.selected;month=selected.slice(0,7);$('search').value=eventMapReturn.search;$('source').value=eventMapReturn.source;}setView(eventMapReturn?.view||'calendar');$('events').scrollTop=eventMapReturn?.scroll||0;$('calendar-event-map').focus()};
+$('event-map-back').onclick=()=>{if(eventMapReturn){selected=eventMapReturn.selected;month=selected.slice(0,7);$('search').value=eventMapReturn.search;$('source').value=eventMapReturn.source;}setView(eventMapReturn?.view||'calendar');$('events').scrollTop=eventMapReturn?.scroll||0;$(eventMapReturn?.view==='explore'?'explore-events':'calendar-event-map').focus()};
 $('event-map-unlocated').onclick=()=>{const day=selected;setView(eventMapReturn?.view||'calendar');selectAgendaDay(day)};
 $('event-map-date').onchange=()=>{const value=$('event-map-date').value;if(!/^\d{4}-\d{2}-\d{2}$/.test(value)||!Number.isFinite(Date.parse(value+'T12:00:00Z'))||new Date(value+'T12:00:00Z').toISOString().slice(0,10)!==value){$('event-map-date').value=selected;return;}selected=value;month=value.slice(0,7);eventMapFocus=null;render()};
 $('event-map-period').onchange=()=>{eventMapFocus=null;render()};
 $('event-map-saved').onclick=()=>{eventMapSaved=!eventMapSaved;eventMapFocus=null;render()};
 $('explore-back').onclick=()=>setView('home');$('explore-map-tab').onclick=()=>{exploreMode='map';render()};$('explore-list-tab').onclick=()=>{exploreMode='list';render()};
-$('explore-search').oninput=()=>{placesShown=60;render()};$('explore-category').onchange=()=>{placesShown=60;render()};$('explore-saved').onclick=()=>{exploreSaved=!exploreSaved;placesShown=60;render()};
+$('explore-search').oninput=()=>{placeMapFocus=null;placesShown=60;render()};$('explore-category').onchange=()=>{placeMapFocus=null;placesShown=60;render()};$('explore-saved').onclick=()=>{exploreSaved=!exploreSaved;placesShown=60;render()};
 $('close-place-detail').onclick=()=>$('place-detail-dialog').close();$('place-detail-dialog').addEventListener('close',()=>{if(placeReturnFocus?.isConnected)placeReturnFocus.focus();else $('explore-list-tab').focus()});
 $('district-back').onclick=()=>setView('home');$('district-zone').onclick=openDistrictChoice;
 $('close-district').onclick=()=>$('district-dialog').close();
@@ -552,3 +594,106 @@ $('district-search').oninput=render;
 $('district-saved').onclick=()=>{districtSaved=!districtSaved;$('district-feedback').textContent='';render()};
 for(const [id,mode]of [['district-news','news'],['district-notices','notices'],['district-events','events'],['district-city','city']])$(id).onclick=()=>{districtMode=mode;$('district-feedback').textContent='';render()};
 render();
+
+function busRoutesFor(line){return busRouteData.routes.filter(route=>route.lineId===line.id);}
+function busRouteStopKey(route,stop){
+  if(!stop.timetableCandidate||route.stops.filter(item=>item.name===stop.name).length!==1)return '';
+  const keys=new Set();for(const block of (timetableFor(busRouteLine)?.blocks||[]).filter(block=>block.direction===route.timetableDirection))for(const row of timetableStopRows(block))if(row.name===stop.name)keys.add(row.key);
+  return keys.size===1?[...keys][0]:'';
+}
+function busRouteStopContent(route,stop){
+  const box=el('div','','bus-map-stop');box.append(el('strong',stop.name));if(stop.ref)box.append(el('small','Fermata OSM '+stop.ref));
+  const key=busRouteStopKey(route,stop);if(key){const button=el('button','Orari di questa fermata');button.onclick=()=>openTimetable(busRouteLine,{direction:route.timetableDirection,stop:key});box.append(button);}else box.append(el('small','Orari non associati a questo punto.'));
+  return box;
+}
+function renderBusRoute(focusStop=null){
+  const route=busRoutesFor(busRouteLine).find(item=>item.id===$('bus-route-variant').value),list=$('bus-route-stops'),message=$('bus-route-message');list.replaceChildren();if(!route)return;
+  $('bus-route-map').hidden=busRouteMode!=='map';list.hidden=busRouteMode!=='list';
+  $('bus-route-map-tab').setAttribute('aria-pressed',String(busRouteMode==='map'));$('bus-route-list-tab').setAttribute('aria-pressed',String(busRouteMode==='list'));
+  $('bus-route-summary').textContent=route.stops.length+' fermate · '+route.label;
+  $('bus-route-source').replaceChildren(el('span','Percorso OSM indicativo · raccolto il '+formatDay(dayInRome(busRouteData.collectedAt),{day:'numeric',month:'short',year:'numeric'})+'. Verifica variazioni e deviazioni sul sito ATV. '),officialBusLink(route.sourceUrl,'Fonte OpenStreetMap ↗'));
+  for(const stop of route.stops){const row=busRouteStopContent(route,stop),locate=el('button','Vedi sulla mappa');locate.onclick=()=>{busRouteMode='map';renderBusRoute(stop.id)};row.append(locate);list.append(row);}
+  message.textContent=busRouteTileFailed?'Le strade non si caricano. Puoi usare l’elenco delle fermate.':'';
+  if(busRouteMode!=='map')return;
+  if(typeof L==='undefined'){message.textContent='Mappa non disponibile. Apri Fermate per consultare il percorso.';return;}
+  if(!busRouteMap){busRouteMap=L.map('bus-route-map',{preferCanvas:true}).setView([45.4384,10.9916],13);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,updateWhenIdle:true,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).on('tileerror',()=>{busRouteTileFailed=true;$('bus-route-message').textContent='Le strade non si caricano. Puoi usare l’elenco delle fermate.';}).addTo(busRouteMap);busRouteLayer=L.layerGroup().addTo(busRouteMap);}
+  installMapLocation(busRouteMap,'bus');busRouteMap.invalidateSize();busRouteLayer.clearLayers();
+  L.polyline(route.segments,{color:'#fff',weight:8,opacity:1}).addTo(busRouteLayer);L.polyline(route.segments,{color:'#254f78',weight:4,opacity:1}).addTo(busRouteLayer);
+  let focused=null;for(const stop of route.stops){const marker=L.circleMarker([stop.lat,stop.lon],{radius:8,color:'#254f78',weight:2,fillColor:'#fffefa',fillOpacity:1}).bindPopup(busRouteStopContent(route,stop)).addTo(busRouteLayer);if(stop.id===focusStop)focused={stop,marker};}
+  if(focused){busRouteMap.setView([focused.stop.lat,focused.stop.lon],17);focused.marker.openPopup();}else busRouteMap.fitBounds(route.segments.flat(),{padding:[20,20],maxZoom:14});
+}
+function openBusRoute(line){
+  const routes=busRoutesFor(line);if(!routes.length)return;busRouteReturnFocus=document.activeElement;const sameLine=busRouteLine?.id===line.id;busRouteLine=line;
+  const previous=sameLine?$('bus-route-variant').value:'11344295';timetableOptions('bus-route-variant',routes.map(route=>({value:route.id,label:route.label})),'Scegli il percorso',previous);if(!$('bus-route-variant').value)$('bus-route-variant').value=routes[0].id;
+  $('bus-route-dialog').showModal();renderBusRoute();
+}
+$('close-bus-route').onclick=()=>$('bus-route-dialog').close();
+$('bus-route-dialog').addEventListener('close',()=>{if(busRouteReturnFocus?.isConnected)busRouteReturnFocus.focus();else $('bus-list').focus()});
+$('bus-route-variant').onchange=()=>{if(!$('bus-route-variant').value)$('bus-route-variant').value=busRoutesFor(busRouteLine)[0].id;$('bus-route-stops').scrollTop=0;renderBusRoute()};
+$('bus-route-map-tab').onclick=()=>{busRouteMode='map';renderBusRoute()};
+$('bus-route-list-tab').onclick=()=>{busRouteMode='list';renderBusRoute()};
+
+function eventImage(e){
+  const image=e.image;if(!image||typeof image!=='object')return null;
+  if(image.license!=='CC BY 4.0'&&!(image.license==='Licenza non specificata'&&image.author==='Comune di Verona'&&image.rightsStatus==='unverified'))return null;
+  try{const url=new URL(image.url);if(url.protocol!=='https:'||url.username||url.password)return null;if(url.hostname!=='www.comune.verona.it'&&!(url.hostname==='s3-eu-west-1.amazonaws.com'&&url.pathname.startsWith('/static.opencity.opencontent.it/var/verona/')))return null;return image;}catch{return null;}
+}
+function eventImageCredit(image){return image.rightsStatus==='unverified'?'Fonte immagine: Comune di Verona · Licenza non specificata':(image.author?'© '+image.author:'Fonte: Comune di Verona')+' · CC BY 4.0';}
+function makeEventImage(e,className){const data=eventImage(e),image=el('img','',className);const size=className==='event-thumbnail'?180:['event-cover-image','news-card-image'].includes(className)?640:1200;image.loading=['event-thumbnail','news-card-image'].includes(className)?'lazy':'eager';image.fetchPriority=className==='event-cover-image'?'high':'auto';image.src='https://flyimg.opencityitalia.it/upload/rf_1,o_auto,w_'+size+',h_'+size+'/'+encodeURIComponent(data.url);image.alt=data.alt||'Immagine dell’evento '+e.title;image.decoding='async';image.draggable=false;image.referrerPolicy='no-referrer';image.onerror=()=>{image.hidden=true};return image;}
+function appendEventPoster(content,e){
+  const image=eventImage(e);if(!image)return;
+  const figure=el('figure','','event-poster'),photo=makeEventImage(e,'event-poster-image'),caption=el('figcaption'),credit=el('p',eventImageCredit(image));
+  if(image.caption)caption.append(el('p',image.caption));caption.append(credit);
+  if(image.license==='CC BY 4.0'){const license=el('a','Licenza CC BY 4.0 ↗');license.href='https://creativecommons.org/licenses/by/4.0/';license.target='_blank';license.rel='noopener noreferrer';caption.append(license);}else caption.append(el('p','La fonte indica “Licenza sconosciuta”. L’attribuzione non conferma il permesso di riutilizzo.'));
+  const original=el('a','Apri immagine intera ↗','event-original-image');original.href=image.url;original.target='_blank';original.rel='noopener noreferrer';
+  const source=el('a','Fonte immagine: Comune di Verona ↗');source.href=e.sourceUrl;try{const imageSource=new URL(image.sourceUrl);if(imageSource.origin==='https://www.comune.verona.it'&&!imageSource.pathname.startsWith('/api/'))source.href=imageSource.href;}catch{}source.target='_blank';source.rel='noopener noreferrer';caption.append(source,original);
+  photo.onerror=()=>{photo.hidden=true;caption.append(el('p','Immagine non disponibile. Puoi aprire il programma ufficiale.'))};figure.append(photo,caption);content.append(figure);
+}
+
+function appendNewsThumbnail(title,item){if(!eventImage(item))return;title.className+=' news-title-with-image';const image=makeEventImage(item,'news-card-image');image.alt='';title.replaceChildren(image,el('span',item.title,'news-title-text'));}
+function appendNewsImageCredit(card,item){const image=eventImage(item);if(image)card.append(el('small',eventImageCredit(image)+' · Crediti nei dettagli','news-image-credit'));}
+
+$('explore-reset').onclick=resetExplore;
+$('explore-search-area').onclick=()=>{
+  if(!placeMap?.getBounds)return;const b=placeMap.getBounds(),bounds={south:b.getSouth(),north:b.getNorth(),west:b.getWest(),east:b.getEast()};if(!Object.values(bounds).every(Number.isFinite))return;
+  exploreBounds=bounds;placeMapFocus=null;placesShown=60;renderExplore();
+};
+
+$('explore-events').onclick=()=>{
+  const previous={selected,search:$('search').value,source:$('source').value};
+  selected=today;$('search').value='';$('source').value='';$('event-map-period').value='7';eventMapSaved=false;openEventMap();
+  eventMapReturn={...eventMapReturn,...previous,view:'explore'};$('event-map-back').textContent='← Esplora';
+};
+
+function locationMapVisible(key){return key==='events'?view==='eventmap':key==='places'?view==='explore'&&exploreMode==='map':$('bus-route-dialog').open&&busRouteMode==='map';}
+function drawMapLocation(state,center=false){
+  state.layer.clearLayers();if(!currentUserLocation)return;
+  const {lat,lon,accuracy}=currentUserLocation,point=[lat,lon];
+  const circle=L.circle(point,{radius:accuracy,color:'#2371bc',weight:1,fillColor:'#2371bc',fillOpacity:.12,interactive:false}).addTo(state.layer);
+  L.circleMarker(point,{radius:8,color:'#fff',weight:3,fillColor:'#2371bc',fillOpacity:1}).bindPopup(el('div','La tua posizione · precisione circa '+Math.round(accuracy)+' m')).addTo(state.layer);
+  if(center){state.map.closePopup?.();state.map.fitBounds(circle.getBounds(),{padding:[35,35],maxZoom:16});}
+}
+function installMapLocation(map,key){
+  if(mapLocationStates.has(key)||typeof L.control!=='function')return;
+  const box=el('div','','map-location-control'),button=el('button','◎'),status=el('p','','map-location-status');
+  button.type='button';button.id='locate-'+key;button.title='La mia posizione';button.setAttribute('aria-label','Mostra la mia posizione sulla mappa');status.id='location-status-'+key;status.setAttribute('role','status');status.hidden=true;
+  box.append(status,button);L.DomEvent.disableClickPropagation(box);L.DomEvent.disableScrollPropagation(box);
+  const control=L.control({position:'bottomright'});control.onAdd=()=>box;control.addTo(map);
+  const state={map,key,button,status,layer:L.layerGroup().addTo(map)};mapLocationStates.set(key,state);button.onclick=()=>requestMapLocation(key);drawMapLocation(state);
+}
+function requestMapLocation(key){
+  const state=mapLocationStates.get(key);if(!state||state.button.disabled)return;
+  const show=message=>{state.status.hidden=false;state.status.textContent=message;};
+  if(typeof isSecureContext!=='undefined'&&!isSecureContext){show('Per usare la posizione dal telefono serve la versione HTTPS. L’anteprima Wi-Fi HTTP non la supporta.');return;}
+  if(typeof navigator==='undefined'||!navigator.geolocation){show('Posizione non disponibile in questo browser. Puoi spostare la mappa manualmente.');return;}
+  state.button.disabled=true;state.button.textContent='…';state.button.setAttribute('aria-busy','true');show('Ricerca della posizione…');
+  const finish=()=>{state.button.disabled=false;state.button.textContent='◎';state.button.setAttribute('aria-busy','false');};
+  const fail=error=>{finish();if(error.code===1){currentUserLocation=null;for(const item of mapLocationStates.values())item.layer.clearLayers();}show(error.code===1?'Permesso negato. Puoi abilitare la posizione nelle impostazioni del browser.':error.code===3?'La ricerca ha impiegato troppo tempo. Tocca di nuovo per riprovare.':'Posizione non disponibile. Controlla la localizzazione del dispositivo e riprova.');};
+  try{navigator.geolocation.getCurrentPosition(position=>{
+    finish();const {latitude:lat,longitude:lon,accuracy}=position.coords||{};
+    if(!Number.isFinite(lat)||!Number.isFinite(lon)||!Number.isFinite(accuracy)||lat< -90||lat>90||lon< -180||lon>180||accuracy<0){show('Il dispositivo ha restituito una posizione non valida. Riprova.');return;}
+    currentUserLocation={lat,lon,accuracy};for(const item of mapLocationStates.values())drawMapLocation(item,item===state&&locationMapVisible(key));
+    const bounds=placesData.bounds,outside=key==='places'&&bounds&&(lat<bounds[0]||lon<bounds[1]||lat>bounds[2]||lon>bounds[3]);
+    show('Posizione rilevata · precisione circa '+Math.round(accuracy)+' m.'+(outside?' Sei fuori dall’area del catalogo delle attività.':''));
+  },fail,{enableHighAccuracy:true,timeout:12000,maximumAge:0});}catch{fail({code:2});}
+}

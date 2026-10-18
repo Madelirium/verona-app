@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-18T10:37:36.980Z",
+  "checkedAt": "2026-10-18T13:16:23.995Z",
   "from": "2026-10-18",
   "status": "ok",
   "sources": [
@@ -7,7 +7,7 @@
       "source": "Comune di Verona",
       "status": "ok",
       "count": 928,
-      "lastSuccessAt": "2026-10-18T10:37:36.980Z",
+      "lastSuccessAt": "2026-10-18T13:16:23.995Z",
       "added": 0,
       "removed": 0
     },
@@ -15,7 +15,7 @@
       "source": "Veronafiere",
       "status": "ok",
       "count": 23,
-      "lastSuccessAt": "2026-10-18T10:37:36.980Z",
+      "lastSuccessAt": "2026-10-18T13:16:23.995Z",
       "added": 0,
       "removed": 0
     }

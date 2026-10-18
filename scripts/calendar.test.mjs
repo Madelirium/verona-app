@@ -35,6 +35,144 @@ function run(storage = new Map(),initialView='discover',mapApi) {
   if(initialView==='discover')get('discover').onclick();
   return {get,context,storage};
 }
+
+function locationTestApp(){
+  const maps=[0,1,2].map(()=>({fits:0,fitBounds(){this.fits++},closePopup(){}}));
+  const L={control(){return {addTo(){this.onAdd();return this}}},DomEvent:{disableClickPropagation(){},disableScrollPropagation(){}},layerGroup(){return {items:[],addTo(){return this},clearLayers(){this.items=[]}}},circle(point,options){return {point,options,addTo(layer){layer.items.push(this);return this},getBounds(){return [point,point]}}},circleMarker(){return {bindPopup(){return this},addTo(layer){layer.items.push(this);return this}}}};
+  const app=run(new Map(),'home',L);app.context.testMaps=maps;app.context.isSecureContext=true;
+  new Script('view="eventmap";installMapLocation(testMaps[0],"events");installMapLocation(testMaps[1],"places");installMapLocation(testMaps[2],"bus")').runInContext(app.context);
+  app.click=()=>new Script('mapLocationStates.get("events").button.onclick()').runInContext(app.context);
+  app.status=()=>new Script('mapLocationStates.get("events").status.textContent').runInContext(app.context);
+  return {...app,maps};
+}
+
+test('La posizione richiede un tocco, mostra la precisione sulle tre mappe e resta in memoria',()=>{
+  const app=locationTestApp();let calls=0,success,options;
+  app.context.navigator={geolocation:{getCurrentPosition(ok,fail,settings){calls++;success=ok;options=settings}}};
+  assert.equal(calls,0);app.click();app.click();assert.equal(calls,1);assert.equal(options.maximumAge,0);assert.equal(options.timeout,12000);
+  success({coords:{latitude:45.44,longitude:11,accuracy:35}});
+  assert.match(app.status(),/35 m/);assert.equal(app.maps[0].fits,1);assert.equal(app.maps[1].fits,0);assert.equal(app.maps[2].fits,0);
+  assert.equal(new Script('[...mapLocationStates.values()].every(state=>state.layer.items.length===2)').runInContext(app.context),true);
+  assert.ok(![...app.storage.keys()].some(key=>/location|position/i.test(key)));
+});
+
+test('La posizione gestisce HTTP, permesso negato e timeout senza bloccare le mappe',()=>{
+  const app=locationTestApp();let calls=0,fail;
+  app.context.navigator={geolocation:{getCurrentPosition(ok,error){calls++;fail=error}}};app.context.isSecureContext=false;
+  app.click();assert.equal(calls,0);assert.match(app.status(),/HTTPS/);
+  app.context.isSecureContext=true;app.click();fail({code:3});assert.match(app.status(),/troppo tempo/);
+  assert.equal(new Script('mapLocationStates.get("events").button.disabled').runInContext(app.context),false);
+  new Script('currentUserLocation={lat:45.44,lon:11,accuracy:30}').runInContext(app.context);
+  app.click();fail({code:1});assert.match(app.status(),/Permesso negato/);assert.equal(new Script('currentUserLocation').runInContext(app.context),null);
+  assert.equal(new Script('[...mapLocationStates.values()].every(state=>state.layer.items.length===0)').runInContext(app.context),true);
+});
+
+test('Una risposta tardiva non sposta una mappa abbandonata e coordinate non valide vengono rifiutate',()=>{
+  const app=locationTestApp();let success;app.context.navigator={geolocation:{getCurrentPosition(ok){success=ok}}};
+  app.click();new Script('view="home"').runInContext(app.context);success({coords:{latitude:45.44,longitude:11,accuracy:80}});assert.equal(app.maps[0].fits,0);
+  app.click();success({coords:{latitude:100,longitude:11,accuracy:10}});assert.match(app.status(),/non valida/);assert.equal(app.maps[0].fits,0);
+});
+
+test('Da Esplora si apre la mappa eventi dei prossimi sette giorni e si torna ai filtri delle attività',()=>{
+  const app=run(new Map(),'home');new Script('setView("explore")').runInContext(app.context);
+  app.get('explore-category').value='Farmacie';app.get('explore-category').onchange();app.get('explore-list-tab').onclick();
+  app.get('search').value='ricerca calendario';app.get('source').value='Comune di Verona';
+  app.get('explore-events').onclick();assert.equal(app.get('event-map-view').hidden,false);assert.equal(app.get('event-map-period').value,'7');assert.equal(app.get('event-map-date').value,'2026-10-17');assert.equal(app.get('search').value,'');assert.match(app.get('event-map-back').textContent,/Esplora/);
+  app.get('event-map-back').onclick();assert.equal(app.get('explore-view').hidden,false);assert.equal(app.get('places-list').hidden,false);assert.equal(app.get('explore-category').value,'Farmacie');assert.equal(app.get('search').value,'ricerca calendario');assert.equal(app.get('source').value,'Comune di Verona');
+});
+
+test('Esplora cerca nella zona visibile, mantiene il filtro nella lista e ripristina il catalogo',()=>{
+  const point=catalog.places.items[0],markers=[];let tileError,mapCount=0;
+  const map={setView(){return this},invalidateSize(){},fitBounds(){},getBounds(){return {getSouth:()=>point.lat-.0001,getNorth:()=>point.lat+.0001,getWest:()=>point.lon-.0001,getEast:()=>point.lon+.0001}}};
+  const layer={addTo(){return this},clearLayers(){markers.length=0}};
+  const L={map(){mapCount++;return map},tileLayer(){return {on(name,fn){tileError=fn;return this},addTo(){return this}}},layerGroup(){return layer},circleMarker(){const marker={bindPopup(){return this},addTo(){markers.push(this);return this},openPopup(){this.open=true}};return marker}};
+  const app=run(new Map(),'home',L);new Script('setView("explore")').runInContext(app.context);
+  assert.equal(app.get('explore-search-area').disabled,false);app.get('explore-search-area').onclick();
+  assert.match(app.get('explore-count').textContent,/zona selezionata/);
+  const count=new Script('filteredPlaces().length').runInContext(app.context);assert.ok(count>0&&count<catalog.places.items.length);
+  app.get('explore-list-tab').onclick();assert.equal(app.get('explore-search-area').hidden,true);
+  app.get('places-list').children[0].children[0].onclick();app.get('place-detail-content').children.find(child=>child.textContent==='⌖ Mostra sulla mappa').onclick();
+  assert.equal(app.get('place-detail-dialog').open,false);assert.equal(app.get('places-map').hidden,false);assert.ok(markers.some(marker=>marker.open));
+  tileError();app.get('explore-reset').onclick();assert.equal(new Script('filteredPlaces().length').runInContext(app.context),catalog.places.items.length);
+  assert.match(app.get('places-map-message').textContent,/non si caricano/);assert.equal(mapCount,1);
+});
+
+test('Esplora riconosce accenti e parole invertite e recupera una ricerca senza risultati',()=>{
+  const app=run(new Map(),'home');new Script('setView("explore");exploreMode="list";places.unshift({id:"test-caffe",name:"Caffè della Piazza",category:"Bar e caffè",address:"Via Roma",lat:45.44,lon:11});').runInContext(app.context);
+  app.get('explore-search').value='ROMA caffe';app.get('explore-search').oninput();assert.equal(new Script('filteredPlaces().some(p=>p.id==="test-caffe")').runInContext(app.context),true);
+  app.get('explore-search').value='nessun luogo di prova 999';app.get('explore-search').oninput();app.get('places-list').children.at(-1).onclick();
+  assert.equal(app.get('explore-search').value,'');assert.equal(app.get('explore-reset').hidden,true);assert.ok(new Script('filteredPlaces().length').runInContext(app.context)>100);
+});
+
+test('I crediti per licenza sconosciuta indicano la fonte senza attribuire una licenza CC',()=>{
+  const app=run(new Map(),'home');
+  new Script(`const unknownPhotoNews=newsItems[0];unknownPhotoNews.image={url:'https://www.comune.verona.it/foto.jpg',author:'Comune di Verona',license:'Licenza non specificata',rightsStatus:'unverified',sourceUrl:'https://www.comune.verona.it/Media/Images/Foto'};openNews(unknownPhotoNews);`).runInContext(app.context);
+  const poster=app.get('news-detail-content').children.find(child=>child.className==='event-poster'),caption=poster.children[1];
+  assert.ok(caption.children.some(child=>child.textContent.includes('Fonte immagine: Comune di Verona')));
+  assert.ok(caption.children.some(child=>child.textContent.includes('Licenza sconosciuta')));
+  assert.ok(!caption.children.some(child=>child.href?.includes('creativecommons.org')));
+  assert.ok(caption.children.some(child=>child.href==='https://www.comune.verona.it/Media/Images/Foto'));
+});
+
+test('Le notizie mostrano miniature leggere e foto completa senza alterare i salvataggi',()=>{
+  const app=run(new Map(),'home');
+  new Script(`const photoNews=newsItems[0];photoNews.image={url:'https://www.comune.verona.it/foto.jpg',alt:'Foto del Comune',author:'Autrice',license:'CC BY 4.0'};setView('news');`).runInContext(app.context);
+  const card=app.get('news-list').children[0],title=card.children.find(child=>child.className?.includes('news-title')),image=title.children[0];
+  assert.equal(image.loading,'lazy');assert.match(image.src,/w_640,h_640/);assert.equal(image.alt,'');assert.equal(title.children[1].className,'news-title-text');
+  assert.ok(card.children.some(child=>child.className==='news-image-credit'));
+  title.onclick();assert.equal(app.get('news-detail-dialog').open,true);
+  const poster=app.get('news-detail-content').children.find(child=>child.className==='event-poster');assert.ok(poster);assert.match(poster.children[0].src,/w_1200,h_1200/);
+  image.onerror();assert.equal(image.hidden,true);assert.ok(card.children.at(-1).children.some(child=>child.className?.startsWith('news-bookmark')));
+});
+
+test('Immagini eventi: copertina, dettaglio completo, miniatura e recupero dopo errore',()=>{
+  const app=run();
+  new Script(`const imageTestEvent=currentDiscovery;imageTestEvent.imageId=17;imageTestEvent.image={url:'https://www.comune.verona.it/media/prova.png',author:'Autrice',license:'CC BY 4.0',alt:'Locandina di prova'};renderDiscovery();`).runInContext(app.context);
+  const cover=app.get('deck').children[0].children[0],photo=cover.children.find(child=>child.className==='event-cover-image'),credit=cover.children.at(-1);
+  assert.equal(photo.alt,'Locandina di prova');assert.equal(credit.hidden,true);assert.equal(photo.hidden,true);photo.onload();assert.equal(credit.hidden,false);assert.equal(photo.hidden,false);assert.ok(cover.children.slice(0,3).every(node=>node.hidden));photo.onerror();assert.equal(credit.hidden,true);assert.equal(photo.hidden,true);assert.ok(cover.children.slice(0,3).every(node=>node.hidden===false));
+  new Script('openDetails(imageTestEvent)').runInContext(app.context);
+  const poster=app.get('detail-content').children.find(child=>child.className==='event-poster');assert.ok(poster);
+  assert.equal(poster.children[0].src,'https://flyimg.opencityitalia.it/upload/rf_1,o_auto,w_1200,h_1200/'+encodeURIComponent('https://www.comune.verona.it/media/prova.png'));assert.ok(poster.children[1].children.some(child=>child.href==='https://www.comune.verona.it/media/prova.png'));assert.equal(photo.fetchPriority,'high');assert.match(photo.src,/w_640,h_640/);assert.ok(poster.children[1].children.some(child=>child.href==='https://creativecommons.org/licenses/by/4.0/'));
+  new Script('selectAgendaDay(eventDay(imageTestEvent.startsAt))').runInContext(app.context);
+  const thumbnail=app.get('events').children.flatMap(card=>card.children).find(child=>child.className==='event-thumbnail');assert.ok(thumbnail);assert.equal(thumbnail.loading,'lazy');assert.match(thumbnail.src,/w_180,h_180/);
+  new Script(`imageTestEvent.image.url='javascript:alert(1)';openDetails(imageTestEvent)`).runInContext(app.context);
+  assert.ok(!app.get('detail-content').children.some(child=>child.className==='event-poster'));
+});
+
+test('Mappa autobus: elenco alternativo, fermate certe e orari della direzione scelta',()=>{
+  const app=run(new Map(),'home');
+  new Script('openBusRoute(busData.lines.find(line=>line.id==="atv-urban-11"))').runInContext(app.context);
+  assert.equal(app.get('bus-route-dialog').open,true);assert.match(app.get('bus-route-message').textContent,/non disponibile/);
+  assert.equal(app.get('bus-route-variant').value,'11344295');
+  app.get('bus-route-list-tab').onclick();assert.equal(app.get('bus-route-stops').hidden,false);
+  const row=app.get('bus-route-stops').children.find(row=>row.children[0].textContent==='Via Giberti');
+  row.children.find(child=>child.textContent==='Orari di questa fermata').onclick();
+  assert.equal(app.get('bus-timetable-dialog').open,true);assert.match(app.get('timetable-direction').value,/Chievo/);
+  assert.match(app.get('timetable-map-context').textContent,/Via Giberti/);
+  app.get('timetable-service').value='LUN-VEN SCOLASTICO';app.get('timetable-service').onchange();
+  assert.equal(app.get('timetable-stop').value,'Via Giberti#1');assert.ok(app.get('timetable-results').children.length>10);
+  app.get('close-bus-timetable').onclick();assert.equal(app.get('bus-route-dialog').open,true);
+  app.get('bus-route-variant').value='1859585';app.get('bus-route-variant').onchange();
+  const ambiguous=app.get('bus-route-stops').children.filter(row=>row.children[0].textContent==='Piazza Chievo');
+  assert.equal(ambiguous.length,2);assert.ok(ambiguous.every(row=>!row.children.some(child=>child.textContent==='Orari di questa fermata')));
+  app.get('close-bus-route').onclick();new Script('openBusRoute(busRouteLine)').runInContext(app.context);
+  assert.equal(app.get('bus-route-variant').value,'1859585');
+});
+
+test('Mappa autobus: geometrie reali, riuso mappa, localizzazione da elenco ed errore delle tile',()=>{
+  const markers=[],paths=[];let mapCount=0,tileError;
+  const map={setView(){return this},invalidateSize(){},fitBounds(){}};
+  const layer={addTo(){return this},clearLayers(){markers.length=0;paths.length=0}};
+  const L={map(){mapCount++;return map},tileLayer(){return {on(name,fn){tileError=fn;return this},addTo(){return this}}},layerGroup(){return layer},polyline(points){paths.push(points);return {addTo(){return this}}},circleMarker(){const marker={bindPopup(popup){this.popup=popup;return this},addTo(){markers.push(this);return this},openPopup(){this.open=true}};return marker}};
+  const app=run(new Map(),'home',L);new Script('openBusRoute(busData.lines.find(line=>line.id==="atv-urban-11"))').runInContext(app.context);
+  assert.equal(mapCount,1);assert.equal(markers.length,45);assert.equal(paths.length,2);assert.ok(paths[0].length>100);
+  app.get('bus-route-list-tab').onclick();app.get('bus-route-stops').children[0].children.at(-1).onclick();
+  assert.ok(markers[0].open);assert.equal(app.get('bus-route-map').hidden,false);
+  tileError();assert.match(app.get('bus-route-message').textContent,/non si caricano/);
+  app.get('bus-route-variant').value='1859585';app.get('bus-route-variant').onchange();assert.equal(mapCount,1);
+  assert.match(app.get('bus-route-message').textContent,/non si caricano/);
+  app.get('bus-route-list-tab').onclick();assert.ok(app.get('bus-route-stops').children.length>40);
+});
 test('La mappa eventi rispetta date, periodo, preferiti e rientro al calendario',()=>{
   const app=run();app.get('discover-event-map').onclick();
   assert.equal(app.get('event-map-view').hidden,false);assert.equal(app.get('discover-view').hidden,true);
@@ -249,7 +387,7 @@ test('Autobus apre le mie linee quando esistono preferiti e conserva ricerca e s
   assert.equal(new Script('busMode').runInContext(app.context),'favorites');assert.equal(app.get('bus-list').children.length,1);
   const card=app.get('bus-list').children[0],body=card.children[0].children[1];
   assert.ok(body.children.some(n=>n.textContent==='Direzione Montorio'));assert.ok(body.children.some(n=>n.textContent==='Direzione Croce Bianca'));
-  assert.ok(card.children[2].children[0].href.includes('ServeAttachment.php'));
+  card.children[2].children[0].onclick();assert.equal(app.get('bus-timetable-dialog').open,true);app.get('close-bus-timetable').onclick();
   app.get('bus-search').value='Montorio';app.get('bus-service').value='urban';app.get('bus-search').oninput();
   app.get('bus-back').onclick();new Script('setView("bus")').runInContext(app.context);
   assert.equal(app.get('bus-search').value,'Montorio');assert.equal(app.get('bus-service').value,'urban');assert.equal(new Script('busMode').runInContext(app.context),'favorites');
@@ -303,6 +441,53 @@ test('Gli orari stagionali non scadono dopo 48 ore mentre gli avvisi segnalano u
   const app=run(new Map(),'home');new Script(`busData.sources.forEach(s=>{s.status='ok';s.lastSuccessAt='2026-10-14T08:00:00Z'});busData.lines.forEach(l=>l.checkedAt='2026-10-14T08:00:00Z');busData.updatedAt='2026-10-14T08:00:00Z';setView('bus')`).runInContext(app.context);
   assert.equal(app.get('bus-stale').textContent,'');
   app.get('bus-alerts').onclick();assert.match(app.get('bus-stale').textContent,/Avvisi raccolti oltre due giorni/);
+});
+
+function chooseTimetable(app,lineId,service,stopPrefix){
+  new Script(`openTimetable(busData.lines.find(line=>line.id===${JSON.stringify(lineId)}))`).runInContext(app.context);
+  const line=catalog.busTimetables.lines.find(line=>line.lineId===lineId);
+  app.get('timetable-direction').value=line.blocks[0].direction;app.get('timetable-direction').onchange();
+  app.get('timetable-service').value=service;app.get('timetable-service').onchange();
+  const option=app.get('timetable-stop').children.find(child=>child.value.startsWith(stopPrefix));assert.ok(option);
+  app.get('timetable-stop').value=option.value;app.get('timetable-stop').onchange();
+}
+
+test('Gli orari si aprono dentro l’app e richiedono il servizio senza presumere il calendario scolastico',()=>{
+  const app=run(new Map(),'home');new Script('setView("bus")').runInContext(app.context);app.get('bus-list').children[0].children[2].children[0].onclick();
+  assert.equal(app.get('bus-timetable-dialog').open,true);assert.equal(app.get('timetable-direction').value,'');assert.equal(app.get('timetable-service').disabled,true);
+  chooseTimetable(app,'atv-urban-11','LUN-VEN SCOLASTICO','Stazione FS - Corsia B1#');
+  const rows=new Script('timetableDepartures()').runInContext(app.context);assert.equal(rows[0].time,'05:30');assert.ok(rows.some(row=>row.trip==='21'&&row.time==='07:22'));
+  assert.ok(app.get('timetable-results').children.length>20);assert.ok(app.get('timetable-provenance').children.some(c=>c.href?.startsWith('https://www.atv.verona.it/')));
+});
+
+test('Direzione, servizio e fermata persistono e le vecchie selezioni non valide vengono azzerate',()=>{
+  const app=run(new Map(),'home');chooseTimetable(app,'atv-urban-11','SABATO e VACANZE SCOLASTICHE','Piazza Chievo#');
+  const saved=JSON.parse(app.storage.get('verona-timetables-v1'))['atv-urban-11'];assert.equal(saved.service,'SABATO e VACANZE SCOLASTICHE');
+  app.get('close-bus-timetable').onclick();assert.equal(app.get('bus-timetable-dialog').open,false);
+  const next=run(app.storage,'home');new Script('openTimetable(busData.lines.find(line=>line.id==="atv-urban-11"))').runInContext(next.context);
+  assert.equal(next.get('timetable-service').value,saved.service);assert.equal(next.get('timetable-stop').value,saved.stop);
+  next.get('timetable-direction').value=catalog.busTimetables.lines.find(line=>line.lineId==='atv-urban-11').blocks.at(-1).direction;next.get('timetable-direction').onchange();assert.equal(next.get('timetable-stop').value,'');
+  const invalid=run(new Map([['verona-timetables-v1',JSON.stringify({'atv-urban-11':{direction:'inesistente',service:'FESTIVO',stop:'non-valida'}})]]),'home');new Script('openTimetable(busData.lines.find(line=>line.id==="atv-urban-11"))').runInContext(invalid.context);assert.equal(invalid.get('timetable-direction').value,'');assert.equal(invalid.get('timetable-stop').disabled,true);
+});
+
+test('Gli orari serali ordinano dopo mezzanotte senza trasformarsi in tempi di attesa',()=>{
+  const app=run(new Map(),'home');chooseTimetable(app,'atv-evening-81','SERALE GIORNALIERO','Piazza Chievo#');
+  const rows=new Script('timetableDepartures()').runInContext(app.context);assert.equal(rows[0].time,'21:12');assert.equal(rows.at(-1).time,'00:32');assert.equal(rows.at(-1).nextDay,true);assert.equal(rows.at(-1).minutes,1472);
+  assert.match(app.get('timetable-results').children.at(-1).children[0].children[1].textContent,/giorno successivo/);
+});
+
+test('I due passaggi della circolare rimangono distinti e le note delle corse restano disponibili',()=>{
+  const app=run(new Map(),'home');chooseTimetable(app,'atv-holiday-96','FESTIVO','P.le Stefani - Ospedale#1');
+  assert.equal(new Script('timetableDepartures()[0].time').runInContext(app.context),'06:35');
+  app.get('timetable-stop').value='P.le Stefani - Ospedale#2';app.get('timetable-stop').onchange();assert.equal(new Script('timetableDepartures()[0].time').runInContext(app.context),'06:57');
+  chooseTimetable(app,'atv-urban-22','LUN-VEN SCOLASTICO','Parona - via dei Reti#');
+  assert.ok(new Script('timetableDepartures().some(row=>row.note.includes("3"))').runInContext(app.context));assert.ok(app.get('timetable-provenance').children.some(c=>c.textContent.includes('venerdì')));
+});
+
+test('Orari senza dati e salvataggio bloccato mantengono una consultazione utilizzabile',()=>{
+  const app=run(new Map(),'home');new Script('localStorage.setItem=()=>{throw Error("blocked")};').runInContext(app.context);
+  chooseTimetable(app,'atv-urban-11','LUN-VEN SCOLASTICO','Piazza Chievo#');assert.match(app.get('timetable-feedback').textContent,/questa visita/);assert.ok(app.get('timetable-results').children.length);
+  new Script('timetableData.lines=[];openTimetable(busData.lines[0])').runInContext(app.context);assert.match(app.get('timetable-results').children[0].textContent,/non disponibili/);assert.ok(app.get('timetable-provenance').children.some(c=>c.href));
 });
 test('Notizie è attiva dalla Home e filtra le pubblicazioni ufficiali separatamente dagli eventi',()=>{
   const app=run(new Map(),'home');

@@ -1,6 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import {districtCatalog,districtMatches,explicitDistricts} from './districts.mjs';
 import {splitBusDirections,alertLines} from './bus.mjs';
+import {validateTimetables} from './timetables.mjs';
+import {validateBusRoutes} from './bus-routes.mjs';
 const root = new URL('../',import.meta.url);
 export async function buildCalendar() {
   const [template,logic,json,editorialJson] = await Promise.all(['public/calendar.template.html','public/calendar.js','data/events.json','data/editorial.json'].map(p=>readFile(new URL(p,root),'utf8')));
@@ -12,6 +14,11 @@ export async function buildCalendar() {
   catch(error){if(error.code!=='ENOENT')throw error;data.bus={lines:[],alerts:[],sources:[]};}
   data.bus.lines=data.bus.lines.map(line=>({...line,directions:splitBusDirections(line.route)}));
   for(const key of ['alerts','updates'])data.bus[key]=(data.bus[key]||[]).map(item=>({...item,lines:alertLines(item.title)}));
+  try{data.busTimetables=JSON.parse(await readFile(new URL('data/bus-timetables.json',root),'utf8'));}
+  catch(error){if(error.code!=='ENOENT')throw error;data.busTimetables={lines:[],errors:[]};}
+  if(data.busTimetables.lines.length){const manifest=JSON.parse(await readFile(new URL('data/bus-timetable-snapshots.json',root),'utf8'));validateTimetables(data.busTimetables,manifest);}
+  try{data.busRoutes=JSON.parse(await readFile(new URL('data/bus-routes.json',root),'utf8'));validateBusRoutes(data.busRoutes);}
+  catch(error){if(error.code!=='ENOENT')throw error;data.busRoutes={routes:[]};}
   try{data.places=JSON.parse(await readFile(new URL('data/places.json',root),'utf8'));}
   catch(error){if(error.code!=='ENOENT')throw error;data.places={items:[]};}
   const editorial=JSON.parse(editorialJson);

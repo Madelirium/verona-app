@@ -35,6 +35,8 @@ export function parseComune(hits, { from, checkedAt }) {
       if (!validDate(o.start) || !validDate(o.end) || Date.parse(o.end) < Date.parse(o.start)) continue;
       if (romeDay(new Date(o.end)) < from) continue;
       const e = base('comune', `${hit.metadata.id}:${o.start}`, d.event_title, url, checkedAt);
+      const imageId=d.image?.[0]?.classIdentifier==='image'?d.image[0].id:null;
+      if(Number.isSafeInteger(imageId)&&imageId>0)e.imageId=imageId;
       e.startsAt = o.start; e.endsAt = o.end; e.datePrecision = 'datetime';
       e.category = d.has_public_event_typology ?? [];
       e.location = (d.takes_place_in ?? []).map(p => p.name?.['ita-IT']).filter(Boolean).join(' · ') || null;
