@@ -40,10 +40,12 @@ jobs:
         run: npm test
       - name: Aggiorna gli eventi dalle fonti ufficiali
         id: refresh
+        continue-on-error: true
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_events)
         run: npm run import:events -- --allow-partial
       - name: Aggiorna schede e pubblicazioni ATV
         id: refresh_bus
+        continue-on-error: true
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_bus)
         run: npm run import:bus -- --allow-partial
       - name: Conserva il rapporto della raccolta
@@ -55,6 +57,14 @@ jobs:
             data/import-report.json
             data/bus-import-report.json
           retention-days: 14
+      - name: Verifica il risultato delle raccolte
+        if: success() && (steps.refresh.outcome == 'failure' || steps.refresh_bus.outcome == 'failure')
+        run: |
+          echo "::warning::Una raccolta non è riuscita: i suoi dati precedenti sono conservati. Consultare i rapporti fonti."
+          if [ "${{ steps.refresh.outcome }}" != "success" ] && [ "${{ steps.refresh_bus.outcome }}" != "success" ]; then
+            echo "::error::Nessuna raccolta richiesta è riuscita: il sito pubblico non viene sostituito."
+            exit 1
+          fi
       - name: Verifica il frontend dopo la raccolta
         if: success() && (steps.refresh.outcome == 'success' || steps.refresh_bus.outcome == 'success')
         run: npm test
