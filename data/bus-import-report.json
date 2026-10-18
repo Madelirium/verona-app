@@ -1,26 +1,31 @@
 {
-  "checkedAt": "2026-10-17T12:50:41.348Z",
+  "checkedAt": "2026-10-18T10:27:17.786Z",
+  "status": "ok",
   "sources": [
     {
       "key": "urban",
       "status": "ok",
-      "count": 24
+      "count": 24,
+      "lastSuccessAt": "2026-10-18T10:27:17.786Z"
     },
     {
       "key": "evening",
       "status": "ok",
-      "count": 5
+      "count": 5,
+      "lastSuccessAt": "2026-10-18T10:27:17.786Z"
     },
     {
       "key": "holiday",
       "status": "ok",
-      "count": 9
+      "count": 9,
+      "lastSuccessAt": "2026-10-18T10:27:17.786Z"
     },
     {
       "key": "rss",
       "status": "ok",
       "count": 20,
-      "alerts": 13
+      "alerts": 13,
+      "lastSuccessAt": "2026-10-18T10:27:17.786Z"
     }
   ]
 }

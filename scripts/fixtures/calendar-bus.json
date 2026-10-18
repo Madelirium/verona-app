@@ -1,0 +1,1295 @@
+{
+  "updatedAt": "2026-10-17T12:50:41.348Z",
+  "lines": [
+    {
+      "id": "atv-urban-11",
+      "number": "11",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Borgo Frugose\nBussolengo - Corno/Sorte - CHIEVO - STADIO - STAZIONE P.N. - VIA VALVERDE - P.ZZA BRA' - P.TA VESCOVO - VIA ZEVIANI - FRUGOSE - SAN MICHELE NORD\nDirezione Chievo/Bussolengo\nSAN MICHELE NORD - FRUGOSE - VIA ZEVIANI - P.TA VESCOVO - P.ZZA BRA' - C.SO PORTA NUOVA - STAZIONE P.N. - STADIO - CHIEVO - Sorte/Corno - Bussolengo",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Ff%252F9%252FD.2528db7fb541e02972c7/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 11",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Borgo Frugose",
+          "path": "Bussolengo - Corno/Sorte - CHIEVO - STADIO - STAZIONE P.N. - VIA VALVERDE - P.ZZA BRA' - P.TA VESCOVO - VIA ZEVIANI - FRUGOSE - SAN MICHELE NORD"
+        },
+        {
+          "label": "Direzione Chievo/Bussolengo",
+          "path": "SAN MICHELE NORD - FRUGOSE - VIA ZEVIANI - P.TA VESCOVO - P.ZZA BRA' - C.SO PORTA NUOVA - STAZIONE P.N. - STADIO - CHIEVO - Sorte/Corno - Bussolengo"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-12",
+      "number": "12",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Madonna di Campagna\nB.GO NUOVO - STADIO PIAZZALE OLIMPIA - STAZIONE P.N. - VIA VALVERDE - P.ZZA BRA' - P.TA VESCOVO - VIA ZEVIANI - MAD. CAMPAGNA/SAN MICHELE SUD - MOLINI\nDirezione Borgo Nuovo\nMOLINI - SAN MICHELE SUD/MAD. CAMPAGNA - VIA ZEVIANI - P.TA VESCOVO - P.ZZA BRA' - STAZIONE P.N. - STADIO PIAZZALE OLIMPIA - B.GO NUOVO",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F0%252Ff%252FD.1828cf68290cfd199774/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 12",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Madonna di Campagna",
+          "path": "B.GO NUOVO - STADIO PIAZZALE OLIMPIA - STAZIONE P.N. - VIA VALVERDE - P.ZZA BRA' - P.TA VESCOVO - VIA ZEVIANI - MAD. CAMPAGNA/SAN MICHELE SUD - MOLINI"
+        },
+        {
+          "label": "Direzione Borgo Nuovo",
+          "path": "MOLINI - SAN MICHELE SUD/MAD. CAMPAGNA - VIA ZEVIANI - P.TA VESCOVO - P.ZZA BRA' - STAZIONE P.N. - STADIO PIAZZALE OLIMPIA - B.GO NUOVO"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-13",
+      "number": "13",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Montorio\nCASON - CROCE BIANCA - STADIO PIAZZALE OLIMPIA - STAZIONE P.N. - VIA VALVERDE - P.ZZA BRA' - P.TA VESCOVO - VIA ZEVIANI - GAVAGNIN - P.TE FLORIO - MONTORIO - MIZZOLE\nDirezione Croce Bianca\nMIZZOLE - MONTORIO - P.TE FLORIO - GAVAGNIN - VIA ZEVIANI -P.TA VESCOVO - P.ZZA BRA' - C.SO PORTA NUOVA - STAZIONE P.N. - STADIO PIAZZALE OLIMPIA- CROCE BIANCA - CASON",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F2%252F8%252FD.1b07960f1d30ac248706/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 13",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Montorio",
+          "path": "CASON - CROCE BIANCA - STADIO PIAZZALE OLIMPIA - STAZIONE P.N. - VIA VALVERDE - P.ZZA BRA' - P.TA VESCOVO - VIA ZEVIANI - GAVAGNIN - P.TE FLORIO - MONTORIO - MIZZOLE"
+        },
+        {
+          "label": "Direzione Croce Bianca",
+          "path": "MIZZOLE - MONTORIO - P.TE FLORIO - GAVAGNIN - VIA ZEVIANI -P.TA VESCOVO - P.ZZA BRA' - C.SO PORTA NUOVA - STAZIONE P.N. - STADIO PIAZZALE OLIMPIA- CROCE BIANCA - CASON"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-20",
+      "number": "20",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Negrar\nSTAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - PARONA - ARBIZZANO - NEGRAR\nDirezione Stazione Fs\nNEGRAR - ARBIZZANO - PARONA - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N.",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F8%252Ff%252FD.7e12e79b55fde261d2dd/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 20",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Negrar",
+          "path": "STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - PARONA - ARBIZZANO - NEGRAR"
+        },
+        {
+          "label": "Direzione Stazione Fs",
+          "path": "NEGRAR - ARBIZZANO - PARONA - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N."
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-21",
+      "number": "21",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Ca' di Cozzi\nPALAZZINA PALESTRA - POLICLINICO - FIERA - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - CA' DI COZZI\nDirezione Palazzina Palestra\nCA' DI COZZI - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N.- FIERA - POLICLINICO - PALAZZINA PALESTRA",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F9%252F5%252FD.757dfa2e970e9bee9ec1/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 21",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Ca' di Cozzi",
+          "path": "PALAZZINA PALESTRA - POLICLINICO - FIERA - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - CA' DI COZZI"
+        },
+        {
+          "label": "Direzione Palazzina Palestra",
+          "path": "CA' DI COZZI - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N.- FIERA - POLICLINICO - PALAZZINA PALESTRA"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-22",
+      "number": "22",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Pozzo\nPARONA - CA' DI COZZI - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N.- FIERA - POLICLINICO - CENTRO COMMERCIALE VERONA UNO - SAN GIOVANNI LUPATOTO - POZZO\nDirezione Parona\nPOZZO - SAN GIOVANNI LUPATOTO - CENTRO COMMERCIALE VERONA UNO - POLICLINICO - FIERA - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - CA' DI COZZI - PARONA",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F8%252F0%252FD.c8b983bfb8f0dfd97592/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 22",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Pozzo",
+          "path": "PARONA - CA' DI COZZI - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N.- FIERA - POLICLINICO - CENTRO COMMERCIALE VERONA UNO - SAN GIOVANNI LUPATOTO - POZZO"
+        },
+        {
+          "label": "Direzione Parona",
+          "path": "POZZO - SAN GIOVANNI LUPATOTO - CENTRO COMMERCIALE VERONA UNO - POLICLINICO - FIERA - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - CA' DI COZZI - PARONA"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-23",
+      "number": "23",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Santa Lucia\nAVESA - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N. - SANTA LUCIA - ZAI\nDirezione Avesa\nZAI - SANTA LUCIA - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - AVESA",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F6%252Fc%252FD.21a2df3fb13200bac2fd/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 23",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Santa Lucia",
+          "path": "AVESA - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N. - SANTA LUCIA - ZAI"
+        },
+        {
+          "label": "Direzione Avesa",
+          "path": "ZAI - SANTA LUCIA - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - AVESA"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-24",
+      "number": "24",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Santa Lucia-CASELLE\nQUINZANO - PONTE CRENCANO - OSPEDALE MAGGIORE - STAZIONE P.N. - SANTA LUCIA - QUADRANTE EUROPA - Caselle di Sommacampagna\nDirezione Quinzano\nCaselle di Sommacampagna - QUADRANTE EUROPA - SANTA LUCIA - STAZIONE P.N. - OSPEDALE MAGGIORE - PONTE CRENCANO - QUINZANO",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F7%252F2%252FD.c375c668105bccd71551/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 24",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Santa Lucia-CASELLE",
+          "path": "QUINZANO - PONTE CRENCANO - OSPEDALE MAGGIORE - STAZIONE P.N. - SANTA LUCIA - QUADRANTE EUROPA - Caselle di Sommacampagna"
+        },
+        {
+          "label": "Direzione Quinzano",
+          "path": "Caselle di Sommacampagna - QUADRANTE EUROPA - SANTA LUCIA - STAZIONE P.N. - OSPEDALE MAGGIORE - PONTE CRENCANO - QUINZANO"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-25",
+      "number": "25",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Stazione P.N.\nPESTRINO - POLICLINICO - FIERA - STAZIONE P.NUOVA\nDirezione Pestrino\nSTAZIONE P.N. - FIERA - POLICLINICO - PESTRINO",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Ff%252F0%252FD.9bd7cfdc10abf6877ade/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 25",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Stazione P.N.",
+          "path": "PESTRINO - POLICLINICO - FIERA - STAZIONE P.NUOVA"
+        },
+        {
+          "label": "Direzione Pestrino",
+          "path": "STAZIONE P.N. - FIERA - POLICLINICO - PESTRINO"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-31",
+      "number": "31",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Marzana\nSAVAL - VIA FALIERO - SAN ZENO - CASTELVECCHIO - OSPEDALE MAGGIORE - PORTA VESCOVO - POIANO - QUINTO - MARZANA\nDirezione Saval\nMARZANA - QUINTO - POIANO - PORTA VESCOVO - OSPEDALE MAGGIORE - CASTELVECCHIO - SAN ZENO - VIA FALIERO - SAVAL",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F7%252F1%252FD.0906aa82c71529c7709c/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 31",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Marzana",
+          "path": "SAVAL - VIA FALIERO - SAN ZENO - CASTELVECCHIO - OSPEDALE MAGGIORE - PORTA VESCOVO - POIANO - QUINTO - MARZANA"
+        },
+        {
+          "label": "Direzione Saval",
+          "path": "MARZANA - QUINTO - POIANO - PORTA VESCOVO - OSPEDALE MAGGIORE - CASTELVECCHIO - SAN ZENO - VIA FALIERO - SAVAL"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-32",
+      "number": "32",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione San Felice Extra\nSAN MASSIMO - P.TA PALIO - CASTELVECCHIO - OSPEDALE MAGGIORE - PORTA VESCOVO - B.GO SANTA CROCE - SAN FELICE EXTRA\nDirezione San Massimo\nSAN FELICE EXTRA - BORGO SANTA CROCE - PORTA VESCOVO - OSPEDALE MAGGIORE - CASTELVECCHIO - P.TA PALIO - SAN MASSIMO",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F0%252Fb%252FD.d37389d58a30b1726703/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 32",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione San Felice Extra",
+          "path": "SAN MASSIMO - P.TA PALIO - CASTELVECCHIO - OSPEDALE MAGGIORE - PORTA VESCOVO - B.GO SANTA CROCE - SAN FELICE EXTRA"
+        },
+        {
+          "label": "Direzione San Massimo",
+          "path": "SAN FELICE EXTRA - BORGO SANTA CROCE - PORTA VESCOVO - OSPEDALE MAGGIORE - CASTELVECCHIO - P.TA PALIO - SAN MASSIMO"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-33",
+      "number": "33",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione S. Felice\nBASSON - CROCE BIANCA - P.TA PALIO - CASTELVECCHIO - OSPEDALE MAGGIORE - PORTA VESCOVO - BORGO SANTA CROCE - SAN FELICE\nDirezione Basson\nSAN FELICE - BORGO SANTA CROCE - PORTA VESCOVO - OSPEDALE MAGGIORE - CASTELVECCHIO - P.TA PALIO - CROCE BIANCA - BASSON",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F7%252F4%252FD.22d40b9760f6fb30245b/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 33",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione S. Felice",
+          "path": "BASSON - CROCE BIANCA - P.TA PALIO - CASTELVECCHIO - OSPEDALE MAGGIORE - PORTA VESCOVO - BORGO SANTA CROCE - SAN FELICE"
+        },
+        {
+          "label": "Direzione Basson",
+          "path": "SAN FELICE - BORGO SANTA CROCE - PORTA VESCOVO - OSPEDALE MAGGIORE - CASTELVECCHIO - P.TA PALIO - CROCE BIANCA - BASSON"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-41",
+      "number": "41",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Borgo Nuovo-Chievo\nBUTTAPIETRA - MARCHESINO - CADIDAVID - VIA TOMBETTA - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE -SAVAL- BORGO NUOVO\nDirezione Cadidavid - Marchesino - Buttapietra\nBORGO NUOVO - SAVAL - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N. - VIA TOMBETTA - CADIDAVID - MARCHESINO -BUTTAPIETRA",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F5%252F3%252FD.ef5476dbbdf8e7b89edf/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 41",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Borgo Nuovo-Chievo",
+          "path": "BUTTAPIETRA - MARCHESINO - CADIDAVID - VIA TOMBETTA - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE -SAVAL- BORGO NUOVO"
+        },
+        {
+          "label": "Direzione Cadidavid - Marchesino - Buttapietra",
+          "path": "BORGO NUOVO - SAVAL - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N. - VIA TOMBETTA - CADIDAVID - MARCHESINO -BUTTAPIETRA"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-51",
+      "number": "51",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "La linea è gratuita per chi sale al Park Genovesa . Scopri di più a questo link .\nDirezione L.ge Capuleti\nVIA TORRICELLI/METRO - PARK GENOVESA - VIALE DELLE NAZIONI - VIALE DEL COMMERCIO - PARK SANTA TERESA - FIERA - STAZIONE - P.ZZA BRA - L.GE CAPULETI\nDirezione Sacra Famiglia\nL.GE CAPULETI - P.ZZA BRA - STAZIONE - FIERA - PARK SANTA TERESA - VIALE DEL COMMERCIO - VIALE DELLE NAZIONI - PARK GENOVESA - VIA TORRICELLI/METRO",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F7%252Fc%252FD.7302d2c640fae11400fa/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 51",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Percorso indicato da ATV",
+          "path": "La linea è gratuita per chi sale al Park Genovesa . Scopri di più a questo link ."
+        },
+        {
+          "label": "Direzione L.ge Capuleti",
+          "path": "VIA TORRICELLI/METRO - PARK GENOVESA - VIALE DELLE NAZIONI - VIALE DEL COMMERCIO - PARK SANTA TERESA - FIERA - STAZIONE - P.ZZA BRA - L.GE CAPULETI"
+        },
+        {
+          "label": "Direzione Sacra Famiglia",
+          "path": "L.GE CAPULETI - P.ZZA BRA - STAZIONE - FIERA - PARK SANTA TERESA - VIALE DEL COMMERCIO - VIALE DELLE NAZIONI - PARK GENOVESA - VIA TORRICELLI/METRO"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-52",
+      "number": "52",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Centro\nSTALLAVENA - GREZZANA - MARZANA - QUINTO - POIANO - VIA FINCATO - PORTA VESCOVO - SAN FERMO - P.BRA' - C.SO PORTA NUOVA - STAZIONE P.N.\nDirezione Grezzana - Stallavena\nSTAZIONE P.N. - C.SO PORTA NUOVA - P.BRA' - SAN FERMO - PORTA VESCOVO - VIA FINCATO - POIANO - QUINTO - MARZANA - GREZZANA - STALLAVENA",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F7%252F5%252FD.727351f6a7ebf7f8dd41/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 52",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Centro",
+          "path": "STALLAVENA - GREZZANA - MARZANA - QUINTO - POIANO - VIA FINCATO - PORTA VESCOVO - SAN FERMO - P.BRA' - C.SO PORTA NUOVA - STAZIONE P.N."
+        },
+        {
+          "label": "Direzione Grezzana - Stallavena",
+          "path": "STAZIONE P.N. - C.SO PORTA NUOVA - P.BRA' - SAN FERMO - PORTA VESCOVO - VIA FINCATO - POIANO - QUINTO - MARZANA - GREZZANA - STALLAVENA"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-53",
+      "number": "53",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Vigasio\nVIA PALLONE - P.ZZA BRA' - STAZIONE P.N. - VIA SCUDERLANDO - SACRA FAMIGLIA - LA RIZZA - FORETTE - VIGASIO\nDirezione Centro\nVIGASIO - FORETTE - LA RIZZA - SACRA FAMIGLIA - VIA SCUDERLANDO - STAZIONE P.N. - P.ZZA BRA' - VIA PALLONE",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fa%252F9%252FD.3859b4a661b50f4d5a00/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 53",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Vigasio",
+          "path": "VIA PALLONE - P.ZZA BRA' - STAZIONE P.N. - VIA SCUDERLANDO - SACRA FAMIGLIA - LA RIZZA - FORETTE - VIGASIO"
+        },
+        {
+          "label": "Direzione Centro",
+          "path": "VIGASIO - FORETTE - LA RIZZA - SACRA FAMIGLIA - VIA SCUDERLANDO - STAZIONE P.N. - P.ZZA BRA' - VIA PALLONE"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-61",
+      "number": "61",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Sacra Famiglia\nNAVIGATORI - VIALE DELLA REPUBBLICA - CASTELVECCHIO - STAZIONE P.N. - FIERA - PARK SANTA TERESA - VIALE DEL COMMERCIO - VIA COPERNICO/ADIGEO - SACRA FAMIGLIA\nDirezione Navigatori\nSACRA FAMIIGLIA - VIA COPERNICO/ADIGEO - VIALE DEL COMMERCIO - PARK SANTA TERESA - FIERA - STAZIONE P.N. - CASTELVECCHIO -VIALE DELLA REPUBBLICA - NAVIGATORI",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F3%252F1%252FD.3e9b1254f35fec36b3a5/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 61",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Sacra Famiglia",
+          "path": "NAVIGATORI - VIALE DELLA REPUBBLICA - CASTELVECCHIO - STAZIONE P.N. - FIERA - PARK SANTA TERESA - VIALE DEL COMMERCIO - VIA COPERNICO/ADIGEO - SACRA FAMIGLIA"
+        },
+        {
+          "label": "Direzione Navigatori",
+          "path": "SACRA FAMIIGLIA - VIA COPERNICO/ADIGEO - VIALE DEL COMMERCIO - PARK SANTA TERESA - FIERA - STAZIONE P.N. - CASTELVECCHIO -VIALE DELLA REPUBBLICA - NAVIGATORI"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-62",
+      "number": "62",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Policlinico\nNAVIGATORI - OSPEDALE MAGGIORE - V.LE BIXIO - CASTELVECCHIO - SANTA LUCIA - ZAI/VIA FRANCIA - POLICLINICO\nDirezione Navigatori\nPOLICLINICO - ZAI/VIA FRANCIA - SANTA LUCIA - CASTELVECCHIO - V.LE BIXIO - OSPEDALE MAGGIORE - NAVIGATORI",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fb%252Ff%252FD.2d9d74704e82fce853f3/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 62",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Policlinico",
+          "path": "NAVIGATORI - OSPEDALE MAGGIORE - V.LE BIXIO - CASTELVECCHIO - SANTA LUCIA - ZAI/VIA FRANCIA - POLICLINICO"
+        },
+        {
+          "label": "Direzione Navigatori",
+          "path": "POLICLINICO - ZAI/VIA FRANCIA - SANTA LUCIA - CASTELVECCHIO - V.LE BIXIO - OSPEDALE MAGGIORE - NAVIGATORI"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-63",
+      "number": "63",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Stazione F.S.\nALPO - RIZZA - ZAI - VIA ROVEGGIA - STAZIONE P.N.\nDirezione Alpo\nSTAZIONE P.N. - ZAI- VIA ROVEGGIA - RIZZA - ALPO",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F3%252F3%252FD.7975713d782312379feb/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 63",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Stazione F.S.",
+          "path": "ALPO - RIZZA - ZAI - VIA ROVEGGIA - STAZIONE P.N."
+        },
+        {
+          "label": "Direzione Alpo",
+          "path": "STAZIONE P.N. - ZAI- VIA ROVEGGIA - RIZZA - ALPO"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-70",
+      "number": "70",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Porto San Pancrazio - Oltre Adige\nTorricelle/VALDONEGA - OSPEDALE MAGGIORE - SAN FERMO - CIMITERO - PORTO S. PANCRAZIO - OLTRE ADIGE\nDirezione Valdonega Sommavalle\nOLTRE ADIGE - PORTO SAN PANCRAZIO - CIMITERO - VIA PALLONE - OSPEDALE MAGGIORE - VALDONEGA/Torricelle",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fb%252F6%252FD.6e7b7779cfb1840bbad1/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 70",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Porto San Pancrazio - Oltre Adige",
+          "path": "Torricelle/VALDONEGA - OSPEDALE MAGGIORE - SAN FERMO - CIMITERO - PORTO S. PANCRAZIO - OLTRE ADIGE"
+        },
+        {
+          "label": "Direzione Valdonega Sommavalle",
+          "path": "OLTRE ADIGE - PORTO SAN PANCRAZIO - CIMITERO - VIA PALLONE - OSPEDALE MAGGIORE - VALDONEGA/Torricelle"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-71",
+      "number": "71",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Porto San Pancrazio - Oltre Adige\nOSPEDALE MAGGIORE -VIA GARIBALDI - DUOMO- SAN FERMO - CIMITERO - PORTO S. PANCRAZIO - OLTRE ADIGE\nDirezione Ospedale Maggiore\nOLTRE ADIGE - PORTO SAN PANCRAZIO - CIMITERO - VIA PALLONE - SAN FERMO - LUNGADIGE RUBELE - VIA GARIBALDI - OSPEDALE MAGGIORE",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fa%252F4%252FD.e1e0eab46ef6d4eaff11/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 71",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Porto San Pancrazio - Oltre Adige",
+          "path": "OSPEDALE MAGGIORE -VIA GARIBALDI - DUOMO- SAN FERMO - CIMITERO - PORTO S. PANCRAZIO - OLTRE ADIGE"
+        },
+        {
+          "label": "Direzione Ospedale Maggiore",
+          "path": "OLTRE ADIGE - PORTO SAN PANCRAZIO - CIMITERO - VIA PALLONE - SAN FERMO - LUNGADIGE RUBELE - VIA GARIBALDI - OSPEDALE MAGGIORE"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-72",
+      "number": "72",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Borgo Santa Croce\nPOLICLINICO - SAN MATTEO - BASSO ACQUAR - VIA DEL FANTE - VIA DEL PONTIERE - SAN FERMO - PORTA VESCOVO - VIA CIPOLLA - VIA BONFADIO - VIA VERDI - LARGO ZANDONAI\nDirezione Policlinico\nLARGO ZANDONAI - VIA VERDI - VIA BONFADIO - VIA CIPOLLA - PORTA VESCOVO - SAN FERMO - VIA DEL PONTIERE - VIA DEL FANTE - BASSO ACQUAR - POLICLINICO",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F3%252F9%252FD.77eb58ac1a5a89847ed8/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 72",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Borgo Santa Croce",
+          "path": "POLICLINICO - SAN MATTEO - BASSO ACQUAR - VIA DEL FANTE - VIA DEL PONTIERE - SAN FERMO - PORTA VESCOVO - VIA CIPOLLA - VIA BONFADIO - VIA VERDI - LARGO ZANDONAI"
+        },
+        {
+          "label": "Direzione Policlinico",
+          "path": "LARGO ZANDONAI - VIA VERDI - VIA BONFADIO - VIA CIPOLLA - PORTA VESCOVO - SAN FERMO - VIA DEL PONTIERE - VIA DEL FANTE - BASSO ACQUAR - POLICLINICO"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-73",
+      "number": "73",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Piazza Isolo - Valdonega\nSANTA LUCIA - GOLOSINE - STAZIONE P.N. - PIAZZA CITTADELLA - SAN FERMO - PIAZZA ISOLO - VALDONEGA\nDirezione Santa Lucia-Golosine\nVALDONEGA - PIAZZA ISOLO - SAN FERMO - PIAZZA CITTADELLA - STAZIONE P.N. - GOLOSINE - SANTA LUCIA",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Ff%252F3%252FD.84bed68ce36d5183b16b/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 73",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Piazza Isolo - Valdonega",
+          "path": "SANTA LUCIA - GOLOSINE - STAZIONE P.N. - PIAZZA CITTADELLA - SAN FERMO - PIAZZA ISOLO - VALDONEGA"
+        },
+        {
+          "label": "Direzione Santa Lucia-Golosine",
+          "path": "VALDONEGA - PIAZZA ISOLO - SAN FERMO - PIAZZA CITTADELLA - STAZIONE P.N. - GOLOSINE - SANTA LUCIA"
+        }
+      ]
+    },
+    {
+      "id": "atv-urban-74",
+      "number": "74",
+      "service": "urban",
+      "serviceLabel": "Urbano feriale",
+      "route": "Direzione Santa Croce Stazione - Stazione Porta Vescovo\nQUINTO - MARZANA -SANTA MARIA IN STELLE - SANTA CROCE - STAZIONE PV\nDirezione Santa Croce - Quinto\nPORTA VESCOVO - SANTACROCE - SANTA MARIA IN STELLE - MARZANA - QUINTO",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fa%252F2%252FD.9289f79ec3be819cf50d/P/BLOB%3AID%3D1078/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 74",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Santa Croce Stazione - Stazione Porta Vescovo",
+          "path": "QUINTO - MARZANA -SANTA MARIA IN STELLE - SANTA CROCE - STAZIONE PV"
+        },
+        {
+          "label": "Direzione Santa Croce - Quinto",
+          "path": "PORTA VESCOVO - SANTACROCE - SANTA MARIA IN STELLE - MARZANA - QUINTO"
+        }
+      ]
+    },
+    {
+      "id": "atv-evening-81",
+      "number": "81",
+      "service": "evening",
+      "serviceLabel": "Serale",
+      "route": "Direzione Borgo Santa Croce\nChievo - B.go Nuovo - c.so Milano - Stadio - Stazione P.N. - p.zza Bra - P.Vescovo - S.Croce\nDirezione Chievo\nS.Croce - P.Vescovo - p.zza Bra - Stazione P.N. - Stadio - c.so Milano - B.go Nuovo - Chievo",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-serale",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F8%252Fa%252FD.722f6ef1cc9770f7c6ac/P/BLOB%3AID%3D4418/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "Linea 81 (ogni 50 minuti)",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Borgo Santa Croce",
+          "path": "Chievo - B.go Nuovo - c.so Milano - Stadio - Stazione P.N. - p.zza Bra - P.Vescovo - S.Croce"
+        },
+        {
+          "label": "Direzione Chievo",
+          "path": "S.Croce - P.Vescovo - p.zza Bra - Stazione P.N. - Stadio - c.so Milano - B.go Nuovo - Chievo"
+        }
+      ]
+    },
+    {
+      "id": "atv-evening-82",
+      "number": "82",
+      "service": "evening",
+      "serviceLabel": "Serale",
+      "route": "Direzione Viale del Commercio\nPiazza Bra - Stazione FS - via Tombetta - v-le del Commercio\nDirezione Piazza Bra\nV-le del Commercio - v.le del Lavoro - Stazione FS - Piazza Bra",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-serale",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fb%252Ff%252FD.b9536268de47a491b063/P/BLOB%3AID%3D4418/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "Linea 82 (ogni 50 minuti)",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Viale del Commercio",
+          "path": "Piazza Bra - Stazione FS - via Tombetta - v-le del Commercio"
+        },
+        {
+          "label": "Direzione Piazza Bra",
+          "path": "V-le del Commercio - v.le del Lavoro - Stazione FS - Piazza Bra"
+        }
+      ]
+    },
+    {
+      "id": "atv-evening-83",
+      "number": "83",
+      "service": "evening",
+      "serviceLabel": "Serale",
+      "route": "Direzione Ponte Crencano\nCadidavid - Policlinico - Fiera - Stazione FS - Castelvecchio - Ospedale Magg. - Ponte Crencano\nDirezione Cadidavid\nPonte Crencano - Ospedale Magg. - Castelvecchio - Stazione FS - Fiera - Policlinico - Cadidavid",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-serale",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fb%252Fd%252FD.c4e6abe5010f9ef753ea/P/BLOB%3AID%3D4418/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "Linea 83 (ogni 45 minuti)",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Ponte Crencano",
+          "path": "Cadidavid - Policlinico - Fiera - Stazione FS - Castelvecchio - Ospedale Magg. - Ponte Crencano"
+        },
+        {
+          "label": "Direzione Cadidavid",
+          "path": "Ponte Crencano - Ospedale Magg. - Castelvecchio - Stazione FS - Fiera - Policlinico - Cadidavid"
+        }
+      ]
+    },
+    {
+      "id": "atv-evening-84",
+      "number": "84",
+      "service": "evening",
+      "serviceLabel": "Serale",
+      "route": "Direzione Saval\nS. Lucia - Golosine - Stazione P.N. - Castelvecchio - Ospedale Magg. - Saval\nDirezione Santa Lucia\nSaval - Ospedale Magg. - Castelvecchio - Stazione P.N. - Golosine - S. Lucia",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-serale",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fa%252Ff%252FD.8bc16efa2e973e629131/P/BLOB%3AID%3D4418/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "Linea 84 (ogni 45 minuti)",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Saval",
+          "path": "S. Lucia - Golosine - Stazione P.N. - Castelvecchio - Ospedale Magg. - Saval"
+        },
+        {
+          "label": "Direzione Santa Lucia",
+          "path": "Saval - Ospedale Magg. - Castelvecchio - Stazione P.N. - Golosine - S. Lucia"
+        }
+      ]
+    },
+    {
+      "id": "atv-evening-85",
+      "number": "85",
+      "service": "evening",
+      "serviceLabel": "Serale",
+      "route": "Direzione Valdonega\nMarzana - Quinto -\nPoiano - Borgo Venezia - Porta Vescovo - Piazza Isolo - San Giorgio - Via\nIV Novembre - Ospedale Maggiore - Valdonega\nDirezione Marzana\nValdonega - Ospedale\nMaggiore - Via Iv Novembre - San Giorgio - Piazza Isolo - Porta Vescovo - Borgo\nVenezia - Poiano - Quinto - Marzana",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-serale",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fc%252F1%252FD.b2e62e499fc375d65d85/P/BLOB%3AID%3D4418/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "Linea 85 (ogni 40 minuti)",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Valdonega",
+          "path": "Marzana - Quinto -\nPoiano - Borgo Venezia - Porta Vescovo - Piazza Isolo - San Giorgio - Via\nIV Novembre - Ospedale Maggiore - Valdonega"
+        },
+        {
+          "label": "Direzione Marzana",
+          "path": "Valdonega - Ospedale\nMaggiore - Via Iv Novembre - San Giorgio - Piazza Isolo - Porta Vescovo - Borgo\nVenezia - Poiano - Quinto - Marzana"
+        }
+      ]
+    },
+    {
+      "id": "atv-holiday-90",
+      "number": "90",
+      "service": "holiday",
+      "serviceLabel": "Festivo",
+      "route": "Direzione San Michele\nBASSON - CROCE BIANCA - SAN MASSIMO - STADIO - STAZIONE P.N. - P.ZZA BRA' - P.TA VESCOVO - VIA ZEVIANI - SAN MICHELE NORD\nDirezione Basson\nSAN MICHELE NORD - VIA ZEVIANI - P.TA VESCOVO - P.ZZA BRA' - STAZIONE P.N. - STADIO - SAN MASSIMO - CROCE BIANCA - BASSON",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F3%252Fe%252FD.37c067909d26cfcb2033/P/BLOB%3AID%3D4451/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 90",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione San Michele",
+          "path": "BASSON - CROCE BIANCA - SAN MASSIMO - STADIO - STAZIONE P.N. - P.ZZA BRA' - P.TA VESCOVO - VIA ZEVIANI - SAN MICHELE NORD"
+        },
+        {
+          "label": "Direzione Basson",
+          "path": "SAN MICHELE NORD - VIA ZEVIANI - P.TA VESCOVO - P.ZZA BRA' - STAZIONE P.N. - STADIO - SAN MASSIMO - CROCE BIANCA - BASSON"
+        }
+      ]
+    },
+    {
+      "id": "atv-holiday-91",
+      "number": "91",
+      "service": "holiday",
+      "serviceLabel": "Festivo",
+      "route": "Direzione B.go Santa Croce - San Felice\nSANTA LUCIA - STAZIONE P.N. - CASTELVECCHIO (REGASTE) - VIA DA VICO - OSPEDALE MAGGIORE - P.TA VESCOVO - VIA ZEVIANI - BORGO SANTA CROCE - SAN FELICE\nDirezione S. Lucia\nSAN FELICE - BORGO SANTA CROCE - VIA ZEVIANI - P.TA VESCOVO - OSPEDALE MAGGIORE - VIA DA VICO - CASTELVECCHIO (P.TA PALIO) - STAZIONE P.N. - SANTA LUCIA",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F4%252F3%252FD.5f06de99065c57dd7308/P/BLOB%3AID%3D4451/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 91",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione B.go Santa Croce - San Felice",
+          "path": "SANTA LUCIA - STAZIONE P.N. - CASTELVECCHIO (REGASTE) - VIA DA VICO - OSPEDALE MAGGIORE - P.TA VESCOVO - VIA ZEVIANI - BORGO SANTA CROCE - SAN FELICE"
+        },
+        {
+          "label": "Direzione S. Lucia",
+          "path": "SAN FELICE - BORGO SANTA CROCE - VIA ZEVIANI - P.TA VESCOVO - OSPEDALE MAGGIORE - VIA DA VICO - CASTELVECCHIO (P.TA PALIO) - STAZIONE P.N. - SANTA LUCIA"
+        }
+      ]
+    },
+    {
+      "id": "atv-holiday-92",
+      "number": "92",
+      "service": "holiday",
+      "serviceLabel": "Festivo",
+      "route": "Direzione Marzana-Grezzana-Stallavena\nAZZANO - CASTEL D'AZZANO - SACRA FAMIGLIA - VIALE DEL COMMERCIO - VIA TOMBETTA - STAZIONE P.N. - P.ZZA BRA' - P.TA VESCOVO - VIA FINCATO - POIANO - QUINTO - MARZANA- GREZZANA - STALLAVENA\nDirezione Sacra Famiglia-Castel d'Azzano\nSTALLAVENA - GREZZANA - MARZANA-QUINTO - POIANO - VIA FINCATO - P.TA VESCOVO - P.ZZA BRA' - STAZIONE P.N. - VIA TOMBETTA - VIALE DEL COMMERCIO - SACRA FAMIGLIA - CASTEL D'AZZANO - AZZANO",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F6%252F4%252FD.83c557c509cc58cff4a8/P/BLOB%3AID%3D4451/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 92",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Marzana-Grezzana-Stallavena",
+          "path": "AZZANO - CASTEL D'AZZANO - SACRA FAMIGLIA - VIALE DEL COMMERCIO - VIA TOMBETTA - STAZIONE P.N. - P.ZZA BRA' - P.TA VESCOVO - VIA FINCATO - POIANO - QUINTO - MARZANA- GREZZANA - STALLAVENA"
+        },
+        {
+          "label": "Direzione Sacra Famiglia-Castel d'Azzano",
+          "path": "STALLAVENA - GREZZANA - MARZANA-QUINTO - POIANO - VIA FINCATO - P.TA VESCOVO - P.ZZA BRA' - STAZIONE P.N. - VIA TOMBETTA - VIALE DEL COMMERCIO - SACRA FAMIGLIA - CASTEL D'AZZANO - AZZANO"
+        }
+      ]
+    },
+    {
+      "id": "atv-holiday-93",
+      "number": "93",
+      "service": "holiday",
+      "serviceLabel": "Festivo",
+      "route": "Direzione Parona-Negrar\nCADIDAVID - POLICLINICO - FIERA - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - PARONA-NEGRAR\nDirezione Cadidavid\nNEGRAR - PARONA - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N. - FIERA - POLICLINICO - CADIDAVID",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Ff%252F6%252FD.171a5c3e0844dca6aa32/P/BLOB%3AID%3D4451/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 93",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Parona-Negrar",
+          "path": "CADIDAVID - POLICLINICO - FIERA - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - PARONA-NEGRAR"
+        },
+        {
+          "label": "Direzione Cadidavid",
+          "path": "NEGRAR - PARONA - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N. - FIERA - POLICLINICO - CADIDAVID"
+        }
+      ]
+    },
+    {
+      "id": "atv-holiday-94",
+      "number": "94",
+      "service": "holiday",
+      "serviceLabel": "Festivo",
+      "route": "Direzione Saval\nSAN MICHELE - PORTO - PIAZZA BRA' - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - SAVAL\nDirezione San Michele\nSAVAL - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N. - PIAZZA BRA' - PORTO - SAN MICHELE",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F9%252F3%252FD.0957c6eb8c2ac3d9996e/P/BLOB%3AID%3D4451/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 94",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Saval",
+          "path": "SAN MICHELE - PORTO - PIAZZA BRA' - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - SAVAL"
+        },
+        {
+          "label": "Direzione San Michele",
+          "path": "SAVAL - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N. - PIAZZA BRA' - PORTO - SAN MICHELE"
+        }
+      ]
+    },
+    {
+      "id": "atv-holiday-95",
+      "number": "95",
+      "service": "holiday",
+      "serviceLabel": "Festivo",
+      "route": "Direzione Valdonega\nCHIEVO - B.GO NUOVO - STADIO - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - VALDONEGA - TORRICELLE* * località servite solo da servizio festivo\nDirezione Chievo\nTORRICELLE* - VALDONEGA - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N. - STADIO - B.GO NUOVO - CHIEVO * località servite solo da servizio festivo",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F8%252F5%252FD.34cca3990a8d9cb72428/P/BLOB%3AID%3D4451/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 95",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Valdonega",
+          "path": "CHIEVO - B.GO NUOVO - STADIO - STAZIONE P.N. - CASTELVECCHIO - OSPEDALE MAGGIORE - VALDONEGA - TORRICELLE* * località servite solo da servizio festivo"
+        },
+        {
+          "label": "Direzione Chievo",
+          "path": "TORRICELLE* - VALDONEGA - OSPEDALE MAGGIORE - CASTELVECCHIO - STAZIONE P.N. - STADIO - B.GO NUOVO - CHIEVO * località servite solo da servizio festivo"
+        }
+      ]
+    },
+    {
+      "id": "atv-holiday-96",
+      "number": "96",
+      "service": "holiday",
+      "serviceLabel": "Festivo",
+      "route": "Piazzale Stefani - Quinzano - Avesa - Piazzale Stefani",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fb%252F1%252FD.b9cd94c81dd4687fad7e/P/BLOB%3AID%3D4451/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 96",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Percorso indicato da ATV",
+          "path": "Piazzale Stefani - Quinzano - Avesa - Piazzale Stefani"
+        }
+      ]
+    },
+    {
+      "id": "atv-holiday-97",
+      "number": "97",
+      "service": "holiday",
+      "serviceLabel": "Festivo",
+      "route": "Palazzina - Policlinico - Stazione FS - Palazzina\n(Stazione - Palazzina anche linea 96 festivo)",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fc%252F7%252FD.e738c4709601753d513c/P/BLOB%3AID%3D4451/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 97",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Percorso indicato da ATV",
+          "path": "Palazzina - Policlinico - Stazione FS - Palazzina\n(Stazione - Palazzina anche linea 96 festivo)"
+        }
+      ]
+    },
+    {
+      "id": "atv-holiday-98",
+      "number": "98",
+      "service": "holiday",
+      "serviceLabel": "Festivo",
+      "route": "Direzione Montorio-Mizzole\nSANTA LUCIA - STAZIONE P.N. - P.ZZA BRA' - P.TA VESCOVO - B.GO VENEZIA - VIA MONTORIO - PONTE FLORIO - MONTORIO - Mizzole\nDirezione S. Lucia\nMizzole - MONTORIO - PONTE FLORIO - VIA MONTORIO - B.GO VENEZIA - P.TA VESCOVO - P.ZZA BRA' - STAZIONE P.N. - SANTA LUCIA",
+      "source": "ATV Verona",
+      "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
+      "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F4%252F9%252FD.8313ff629c991f0a29b0/P/BLOB%3AID%3D4451/E/pdf?mode=download",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "heading": "LINEA 98",
+      "realtime": false,
+      "directions": [
+        {
+          "label": "Direzione Montorio-Mizzole",
+          "path": "SANTA LUCIA - STAZIONE P.N. - P.ZZA BRA' - P.TA VESCOVO - B.GO VENEZIA - VIA MONTORIO - PONTE FLORIO - MONTORIO - Mizzole"
+        },
+        {
+          "label": "Direzione S. Lucia",
+          "path": "Mizzole - MONTORIO - PONTE FLORIO - VIA MONTORIO - B.GO VENEZIA - P.TA VESCOVO - P.ZZA BRA' - STAZIONE P.N. - SANTA LUCIA"
+        }
+      ]
+    }
+  ],
+  "alerts": [
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5809",
+      "title": "LINEA 71 - dal 20/10 deviazione per lavori in piazza Viviani",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5809",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-15T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "71"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5808",
+      "title": "LINEA 164 - dal 19/10 istituzione senso unico di marcia in via Stanga a Verona",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5808",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-15T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "164"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5807",
+      "title": "LINEE 148-53-92-SC450 - dal 19/10 sospensione provvisoria fermata \"Beccacivetta Piazza B\" a Castel D'Azzano",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5807",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-15T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "148",
+        "53",
+        "92",
+        "SC450"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5806",
+      "title": "LINEE 20-21-22-93 - dal 14/10 sospensione provvisoria fermata Urbana \"Via Mameli / Distributore\" (cod. 1113)",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5806",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-12T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "20",
+        "21",
+        "22",
+        "93"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5805",
+      "title": "LINEA 227- dal 14/10 deviazione per manifestazione a Chiampo",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5805",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-12T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "227"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5800",
+      "title": "LINEA 226 - dal 12/10 deviazione per divieto di transito in via Mezzavilla, Brognoligo",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5800",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-09T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "226"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5799",
+      "title": "LINEE URBANE ED EXTRAURBANE - dal 12/10 spostamento provvisorio fermata Urbana - Extraurbana \"Ospedale Maggiore B2\" (codice 2004/173011)",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5799",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-08T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5793",
+      "title": "LINEE 32-80-SC01- dall' 8/10 sospensione fermata \"via Calabria B\" codice 312",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5793",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-06T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "32",
+        "80",
+        "SC01"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5795",
+      "title": "Dal 7 ottobre nuove fermate in via Postumia a Villafranca di Verona",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5795",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-06T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5794",
+      "title": "Dal 7/10 nuova fermata a Villafranca di Verona in via Borgo Bello",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5794",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-06T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5789",
+      "title": "LINEA 73 - Modifica orari nei giorni di sabato dal 3/10/26",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5789",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-01T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "73"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5787",
+      "title": "LINEE 101-173 - dal 1/10 spostamento fermate \"Viale del Brennero-Limite Tariffa Urbana\" - \"Viale del Brennero Distributore\"",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5787",
+      "source": "ATV Verona",
+      "publishedAt": "2026-09-30T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "101",
+        "173"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5782",
+      "title": "LINEE 41-97- dal 28/9 sospensione fermata Urbana \"Via San Giacomo B\" codice.4195",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5782",
+      "source": "ATV Verona",
+      "publishedAt": "2026-09-29T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "41",
+        "97"
+      ],
+      "serviceAlert": true
+    }
+  ],
+  "sources": [
+    {
+      "key": "urban",
+      "status": "ok",
+      "count": 24
+    },
+    {
+      "key": "evening",
+      "status": "ok",
+      "count": 5
+    },
+    {
+      "key": "holiday",
+      "status": "ok",
+      "count": 9
+    },
+    {
+      "key": "rss",
+      "status": "ok",
+      "count": 20,
+      "alerts": 13
+    }
+  ],
+  "scope": "Schede urbane feriali, serali e festive di Verona. Orari nei PDF ufficiali; nessun dato di arrivo in tempo reale.",
+  "extraurbanUrl": "https://www.atv.verona.it/orari_linee_bus_extraurbani",
+  "portalUrl": "https://www.mycicero.it/atv-vr/TPWebPortal/it/timetable/stops",
+  "updates": [
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5809",
+      "title": "LINEA 71 - dal 20/10 deviazione per lavori in piazza Viviani",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5809",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-15T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "71"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5808",
+      "title": "LINEA 164 - dal 19/10 istituzione senso unico di marcia in via Stanga a Verona",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5808",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-15T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "164"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5807",
+      "title": "LINEE 148-53-92-SC450 - dal 19/10 sospensione provvisoria fermata \"Beccacivetta Piazza B\" a Castel D'Azzano",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5807",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-15T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "148",
+        "53",
+        "92",
+        "SC450"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/lavora-con-noi/selezioni-di-personale",
+      "title": "Selezione per \"Operatore qualificato\" (Officina)",
+      "sourceUrl": "https://www.atv.verona.it/lavora-con-noi/selezioni-di-personale",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-13T09:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": false
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5806",
+      "title": "LINEE 20-21-22-93 - dal 14/10 sospensione provvisoria fermata Urbana \"Via Mameli / Distributore\" (cod. 1113)",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5806",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-12T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "20",
+        "21",
+        "22",
+        "93"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5805",
+      "title": "LINEA 227- dal 14/10 deviazione per manifestazione a Chiampo",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5805",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-12T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "227"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5800",
+      "title": "LINEA 226 - dal 12/10 deviazione per divieto di transito in via Mezzavilla, Brognoligo",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5800",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-09T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "226"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5799",
+      "title": "LINEE URBANE ED EXTRAURBANE - dal 12/10 spostamento provvisorio fermata Urbana - Extraurbana \"Ospedale Maggiore B2\" (codice 2004/173011)",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5799",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-08T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/selezione-apprendisti-2026",
+      "title": "Selezione per \"Apprendista conducente\" - ammessi/e e calendario selezioni",
+      "sourceUrl": "https://www.atv.verona.it/selezione-apprendisti-2026",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-07T09:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": false
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5793",
+      "title": "LINEE 32-80-SC01- dall' 8/10 sospensione fermata \"via Calabria B\" codice 312",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5793",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-06T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "32",
+        "80",
+        "SC01"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5795",
+      "title": "Dal 7 ottobre nuove fermate in via Postumia a Villafranca di Verona",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5795",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-06T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5794",
+      "title": "Dal 7/10 nuova fermata a Villafranca di Verona in via Borgo Bello",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5794",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-06T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/abbonamento-bus-bike-sharing",
+      "title": "Bike sharing per gli abbonati annuali - voucher nuovamente disponibili",
+      "sourceUrl": "https://www.atv.verona.it/abbonamento-bus-bike-sharing",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-06T10:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": false
+    },
+    {
+      "id": "https://www.atv.verona.it/selezione-conducenti-settembre-26",
+      "title": "Selezione conducenti di autobus (scad. 28/09/26) - Ammessi/e e calendario selezioni",
+      "sourceUrl": "https://www.atv.verona.it/selezione-conducenti-settembre-26",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-05T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": false
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5789",
+      "title": "LINEA 73 - Modifica orari nei giorni di sabato dal 3/10/26",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5789",
+      "source": "ATV Verona",
+      "publishedAt": "2026-10-01T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "73"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5787",
+      "title": "LINEE 101-173 - dal 1/10 spostamento fermate \"Viale del Brennero-Limite Tariffa Urbana\" - \"Viale del Brennero Distributore\"",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5787",
+      "source": "ATV Verona",
+      "publishedAt": "2026-09-30T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "101",
+        "173"
+      ],
+      "serviceAlert": true
+    },
+    {
+      "id": "https://www.atv.verona.it/selezione-conducenti-ottobre-26",
+      "title": "Selezione conducenti di autobus (scad. 26/10/26)",
+      "sourceUrl": "https://www.atv.verona.it/selezione-conducenti-ottobre-26",
+      "source": "ATV Verona",
+      "publishedAt": "2026-09-29T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": false
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5778",
+      "title": "Orario biglietterie ATV da lunedì 5 ottobre 2026",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5778",
+      "source": "ATV Verona",
+      "publishedAt": "2026-09-29T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": false
+    },
+    {
+      "id": "https://www.atv.verona.it/navetta-festa-uva-bardolino-2026",
+      "title": "Navetta gratuita per Festa dell'uva di Bardolino 2026",
+      "sourceUrl": "https://www.atv.verona.it/navetta-festa-uva-bardolino-2026",
+      "source": "ATV Verona",
+      "publishedAt": "2026-09-29T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [],
+      "serviceAlert": false
+    },
+    {
+      "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5782",
+      "title": "LINEE 41-97- dal 28/9 sospensione fermata Urbana \"Via San Giacomo B\" codice.4195",
+      "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5782",
+      "source": "ATV Verona",
+      "publishedAt": "2026-09-29T22:00:00.000Z",
+      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "lines": [
+        "41",
+        "97"
+      ],
+      "serviceAlert": true
+    }
+  ]
+}

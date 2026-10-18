@@ -1,0 +1,907 @@
+{
+  "updatedAt": "2026-10-17T13:03:56.335Z",
+  "events": [
+    {
+      "id": "fiere-4c7f3b17d67d4c464168",
+      "title": "Bridal Week - La Fiera degli sposi",
+      "source": "Veronafiere",
+      "sourceUrl": "https://www.veronafiere.it/manifestazione/bridal-week-la-fiera-degli-sposi-2026/",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Confermare che si svolga a Verona o provincia",
+        "Verificare orari e accesso",
+        "Verificare condizioni di riutilizzo"
+      ],
+      "license": "Riutilizzo da verificare prima della pubblicazione",
+      "licenseUrl": "https://www.veronafiere.it/copyright-disclaimer/",
+      "startsAt": "2026-10-17",
+      "endsAt": "2026-10-18",
+      "datePrecision": "date",
+      "category": [
+        "Fiera"
+      ],
+      "location": null,
+      "area": null,
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "fiere-41c50fdb5c68da8c4ddf",
+      "title": "Fiera del disco",
+      "source": "Veronafiere",
+      "sourceUrl": "https://www.veronafiere.it/manifestazione/fiera-del-disco-2026/",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Confermare che si svolga a Verona o provincia",
+        "Verificare orari e accesso",
+        "Verificare condizioni di riutilizzo"
+      ],
+      "license": "Riutilizzo da verificare prima della pubblicazione",
+      "licenseUrl": "https://www.veronafiere.it/copyright-disclaimer/",
+      "startsAt": "2026-10-17",
+      "endsAt": "2026-10-18",
+      "datePrecision": "date",
+      "category": [
+        "Fiera"
+      ],
+      "location": null,
+      "area": null,
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-26dc63cfce124d97daf9",
+      "title": "Prendersi cura",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Prendersi-cura",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T09:00:00+02:00",
+      "endsAt": "2026-10-17T13:00:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Incontro con esperti",
+        "Corso"
+      ],
+      "location": "Sala Garonzi, Via Quinzano 24d 37124 Verona",
+      "coordinates": {
+        "lat": 45.460754,
+        "lon": 10.97348,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": [
+        {
+          "id": "2",
+          "explicit": false,
+          "quarters": [
+            "Quinzano"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "comune-46ed82a256ed121a678c",
+      "title": "Camminata Ecologica",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Camminata-Ecologica13",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T09:00:00+02:00",
+      "endsAt": "2026-10-17T11:30:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento sociale"
+      ],
+      "location": "Via delle Coste 37136 Verona",
+      "coordinates": {
+        "lat": 45.428516,
+        "lon": 10.975798,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-f9ffad24540ddb4656c0",
+      "title": "Soffitte in Piazza 2026",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Soffitte-in-Piazza-2026",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T10:00:00+02:00",
+      "endsAt": "2026-10-17T18:00:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Mostra",
+        "Mercato / Mercatino"
+      ],
+      "location": "Lungadige XXVI Luglio 1944 · Parona, Verona",
+      "coordinates": {
+        "lat": 45.44271,
+        "lon": 11.028932,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": true,
+      "mapDisabled": true,
+      "localVerified": true,
+      "reviewedOn": "2026-10-17",
+      "summary": "Mercatino dell’usato per curiosare fra libri, abiti, dischi e oggetti da riutilizzare. Accesso libero per il pubblico; iscrizione richiesta agli espositori.",
+      "priceLabel": "Ingresso gratuito",
+      "theme": "market",
+      "categoryLabel": "Mercatini",
+      "districtMatches": [
+        {
+          "id": "2",
+          "explicit": false,
+          "quarters": [
+            "Parona"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "comune-26a2d88990430094cbbd",
+      "title": "Nachleben - Festival Internazionale di fotografia e arti visive 2026",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Nachleben-Festival-Internazionale-di-fotografia-e-arti-visive-2026",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T10:00:00+02:00",
+      "endsAt": "2026-10-17T19:00:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Veronetta e altre sedi a Verona · programma sulla fonte",
+      "coordinates": {
+        "lat": 45.439255,
+        "lon": 11.004471,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": true,
+      "mapDisabled": true,
+      "localVerified": true,
+      "reviewedOn": "2026-10-17",
+      "summary": "Fotografia e arti visive in più spazi della città. Sedi e orari cambiano secondo la mostra: consulta il programma prima della visita.",
+      "priceLabel": "Condizioni di accesso nel programma",
+      "theme": "art",
+      "categoryLabel": "Arte e fotografia",
+      "districtMatches": [
+        {
+          "id": "1",
+          "explicit": false,
+          "quarters": [
+            "Veronetta"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "comune-b38326964129b041d1f7",
+      "title": "Alla scoperta delle mura di Verona",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Alla-scoperta-delle-mura-di-Verona",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T10:00:00+02:00",
+      "endsAt": "2026-10-17T12:00:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Bastione delle Maddalene, vicolo Madonnina 12 - 37133 Verona",
+      "coordinates": {
+        "lat": 45.438769,
+        "lon": 11.013975,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-34e82f4e45268d3da059",
+      "title": "Hostaria - XII Festival del vino 2026",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Hostaria-XII-Festival-del-vino-2026",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T11:00:00+02:00",
+      "endsAt": "2026-10-17T21:00:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Festival"
+      ],
+      "location": "Centro storico di Verona · Piazza Bra e Piazza dei Signori",
+      "coordinates": {
+        "lat": 45.439157,
+        "lon": 10.992714,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": true,
+      "localVerified": true,
+      "reviewedOn": "2026-10-17",
+      "summary": "Un percorso nel centro storico tra degustazioni, iniziative culturali e intrattenimento. Consulta il programma per le singole attività e i biglietti.",
+      "priceLabel": "Biglietti sul sito dell’organizzatore",
+      "theme": "food",
+      "categoryLabel": "Gusto e festival",
+      "districtMatches": []
+    },
+    {
+      "id": "comune-940f2b8c8d043442df7b",
+      "title": "Dorothea Lange",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Dorothea-Lange",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T11:00:00+03:00",
+      "endsAt": "2026-10-17T20:00:00+03:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Centro Internazionale di Fotografia Scavi Scaligeri, Cortile del Mercato Vecchio 8 - 37121 Verona",
+      "coordinates": {
+        "lat": 45.442993,
+        "lon": 10.998253,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-ebe50f69c26506a98e18",
+      "title": "Tour guidato del centro storico di Verona",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Tour-guidato-del-centro-storico-di-Verona",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T12:30:00+03:00",
+      "endsAt": "2026-10-17T14:00:00+03:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Punto di ritrovo: Ufficio Informazioni Accoglienza Turistica IAT Verona, via Leoncino 61 (c/o Palazzo Barbieri)",
+      "coordinates": {
+        "lat": 45.438161,
+        "lon": 10.994268,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-ccbe2cbef5a81ccb4e71",
+      "title": "Tour delle Mura Tramonti UNESCO",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Tour-delle-Mura-Tramonti-UNESCO2",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T15:00:00+02:00",
+      "endsAt": "2026-10-17T19:00:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Punto di partenza: Bastione delle Maddalene, vicolo Madonnina n. 12 - Verona",
+      "coordinates": {
+        "lat": 45.438769,
+        "lon": 11.013975,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-d0f904f5746eca647fb5",
+      "title": "Dialoghi sull'adolescenza: capire, prevenire, accompagnare",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Dialoghi-sull-adolescenza-capire-prevenire-accompagnare",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T16:30:00+02:00",
+      "endsAt": "2026-10-17T18:30:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale",
+        "Evento sociale"
+      ],
+      "location": "Interrato Acqua Morta 54 37129 Verona",
+      "coordinates": {
+        "lat": 45.442899,
+        "lon": 11.004251,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-1dc74e714e85ded21c9a",
+      "title": "Festival itinerante librOrchestra VI edizione",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Festival-itinerante-librOrchestra-VI-edizione",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T16:30:00+02:00",
+      "endsAt": "2026-10-17T17:30:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Biblioteca Civica",
+      "coordinates": {
+        "lat": 45.418218,
+        "lon": 10.987445,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-52c90c57c6ed58585241",
+      "title": "Verona Fotografia 1956 / 2026",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Verona-Fotografia-1956-2026",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T16:30:00+03:00",
+      "endsAt": "2026-10-17T19:00:00+03:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Porta Palio e Convento di San Bernardino (Chiostro e Sala Morone), Verona",
+      "coordinates": {
+        "lat": 45.438353,
+        "lon": 10.981863,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-d458fb74f5d40f5079e9",
+      "title": "Verona Passione Teatro",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Verona-Passione-Teatro",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-17T21:00:00+02:00",
+      "endsAt": "2026-10-17T23:00:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale",
+        "Spettacolo teatrale"
+      ],
+      "location": "Via Cantarane 32 37129 Verona",
+      "coordinates": {
+        "lat": 45.439205,
+        "lon": 11.012981,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-c08130542216ce1de2c7",
+      "title": "Nachleben - Festival Internazionale di fotografia e arti visive 2026",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Nachleben-Festival-Internazionale-di-fotografia-e-arti-visive-2026",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-18T10:00:00+02:00",
+      "endsAt": "2026-10-18T19:00:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Veronetta e altre sedi a Verona · programma sulla fonte",
+      "coordinates": {
+        "lat": 45.439255,
+        "lon": 11.004471,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": true,
+      "mapDisabled": true,
+      "localVerified": true,
+      "reviewedOn": "2026-10-17",
+      "summary": "Fotografia e arti visive in più spazi della città. Sedi e orari cambiano secondo la mostra: consulta il programma prima della visita.",
+      "priceLabel": "Condizioni di accesso nel programma",
+      "theme": "art",
+      "categoryLabel": "Arte e fotografia",
+      "districtMatches": [
+        {
+          "id": "1",
+          "explicit": false,
+          "quarters": [
+            "Veronetta"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "comune-17a98dbb0fe6959f5cc1",
+      "title": "Hostaria - XII Festival del vino 2026",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Hostaria-XII-Festival-del-vino-2026",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-18T11:00:00+02:00",
+      "endsAt": "2026-10-18T20:00:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Festival"
+      ],
+      "location": "Centro storico di Verona · Piazza Bra e Piazza dei Signori",
+      "coordinates": {
+        "lat": 45.439157,
+        "lon": 10.992714,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": true,
+      "localVerified": true,
+      "reviewedOn": "2026-10-17",
+      "summary": "Un percorso nel centro storico tra degustazioni, iniziative culturali e intrattenimento. Consulta il programma per le singole attività e i biglietti.",
+      "priceLabel": "Biglietti sul sito dell’organizzatore",
+      "theme": "food",
+      "categoryLabel": "Gusto e festival",
+      "districtMatches": []
+    },
+    {
+      "id": "comune-3714c380a97c81ddde90",
+      "title": "Dorothea Lange",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Dorothea-Lange",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-18T11:00:00+03:00",
+      "endsAt": "2026-10-18T20:00:00+03:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Centro Internazionale di Fotografia Scavi Scaligeri, Cortile del Mercato Vecchio 8 - 37121 Verona",
+      "coordinates": {
+        "lat": 45.442993,
+        "lon": 10.998253,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-beda8305a0c7f96aa694",
+      "title": "Stagione concertistica dei Virtuosi Italiani",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Stagione-concertistica-dei-Virtuosi-Italiani",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-18T12:00:00+03:00",
+      "endsAt": "2026-10-18T13:00:00+03:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Teatro Ristori",
+      "coordinates": {
+        "lat": 45.437831,
+        "lon": 10.986707,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-668c8404cc6f724b92ad",
+      "title": "Tour guidato del centro storico di Verona",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Tour-guidato-del-centro-storico-di-Verona",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-18T12:30:00+03:00",
+      "endsAt": "2026-10-18T14:00:00+03:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Punto di ritrovo: Ufficio Informazioni Accoglienza Turistica IAT Verona, via Leoncino 61 (c/o Palazzo Barbieri)",
+      "coordinates": {
+        "lat": 45.438161,
+        "lon": 10.994268,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-06fbae058c26e027440e",
+      "title": "Verona Passione Teatro",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Verona-Passione-Teatro",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-18T16:30:00+02:00",
+      "endsAt": "2026-10-18T18:30:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale",
+        "Spettacolo teatrale"
+      ],
+      "location": "Via Cantarane 32 37129 Verona",
+      "coordinates": {
+        "lat": 45.439205,
+        "lon": 11.012981,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-13fabddbd4cadf554b55",
+      "title": "Verona Fotografia 1956 / 2026",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Verona-Fotografia-1956-2026",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-18T16:30:00+03:00",
+      "endsAt": "2026-10-18T19:00:00+03:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Porta Palio e Convento di San Bernardino (Chiostro e Sala Morone), Verona",
+      "coordinates": {
+        "lat": 45.438353,
+        "lon": 10.981863,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-3f2dfe2960ca49683d95",
+      "title": "Festival itinerante librOrchestra VI edizione",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Festival-itinerante-librOrchestra-VI-edizione",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-18T17:00:00+02:00",
+      "endsAt": "2026-10-18T20:30:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Biblioteca Civica",
+      "coordinates": {
+        "lat": 45.418218,
+        "lon": 10.987445,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-89ef8ed68b047d517c7c",
+      "title": "Ottobre Musicale Terenzio Zardini 2026",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Ottobre-Musicale-Terenzio-Zardini-2026",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-18T17:00:00+03:00",
+      "endsAt": "2026-10-18T19:00:00+03:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Chiesa San Bernardino, Stradone Antonio Provolo 28 37123 Verona",
+      "coordinates": {
+        "lat": 45.438353,
+        "lon": 10.981863,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-8dde9eedf7b538de20c5",
+      "title": "Concorso Internazionale liriche da camera Otto - Novecento italiano \"Elsa Respighi\"",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Concorso-Internazionale-liriche-da-camera-Otto-Novecento-italiano-Elsa-Respighi",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-10-18T18:00:00+02:00",
+      "endsAt": "2026-10-18T20:00:00+02:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Evento culturale"
+      ],
+      "location": "Palazzo Verità Poeta (vicolo San Silvestro, Verona)",
+      "coordinates": {
+        "lat": 45.438125,
+        "lon": 10.988269,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": false,
+      "districtMatches": []
+    },
+    {
+      "id": "comune-5240109dde9964c5f09a",
+      "title": "Soffitte in Piazza 2026",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Soffitte-in-Piazza-2026",
+      "checkedAt": "2026-10-17T13:03:56.335Z",
+      "timezone": "Europe/Rome",
+      "price": null,
+      "image": null,
+      "publicationStatus": "draft",
+      "reviewReasons": [
+        "Verificare luogo, orari e accesso sulla scheda originale"
+      ],
+      "license": "CC BY 4.0 salvo eccezioni e contenuti di terzi",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "startsAt": "2026-11-07T10:00:00+01:00",
+      "endsAt": "2026-11-07T18:00:00+01:00",
+      "datePrecision": "datetime",
+      "category": [
+        "Mostra",
+        "Mercato / Mercatino"
+      ],
+      "location": "Piazza Isolo · Verona",
+      "coordinates": {
+        "lat": 45.44271,
+        "lon": 11.028932,
+        "source": "Comune di Verona",
+        "precision": "source"
+      },
+      "area": "Verona",
+      "areaConfirmed": true,
+      "mapDisabled": true,
+      "localVerified": true,
+      "reviewedOn": "2026-10-17",
+      "summary": "Mercatino dell’usato per curiosare fra libri, abiti, dischi e oggetti da riutilizzare. Accesso libero per il pubblico; iscrizione richiesta agli espositori.",
+      "priceLabel": "Ingresso gratuito",
+      "theme": "market",
+      "categoryLabel": "Mercatini",
+      "districtMatches": []
+    }
+  ]
+}

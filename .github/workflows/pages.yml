@@ -4,17 +4,31 @@ on:
   push:
     branches: [main, master]
   workflow_dispatch:
+    inputs:
+      refresh_events:
+        description: Raccogli gli eventi prima di pubblicare
+        type: boolean
+        default: true
+      refresh_bus:
+        description: Raccogli linee e pubblicazioni ATV prima di pubblicare
+        type: boolean
+        default: true
+  schedule:
+    - cron: '17 4 * * *'
 
 permissions:
   contents: read
 
 concurrency:
   group: github-pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
@@ -24,6 +38,36 @@ jobs:
         run: npm run build
       - name: Verifica l'applicazione
         run: npm test
+      - name: Aggiorna gli eventi dalle fonti ufficiali
+        id: refresh
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_events)
+        run: npm run import:events -- --allow-partial
+      - name: Aggiorna schede e pubblicazioni ATV
+        id: refresh_bus
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_bus)
+        run: npm run import:bus -- --allow-partial
+      - name: Conserva il rapporto della raccolta
+        if: always() && (steps.refresh.outcome == 'success' || steps.refresh.outcome == 'failure' || steps.refresh_bus.outcome == 'success' || steps.refresh_bus.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapporti-fonti
+          path: |
+            data/import-report.json
+            data/bus-import-report.json
+          retention-days: 14
+      - name: Verifica il frontend dopo la raccolta
+        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_bus.outcome == 'success')
+        run: npm test
+      - name: Conserva i dati aggiornati nel repository
+        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_bus.outcome == 'success')
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/events.json data/import-report.json data/bus.json data/bus-import-report.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Aggiorna eventi e dati ATV dalle fonti ufficiali"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
       - name: Prepara i soli file del sito
         run: |
           mkdir -p _site

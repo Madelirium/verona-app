@@ -1,5 +1,7 @@
 {
-  "updatedAt": "2026-10-17T12:50:41.348Z",
+  "updatedAt": "2026-10-18T10:27:17.786Z",
+  "checkedAt": "2026-10-18T10:27:17.786Z",
+  "status": "ok",
   "lines": [
     {
       "id": "atv-urban-11",
@@ -10,7 +12,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Ff%252F9%252FD.2528db7fb541e02972c7/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 11",
       "realtime": false
     },
@@ -23,7 +25,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F0%252Ff%252FD.1828cf68290cfd199774/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 12",
       "realtime": false
     },
@@ -36,7 +38,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F2%252F8%252FD.1b07960f1d30ac248706/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 13",
       "realtime": false
     },
@@ -49,7 +51,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F8%252Ff%252FD.7e12e79b55fde261d2dd/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 20",
       "realtime": false
     },
@@ -62,7 +64,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F9%252F5%252FD.757dfa2e970e9bee9ec1/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 21",
       "realtime": false
     },
@@ -75,7 +77,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F8%252F0%252FD.c8b983bfb8f0dfd97592/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 22",
       "realtime": false
     },
@@ -88,7 +90,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F6%252Fc%252FD.21a2df3fb13200bac2fd/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 23",
       "realtime": false
     },
@@ -101,7 +103,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F7%252F2%252FD.c375c668105bccd71551/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 24",
       "realtime": false
     },
@@ -114,7 +116,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Ff%252F0%252FD.9bd7cfdc10abf6877ade/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 25",
       "realtime": false
     },
@@ -127,7 +129,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F7%252F1%252FD.0906aa82c71529c7709c/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 31",
       "realtime": false
     },
@@ -140,7 +142,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F0%252Fb%252FD.d37389d58a30b1726703/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 32",
       "realtime": false
     },
@@ -153,7 +155,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F7%252F4%252FD.22d40b9760f6fb30245b/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 33",
       "realtime": false
     },
@@ -166,7 +168,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F5%252F3%252FD.ef5476dbbdf8e7b89edf/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 41",
       "realtime": false
     },
@@ -179,7 +181,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F7%252Fc%252FD.7302d2c640fae11400fa/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 51",
       "realtime": false
     },
@@ -192,7 +194,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F7%252F5%252FD.727351f6a7ebf7f8dd41/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 52",
       "realtime": false
     },
@@ -205,7 +207,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fa%252F9%252FD.3859b4a661b50f4d5a00/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 53",
       "realtime": false
     },
@@ -218,7 +220,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F3%252F1%252FD.3e9b1254f35fec36b3a5/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 61",
       "realtime": false
     },
@@ -231,7 +233,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fb%252Ff%252FD.2d9d74704e82fce853f3/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 62",
       "realtime": false
     },
@@ -244,7 +246,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F3%252F3%252FD.7975713d782312379feb/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 63",
       "realtime": false
     },
@@ -257,7 +259,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fb%252F6%252FD.6e7b7779cfb1840bbad1/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 70",
       "realtime": false
     },
@@ -270,7 +272,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fa%252F4%252FD.e1e0eab46ef6d4eaff11/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 71",
       "realtime": false
     },
@@ -283,7 +285,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F3%252F9%252FD.77eb58ac1a5a89847ed8/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 72",
       "realtime": false
     },
@@ -296,7 +298,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Ff%252F3%252FD.84bed68ce36d5183b16b/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 73",
       "realtime": false
     },
@@ -309,7 +311,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fa%252F2%252FD.9289f79ec3be819cf50d/P/BLOB%3AID%3D1078/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 74",
       "realtime": false
     },
@@ -322,7 +324,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-serale",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F8%252Fa%252FD.722f6ef1cc9770f7c6ac/P/BLOB%3AID%3D4418/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "Linea 81 (ogni 50 minuti)",
       "realtime": false
     },
@@ -335,7 +337,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-serale",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fb%252Ff%252FD.b9536268de47a491b063/P/BLOB%3AID%3D4418/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "Linea 82 (ogni 50 minuti)",
       "realtime": false
     },
@@ -348,7 +350,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-serale",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fb%252Fd%252FD.c4e6abe5010f9ef753ea/P/BLOB%3AID%3D4418/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "Linea 83 (ogni 45 minuti)",
       "realtime": false
     },
@@ -361,7 +363,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-serale",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fa%252Ff%252FD.8bc16efa2e973e629131/P/BLOB%3AID%3D4418/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "Linea 84 (ogni 45 minuti)",
       "realtime": false
     },
@@ -374,7 +376,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-serale",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fc%252F1%252FD.b2e62e499fc375d65d85/P/BLOB%3AID%3D4418/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "Linea 85 (ogni 40 minuti)",
       "realtime": false
     },
@@ -387,7 +389,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F3%252Fe%252FD.37c067909d26cfcb2033/P/BLOB%3AID%3D4451/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 90",
       "realtime": false
     },
@@ -400,7 +402,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F4%252F3%252FD.5f06de99065c57dd7308/P/BLOB%3AID%3D4451/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 91",
       "realtime": false
     },
@@ -413,7 +415,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F6%252F4%252FD.83c557c509cc58cff4a8/P/BLOB%3AID%3D4451/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 92",
       "realtime": false
     },
@@ -426,7 +428,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Ff%252F6%252FD.171a5c3e0844dca6aa32/P/BLOB%3AID%3D4451/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 93",
       "realtime": false
     },
@@ -439,7 +441,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F9%252F3%252FD.0957c6eb8c2ac3d9996e/P/BLOB%3AID%3D4451/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 94",
       "realtime": false
     },
@@ -452,7 +454,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F8%252F5%252FD.34cca3990a8d9cb72428/P/BLOB%3AID%3D4451/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 95",
       "realtime": false
     },
@@ -465,7 +467,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fb%252F1%252FD.b9cd94c81dd4687fad7e/P/BLOB%3AID%3D4451/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 96",
       "realtime": false
     },
@@ -478,7 +480,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252Fc%252F7%252FD.e738c4709601753d513c/P/BLOB%3AID%3D4451/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 97",
       "realtime": false
     },
@@ -491,7 +493,7 @@
       "source": "ATV Verona",
       "sourceUrl": "https://www.atv.verona.it/urbano-verona-festivo",
       "timetableUrl": "https://www.atv.verona.it/flex/cm/pages/ServeAttachment.php/L/IT/D/1%252F4%252F9%252FD.8313ff629c991f0a29b0/P/BLOB%3AID%3D4451/E/pdf?mode=download",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "heading": "LINEA 98",
       "realtime": false
     }
@@ -503,7 +505,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5809",
       "source": "ATV Verona",
       "publishedAt": "2026-10-15T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "71"
       ],
@@ -515,7 +517,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5808",
       "source": "ATV Verona",
       "publishedAt": "2026-10-15T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "164"
       ],
@@ -527,7 +529,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5807",
       "source": "ATV Verona",
       "publishedAt": "2026-10-15T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "148",
         "53",
@@ -542,7 +544,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5806",
       "source": "ATV Verona",
       "publishedAt": "2026-10-12T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "20",
         "21",
@@ -557,7 +559,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5805",
       "source": "ATV Verona",
       "publishedAt": "2026-10-12T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "227"
       ],
@@ -569,7 +571,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5800",
       "source": "ATV Verona",
       "publishedAt": "2026-10-09T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "226"
       ],
@@ -581,7 +583,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5799",
       "source": "ATV Verona",
       "publishedAt": "2026-10-08T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": true
     },
@@ -591,8 +593,12 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5793",
       "source": "ATV Verona",
       "publishedAt": "2026-10-06T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
-      "lines": [],
+      "checkedAt": "2026-10-18T10:27:17.786Z",
+      "lines": [
+        "32",
+        "80",
+        "SC01"
+      ],
       "serviceAlert": true
     },
     {
@@ -601,7 +607,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5795",
       "source": "ATV Verona",
       "publishedAt": "2026-10-06T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": true
     },
@@ -611,7 +617,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5794",
       "source": "ATV Verona",
       "publishedAt": "2026-10-06T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": true
     },
@@ -621,7 +627,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5789",
       "source": "ATV Verona",
       "publishedAt": "2026-10-01T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "73"
       ],
@@ -633,7 +639,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5787",
       "source": "ATV Verona",
       "publishedAt": "2026-09-30T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "101",
         "173"
@@ -646,7 +652,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5782",
       "source": "ATV Verona",
       "publishedAt": "2026-09-29T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "41",
         "97"
@@ -654,32 +660,6 @@
       "serviceAlert": true
     }
   ],
-  "sources": [
-    {
-      "key": "urban",
-      "status": "ok",
-      "count": 24
-    },
-    {
-      "key": "evening",
-      "status": "ok",
-      "count": 5
-    },
-    {
-      "key": "holiday",
-      "status": "ok",
-      "count": 9
-    },
-    {
-      "key": "rss",
-      "status": "ok",
-      "count": 20,
-      "alerts": 13
-    }
-  ],
-  "scope": "Schede urbane feriali, serali e festive di Verona. Orari nei PDF ufficiali; nessun dato di arrivo in tempo reale.",
-  "extraurbanUrl": "https://www.atv.verona.it/orari_linee_bus_extraurbani",
-  "portalUrl": "https://www.mycicero.it/atv-vr/TPWebPortal/it/timetable/stops",
   "updates": [
     {
       "id": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5809",
@@ -687,7 +667,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5809",
       "source": "ATV Verona",
       "publishedAt": "2026-10-15T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "71"
       ],
@@ -699,7 +679,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5808",
       "source": "ATV Verona",
       "publishedAt": "2026-10-15T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "164"
       ],
@@ -711,7 +691,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5807",
       "source": "ATV Verona",
       "publishedAt": "2026-10-15T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "148",
         "53",
@@ -726,7 +706,7 @@
       "sourceUrl": "https://www.atv.verona.it/lavora-con-noi/selezioni-di-personale",
       "source": "ATV Verona",
       "publishedAt": "2026-10-13T09:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": false
     },
@@ -736,7 +716,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5806",
       "source": "ATV Verona",
       "publishedAt": "2026-10-12T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "20",
         "21",
@@ -751,7 +731,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5805",
       "source": "ATV Verona",
       "publishedAt": "2026-10-12T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "227"
       ],
@@ -763,7 +743,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5800",
       "source": "ATV Verona",
       "publishedAt": "2026-10-09T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "226"
       ],
@@ -775,7 +755,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5799",
       "source": "ATV Verona",
       "publishedAt": "2026-10-08T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": true
     },
@@ -785,7 +765,7 @@
       "sourceUrl": "https://www.atv.verona.it/selezione-apprendisti-2026",
       "source": "ATV Verona",
       "publishedAt": "2026-10-07T09:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": false
     },
@@ -795,8 +775,12 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5793",
       "source": "ATV Verona",
       "publishedAt": "2026-10-06T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
-      "lines": [],
+      "checkedAt": "2026-10-18T10:27:17.786Z",
+      "lines": [
+        "32",
+        "80",
+        "SC01"
+      ],
       "serviceAlert": true
     },
     {
@@ -805,7 +789,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5795",
       "source": "ATV Verona",
       "publishedAt": "2026-10-06T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": true
     },
@@ -815,7 +799,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5794",
       "source": "ATV Verona",
       "publishedAt": "2026-10-06T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": true
     },
@@ -825,7 +809,7 @@
       "sourceUrl": "https://www.atv.verona.it/abbonamento-bus-bike-sharing",
       "source": "ATV Verona",
       "publishedAt": "2026-10-06T10:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": false
     },
@@ -835,7 +819,7 @@
       "sourceUrl": "https://www.atv.verona.it/selezione-conducenti-settembre-26",
       "source": "ATV Verona",
       "publishedAt": "2026-10-05T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": false
     },
@@ -845,7 +829,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5789",
       "source": "ATV Verona",
       "publishedAt": "2026-10-01T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "73"
       ],
@@ -857,7 +841,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5787",
       "source": "ATV Verona",
       "publishedAt": "2026-09-30T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "101",
         "173"
@@ -870,7 +854,7 @@
       "sourceUrl": "https://www.atv.verona.it/selezione-conducenti-ottobre-26",
       "source": "ATV Verona",
       "publishedAt": "2026-09-29T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": false
     },
@@ -880,7 +864,7 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5778",
       "source": "ATV Verona",
       "publishedAt": "2026-09-29T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": false
     },
@@ -890,7 +874,7 @@
       "sourceUrl": "https://www.atv.verona.it/navetta-festa-uva-bardolino-2026",
       "source": "ATV Verona",
       "publishedAt": "2026-09-29T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [],
       "serviceAlert": false
     },
@@ -900,12 +884,42 @@
       "sourceUrl": "https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/5782",
       "source": "ATV Verona",
       "publishedAt": "2026-09-29T22:00:00.000Z",
-      "checkedAt": "2026-10-17T12:50:41.348Z",
+      "checkedAt": "2026-10-18T10:27:17.786Z",
       "lines": [
         "41",
         "97"
       ],
       "serviceAlert": true
     }
-  ]
+  ],
+  "sources": [
+    {
+      "key": "urban",
+      "status": "ok",
+      "count": 24,
+      "lastSuccessAt": "2026-10-18T10:27:17.786Z"
+    },
+    {
+      "key": "evening",
+      "status": "ok",
+      "count": 5,
+      "lastSuccessAt": "2026-10-18T10:27:17.786Z"
+    },
+    {
+      "key": "holiday",
+      "status": "ok",
+      "count": 9,
+      "lastSuccessAt": "2026-10-18T10:27:17.786Z"
+    },
+    {
+      "key": "rss",
+      "status": "ok",
+      "count": 20,
+      "alerts": 13,
+      "lastSuccessAt": "2026-10-18T10:27:17.786Z"
+    }
+  ],
+  "scope": "Schede urbane feriali, serali e festive di Verona. Orari nei PDF ufficiali; nessun dato di arrivo in tempo reale.",
+  "extraurbanUrl": "https://www.atv.verona.it/orari_linee_bus_extraurbani",
+  "portalUrl": "https://www.mycicero.it/atv-vr/TPWebPortal/it/timetable/stops"
 }

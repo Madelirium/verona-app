@@ -30,9 +30,17 @@ export function parseBusLines(html,source,checkedAt){
   return [...new Map(lines.map(l=>[l.id,l])).values()];
 }
 export function alertLines(title){
-  const prefix=title.match(/^LINE[AE]\s+([A-Z0-9 ,/\-]+?)(?:\s+-\s+|\s+dal\b|\s+per\b|$)/i)?.[1];
+  const prefix=title.match(/^LINE[AE]\s+([A-Z]{0,2}\d+[A-Z]?(?:\s*(?:[,/\-]|\be\b)\s*[A-Z]{0,2}\d+[A-Z]?)*)(?=\b)/i)?.[1];
   if(!prefix)return [];
-  return [...new Set(prefix.toUpperCase().split(/[\s,\/\-]+/).filter(s=>/^(?:[A-Z]{0,2})?\d+[A-Z]?$/.test(s)))];
+  return [...new Set(prefix.toUpperCase().match(/[A-Z]{0,2}\d+[A-Z]?/g)||[])];
+}
+export function splitBusDirections(route){
+  const result=[];let current=null;
+  for(const row of route.split('\n').map(r=>r.trim()).filter(Boolean)){
+    if(/^Direzione\b/i.test(row)){current={label:row,path:''};result.push(current);}
+    else{if(!current){current={label:'Percorso indicato da ATV',path:''};result.push(current);}current.path+=(current.path?'\n':'')+row;}
+  }
+  return result;
 }
 export function parseBusUpdates(xml,checkedAt){
   if(!/<rss\b/i.test(xml)||!/<channel>/i.test(xml))throw Error('Feed ATV non riconosciuto');

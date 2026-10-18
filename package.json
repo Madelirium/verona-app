@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "import:events": "node scripts/import-events.mjs && node scripts/build-calendar.mjs",
+    "import:events": "node scripts/update-events.mjs",
     "import:news": "node scripts/import-news.mjs",
     "import:bus": "node scripts/import-bus.mjs",
     "import:places": "node scripts/import-places.mjs",

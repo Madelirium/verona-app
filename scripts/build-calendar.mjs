@@ -1,5 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import {districtCatalog,districtMatches,explicitDistricts} from './districts.mjs';
+import {splitBusDirections,alertLines} from './bus.mjs';
 const root = new URL('../',import.meta.url);
 export async function buildCalendar() {
   const [template,logic,json,editorialJson] = await Promise.all(['public/calendar.template.html','public/calendar.js','data/events.json','data/editorial.json'].map(p=>readFile(new URL(p,root),'utf8')));
@@ -9,6 +10,8 @@ export async function buildCalendar() {
   catch(error){if(error.code!=='ENOENT')throw error;data.news={items:[],sources:[]};}
   try{data.bus=JSON.parse(await readFile(new URL('data/bus.json',root),'utf8'));}
   catch(error){if(error.code!=='ENOENT')throw error;data.bus={lines:[],alerts:[],sources:[]};}
+  data.bus.lines=data.bus.lines.map(line=>({...line,directions:splitBusDirections(line.route)}));
+  for(const key of ['alerts','updates'])data.bus[key]=(data.bus[key]||[]).map(item=>({...item,lines:alertLines(item.title)}));
   try{data.places=JSON.parse(await readFile(new URL('data/places.json',root),'utf8'));}
   catch(error){if(error.code!=='ENOENT')throw error;data.places={items:[]};}
   const editorial=JSON.parse(editorialJson);

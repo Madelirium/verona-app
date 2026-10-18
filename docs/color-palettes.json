@@ -1,0 +1,327 @@
+{
+  "date": "2026-10-18",
+  "method": "WCAG 2.2 relative luminance, sRGB",
+  "palettes": [
+    {
+      "id": "equilibrata",
+      "name": "Blu e oro",
+      "position": "Consigliata",
+      "bg": "#F6F5F0",
+      "surface": "#FFFEFA",
+      "primary": "#254F78",
+      "hover": "#1C3D5D",
+      "text": "#1E2D43",
+      "muted": "#586777",
+      "accent": "#E9BF50",
+      "accentSoft": "#F8E9BC",
+      "soft": "#E7EEF5",
+      "outline": "#7D8D9B",
+      "line": "#D6DCE1",
+      "contrasts": [
+        {
+          "label": "Testo su sfondo",
+          "foreground": "#1E2D43",
+          "background": "#F6F5F0",
+          "ratio": 12.72670258252702,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo secondario su sfondo",
+          "foreground": "#586777",
+          "background": "#F6F5F0",
+          "ratio": 5.312217397911666,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo su scheda",
+          "foreground": "#1E2D43",
+          "background": "#FFFEFA",
+          "ratio": 13.766235852053468,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo secondario su scheda",
+          "foreground": "#586777",
+          "background": "#FFFEFA",
+          "ratio": 5.746126078049133,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Pulsante primario",
+          "foreground": "#FFFFFF",
+          "background": "#254F78",
+          "ratio": 8.507986727556219,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Pulsante premuto",
+          "foreground": "#FFFFFF",
+          "background": "#1C3D5D",
+          "ratio": 11.200386058903764,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo su oro",
+          "foreground": "#1E2D43",
+          "background": "#E9BF50",
+          "ratio": 7.960322430773101,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Collegamenti",
+          "foreground": "#254F78",
+          "background": "#FFFEFA",
+          "ratio": 8.430665301159564,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Scheda selezionata",
+          "foreground": "#254F78",
+          "background": "#E7EEF5",
+          "ratio": 7.2707283807294,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Contorno del campo",
+          "foreground": "#7D8D9B",
+          "background": "#FFFEFA",
+          "ratio": 3.3807118288784372,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "label": "Indicatore focus",
+          "foreground": "#254F78",
+          "background": "#F6F5F0",
+          "ratio": 7.794038327818099,
+          "threshold": 3,
+          "pass": true
+        }
+      ],
+      "rejectedWhiteOnGold": 1.7452172721022459
+    },
+    {
+      "id": "solare",
+      "name": "Sabbia e blu",
+      "position": "Più calda",
+      "bg": "#FAEFCD",
+      "surface": "#FFFCF2",
+      "primary": "#315D85",
+      "hover": "#244866",
+      "text": "#26374C",
+      "muted": "#5C655F",
+      "accent": "#D4A436",
+      "accentSoft": "#F4DF9E",
+      "soft": "#E8EFF5",
+      "outline": "#7A8A97",
+      "line": "#DBD4BC",
+      "contrasts": [
+        {
+          "label": "Testo su sfondo",
+          "foreground": "#26374C",
+          "background": "#FAEFCD",
+          "ratio": 10.554137276632375,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo secondario su sfondo",
+          "foreground": "#5C655F",
+          "background": "#FAEFCD",
+          "ratio": 5.2539103380502015,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo su scheda",
+          "foreground": "#26374C",
+          "background": "#FFFCF2",
+          "ratio": 11.80344795267973,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo secondario su scheda",
+          "foreground": "#5C655F",
+          "background": "#FFFCF2",
+          "ratio": 5.875824389789356,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Pulsante primario",
+          "foreground": "#FFFFFF",
+          "background": "#315D85",
+          "ratio": 6.919218323579057,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Pulsante premuto",
+          "foreground": "#FFFFFF",
+          "background": "#244866",
+          "ratio": 9.57233813694509,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo su oro",
+          "foreground": "#26374C",
+          "background": "#D4A436",
+          "ratio": 5.286521592131384,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Collegamenti",
+          "foreground": "#315D85",
+          "background": "#FFFCF2",
+          "ratio": 6.740742825287238,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Scheda selezionata",
+          "foreground": "#315D85",
+          "background": "#E8EFF5",
+          "ratio": 5.962480290817384,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Contorno del campo",
+          "foreground": "#7A8A97",
+          "background": "#FFFCF2",
+          "ratio": 3.4617741210949027,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "label": "Indicatore focus",
+          "foreground": "#315D85",
+          "background": "#FAEFCD",
+          "ratio": 6.0272833336300495,
+          "threshold": 3,
+          "pass": true
+        }
+      ],
+      "rejectedWhiteOnGold": 2.291860370237624
+    },
+    {
+      "id": "urbana",
+      "name": "Pietra e terracotta",
+      "position": "Alternativa urbana",
+      "bg": "#F6F1EA",
+      "surface": "#FFFDFA",
+      "primary": "#8E443B",
+      "hover": "#71362F",
+      "text": "#342B29",
+      "muted": "#6D615B",
+      "accent": "#D0A650",
+      "accentSoft": "#F3E4C5",
+      "soft": "#F2E4DE",
+      "outline": "#96847C",
+      "line": "#DFD2C8",
+      "contrasts": [
+        {
+          "label": "Testo su sfondo",
+          "foreground": "#342B29",
+          "background": "#F6F1EA",
+          "ratio": 12.26634246269692,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo secondario su sfondo",
+          "foreground": "#6D615B",
+          "background": "#F6F1EA",
+          "ratio": 5.322642580389279,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo su scheda",
+          "foreground": "#342B29",
+          "background": "#FFFDFA",
+          "ratio": 13.57493563389952,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo secondario su scheda",
+          "foreground": "#6D615B",
+          "background": "#FFFDFA",
+          "ratio": 5.8904706639954005,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Pulsante primario",
+          "foreground": "#FFFFFF",
+          "background": "#8E443B",
+          "ratio": 6.907533765742737,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Pulsante premuto",
+          "foreground": "#FFFFFF",
+          "background": "#71362F",
+          "ratio": 9.247614153826397,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Testo su oro",
+          "foreground": "#342B29",
+          "background": "#D0A650",
+          "ratio": 6.072728374863942,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Collegamenti",
+          "foreground": "#8E443B",
+          "background": "#FFFDFA",
+          "ratio": 6.803110733842127,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Scheda selezionata",
+          "foreground": "#8E443B",
+          "background": "#F2E4DE",
+          "ratio": 5.567996995902044,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "label": "Contorno del campo",
+          "foreground": "#96847C",
+          "background": "#FFFDFA",
+          "ratio": 3.512445078631567,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "label": "Indicatore focus",
+          "foreground": "#8E443B",
+          "background": "#F6F1EA",
+          "ratio": 6.147306206341499,
+          "threshold": 3,
+          "pass": true
+        }
+      ],
+      "rejectedWhiteOnGold": 2.2697049219095446
+    }
+  ]
+}

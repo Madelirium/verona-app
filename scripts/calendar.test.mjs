@@ -6,17 +6,23 @@ import { Script, createContext } from 'node:vm';
 const logic = await readFile(new URL('../public/calendar.js',import.meta.url),'utf8');
 const builtHtml = await readFile(new URL('../public/index.html',import.meta.url),'utf8');
 const catalog = JSON.parse(builtHtml.match(/<script id="event-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+const liveCatalog = structuredClone(catalog);
+// Casi reali congelati: gli import futuri non spostano l’orologio dei test UI.
+const fixture=JSON.parse(await readFile(new URL('./fixtures/calendar-events.json',import.meta.url),'utf8'));
+catalog.events=fixture.events;catalog.updatedAt=fixture.updatedAt;
+catalog.bus=JSON.parse(await readFile(new URL('./fixtures/calendar-bus.json',import.meta.url),'utf8'));
 function run(storage = new Map(),initialView='discover',mapApi) {
   class Element {
     constructor() { this.textContent='';this.value='';this.children=[];this.listeners={};this.attributes={};this.classList={toggle(){}};this.style={}; }
     append(...nodes){this.children.push(...nodes)}
     replaceChildren(...nodes){this.children=nodes}
     setAttribute(key,value){this.attributes[key]=value}
+    getAttribute(key){return this.attributes[key]}
     addEventListener(key,fn){this.listeners[key]=fn}
     hasPointerCapture(){return false}
     setPointerCapture(){}
     showModal(){this.open=true}
-    close(){this.open=false}
+    close(){this.open=false;this.listeners.close?.()}
     focus(){}
   }
   const elements=new Map();
@@ -41,9 +47,9 @@ test('La mappa eventi rispetta date, periodo, preferiti e rientro al calendario'
   assert.equal(new Script('eventMapEvents().length').runInContext(app.context),1);
   app.get('event-map-date').value='2026-10-18';app.get('event-map-date').onchange();
   app.get('event-map-back').onclick();assert.equal(app.get('calendar-view').hidden,false);
-  assert.match(app.get('selected').textContent,/18/);
-  app.get('calendar-event-map').onclick();assert.equal(app.get('event-map-date').value,'2026-10-18');
-  app.get('event-map-date').value='';app.get('event-map-date').onchange();assert.equal(app.get('event-map-date').value,'2026-10-18');
+  assert.match(app.get('selected').textContent,/17/);
+  app.get('calendar-event-map').onclick();assert.equal(app.get('event-map-date').value,'2026-10-17');
+  app.get('event-map-date').value='';app.get('event-map-date').onchange();assert.equal(app.get('event-map-date').value,'2026-10-17');
 });
 
 test('Dettagli e mappa condividono il salvataggio e scartano sedi ambigue',()=>{
@@ -158,8 +164,8 @@ test('Il nome di un quartiere non estende la notizia agli altri quartieri della 
 
 test('Il calendario parte dai dati incorporati, senza richieste di rete',()=>{
   const {get}=run();
-  assert.ok(get('grid').children.length>=28);
-  assert.match(get('status').textContent,/964 nel catalogo/);
+  assert.equal(get('week-grid').children.length,7);
+  assert.ok(get('status').textContent.includes(catalog.events.length+' nel catalogo'));
   assert.ok(get('month').textContent.length>0);
 });
 test('La Home contiene sei servizi e Permessi ZTL sostituisce Persone con il portale ufficiale',()=>{
@@ -205,12 +211,12 @@ test('Autobus apre schede reali dalla Home, cerca il percorso e distingue i serv
   assert.equal(app.get('bus-list').children.length,catalog.bus.lines.length);
   app.get('bus-search').value='MONTORIO';app.get('bus-search').oninput();
   assert.ok(new Script('busData.lines.filter(busMatches).length').runInContext(app.context)>0);
-  app.get('open-filters').onclick();assert.equal(app.get('bus-filters-dialog').open,true);
+  assert.equal(app.get('open-filters').hidden,true);assert.equal(app.get('bus-service-tools').hidden,false);
   app.get('bus-service').value='holiday';app.get('bus-service').onchange();
   assert.equal(new Script('busData.lines.filter(busMatches).every(l=>l.service==="holiday")').runInContext(app.context),true);
-  app.get('apply-bus-filters').onclick();assert.equal(app.get('bus-filters-dialog').open,false);
+
   app.get('bus-list').children[0].children[0].onclick();assert.equal(app.get('bus-detail-dialog').open,true);
-  assert.ok(app.get('bus-detail-content').children.some(e=>e.className==='bus-route'));
+  assert.ok(app.get('bus-detail-content').children.some(e=>e.children?.some(n=>n.className==='bus-route')));
   assert.ok(app.get('bus-detail-content').children.some(e=>e.href?.includes('ServeAttachment.php')));
   app.get('close-bus-detail').onclick();app.get('bus-back').onclick();assert.equal(app.get('home-view').hidden,false);
 });
@@ -219,36 +225,93 @@ test('Le linee preferite persistono e la rimozione lascia uno stato vuoto recupe
   app.get('bus-list').children[0].children[1].onclick();assert.ok(app.storage.get('verona-bus-v1'));
   const next=run(app.storage,'home');new Script('setView("bus")').runInContext(next.context);next.get('bus-favorites').onclick();
   assert.equal(next.get('bus-list').children.length,1);
-  next.get('bus-list').children[0].children[1].onclick();assert.match(next.get('bus-list').children[0].textContent,/Nessuna linea preferita/);
+  next.get('bus-list').children[0].children[1].onclick();assert.match(next.get('bus-list').children[0].children[0].textContent,/Nessuna linea preferita/);
   next.get('bus-lines').onclick();assert.equal(next.get('bus-list').children.length,catalog.bus.lines.length);
 });
 test('Gli avvisi ATV aprono la fonte e non vengono presentati come orari live',()=>{
   const app=run(new Map(),'home');new Script('setView("bus")').runInContext(app.context);app.get('bus-alerts').onclick();
-  assert.equal(app.get('bus-list').children.length,catalog.bus.alerts.length);
-  app.get('bus-list').children[0].children[1].onclick();assert.equal(app.get('bus-detail-dialog').open,true);
+  assert.equal(app.get('bus-list').children.filter(c=>c.className==='bus-alert').length,catalog.bus.alerts.length);
+  app.get('bus-list').children.find(c=>c.className==='bus-alert').children[1].onclick();assert.equal(app.get('bus-detail-dialog').open,true);
   assert.ok(app.get('bus-detail-content').children.some(e=>e.href?.startsWith('https://www.atv.verona.it/')));
   assert.ok(catalog.bus.lines.every(l=>l.realtime===false));
 });
 test('Notizie ATV mostra il feed completo, con ricerca anche nelle pubblicazioni aziendali',()=>{
-  const app=run(new Map(),'home');new Script('setView("bus")').runInContext(app.context);app.get('bus-updates').onclick();
-  assert.equal(app.get('bus-list').children.length,catalog.bus.updates.length);
+  const app=run(new Map(),'home');new Script('setView("bus")').runInContext(app.context);app.get('bus-more').onclick();app.get('bus-updates').onclick();
+  assert.equal(app.get('bus-updates-dialog').open,true);assert.equal(app.get('bus-updates-list').children.length,catalog.bus.updates.length);
   assert.ok(catalog.bus.updates.length>catalog.bus.alerts.length);
-  const item=catalog.bus.updates.find(i=>!i.serviceAlert);app.get('bus-search').value=item.title;app.get('bus-search').oninput();
-  assert.equal(app.get('bus-list').children.length,1);app.get('bus-list').children[0].children[1].onclick();assert.equal(app.get('bus-detail-dialog').open,true);
+  const item=catalog.bus.updates.find(i=>!i.serviceAlert);app.get('bus-updates-search').value=item.title;app.get('bus-updates-search').oninput();
+  assert.equal(app.get('bus-updates-list').children.length,1);app.get('bus-updates-list').children[0].children[1].onclick();assert.equal(app.get('bus-detail-dialog').open,true);
+});
+
+test('Autobus apre le mie linee quando esistono preferiti e conserva ricerca e servizio',()=>{
+  const line=catalog.bus.lines.find(l=>l.id==='atv-urban-13'),storage=new Map([['verona-bus-v1',JSON.stringify({[line.id]:true})]]);
+  const app=run(storage,'home');new Script('setView("bus")').runInContext(app.context);
+  assert.equal(new Script('busMode').runInContext(app.context),'favorites');assert.equal(app.get('bus-list').children.length,1);
+  const card=app.get('bus-list').children[0],body=card.children[0].children[1];
+  assert.ok(body.children.some(n=>n.textContent==='Direzione Montorio'));assert.ok(body.children.some(n=>n.textContent==='Direzione Croce Bianca'));
+  assert.ok(card.children[2].children[0].href.includes('ServeAttachment.php'));
+  app.get('bus-search').value='Montorio';app.get('bus-service').value='urban';app.get('bus-search').oninput();
+  app.get('bus-back').onclick();new Script('setView("bus")').runInContext(app.context);
+  assert.equal(app.get('bus-search').value,'Montorio');assert.equal(app.get('bus-service').value,'urban');assert.equal(new Script('busMode').runInContext(app.context),'favorites');
+});
+
+test('Gli avvisi personali includono quelli senza linea e rispettano i numeri esatti',()=>{
+  const app=run(new Map([['verona-bus-v1',JSON.stringify({'atv-urban-20':true,'atv-holiday-97':true})]]),'home');
+  new Script('setView("bus")').runInContext(app.context);app.get('bus-search').value='Centro';app.get('bus-service').value='holiday';
+  app.get('bus-alerts').onclick();assert.equal(app.get('bus-search').value,'');assert.equal(app.get('bus-service-tools').hidden,true);
+  assert.equal(new Script('busAlertScope').runInContext(app.context),'mine');
+  assert.equal(new Script('filteredBusAlerts().every(a=>!a.lines.length||a.lines.includes("20")||a.lines.includes("97"))').runInContext(app.context),true);
+  assert.ok(app.get('bus-list').children.some(c=>c.className==='bus-feed-heading'&&c.textContent.startsWith('Avvisi generali')));
+  assert.ok(new Script('filteredBusAlerts().some(a=>a.lines.includes("97"))').runInContext(app.context));
+  app.get('bus-alert-all').onclick();assert.equal(new Script('filteredBusAlerts().length').runInContext(app.context),catalog.bus.alerts.length);
+  app.get('bus-lines').onclick();assert.equal(app.get('bus-search').value,'Centro');assert.equal(app.get('bus-service').value,'holiday');
+});
+
+test('Da un avviso si torna alla linea senza perdere la scheda e le direzioni',()=>{
+  const app=run(new Map(),'home');new Script('setView("bus");openBusLine(busData.lines.find(l=>l.id==="atv-urban-20"))').runInContext(app.context);
+  app.get('bus-detail-content').children.find(c=>c.className==='bus-alert').children[1].onclick();
+  const back=app.get('bus-detail-content').children[0];assert.match(back.textContent,/Torna alla linea 20/);back.onclick();
+  assert.equal(app.get('bus-detail-content').children[0].textContent,'Linea 20');assert.equal(app.get('bus-detail-dialog').open,true);
+  assert.equal(app.get('bus-detail-content').children.filter(c=>c.className==='bus-route-section').length,2);
+});
+
+test('Gli stati vuoti autobus azzerano i filtri e le notizie hanno una ricerca indipendente',()=>{
+  const app=run(new Map(),'home');new Script('setView("bus")').runInContext(app.context);
+  app.get('bus-service').value='evening';app.get('bus-search').value='nessuna-linea-12345';app.get('bus-search').oninput();
+  app.get('bus-list').children[0].children.at(-1).onclick();assert.equal(app.get('bus-search').value,'');assert.equal(app.get('bus-service').value,'');
+  app.get('bus-search').value='Montorio';app.get('bus-service').value='urban';app.get('bus-search').oninput();
+  app.get('bus-more').onclick();app.get('bus-updates').onclick();app.get('bus-updates-search').value='nessuna-notizia-12345';app.get('bus-updates-search').oninput();
+  app.get('bus-updates-list').children[0].children.at(-1).onclick();assert.equal(app.get('bus-updates-list').children.length,catalog.bus.updates.length);
+  app.get('close-bus-updates').onclick();assert.equal(app.get('bus-search').value,'Montorio');assert.equal(app.get('bus-service').value,'urban');
+});
+
+test('La scheda senza direzioni non inventa destinazioni e gli errori delle fonti sono visibili',()=>{
+  const app=run(new Map(),'home');new Script('setView("bus");openBusLine(busData.lines.find(l=>l.id==="atv-holiday-96"))').runInContext(app.context);
+  const route=app.get('bus-detail-content').children.find(c=>c.className==='bus-route-section');assert.equal(route.children[0].textContent,'Percorso indicato da ATV');
+  new Script('busData.sources[0].status="error";render()').runInContext(app.context);assert.match(app.get('bus-stale').textContent,/Raccolta incompleta/);
+  app.get('bus-more').onclick();assert.match(app.get('bus-source-status').children[0].textContent,/dati precedenti conservati/);
+});
+
+test('Autobus senza catalogo o feed conserva un accesso utile alle fonti ufficiali',()=>{
+  const app=run(new Map(),'home');new Script('busData.lines=[];busData.alerts=[];busData.updates=[];setView("bus")').runInContext(app.context);
+  assert.ok(app.get('bus-list').children[0].children.some(c=>c.href?.includes('atv.verona.it')));
+  app.get('bus-alerts').onclick();assert.ok(app.get('bus-list').children[0].children.some(c=>c.href?.includes('/deviazioni')));
+  app.get('bus-alert-more').onclick();app.get('bus-updates').onclick();assert.ok(app.get('bus-updates-list').children[0].children.some(c=>c.href==='https://www.atv.verona.it/'));
 });
 test('Notizie è attiva dalla Home e filtra le pubblicazioni ufficiali separatamente dagli eventi',()=>{
   const app=run(new Map(),'home');
   const news=app.get('services').children.find(e=>e.attributes['data-service']==='news');
   assert.ok(!news.attributes['aria-label'].includes('in preparazione'));news.onclick();
   assert.equal(app.get('news-view').hidden,false);assert.equal(app.get('calendar-view').hidden,true);assert.equal(app.get('news-list').children.length,catalog.news.items.length);
-  app.get('news-notices').onclick();assert.equal(new Script('filteredNews().every(i=>i.sourceKey==="avvisi")').runInContext(app.context),true);
-  app.get('news-all').onclick();app.get('open-filters').onclick();assert.equal(app.get('news-filters-dialog').open,true);
+  assert.equal(app.get('open-filters').hidden,true);app.get('news-open-filters').onclick();assert.equal(app.get('news-filters-dialog').open,true);
+  app.get('news-type').value='avvisi';app.get('apply-news-filters').onclick();assert.equal(new Script('filteredNews().every(i=>i.sourceKey==="avvisi")').runInContext(app.context),true);
+  app.get('news-open-filters').onclick();app.get('reset-news-filters').onclick();app.get('apply-news-filters').onclick();
   app.get('news-search').value='tangenziale';app.get('news-search').oninput();
   assert.ok(new Script('filteredNews().length').runInContext(app.context)>0);
-  app.get('apply-news-filters').onclick();assert.equal(app.get('news-filters-dialog').open,false);
-  app.get('news-area').value='Circoscrizione 3';app.get('news-search').value='';app.get('news-area').onchange();
-  assert.ok(new Script('filteredNews().every(i=>i.area==="Circoscrizione 3")').runInContext(app.context));
-  app.get('reset-news-filters').onclick();assert.equal(app.get('news-area').value,'');
+  assert.equal(app.get('news-filters-dialog').open,false);
+  app.get('news-search').value='';new Script('applyDistrict("3:*")').runInContext(app.context);
+  assert.ok(new Script('filteredNews().every(i=>districtMatch(i))').runInContext(app.context));
+  app.get('news-all').onclick();assert.equal(app.get('news-list').children.length,catalog.news.items.length);
 });
 test('Le notizie salvate persistono, si rimuovono dal dettaglio e non entrano nel calendario eventi',()=>{
   const app=run(new Map(),'home');app.get('news').onclick();
@@ -260,7 +323,60 @@ test('Le notizie salvate persistono, si rimuovono dal dettaglio e non entrano ne
   assert.equal(next.get('news-list').children.length,1);
   next.get('news-list').children[0].children[1].onclick();
   next.get('news-detail-content').children.find(e=>e.className?.startsWith('news-bookmark')).onclick();
-  assert.match(next.get('news-list').children[0].textContent,/Nessuna notizia salvata/);
+  assert.match(next.get('news-list').children[0].children[0].textContent,/Nessuna notizia salvata/);
+});
+
+test('I filtri notizie applicano soltanto i campi confermati e si possono rimuovere uno per volta',()=>{
+  const app=run(new Map(),'home');app.get('news').onclick();const total=app.get('news-list').children.length;
+  app.get('news-open-filters').onclick();app.get('news-category').value='Mobilità';app.get('news-type').value='avvisi';
+  assert.equal(new Script('filteredNews().length').runInContext(app.context),total);
+  app.get('close-news-filters').onclick();app.get('news-open-filters').onclick();assert.equal(app.get('news-category').value,'');assert.equal(app.get('news-type').value,'');
+  app.get('news-category').value='Comunità';app.get('news-type').value='notizie';app.get('apply-news-filters').onclick();
+  assert.equal(new Script('filteredNews().every(i=>i.category==="Comunità"&&i.sourceKey==="notizie")').runInContext(app.context),true);
+  assert.equal(app.get('news-active-filters').children.length,2);assert.equal(app.get('news-active-filters').hidden,false);
+  app.get('news-active-filters').children[0].onclick();assert.equal(new Script('newsFilters.category').runInContext(app.context),'');
+  assert.equal(new Script('newsFilters.type').runInContext(app.context),'notizie');
+  app.get('news-open-filters').onclick();app.get('reset-news-filters').onclick();app.get('close-news-filters').onclick();
+  assert.equal(new Script('newsFilters.type').runInContext(app.context),'notizie');
+  app.get('news-active-filters').children[0].onclick();assert.equal(app.get('news-list').children.length,total);assert.equal(app.get('news-active-filters').hidden,true);
+});
+
+test('La vista notizie della zona riutilizza la scelta e i riferimenti testuali del Mio quartiere',()=>{
+  const app=run(new Map(),'home');app.get('news').onclick();app.get('news-zone-tab').onclick();
+  assert.match(app.get('news-list').children[0].children[0].textContent,/Qual è la tua zona/);
+  app.get('news-list').children[0].children.at(-1).onclick();app.get('district-choice').value='2:1';app.get('apply-district').onclick();
+  assert.equal(app.get('news-view').hidden,false);assert.match(app.get('news-zone').textContent,/Borgo Trento/);
+  assert.ok(new Script('filteredNews().some(i=>i.title.includes("Borgo Trento"))').runInContext(app.context));
+  assert.ok(new Script('filteredNews().every(i=>districtMatch(i))').runInContext(app.context));
+  const next=run(app.storage,'home');next.get('news').onclick();next.get('news-zone-tab').onclick();assert.match(next.get('news-zone').textContent,/Borgo Trento/);
+  next.get('news-zone').onclick();next.get('district-choice').value='3:*';next.get('close-district').onclick();assert.match(next.get('news-zone').textContent,/Borgo Trento/);
+  next.get('news-zone').onclick();next.get('clear-district').onclick();assert.match(next.get('news-list').children[0].children[0].textContent,/Qual è la tua zona/);
+});
+
+test('Le schede mostrano argomento e zona distinti e spiegano le date nel dettaglio',()=>{
+  const app=run(new Map(),'home');app.get('news').onclick();app.get('news-search').value='Consiglio circoscrizionale';app.get('news-search').oninput();
+  const card=app.get('news-list').children[0];const tags=card.children.find(c=>c.className==='news-tags');
+  assert.equal(tags.children[0].textContent,'Altre comunicazioni');assert.match(tags.children[1].textContent,/Circoscrizione 3/);
+  assert.match(card.children[0].children[1].textContent,/Pubblicata/);
+  card.children.at(-1).children[0].onclick();assert.equal(app.get('news-detail-dialog').open,true);
+  const details=app.get('news-detail-content');assert.ok(details.children.some(c=>c.textContent.includes('data indicata è quella di pubblicazione')));
+  assert.ok(details.children.some(c=>c.href?.startsWith('https://www.comune.verona.it/Novita/')));
+  assert.ok(details.children.some(c=>c.className==='news-provenance'));
+});
+
+test('La ricerca senza risultati si recupera senza perdere la vista o il quartiere',()=>{
+  const app=run(new Map(),'home');new Script('applyDistrict("3:*");setView("news")').runInContext(app.context);app.get('news-zone-tab').onclick();
+  app.get('news-search').value='impossibile-123456';app.get('news-search').oninput();
+  assert.match(app.get('news-list').children[0].children[0].textContent,/Nessun risultato/);
+  app.get('news-list').children[0].children.at(-1).onclick();assert.equal(app.get('news-search').value,'');
+  assert.equal(new Script('newsMode').runInContext(app.context),'zone');assert.equal(new Script('districtChoice').runInContext(app.context),'3:*');
+  assert.ok(new Script('filteredNews().length').runInContext(app.context)>0);
+});
+
+test('Una raccolta di notizie assente mantiene un accesso alla fonte ufficiale',()=>{
+  const app=run(new Map(),'home');new Script('newsItems.splice(0);setView("news")').runInContext(app.context);
+  assert.equal(app.get('news-summary').textContent,'Raccolta non disponibile');
+  const link=app.get('news-list').children[0].children.at(-1);assert.equal(link.href,'https://www.comune.verona.it/Novita/Notizie');assert.equal(link.target,'_blank');
 });
 
 test('Dalla Home si salva un evento reale e si apre il proprio programma',()=>{
@@ -336,13 +452,13 @@ test('I filtri si aprono in un pannello e si possono applicare e azzerare senza 
   const app=run();app.get('open-filters').onclick();
   assert.equal(app.get('filters-dialog').open,true);
   app.get('search').value='Hostaria';app.get('search').oninput();
-  assert.equal(app.get('filter-dot').hidden,false);
+  assert.equal(app.get('filter-dot').hidden,true);
   app.get('apply-filters').onclick();assert.equal(app.get('filters-dialog').open,false);
   assert.match(new Script('currentDiscovery.title').runInContext(app.context),/Hostaria/);
   app.get('open-filters').onclick();app.get('reset-filters').onclick();
-  assert.equal(app.get('search').value,'');assert.equal(app.get('filter-dot').hidden,true);
+  assert.equal(app.get('search').value,'');assert.equal(app.get('filter-dot').hidden,false);
   assert.equal(app.get('filters-dialog').open,true);
-  app.get('close-filters').onclick();assert.equal(app.get('filters-dialog').open,false);
+  app.get('close-filters').onclick();assert.equal(app.get('filters-dialog').open,false);assert.equal(app.get('search').value,'Hostaria');
   app.get('all').onclick();assert.equal(app.get('page-title').textContent,'Il calendario');
   app.get('open-info').onclick();assert.equal(app.get('info-dialog').open,true);
   app.get('close-info').onclick();assert.equal(app.get('info-dialog').open,false);
@@ -357,12 +473,14 @@ test('Un evento salvato compare nel calendario personale e rimane dopo il ricari
   app.get('saved').onclick();
   assert.equal(app.get('events').children.length,1);
   app.get('events').children[0].children.at(-1).children[1].onclick();
+  app.get('detail-content').children.find(b=>b.className==='dialog-save event-presence').onclick();
   assert.equal(JSON.parse(app.storage.get('verona-events-v1'))[catalog.events[0].id],'going');
   const reloaded=run(app.storage);
   new Script('selected="2026-10-17";month="2026-10";onlySaved=true;render()').runInContext(reloaded.context);
   assert.equal(reloaded.get('events').children.length,1);
-  reloaded.get('events').children[0].children.at(-1).children.find(b=>b.textContent==='Rimuovi').onclick();
-  assert.match(reloaded.get('events').children[0].textContent,/Non hai eventi salvati/);
+  reloaded.get('events').children[0].children.at(-1).children[1].onclick();
+  reloaded.get('detail-content').children.find(b=>b.className==='dialog-save event-remove').onclick();
+  assert.match(reloaded.get('events').children[0].children[0].textContent,/Non hai eventi salvati/);
 });
 test('Navigazione dicembre-gennaio e sovrapposizione eventi di più giorni',()=>{
   const {context}=run();
@@ -371,10 +489,99 @@ test('Navigazione dicembre-gennaio e sovrapposizione eventi di più giorni',()=>
   assert.equal(new Script('occursOn({startsAt:"2026-10-17",endsAt:"2026-10-18"},"2026-10-18")').runInContext(context),true);
   assert.equal(new Script('occursOn({startsAt:"2026-10-17",endsAt:"2026-10-18"},"2026-10-19")').runInContext(context),false);
 });
+
+test('Agenda settimanale: conteggi reali, cambio anno e navigazione da tastiera',()=>{
+  const app=run();app.get('all').onclick();
+  new Script('selectAgendaDay("2026-10-18")').runInContext(app.context);
+  assert.equal(app.get('week-grid').children.length,7);
+  const sunday=app.get('week-grid').children[6];
+  assert.equal(sunday.getAttribute('data-day'),'2026-10-18');
+  assert.match(sunday.getAttribute('aria-label'),/12 eventi/);
+  assert.equal(app.get('events').children.length,12);
+  sunday.listeners.keydown({key:'ArrowRight',preventDefault(){}});
+  assert.equal(new Script('selected').runInContext(app.context),'2026-10-19');
+  new Script('selectAgendaDay("2026-12-29")').runInContext(app.context);
+  app.get('week-next').onclick();assert.equal(new Script('selected').runInContext(app.context),'2027-01-05');
+  app.get('week-prev').onclick();assert.equal(new Script('selected').runInContext(app.context),'2026-12-29');
+  assert.equal(new Script('shiftDay("2026-10-25",1)').runInContext(app.context),'2026-10-26');
+});
+
+test('Il mese si sfoglia senza cambiare agenda: annullamento, tastiera e scelta esplicita',()=>{
+  const app=run();app.get('all').onclick();app.get('open-month').onclick();
+  assert.equal(app.get('month-dialog').open,true);
+  app.get('next').onclick();assert.equal(new Script('month').runInContext(app.context),'2026-11');
+  assert.equal(new Script('selected').runInContext(app.context),'2026-10-17');
+  app.get('close-month').onclick();assert.equal(new Script('month').runInContext(app.context),'2026-10');
+  app.get('open-month').onclick();
+  app.get('grid').children.find(b=>b.getAttribute('data-day')==='2026-10-31').listeners.keydown({key:'ArrowRight',preventDefault(){}});
+  assert.equal(new Script('month').runInContext(app.context),'2026-11');
+  assert.equal(new Script('selected').runInContext(app.context),'2026-10-17');
+  app.get('grid').children.find(b=>b.getAttribute('data-day')==='2026-11-01').onclick();
+  assert.equal(new Script('selected').runInContext(app.context),'2026-11-01');assert.equal(app.get('month-dialog').open,false);
+});
+
+test('Le due azioni della scheda mantengono la presenza e permettono di gestirla nei dettagli',()=>{
+  const app=run();app.get('all').onclick();
+  const card=app.get('events').children.find(c=>c.className==='event-card');
+  assert.equal(card.children.at(-1).children.length,2);
+  card.children.at(-1).children[0].onclick();
+  app.get('events').children[0].children.at(-1).children[1].onclick();
+  app.get('detail-content').children.find(b=>b.className==='dialog-save event-presence').onclick();
+  const id=Object.keys(JSON.parse(app.storage.get('verona-events-v1')))[0];
+  app.get('events').children[0].children.at(-1).children[0].onclick();
+  assert.equal(JSON.parse(app.storage.get('verona-events-v1'))[id],'going');
+  app.get('detail-content').children.find(b=>b.className==='dialog-save event-presence').onclick();
+  assert.equal(JSON.parse(app.storage.get('verona-events-v1'))[id],'interested');
+});
+
+test('Il ritorno dalla mappa recupera salvati, data, filtri e posizione della lista',()=>{
+  const app=run();new Script('save(events[0].id,"going");setView("saved");selectAgendaDay("2026-10-18")').runInContext(app.context);
+  app.get('search').value='Bridal';app.get('source').value='Veronafiere';app.get('events').scrollTop=120;
+  app.get('calendar-event-map').onclick();
+  app.get('event-map-date').value='2026-10-20';app.get('event-map-date').onchange();
+  app.get('event-map-back').onclick();
+  assert.equal(new Script('view').runInContext(app.context),'saved');assert.equal(new Script('onlySaved').runInContext(app.context),true);
+  assert.equal(new Script('selected').runInContext(app.context),'2026-10-18');
+  assert.equal(app.get('search').value,'Bridal');assert.equal(app.get('source').value,'Veronafiere');assert.equal(app.get('events').scrollTop,120);
+  app.get('all').onclick();app.get('saved').onclick();assert.equal(new Script('selected').runInContext(app.context),'2026-10-18');
+});
+
+test('Filtri agenda: bozza annullabile, campi pertinenti e recupero dello stato vuoto',()=>{
+  const app=run();app.get('all').onclick();const count=app.get('events').children.length;
+  app.get('open-filters').onclick();assert.equal(app.get('event-period-field').hidden,true);
+  app.get('search').value='nessun-risultato-123';app.get('search').oninput();
+  assert.equal(app.get('events').children.length,count);
+  app.get('filters-dialog').close();assert.equal(app.get('search').value,'');
+  app.get('open-filters').onclick();app.get('search').value='nessun-risultato-123';app.get('apply-filters').onclick();
+  assert.equal(app.get('agenda-filters').children.length,1);
+  const empty=app.get('events').children[0];assert.equal(empty.className,'agenda-empty');
+  empty.children.find(b=>b.textContent==='Rimuovi ricerca e filtri').onclick();
+  assert.equal(app.get('events').children.length,count);assert.equal(app.get('agenda-filters').hidden,true);
+});
+
+test('Il primo accesso ai salvati esclude eventi già finiti oggi e conserva date senza orario',()=>{
+  const app=run();
+  new Script(`events.push({id:'ended',title:'Finito',startsAt:'2026-10-17T06:00:00Z',endsAt:'2026-10-17T07:00:00Z',source:'Comune di Verona'},{id:'tomorrow',title:'Domani',startsAt:'2026-10-18',endsAt:'2026-10-18',source:'Comune di Verona'});preferences={ended:'going',tomorrow:'interested'};setView('saved')`).runInContext(app.context);
+  assert.equal(new Script('selected').runInContext(app.context),'2026-10-18');
+  assert.equal(new Script('agendaTime(events.find(e=>e.id==="tomorrow"))').runInContext(app.context),'Orario non indicato');
+  assert.equal(new Script('agendaTime({startsAt:"2026-10-17",endsAt:"2026-10-20"})').runInContext(app.context),'In corso · fino al 20 ott');
+});
+
+test('Le informazioni distinguono raccolta riuscita e tentativi falliti senza nascondere i dati conservati',()=>{
+  const app=run();
+  new Script(`payload.importReport={checkedAt:'2026-10-17T08:30:00Z',sources:[{source:'Comune di Verona',status:'error',lastSuccessAt:'2026-10-16T07:00:00Z'},{source:'Veronafiere',status:'ok',lastSuccessAt:'2026-10-17T08:30:00Z'}]};setView('calendar')`).runInContext(app.context);
+  assert.equal(app.get('event-update-warning').hidden,false);
+  assert.match(app.get('event-source-status').children[0].textContent,/16 ott 2026/);
+  assert.match(app.get('event-source-status').children[0].textContent,/dati precedenti conservati/);
+  assert.match(app.get('event-source-status').children[1].textContent,/17 ott 2026/);
+  assert.ok(app.get('events').children.some(c=>c.className==='event-card'));
+  new Script(`payload.importReport={sources:[{source:'Comune di Verona',status:'ok',lastSuccessAt:'2026-10-17T08:30:00Z'}]};payload.updatedAt='2026-10-14T08:30:00Z';render()`).runInContext(app.context);
+  assert.match(app.get('event-update-warning').textContent,/oltre due giorni/);
+});
 test('Il file distribuibile incorpora il catalogo e non dipende dal percorso delle API',async()=>{
   const html=await readFile(new URL('../public/index.html',import.meta.url),'utf8');
   const embedded=JSON.parse(html.match(/<script id="event-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
-  assert.equal(embedded.events.length,catalog.events.length);
+  assert.equal(embedded.events.length,liveCatalog.events.length);
   assert.ok(!html.includes('__EVENT_DATA__'));
   assert.ok(!logic.includes('fetch('));
 });
