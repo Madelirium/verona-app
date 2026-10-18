@@ -6,6 +6,7 @@
     "import:events": "node scripts/update-events.mjs",
     "import:news": "node scripts/import-news.mjs",
     "import:bus": "node scripts/import-bus.mjs",
+    "snapshot:bus-pdfs": "node scripts/snapshot-bus-pdfs.mjs",
     "import:places": "node scripts/import-places.mjs",
     "build": "node scripts/build-calendar.mjs",
     "test": "node --test",

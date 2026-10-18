@@ -10,9 +10,9 @@ on:
         type: boolean
         default: true
       refresh_bus:
-        description: Raccogli linee e pubblicazioni ATV prima di pubblicare
+        description: Raccolta manuale ATV (non eseguita dalla pianificazione)
         type: boolean
-        default: true
+        default: false
   schedule:
     - cron: '17 4 * * *'
 
@@ -46,7 +46,7 @@ jobs:
       - name: Aggiorna schede e pubblicazioni ATV
         id: refresh_bus
         continue-on-error: true
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_bus)
+        if: github.event_name == 'workflow_dispatch' && inputs.refresh_bus
         run: npm run import:bus -- --allow-partial
       - name: Conserva il rapporto della raccolta
         if: always() && (steps.refresh.outcome == 'success' || steps.refresh.outcome == 'failure' || steps.refresh_bus.outcome == 'success' || steps.refresh_bus.outcome == 'failure')

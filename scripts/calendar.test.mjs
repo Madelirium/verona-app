@@ -298,6 +298,12 @@ test('Autobus senza catalogo o feed conserva un accesso utile alle fonti ufficia
   app.get('bus-alerts').onclick();assert.ok(app.get('bus-list').children[0].children.some(c=>c.href?.includes('/deviazioni')));
   app.get('bus-alert-more').onclick();app.get('bus-updates').onclick();assert.ok(app.get('bus-updates-list').children[0].children.some(c=>c.href==='https://www.atv.verona.it/'));
 });
+
+test('Gli orari stagionali non scadono dopo 48 ore mentre gli avvisi segnalano una raccolta vecchia',()=>{
+  const app=run(new Map(),'home');new Script(`busData.sources.forEach(s=>{s.status='ok';s.lastSuccessAt='2026-10-14T08:00:00Z'});busData.lines.forEach(l=>l.checkedAt='2026-10-14T08:00:00Z');busData.updatedAt='2026-10-14T08:00:00Z';setView('bus')`).runInContext(app.context);
+  assert.equal(app.get('bus-stale').textContent,'');
+  app.get('bus-alerts').onclick();assert.match(app.get('bus-stale').textContent,/Avvisi raccolti oltre due giorni/);
+});
 test('Notizie è attiva dalla Home e filtra le pubblicazioni ufficiali separatamente dagli eventi',()=>{
   const app=run(new Map(),'home');
   const news=app.get('services').children.find(e=>e.attributes['data-service']==='news');
