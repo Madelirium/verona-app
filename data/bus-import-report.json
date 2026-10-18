@@ -1,30 +1,33 @@
 {
-  "checkedAt": "2026-10-18T10:27:17.786Z",
-  "status": "ok",
+  "checkedAt": "2026-10-18T10:37:48.922Z",
+  "status": "error",
   "sources": [
     {
       "key": "urban",
-      "status": "ok",
-      "count": 24,
+      "status": "error",
+      "error": "HTTP 403: https://www.atv.verona.it/orari-urbani/dettaglio-percorsi-orari-pdf",
+      "retained": 24,
       "lastSuccessAt": "2026-10-18T10:27:17.786Z"
     },
     {
       "key": "evening",
-      "status": "ok",
-      "count": 5,
+      "status": "error",
+      "error": "HTTP 403: https://www.atv.verona.it/urbano-verona-serale",
+      "retained": 5,
       "lastSuccessAt": "2026-10-18T10:27:17.786Z"
     },
     {
       "key": "holiday",
-      "status": "ok",
-      "count": 9,
+      "status": "error",
+      "error": "HTTP 403: https://www.atv.verona.it/urbano-verona-festivo",
+      "retained": 9,
       "lastSuccessAt": "2026-10-18T10:27:17.786Z"
     },
     {
       "key": "rss",
-      "status": "ok",
-      "count": 20,
-      "alerts": 13,
+      "status": "error",
+      "error": "HTTP 403: https://www.atv.verona.it/flex/cm/pages/ServeFeed.php/L/IT/fmt/rss20/feed/pages%3A2",
+      "retained": 20,
       "lastSuccessAt": "2026-10-18T10:27:17.786Z"
     }
   ]
