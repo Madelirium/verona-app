@@ -11,15 +11,20 @@ Render Free è attivo a https://verona-games.onrender.com, servizio
 Il backend conferma `storage: supabase`. Collaudo HTTPS riuscito: ranked attivo,
 accesso anonimo ranked negato, CORS per GitHub Pages, creazione e ingresso in un
 tavolo privato Forza 4, mossa e recupero dello stato. Il solo tavolo di prova è
-stato chiuso. Nessuna chiave privata è nel repository. La chiave backend inserita
-su Render va sostituita: è comparsa nell'output tecnico della sessione durante
-una lettura del modulo, senza essere pubblicata nel codice.
+stato chiuso. Nessuna chiave privata è nel repository. La chiave backend è stata sostituita con `render_verona` e la precedente
+`default` è stata revocata. La sostituzione finale su Render è stata completata
+manualmente dall'utente. Dopo il nuovo deploy sono stati verificati su HTTPS
+creazione, ingresso e recupero delle stanze Briscola e Forza 4, una mossa Forza 4,
+accesso ai salvataggi Supabase e disponibilità ranked. I tavoli privati di prova
+sono stati chiusi. La chiave precedente era comparsa nell'output tecnico della
+sessione, senza essere pubblicata nel codice.
 
 Il ramo di rilascio è `codex/games-cloud-storage` di `Madelirium/verona-app`,
 separato dagli altri lavori locali. Rilascio isolato: 182 test superati e flusso
 completo da due browser mobili con PostgreSQL. L'Actions variable
 `BRISCOLA_API_URL` collega il frontend Pages all'origine Render sopra indicata.
-Una partita ranked tra due account Google reali resta un collaudo manuale:
+Il frontend è pubblicato su https://madelirium.github.io/verona-app/ con build
+GitHub Pages riuscito. Una partita ranked tra due account Google reali resta un collaudo manuale:
 Google è verificato sul sito e il flusso ranked è collaudato con utenti di test.
 
 Gli advisor non segnalano avvisi sui nuovi oggetti. Gli avvisi di esecuzione pubblica
