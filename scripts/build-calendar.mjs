@@ -1,3 +1,5 @@
+import {authConfig} from './auth-config.mjs';
+import {loadEnvFile} from 'node:process';
 import { readFile, writeFile } from 'node:fs/promises';
 import {districtCatalog,districtMatches,explicitDistricts} from './districts.mjs';
 import {splitBusDirections,alertLines} from './bus.mjs';
@@ -5,8 +7,10 @@ import {validateTimetables} from './timetables.mjs';
 import {validateBusRoutes} from './bus-routes.mjs';
 const root = new URL('../',import.meta.url);
 export async function buildCalendar() {
+  try{loadEnvFile(new URL('../.env',import.meta.url));}catch(error){if(error.code!=='ENOENT')throw error;}
   const [template,logic,json,editorialJson] = await Promise.all(['public/calendar.template.html','public/calendar.js','data/events.json','data/editorial.json'].map(p=>readFile(new URL(p,root),'utf8')));
   const data=JSON.parse(json);
+  data.auth=authConfig();
   if(!Array.isArray(data.events))throw new Error('Catalogo eventi non valido');
   try{data.news=JSON.parse(await readFile(new URL('data/news.json',root),'utf8'));}
   catch(error){if(error.code!=='ENOENT')throw error;data.news={items:[],sources:[]};}
@@ -36,7 +40,8 @@ export async function buildCalendar() {
   const safe=JSON.stringify(data).replaceAll('<','\\u003c').replaceAll('>','\\u003e').replaceAll('&','\\u0026');
   const [mapCss,mapJs]=await Promise.all(['public/vendor/leaflet.css','public/vendor/leaflet.js'].map(p=>readFile(new URL(p,root),'utf8').catch(e=>{if(e.code!=='ENOENT')throw e;return '';})));
   const assets=mapJs?`<style>${mapCss}</style><script>${mapJs.replaceAll('</script','<\\/script')}</script>`:'';
-  const html=template.replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>logic);
+  const authLogic=await readFile(new URL('public/auth.js',root),'utf8');
+  const html=template.replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>logic+'\n'+authLogic);
   await writeFile(new URL('public/index.html',root),html);
   return data.events.length;
 }
