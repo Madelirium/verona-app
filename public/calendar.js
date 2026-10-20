@@ -36,6 +36,8 @@ let eventMap=null,eventMapLayer=null,eventMapSignature=null,eventMapSaved=false,
 try { preferences = JSON.parse(localStorage.getItem('verona-events-v1') || '{}') || {}; } catch {}
 if(typeof preferences!=='object'||Array.isArray(preferences))preferences={};
 let view='home', dismissed={}, lastChoice=null, detailReturnFocus=null, currentDiscovery=null;
+let selectedGame='briscola';
+try{if(localStorage.getItem('verona-game-choice-v1')==='forza4')selectedGame='forza4';}catch{}
 const services=[
   {id:'events',name:'Eventi',icon:'▦',description:'Scopri, salva, partecipa',ready:true},
   {id:'bus',name:'Autobus',icon:'↔',description:'Linee, percorsi e avvisi',ready:true},
@@ -64,10 +66,11 @@ function save(id, state) {
 function render() {
   $('page-heading').hidden=view==='home';
   $('app-shell').classList.toggle('home-layout',view==='home');
+  $('app-shell').classList.toggle('game-session-layout',view==='games'&&Boolean(globalThis.veronaGameSession));
   const filtered=visibleEvents();
   $('month').textContent=formatDay(month+'-01',{month:'long',year:'numeric'});
   $('selected').textContent=formatDay(selected,{weekday:'long',day:'numeric',month:'long'});
-  for(const [id,target] of [['home','home'],['discover','discover'],['news','news'],['all','calendar'],['saved','saved']]){
+  for(const [id,target] of [['home','home'],['discover','discover'],['news','news'],['all','calendar'],['saved','saved'],['games','games']]){
     const active=view===target||(target==='calendar'&&view==='eventmap');$(id).classList.toggle('active',active);$(id).setAttribute('aria-pressed',String(active));
   }
   $('home-view').hidden=view!=='home';$('news-view').hidden=view!=='news';$('discover-view').hidden=view!=='discover';$('calendar-view').hidden=!['calendar','saved'].includes(view);
@@ -75,7 +78,8 @@ function render() {
   $('event-map-view').hidden=view!=='eventmap';
   $('explore-view').hidden=view!=='explore';
   $('district-view').hidden=view!=='district';
-  $('open-filters').hidden=['home','explore','district','news','bus'].includes(view);
+  $('games-view').hidden=view!=='games';
+  $('open-filters').hidden=['home','explore','district','news','bus','games'].includes(view);
   $('page-title').textContent=view==='home'?'':view==='explore'?'Esplora Verona':view==='bus'?'Autobus':view==='news'?'Notizie e Comune':view==='discover'?'Scopri Verona':onlySaved?'I tuoi salvati':'Il calendario';
   $('page-intro').textContent=view==='home'?'':view==='explore'?'Piccole scoperte, vicino a te.':view==='bus'?'ATV · percorsi e orari programmati':view==='news'?'Ultime pubblicazioni · Comune di Verona':view==='discover'?'Il tuo prossimo programma è qui.':onlySaved?'Da “mi interessa” a “ci vediamo lì”.':'Scegli un giorno. Trova qualcosa di bello.';
   $('filter-dot').hidden=!($('search').value||$('source').value||($('period').value&&$('period').value!=='30')||($('collection').value&&$('collection').value!=='local'));
@@ -90,6 +94,7 @@ function render() {
   if(view==='eventmap'){currentDiscovery=null;$('page-title').textContent='Eventi sulla mappa';$('page-intro').textContent='Scegli quando. Scopri dove.';renderEventMap();}
   if(view==='explore'){currentDiscovery=null;renderExplore();}
   if(view==='district'){currentDiscovery=null;$('page-title').textContent='Il mio quartiere';$('page-intro').textContent='La vita della tua zona, a portata di mano.';renderDistrict();}
+  if(view==='games'){currentDiscovery=null;$('page-title').textContent=selectedGame==='forza4'?'Forza 4':'Briscola';$('page-intro').textContent='Un tavolo per due. Invita chi vuoi.';}
 }
 function renderEventFreshness(){
   const report=payload.importReport,box=$('event-source-status');box.replaceChildren();

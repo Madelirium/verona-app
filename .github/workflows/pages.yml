@@ -27,6 +27,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      BRISCOLA_API_URL: ${{ vars.BRISCOLA_API_URL }}
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
       SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
       SUPABASE_AUTH_ENABLED: ${{ vars.SUPABASE_AUTH_ENABLED }}
@@ -40,7 +41,7 @@ jobs:
         with:
           node-version: '24'
       - name: Genera il frontend dai dati salvati
-        run: npm run build
+        run: npm ci && npm run build
       - name: Verifica l'applicazione
         run: npm test
       - name: Aggiorna gli eventi dalle fonti ufficiali

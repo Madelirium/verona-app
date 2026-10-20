@@ -12,7 +12,13 @@
     "build": "node scripts/build-calendar.mjs",
     "test": "node --test",
     "start": "node scripts/serve.mjs",
-    "start:lan": "node scripts/serve.mjs --lan"
+    "start:lan": "node scripts/serve.mjs --lan",
+    "games:check-cloud": "node scripts/check-games-cloud.mjs"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22.13"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10"
+  }
 }

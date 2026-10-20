@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: verona-games
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 24
+      - key: HOST
+        value: 0.0.0.0
+      - key: GAME_STORAGE
+        value: supabase
+      - key: RANKED_ENABLED
+        value: "true"
+      - key: SUPABASE_AUTH_ENABLED
+        value: "true"
+      - key: SUPABASE_AUTH_METHOD
+        value: google
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: BRISCOLA_ALLOWED_ORIGIN
+        sync: false

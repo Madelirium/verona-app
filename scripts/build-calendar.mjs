@@ -11,6 +11,7 @@ export async function buildCalendar() {
   const [template,logic,json,editorialJson] = await Promise.all(['public/calendar.template.html','public/calendar.js','data/events.json','data/editorial.json'].map(p=>readFile(new URL(p,root),'utf8')));
   const data=JSON.parse(json);
   data.auth=authConfig();
+  data.briscolaApi=process.env.BRISCOLA_API_URL||'';
   if(!Array.isArray(data.events))throw new Error('Catalogo eventi non valido');
   try{data.news=JSON.parse(await readFile(new URL('data/news.json',root),'utf8'));}
   catch(error){if(error.code!=='ENOENT')throw error;data.news={items:[],sources:[]};}
@@ -41,7 +42,10 @@ export async function buildCalendar() {
   const [mapCss,mapJs]=await Promise.all(['public/vendor/leaflet.css','public/vendor/leaflet.js'].map(p=>readFile(new URL(p,root),'utf8').catch(e=>{if(e.code!=='ENOENT')throw e;return '';})));
   const assets=mapJs?`<style>${mapCss}</style><script>${mapJs.replaceAll('</script','<\\/script')}</script>`:'';
   const authLogic=await readFile(new URL('public/auth.js',root),'utf8');
-  const html=template.replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>logic+'\n'+authLogic);
+  const gamesLogic=await readFile(new URL('public/briscola.js',root),'utf8');
+  const rankedLogic=await readFile(new URL('public/ranked.js',root),'utf8');
+  const gamesCss=await readFile(new URL('public/games.css',root),'utf8');
+  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>logic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
   await writeFile(new URL('public/index.html',root),html);
   return data.events.length;
 }

@@ -1,3 +1,5 @@
+> Giochi online: Briscola e Forza 4, tavoli amichevoli e ranked con Elo. Il motore gira su Node/Render e i dati dei giochi su Supabase. [Configurazione](docs/giochi-render-supabase.md). Eseguire `npm ci` prima dei test.
+
 # Verona — prime fonti eventi
 
 Prototipo locale dell'importazione da Comune di Verona e Veronafiere. Richiede Node.js 22 o successivo, senza dipendenze esterne.
