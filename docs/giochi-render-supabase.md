@@ -4,20 +4,23 @@
 
 Le migrazioni `20261020125426` e `20261020130120` sono applicate e registrate nel
 progetto Supabase Verona. Verificati sul servizio reale: permessi delle quattro
-tabelle, accesso negato al browser, API HTTPS del backend, tavolo privato di prova,
-mossa e recupero dello stato con un nuovo motore. Il solo tavolo di prova è stato
-chiuso al termine. Le chiavi non sono state stampate né conservate nei file.
+tabelle, accesso negato al browser, API HTTPS del backend e recupero dello stato.
 
-Il codice dei soli giochi è pubblicato sul ramo `codex/games-cloud-storage` di
-`Madelirium/verona-app`, separato dagli altri lavori locali. Rilascio isolato:
-182 test superati e flusso completo da due browser mobili con PostgreSQL.
-Il sito pubblico non è ancora aggiornato con questa versione dei giochi.
+Render Free è attivo a https://verona-games.onrender.com, servizio
+`srv-dbbmmr0ae00c739b945g`, regione Frankfurt, Node 24, controllo `/healthz`.
+Il backend conferma `storage: supabase`. Collaudo HTTPS riuscito: ranked attivo,
+accesso anonimo ranked negato, CORS per GitHub Pages, creazione e ingresso in un
+tavolo privato Forza 4, mossa e recupero dello stato. Il solo tavolo di prova è
+stato chiuso. Nessuna chiave privata è nel repository. La chiave backend inserita
+su Render va sostituita: è comparsa nell'output tecnico della sessione durante
+una lettura del modulo, senza essere pubblicata nel codice.
 
-Render è ancora sulla verifica dell'indirizzo email dell'account. Dopo la verifica
-e il completamento del collegamento restano: creazione del servizio Free, inserimento
-della chiave backend nelle variabili riservate Render (autorizzato dall'utente),
-collaudo dell'URL assegnato e collegamento/pubblicazione del frontend GitHub Pages.
-La chiave non è ancora configurata su Render e non è richiesta in chat.
+Il ramo di rilascio è `codex/games-cloud-storage` di `Madelirium/verona-app`,
+separato dagli altri lavori locali. Rilascio isolato: 182 test superati e flusso
+completo da due browser mobili con PostgreSQL. L'Actions variable
+`BRISCOLA_API_URL` collega il frontend Pages all'origine Render sopra indicata.
+Una partita ranked tra due account Google reali resta un collaudo manuale:
+Google è verificato sul sito e il flusso ranked è collaudato con utenti di test.
 
 Gli advisor non segnalano avvisi sui nuovi oggetti. Gli avvisi di esecuzione pubblica
 della funzione interna RLS sono risolti dalla seconda migrazione; resta l'avviso
