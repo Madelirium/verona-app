@@ -5,8 +5,9 @@ Solo gli account Supabase con email verificata possono accedere alle API ranked.
 L'interfaccia usa il login Google esistente; non crea un secondo sistema di account.
 La modalità è **disabilitata per impostazione predefinita** finché il backend non è
 configurato. Il login Google è stato verificato separatamente (vedere [login](login.md)).
-L'integrazione Supabase/Render dei giochi richiede migrazione e configurazione dei
-servizi reali: i test locali non equivalgono a una pubblicazione online.
+La migrazione Supabase è applicata e verificata sul servizio reale. Il rilascio
+Render e il collegamento del frontend restano da completare dopo la verifica email
+dell'account Render: i test locali non equivalgono a una pubblicazione online.
 
 ## Regole
 

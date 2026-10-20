@@ -1,5 +1,28 @@
 # Giochi su Render, dati su Supabase
 
+## Stato del 20 ottobre 2026
+
+Le migrazioni `20261020125426` e `20261020130120` sono applicate e registrate nel
+progetto Supabase Verona. Verificati sul servizio reale: permessi delle quattro
+tabelle, accesso negato al browser, API HTTPS del backend, tavolo privato di prova,
+mossa e recupero dello stato con un nuovo motore. Il solo tavolo di prova è stato
+chiuso al termine. Le chiavi non sono state stampate né conservate nei file.
+
+Il codice dei soli giochi è pubblicato sul ramo `codex/games-cloud-storage` di
+`Madelirium/verona-app`, separato dagli altri lavori locali. Rilascio isolato:
+182 test superati e flusso completo da due browser mobili con PostgreSQL.
+Il sito pubblico non è ancora aggiornato con questa versione dei giochi.
+
+Render è ancora sulla verifica dell'indirizzo email dell'account. Dopo la verifica
+e il completamento del collegamento restano: creazione del servizio Free, inserimento
+della chiave backend nelle variabili riservate Render (autorizzato dall'utente),
+collaudo dell'URL assegnato e collegamento/pubblicazione del frontend GitHub Pages.
+La chiave non è ancora configurata su Render e non è richiesta in chat.
+
+Gli advisor non segnalano avvisi sui nuovi oggetti. Gli avvisi di esecuzione pubblica
+della funzione interna RLS sono risolti dalla seconda migrazione; resta l'avviso
+preesistente sulla protezione password compromesse, non modificata dal lavoro sui giochi.
+
 Il motore Node decide mosse, carte, turni e risultati. Supabase conserva l'accesso
 Google già configurato, i profili giocatore, Elo, storico e stato dei giochi.
 GitHub Pages può continuare a ospitare l'interfaccia. Preferiti e altre scelte
@@ -10,6 +33,9 @@ personali dell'app rimangono locali: questo intervento riguarda i giochi.
 Nel progetto Verona aprire SQL Editor ed eseguire
 [`supabase/migrations/20261020125426_games_cloud_storage.sql`](../supabase/migrations/20261020125426_games_cloud_storage.sql).
 È una migrazione additiva e ripetibile: non elimina tabelle esistenti.
+Applicare anche `supabase/migrations/20261020130120_restrict_internal_rls_trigger.sql`
+se si prepara un nuovo ambiente: toglie i permessi browser a una funzione interna
+di tipo event trigger, quando presente, lasciando invariati trigger e proprietario.
 
 Crea nello schema `verona_private`:
 
