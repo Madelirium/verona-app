@@ -1,5 +1,18 @@
 # Accesso facoltativo con Google
 
+## Pubblicazione HTTPS del 20 ottobre 2026
+
+Sito: https://madelirium.github.io/verona-app/
+Il login Google facoltativo è pubblicato e verificato sul sito reale: accesso,
+ritorno al percorso /verona-app/, sessione dopo ricarica, logout e uso senza account.
+Layout controllato a 320 px. Workflow Pages #9 completato con successo sul commit
+4cb29c5; build e 135 test della versione pubblica superati.
+La pubblicazione aggiunge il login alla versione già online e conserva i dati
+remoti aggiornati. Gli altri lavori locali su autobus e giochi non fanno parte
+di questo rilascio. I salvati restano locali al browser/origine: quelli dell’anteprima
+HTTP non vengono trasferiti automaticamente al sito HTTPS.
+
+
 Verona resta consultabile senza account, compresi salvataggi locali e giochi amichevoli.
 La modalità [Classificate · Elo](ranked.md) richiede invece un account verificato dal server.
 Il pannello Account contiene “Continua con Google” e “Continua senza account”.
@@ -21,7 +34,7 @@ I preferiti restano sul dispositivo: la sincronizzazione non è ancora implement
 - Site URL Supabase: `http://127.0.0.1:4173/`. Redirect consentiti verificati:
   `http://127.0.0.1:4173/` e `http://localhost:4173/`, senza wildcard.
 - `.env` locale contiene esclusivamente URL e chiave publishable; Git lo ignora.
-  `SUPABASE_AUTH_METHOD=google`, `SUPABASE_AUTH_ENABLED=true` per la prova locale.
+  `SUPABASE_AUTH_METHOD=google`, `SUPABASE_AUTH_ENABLED=true` per anteprima locale e sito pubblico.
   Nessuna password o client secret va nel frontend o nel repository.
 
 ## Completamento Google Auth Platform
@@ -44,9 +57,11 @@ I preferiti restano sul dispositivo: la sincronizzazione non è ancora implement
    `http://localhost:4173/` e, se usato, `http://127.0.0.1:4173/`.
    Per il sito pubblico usare il suo effettivo URL HTTPS, compreso il percorso:
    non occorre acquistare un dominio. Non usare wildcard ampie.
-7. In modalità Google Testing aggiungere gli utenti di prova autorizzati.
-   Prima del lancio pubblico completare audience, informative e gli eventuali
-   requisiti di branding/verifica di Google. La sola prova non apre il login a tutti.
+7. Il progetto Google è ancora External / Testing e richiede solo email e profilo.
+   Google documenta un’eccezione per i soli scope di identità di Sign in with Google:
+   non occorre inserire ogni utente nella lista tester. L’aggiunta di altri scope
+   richiederà una nuova valutazione di audience e verifica.
+   Fonte: https://support.google.com/cloud/answer/15549945?hl=en
 8. Impostare `SUPABASE_AUTH_ENABLED=true`, eseguire `npm run build` e `npm start`.
    Verificare accesso, annullamento, ripristino dopo ricarica, logout e rete assente.
 
@@ -70,7 +85,10 @@ il pannello corrente offre esclusivamente Google.
 Il build carica `.env` dalla radice; le variabili già nell’ambiente hanno precedenza.
 `.env.example` documenta i valori. Il workflow Pages legge URL, publishable key e
 flag di attivazione dalle Actions variables; il metodo è Google. Le variabili
-del repository non sono ancora configurate e non è stata eseguita una pubblicazione.
+del repository sono configurate e il deploy HTTPS è completato. Il Site URL
+Supabase è https://madelirium.github.io/verona-app/; lo stesso ritorno esatto
+è nell’allowlist, insieme ai due indirizzi locali. L’origine JavaScript Google
+include https://madelirium.github.io; la callback rimane su Supabase.
 
 Una migrazione richiederà trasferimento dei dati, mappatura degli ID e nuovo accesso;
 le sessioni non sono automaticamente trasferibili. Per i dati personali serviranno
