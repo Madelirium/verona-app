@@ -97,3 +97,10 @@ La prima prova della mappa autobus riguarda la linea 11: varianti OpenStreetMap,
 
 
 Le immagini degli eventi del Comune sono importate con autore e licenza, con anteprime e locandine complete nei dettagli: [docs/immagini-eventi.md](docs/immagini-eventi.md).
+
+## Aggiornamento Eventi e Autobus
+
+- [Mappa generale delle linee e fermate](docs/mappa-generale-autobus.md).
+- [Autobus vicini agli eventi e percorsi colorati](docs/eventi-autobus.md).
+- [Orari programmati ufficiali ATV](docs/orari-ufficiali-app.md).
+- [Prossimi eventi salvati e storico locale](docs/salvati-storico.md).

@@ -1,0 +1,879 @@
+{
+  "publicationTimestamp": "2026-10-18T02:47:56.000+02:00",
+  "timezone": "Europe/Rome",
+  "version": "11044",
+  "validFrom": "2026-10-18",
+  "validTo": "2026-11-17",
+  "source": "https://www.cciss.it/nap/mmtis/public/catalog/Asset/204401",
+  "sha256": "d80318b671f4741244370aba4d024a7a61431e0b77a8777d49ba6addaab661a9",
+  "realtime": false,
+  "assetBase": "bus-official/",
+  "lines": [
+    {
+      "number": "A",
+      "name": "LEGNAGO PORTO - TERRANEGRA",
+      "tripCount": 7,
+      "stopCount": 37
+    },
+    {
+      "number": "B",
+      "name": "LEGNAGO PORTO -  AUTOSTAZIONE",
+      "tripCount": 129,
+      "stopCount": 12
+    },
+    {
+      "number": "H",
+      "name": "VIA DA VICO - OSPEDALE POLO CHIRURGICO",
+      "tripCount": 28,
+      "stopCount": 5
+    },
+    {
+      "number": "SC01",
+      "name": "IST. EINAUDI - GALILEI",
+      "tripCount": 21,
+      "stopCount": 206
+    },
+    {
+      "number": "SC02",
+      "name": "LICEO FRACASTORO - CA DI COZZI",
+      "tripCount": 11,
+      "stopCount": 149
+    },
+    {
+      "number": "SC03",
+      "name": "SCUOLE SALESIANI",
+      "tripCount": 29,
+      "stopCount": 21
+    },
+    {
+      "number": "SC04",
+      "name": "IST. SANMICHELI - VIA SELINUNTE",
+      "tripCount": 6,
+      "stopCount": 23
+    },
+    {
+      "number": "SC05",
+      "name": "LICEO COPERNICO",
+      "tripCount": 3,
+      "stopCount": 64
+    },
+    {
+      "number": "SC06",
+      "name": "SCUOLE PONTE PIETRA",
+      "tripCount": 3,
+      "stopCount": 23
+    },
+    {
+      "number": "SC07",
+      "name": "LICEO MAFFEI - VIA VENIER",
+      "tripCount": 8,
+      "stopCount": 94
+    },
+    {
+      "number": "SC08",
+      "name": "IST. ALBERGHIERO - CHIEVO",
+      "tripCount": 6,
+      "stopCount": 38
+    },
+    {
+      "number": "SC09",
+      "name": "SCUOLE P.LE GUARDINI",
+      "tripCount": 1,
+      "stopCount": 2
+    },
+    {
+      "number": "SC210",
+      "name": "SCUOLE SAN BONIFACIO",
+      "tripCount": 7,
+      "stopCount": 101
+    },
+    {
+      "number": "SC230",
+      "name": "SCUOLE LONIGO",
+      "tripCount": 14,
+      "stopCount": 109
+    },
+    {
+      "number": "SC310",
+      "name": "SCUOLE ISOLA DELLA SCALA",
+      "tripCount": 8,
+      "stopCount": 111
+    },
+    {
+      "number": "SC320",
+      "name": "IST. STEFANI-BENTEGODI BOVOLINO",
+      "tripCount": 13,
+      "stopCount": 143
+    },
+    {
+      "number": "SC330",
+      "name": "SCUOLE COLOGNA VENETA",
+      "tripCount": 3,
+      "stopCount": 42
+    },
+    {
+      "number": "SC340",
+      "name": "SCUOLE LEGNAGO",
+      "tripCount": 10,
+      "stopCount": 113
+    },
+    {
+      "number": "SC410",
+      "name": "SCUOLE S. PIETRO IN CARIANO",
+      "tripCount": 32,
+      "stopCount": 335
+    },
+    {
+      "number": "SC420",
+      "name": "SCUOLE BUSSOLENGO",
+      "tripCount": 13,
+      "stopCount": 175
+    },
+    {
+      "number": "SC430",
+      "name": "ISTITUTO TUSINI BARDOLINO",
+      "tripCount": 6,
+      "stopCount": 32
+    },
+    {
+      "number": "SC440",
+      "name": "SCUOLE SUPERIORI GARDA",
+      "tripCount": 17,
+      "stopCount": 209
+    },
+    {
+      "number": "SC450",
+      "name": "SCUOLE VILLAFRANCA - VALEGGIO",
+      "tripCount": 30,
+      "stopCount": 206
+    },
+    {
+      "number": "SPVR",
+      "name": "SCUOLE VERONA",
+      "tripCount": 2,
+      "stopCount": 78
+    },
+    {
+      "number": "X02",
+      "name": "S.GIOVANNI ILARIONE - VERONA",
+      "tripCount": 3,
+      "stopCount": 25
+    },
+    {
+      "number": "X03",
+      "name": "ISOLA RIZZA - VERONA",
+      "tripCount": 2,
+      "stopCount": 16
+    },
+    {
+      "number": "X04",
+      "name": "LEGNAGO - VERONA",
+      "tripCount": 4,
+      "stopCount": 17
+    },
+    {
+      "number": "X05",
+      "name": "TORRI DEL BENACO - GARDA - VERONA",
+      "tripCount": 6,
+      "stopCount": 26
+    },
+    {
+      "number": "X06",
+      "name": "CAPRINO - VERONA",
+      "tripCount": 2,
+      "stopCount": 12
+    },
+    {
+      "number": "101",
+      "name": "VERONA - PESCANTINA - S. LUCIA",
+      "tripCount": 28,
+      "stopCount": 127
+    },
+    {
+      "number": "102",
+      "name": "VERONA - BUSSOLENGO - PESCANTINA",
+      "tripCount": 46,
+      "stopCount": 37
+    },
+    {
+      "number": "103",
+      "name": "VERONA - SAN PIETRO IN CARIANO - DOMEGLIARA",
+      "tripCount": 92,
+      "stopCount": 100
+    },
+    {
+      "number": "104",
+      "name": "VERONA - NEGRAR - S.ANNA DI ALFAEDO - FOSSE",
+      "tripCount": 35,
+      "stopCount": 178
+    },
+    {
+      "number": "105",
+      "name": "VERONA - FUMANE - BREONIO - FOSSE",
+      "tripCount": 30,
+      "stopCount": 148
+    },
+    {
+      "number": "107",
+      "name": "VERONA - MARANO - S. CRISTINA",
+      "tripCount": 10,
+      "stopCount": 122
+    },
+    {
+      "number": "108",
+      "name": "VERONA - MONTECCHIO",
+      "tripCount": 2,
+      "stopCount": 43
+    },
+    {
+      "number": "109",
+      "name": "VERONA - ERBEZZO",
+      "tripCount": 10,
+      "stopCount": 81
+    },
+    {
+      "number": "110",
+      "name": "VERONA - BOSCOCHIESANUOVA",
+      "tripCount": 59,
+      "stopCount": 163
+    },
+    {
+      "number": "111",
+      "name": "STALLAVENA - ALCENAGO",
+      "tripCount": 3,
+      "stopCount": 41
+    },
+    {
+      "number": "112",
+      "name": "STALLAVENA - LUGO - ARZERÈ",
+      "tripCount": 3,
+      "stopCount": 54
+    },
+    {
+      "number": "113",
+      "name": "VERONA - CEREDO - FOSSE",
+      "tripCount": 2,
+      "stopCount": 20
+    },
+    {
+      "number": "115",
+      "name": "VERONA - CERRO - ROVERÈ - VELO",
+      "tripCount": 14,
+      "stopCount": 146
+    },
+    {
+      "number": "117",
+      "name": "VERONA - ROVERÈ - SAN FRANCESCO",
+      "tripCount": 14,
+      "stopCount": 80
+    },
+    {
+      "number": "119",
+      "name": "VERONA - MAGRANO",
+      "tripCount": 3,
+      "stopCount": 52
+    },
+    {
+      "number": "120",
+      "name": "VERONA - S.BRICCIO/PIAN DI CASTAGNÈ",
+      "tripCount": 22,
+      "stopCount": 70
+    },
+    {
+      "number": "121",
+      "name": "VERONA - BADIA CALAVENA - GIAZZA",
+      "tripCount": 112,
+      "stopCount": 148
+    },
+    {
+      "number": "123",
+      "name": "VERONA - VAGO - MEZZANE - S.MAURO DI SALINE - VELO",
+      "tripCount": 24,
+      "stopCount": 132
+    },
+    {
+      "number": "130",
+      "name": "VERONA - SAN BONIFACIO",
+      "tripCount": 79,
+      "stopCount": 71
+    },
+    {
+      "number": "133",
+      "name": "VERONA - BELFIORE - SAN BONIFACIO",
+      "tripCount": 23,
+      "stopCount": 86
+    },
+    {
+      "number": "134",
+      "name": "VERONA - ZEVIO - ALBAREDO",
+      "tripCount": 13,
+      "stopCount": 86
+    },
+    {
+      "number": "138",
+      "name": "VERONA - ALBAREDO",
+      "tripCount": 70,
+      "stopCount": 100
+    },
+    {
+      "number": "139",
+      "name": "VERONA - ZEVIO - PALÙ",
+      "tripCount": 13,
+      "stopCount": 123
+    },
+    {
+      "number": "141",
+      "name": "VERONA - OPPEANO - LEGNAGO",
+      "tripCount": 31,
+      "stopCount": 101
+    },
+    {
+      "number": "143",
+      "name": "VERONA - RALDON - BONAVICINA - LEGNAGO",
+      "tripCount": 16,
+      "stopCount": 109
+    },
+    {
+      "number": "144",
+      "name": "VERONA - BOVOLONE - LEGNAGO",
+      "tripCount": 94,
+      "stopCount": 100
+    },
+    {
+      "number": "146",
+      "name": "VERONA - ISOLA DELLA SCALA - NOGARA",
+      "tripCount": 65,
+      "stopCount": 99
+    },
+    {
+      "number": "148",
+      "name": "VERONA - MANTOVA",
+      "tripCount": 38,
+      "stopCount": 141
+    },
+    {
+      "number": "157",
+      "name": "VERONA - VILLAFRANCA - BAGNOLO - TREVENZUOLO",
+      "tripCount": 17,
+      "stopCount": 99
+    },
+    {
+      "number": "158",
+      "name": "VERONA - VILLAFRANCA - POVEGLIANO - ISOLALTA - VIGASIO",
+      "tripCount": 58,
+      "stopCount": 114
+    },
+    {
+      "number": "159",
+      "name": "VERONA - VILLAFRANCA - BELVEDERE",
+      "tripCount": 21,
+      "stopCount": 75
+    },
+    {
+      "number": "160",
+      "name": "VERONA - SOMMACAMPAGNA - VILLAFRANCA - VALEGGIO SUL MINCIO",
+      "tripCount": 76,
+      "stopCount": 134
+    },
+    {
+      "number": "161",
+      "name": "VERONA - SONA - SALIONZE",
+      "tripCount": 42,
+      "stopCount": 69
+    },
+    {
+      "number": "162",
+      "name": "VERONA - BUSSOLENGO - PASTRENGO - LAZISE - GARDA",
+      "tripCount": 40,
+      "stopCount": 86
+    },
+    {
+      "number": "163",
+      "name": "VERONA - BUSSOLENGO - LAZISE - GARDA",
+      "tripCount": 25,
+      "stopCount": 105
+    },
+    {
+      "number": "164",
+      "name": "VERONA - PESCHIERA - GARDA",
+      "tripCount": 43,
+      "stopCount": 76
+    },
+    {
+      "number": "165",
+      "name": "VERONA - BUSSOLENGO - CALMASINO - COSTERMANO - GARDA",
+      "tripCount": 18,
+      "stopCount": 119
+    },
+    {
+      "number": "173",
+      "name": "VERONA - CAPRINO",
+      "tripCount": 48,
+      "stopCount": 135
+    },
+    {
+      "number": "199",
+      "name": "VERONA STAZIONE P.N. - AEROPORTO",
+      "tripCount": 192,
+      "stopCount": 2
+    },
+    {
+      "number": "224",
+      "name": "TREGNAGO - CAMPOFONTANA",
+      "tripCount": 6,
+      "stopCount": 33
+    },
+    {
+      "number": "225",
+      "name": "VESTENANOVA - CASTELVERO - S.GIOVANNI ILARIONE",
+      "tripCount": 4,
+      "stopCount": 15
+    },
+    {
+      "number": "226",
+      "name": "SAN BONIFACIO - S.GIOVANNI ILARIONE - S.BORTOLO",
+      "tripCount": 72,
+      "stopCount": 132
+    },
+    {
+      "number": "227",
+      "name": "VESTENANOVA - ARZIGNANO",
+      "tripCount": 5,
+      "stopCount": 47
+    },
+    {
+      "number": "229",
+      "name": "STRÀ - CAZZANO DI TRAMIGNA - TREGNAGO",
+      "tripCount": 19,
+      "stopCount": 91
+    },
+    {
+      "number": "233",
+      "name": "SAN BONIFACIO - COLOGNA VENETA - ROVEREDO DI GUÀ",
+      "tripCount": 14,
+      "stopCount": 80
+    },
+    {
+      "number": "234",
+      "name": "ALBAREDO - VERONELLA - COLOGNA VENETA",
+      "tripCount": 11,
+      "stopCount": 19
+    },
+    {
+      "number": "236",
+      "name": "SAN BONIFACIO - LONIGO - COLOGNA VENETA - MONTAGNANA",
+      "tripCount": 62,
+      "stopCount": 122
+    },
+    {
+      "number": "237",
+      "name": "SAN BONIFACIO - ALBAREDO - S.ZENONE - LEGNAGO",
+      "tripCount": 16,
+      "stopCount": 53
+    },
+    {
+      "number": "336",
+      "name": "LEGNAGO - MONTAGNANA",
+      "tripCount": 11,
+      "stopCount": 46
+    },
+    {
+      "number": "338",
+      "name": "ALBAREDO - LEGNAGO",
+      "tripCount": 28,
+      "stopCount": 56
+    },
+    {
+      "number": "341",
+      "name": "LEGNAGO - BEGOSSO - BADIA POLESINE",
+      "tripCount": 11,
+      "stopCount": 51
+    },
+    {
+      "number": "343",
+      "name": "LEGNAGO - MERLARA",
+      "tripCount": 7,
+      "stopCount": 41
+    },
+    {
+      "number": "344",
+      "name": "LEGNAGO - CASTAGNARO - MENÀ - BADIA POLESINE",
+      "tripCount": 30,
+      "stopCount": 65
+    },
+    {
+      "number": "345",
+      "name": "ISOLA DELLA SCALA - CASALEONE - LEGNAGO",
+      "tripCount": 12,
+      "stopCount": 83
+    },
+    {
+      "number": "346",
+      "name": "NOGARA - MACCACARI - OSTIGLIA",
+      "tripCount": 12,
+      "stopCount": 31
+    },
+    {
+      "number": "347",
+      "name": "ISOLA DELLA SCALA - SORGÀ - NOGARA",
+      "tripCount": 17,
+      "stopCount": 52
+    },
+    {
+      "number": "351",
+      "name": "LONIGO - COLOGNA VENETA - LEGNAGO",
+      "tripCount": 18,
+      "stopCount": 57
+    },
+    {
+      "number": "352",
+      "name": "NOGARA - CASALEONE - LEGNAGO",
+      "tripCount": 15,
+      "stopCount": 82
+    },
+    {
+      "number": "353",
+      "name": "NOGARA - CEREA - LEGNAGO",
+      "tripCount": 12,
+      "stopCount": 43
+    },
+    {
+      "number": "354",
+      "name": "LEGNAGO - CASTELMASSA",
+      "tripCount": 9,
+      "stopCount": 67
+    },
+    {
+      "number": "355",
+      "name": "LEGNAGO - BONAVICINA - LEGNAGO",
+      "tripCount": 4,
+      "stopCount": 72
+    },
+    {
+      "number": "356",
+      "name": "ISOLA DELLA SCALA - BOVOLONE",
+      "tripCount": 8,
+      "stopCount": 30
+    },
+    {
+      "number": "467",
+      "name": "GARDA - COSTERMANO - CAPRINO",
+      "tripCount": 24,
+      "stopCount": 41
+    },
+    {
+      "number": "470",
+      "name": "GARDA - COSTERMANO - S. ZENO DI MONTAGNA",
+      "tripCount": 10,
+      "stopCount": 45
+    },
+    {
+      "number": "471",
+      "name": "BUSSOLENGO - FERRARA DI M.TE BALDO",
+      "tripCount": 14,
+      "stopCount": 95
+    },
+    {
+      "number": "472",
+      "name": "SEGA - RIVOLI - AVIO",
+      "tripCount": 15,
+      "stopCount": 38
+    },
+    {
+      "number": "477",
+      "name": "BRENTINO - CAPRINO - FERRARA DI M.TE BALDO",
+      "tripCount": 9,
+      "stopCount": 51
+    },
+    {
+      "number": "482",
+      "name": "AEROPORTO - VILLAFRANCA - VALEGGIO - PESCHIERA - LAZISE - GARDA",
+      "tripCount": 20,
+      "stopCount": 51
+    },
+    {
+      "number": "483",
+      "name": "S.BENEDETTO DI LUGANA - MALCESINE",
+      "tripCount": 30,
+      "stopCount": 99
+    },
+    {
+      "number": "484",
+      "name": "GARDA - RIVA DEL GARDA",
+      "tripCount": 52,
+      "stopCount": 80
+    },
+    {
+      "number": "499",
+      "name": "SANTUARIO MADONNA CORONA",
+      "tripCount": 144,
+      "stopCount": 6
+    },
+    {
+      "number": "11",
+      "name": "BUSSOLENGO - CHIEVO - SAN MICHELE NORD",
+      "tripCount": 285,
+      "stopCount": 124
+    },
+    {
+      "number": "12",
+      "name": "BORGO NUOVO - SAN MICHELE SUD",
+      "tripCount": 234,
+      "stopCount": 95
+    },
+    {
+      "number": "13",
+      "name": "CROCE BIANCA - MONTORIO - MIZZOLE",
+      "tripCount": 234,
+      "stopCount": 134
+    },
+    {
+      "number": "20",
+      "name": "NEGRAR - STAZIONE FS",
+      "tripCount": 106,
+      "stopCount": 68
+    },
+    {
+      "number": "21",
+      "name": "CA DI COZZI - PALAZZINA",
+      "tripCount": 102,
+      "stopCount": 76
+    },
+    {
+      "number": "22",
+      "name": "PARONA - SAN GIOVANNI LUPATOTO",
+      "tripCount": 134,
+      "stopCount": 101
+    },
+    {
+      "number": "23",
+      "name": "AVESA - S.LUCIA - ZAI",
+      "tripCount": 142,
+      "stopCount": 85
+    },
+    {
+      "number": "24",
+      "name": "QUINZANO - S.LUCIA - CASELLE",
+      "tripCount": 146,
+      "stopCount": 95
+    },
+    {
+      "number": "25",
+      "name": "STAZIONE FS - PESTRINO",
+      "tripCount": 35,
+      "stopCount": 28
+    },
+    {
+      "number": "31",
+      "name": "SAVAL - MARZANA",
+      "tripCount": 152,
+      "stopCount": 87
+    },
+    {
+      "number": "32",
+      "name": "S.MASSIMO - S.FELICE EXTRA",
+      "tripCount": 130,
+      "stopCount": 96
+    },
+    {
+      "number": "33",
+      "name": "BASSON - S.FELICE EXTRA",
+      "tripCount": 122,
+      "stopCount": 101
+    },
+    {
+      "number": "41",
+      "name": "SORTE/CHIEVO - BORGO NUOVO - CADIDAVID - BUTTAPIETRA",
+      "tripCount": 164,
+      "stopCount": 122
+    },
+    {
+      "number": "51",
+      "name": "LUNGADIGE CAPULETI - P.ZZA BRA - ZAI",
+      "tripCount": 174,
+      "stopCount": 47
+    },
+    {
+      "number": "52",
+      "name": "STALLAVENA - STAZIONE P.N.",
+      "tripCount": 132,
+      "stopCount": 75
+    },
+    {
+      "number": "53",
+      "name": "VIGASIO - CASTEL D'AZZANO - SACRA FAMIGLIA - STAZIONE FS - P.ZZA BRA - L.GE CAPULETI",
+      "tripCount": 131,
+      "stopCount": 91
+    },
+    {
+      "number": "61",
+      "name": "NAVIGATORI - SACRA FAMIGLIA",
+      "tripCount": 129,
+      "stopCount": 53
+    },
+    {
+      "number": "62",
+      "name": "NAVIGATORI - POLICLINICO",
+      "tripCount": 98,
+      "stopCount": 75
+    },
+    {
+      "number": "63",
+      "name": "STAZIONE FS - ALPO",
+      "tripCount": 50,
+      "stopCount": 55
+    },
+    {
+      "number": "70",
+      "name": "TORRICELLE - VALDONEGA - PORTO S.PANCRAZIO",
+      "tripCount": 90,
+      "stopCount": 91
+    },
+    {
+      "number": "71",
+      "name": "OSPEDALE - OLTREADIGE",
+      "tripCount": 85,
+      "stopCount": 49
+    },
+    {
+      "number": "72",
+      "name": "S.CROCE - P.VESCOVO - TOMBA DI GIULIETTA - BASSO ACQUAR - TOMBETTA - SAN MATTEO",
+      "tripCount": 126,
+      "stopCount": 56
+    },
+    {
+      "number": "73",
+      "name": "VALDONEGA - S. LUCIA",
+      "tripCount": 140,
+      "stopCount": 58
+    },
+    {
+      "number": "74",
+      "name": "STAZIONE FS P. VESCOVO - QUINTO VALPANTENA",
+      "tripCount": 36,
+      "stopCount": 57
+    },
+    {
+      "number": "78",
+      "name": "PARK GENOVESA - P.ZZA BRA",
+      "tripCount": 0,
+      "stopCount": 0
+    },
+    {
+      "number": "79",
+      "name": "PARK STADIO - VIA DIAZ",
+      "tripCount": 0,
+      "stopCount": 0
+    },
+    {
+      "number": "80",
+      "name": "SAN MASSIMO - CROCE BIANCA - SAN MICHELE EXTRA",
+      "tripCount": 10,
+      "stopCount": 80
+    },
+    {
+      "number": "81",
+      "name": "CHIEVO - B.GO NUOVO - SANTA CROCE",
+      "tripCount": 12,
+      "stopCount": 70
+    },
+    {
+      "number": "82",
+      "name": "PIAZZA BRA - ADIGEO - P.ZZA BRA",
+      "tripCount": 5,
+      "stopCount": 24
+    },
+    {
+      "number": "83",
+      "name": "CADIDAVID - PONTE CRENCANO",
+      "tripCount": 14,
+      "stopCount": 64
+    },
+    {
+      "number": "84",
+      "name": "SANTA LUCIA - SAVAL",
+      "tripCount": 12,
+      "stopCount": 63
+    },
+    {
+      "number": "85",
+      "name": "MARZANA - PORTA VESCOVO - OSPEDALE - TORRICELLE",
+      "tripCount": 12,
+      "stopCount": 73
+    },
+    {
+      "number": "90",
+      "name": "BASSON - CROCE BIANCA - SAN MICHELE NORD",
+      "tripCount": 71,
+      "stopCount": 98
+    },
+    {
+      "number": "91",
+      "name": "S.LUCIA - S. CROCE - SAN FELICE EXTRA",
+      "tripCount": 52,
+      "stopCount": 103
+    },
+    {
+      "number": "92",
+      "name": "STALLAVENA - CASTEL D'AZZANO",
+      "tripCount": 39,
+      "stopCount": 128
+    },
+    {
+      "number": "93",
+      "name": "DOMEGLIARA/NEGRAR - PARONA - CADIDAVID",
+      "tripCount": 67,
+      "stopCount": 105
+    },
+    {
+      "number": "94",
+      "name": "SAVAL - PORTO S.PANCRAZIO - SAN MICHELE SUD",
+      "tripCount": 49,
+      "stopCount": 80
+    },
+    {
+      "number": "95",
+      "name": "CHIEVO - VALDONEGA - TORRICELLE",
+      "tripCount": 50,
+      "stopCount": 107
+    },
+    {
+      "number": "96",
+      "name": "OSPEDALE M. - QUINZANO - AVESA - OSPEDALE M.",
+      "tripCount": 28,
+      "stopCount": 36
+    },
+    {
+      "number": "97",
+      "name": "PALAZZINA - STAZIONE FS",
+      "tripCount": 36,
+      "stopCount": 22
+    },
+    {
+      "number": "98",
+      "name": "MONTORIO - S.LUCIA",
+      "tripCount": 50,
+      "stopCount": 88
+    }
+  ],
+  "unassignedStops": [
+    {
+      "code": "1298",
+      "name": "VIA FRA GIOCONDO",
+      "lat": 45.43373511,
+      "lon": 10.96854875
+    },
+    {
+      "code": "7901",
+      "name": "PARK GENOVESA",
+      "lat": 45.39442142,
+      "lon": 10.96528695
+    }
+  ],
+  "counts": {
+    "Line": 141,
+    "ScheduledStopPoint": 4303,
+    "ServiceJourney": 6360,
+    "TimetabledPassingTime": 195849
+  }
+}

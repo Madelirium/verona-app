@@ -17,3 +17,5 @@ __pycache__/
 supabase/.temp/
 
 public/bus-routes/
+
+public/bus-official/

@@ -1,3 +1,5 @@
+import {eventBusIndex} from './event-bus-index.mjs';
+import {validateOfficialLine} from './official-bus.mjs';
 import {authConfig} from './auth-config.mjs';
 import {loadEnvFile} from 'node:process';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
@@ -7,10 +9,22 @@ import {validateTimetables} from './timetables.mjs';
 import {validateBusRoutes} from './bus-routes.mjs';
 const root = new URL('../',import.meta.url);
 export async function buildCalendar() {
-  try{loadEnvFile(new URL('../.env',import.meta.url));}catch(error){if(error.code!=='ENOENT')throw error;}
+  try { loadEnvFile(new URL('../.env',import.meta.url)); }
+  catch(error) { if(error.code!=='ENOENT')throw error; }
   const [template,logic,json,editorialJson] = await Promise.all(['public/calendar.template.html','public/calendar.js','data/events.json','data/editorial.json'].map(p=>readFile(new URL(p,root),'utf8')));
   const data=JSON.parse(json);
   data.auth=authConfig();
+  data.busOfficial=JSON.parse(await readFile(new URL('data/bus-official.json',root),'utf8'));
+  await mkdir(new URL('public/bus-official/',root),{recursive:true});
+  const officialAssets=[];
+  for(const line of data.busOfficial.lines){
+    if(!/^[A-Za-z0-9]+$/.test(line.number))throw new Error('Codice linea non valido');
+    const json=await readFile(new URL('data/bus-official/'+line.number+'.json',root),'utf8');
+    const asset=JSON.parse(json);validateOfficialLine(asset,data.busOfficial,line.number);officialAssets.push(asset);
+    await writeFile(new URL('public/bus-official/'+line.number+'.json',root),json);
+  }
+  data.busOfficial.stopIndexAsset='bus-official/stops.json';
+  await writeFile(new URL('public/bus-official/stops.json',root),JSON.stringify(eventBusIndex(data.busOfficial,officialAssets)));
   data.briscolaApi=process.env.BRISCOLA_API_URL||'';
   if(!Array.isArray(data.events))throw new Error('Catalogo eventi non valido');
   try{data.news=JSON.parse(await readFile(new URL('data/news.json',root),'utf8'));}
@@ -46,11 +60,14 @@ export async function buildCalendar() {
   const safe=JSON.stringify(data).replaceAll('<','\\u003c').replaceAll('>','\\u003e').replaceAll('&','\\u0026');
   const [mapCss,mapJs]=await Promise.all(['public/vendor/leaflet.css','public/vendor/leaflet.js'].map(p=>readFile(new URL(p,root),'utf8').catch(e=>{if(e.code!=='ENOENT')throw e;return '';})));
   const assets=mapJs?`<style>${mapCss}</style><script>${mapJs.replaceAll('</script','<\\/script')}</script>`:'';
-  const authLogic=await readFile(new URL('public/auth.js',root),'utf8');
+  const officialLogic=await readFile(new URL('public/bus-official.js',root),'utf8');
+  const eventBusLogic=await readFile(new URL('public/event-bus.js',root),'utf8');
+  const networkLogic=await readFile(new URL('public/bus-network.js',root),'utf8');
   const gamesLogic=await readFile(new URL('public/briscola.js',root),'utf8');
-  const rankedLogic=await readFile(new URL('public/ranked.js',root),'utf8');
   const gamesCss=await readFile(new URL('public/games.css',root),'utf8');
-  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>logic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
+  const authLogic=await readFile(new URL('public/auth.js',root),'utf8');
+  const rankedLogic=await readFile(new URL('public/ranked.js',root),'utf8');
+  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>logic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+networkLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
   await writeFile(new URL('public/index.html',root),html);
   return data.events.length;
 }

@@ -89,6 +89,7 @@ jobs:
           mkdir -p _site
           cp public/index.html _site/index.html
           cp -r public/bus-routes _site/bus-routes
+          cp -r public/bus-official _site/bus-official
           cp public/vendor/leaflet.LICENSE _site/leaflet.LICENSE
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4

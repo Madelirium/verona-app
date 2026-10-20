@@ -30,11 +30,12 @@ function run(storage = new Map(),initialView='discover',mapApi) {
   const get=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id)};
   get('event-data').textContent=JSON.stringify(catalog);
   class TestDate extends Date { constructor(...args){super(...(args.length?args:['2026-10-17T09:00:00Z']))}static now(){return new Date('2026-10-17T09:00:00Z').getTime()} }
-  const context=createContext({Intl,Date:TestDate,URL,JSON,localStorage:{getItem:key=>storage.get(key),setItem:(key,value)=>storage.set(key,value)},document:{getElementById:get,createElement:()=>new Element()}});
+  const timers=new Map();let nextTimer=0;
+  const context=createContext({setTimeout:(fn,ms)=>{const id=++nextTimer;timers.set(id,{fn,ms});return id},clearTimeout:id=>timers.delete(id),Intl,Date:TestDate,URL,JSON,localStorage:{getItem:key=>storage.get(key),setItem:(key,value)=>storage.set(key,value)},document:{getElementById:get,createElement:()=>new Element()}});
   if(mapApi)context.L=mapApi;
   new Script(logic).runInContext(context);
   if(initialView==='discover')get('discover').onclick();
-  return {get,context,storage};
+  return {get,context,storage,timers};
 }
 
 test('Le mappe delle altre linee caricano soltanto il file richiesto e riusano i percorsi già letti',async()=>{
@@ -162,8 +163,9 @@ test('Immagini eventi: copertina, dettaglio completo, miniatura e recupero dopo 
   assert.ok(!app.get('detail-content').children.some(child=>child.className==='event-poster'));
 });
 
-test('Mappa autobus: elenco alternativo, fermate certe e orari della direzione scelta',()=>{
+test('Mappa autobus: il fallback PDF mantiene elenco, direzione e servizi separati',()=>{
   const app=run(new Map(),'home');
+  new Script('payload.busOfficial={lines:[]}').runInContext(app.context);
   new Script('openBusRoute(busData.lines.find(line=>line.id==="atv-urban-11"))').runInContext(app.context);
   assert.equal(app.get('bus-route-dialog').open,true);assert.match(app.get('bus-route-message').textContent,/non disponibile/);
   assert.equal(app.get('bus-route-variant').value,'11344295');
@@ -172,8 +174,14 @@ test('Mappa autobus: elenco alternativo, fermate certe e orari della direzione s
   row.children.find(child=>child.textContent==='Orari di questa fermata').onclick();
   assert.equal(app.get('bus-timetable-dialog').open,true);assert.match(app.get('timetable-direction').value,/Chievo/);
   assert.match(app.get('timetable-map-context').textContent,/Via Giberti/);
+  assert.equal(app.get('timetable-stop').value,'Via Giberti#1');assert.equal(app.get('timetable-service').value,'');
+  const groups=app.get('timetable-results').children;assert.equal(groups.length,2);
+  assert.ok(groups.every(group=>group.className==='timetable-service-group'&&group.children.length>10));
+  assert.ok(groups.some(group=>group.children[0].textContent==='LUN-VEN SCOLASTICO'));
+  assert.ok(groups.some(group=>group.children[0].textContent==='SABATO e VACANZE SCOLASTICHE'));
   app.get('timetable-service').value='LUN-VEN SCOLASTICO';app.get('timetable-service').onchange();
   assert.equal(app.get('timetable-stop').value,'Via Giberti#1');assert.ok(app.get('timetable-results').children.length>10);
+  app.get('timetable-service').value='';app.get('timetable-service').onchange();assert.equal(app.get('timetable-results').children.length,2);
   app.get('close-bus-timetable').onclick();assert.equal(app.get('bus-route-dialog').open,true);
   app.get('bus-route-variant').value='1859585';app.get('bus-route-variant').onchange();
   const ambiguous=app.get('bus-route-stops').children.filter(row=>row.children[0].textContent==='Piazza Chievo');
@@ -617,7 +625,7 @@ test('Il collegamento agli eventi di oggi rimuove filtri precedenti e seleziona 
 test('Scopri salva nel calendario, non ripropone la stessa serie e annulla senza perdere scelte precedenti',()=>{
   const app=run();
   const current=new Script('currentDiscovery').runInContext(app.context);
-  assert.ok(current.localVerified);
+  assert.ok(current.sourceUrl); // La selezione iniziale comprende anche gli eventi non revisionati manualmente.
   app.get('like').onclick();
   assert.equal(JSON.parse(app.storage.get('verona-events-v1'))[current.id],'interested');
   assert.equal(new Script('discoveryEvents().some(e=>e.sourceUrl===lastChoice.url)').runInContext(app.context),false);
@@ -656,6 +664,7 @@ test('Dettagli accessibili con salvataggio e filtri con date future',()=>{
   assert.ok(app.get('detail-content').children.some(n=>n.id==='detail-title'));
   const save=app.get('detail-content').children.find(n=>n.className==='dialog-save');save.onclick();
   assert.equal(app.get('detail-dialog').open,false);assert.match(app.get('discovery-feedback').textContent,/aggiunto/);
+  app.get('collection').value='local';app.get('collection').onchange();
   app.get('source').value='Veronafiere';app.get('source').onchange();
   assert.equal(new Script('discoveryEvents().length').runInContext(app.context),0);
   app.get('collection').value='all';app.get('collection').onchange();
@@ -773,12 +782,12 @@ test('Filtri agenda: bozza annullabile, campi pertinenti e recupero dello stato 
   assert.equal(app.get('events').children.length,count);assert.equal(app.get('agenda-filters').hidden,true);
 });
 
-test('Il primo accesso ai salvati esclude eventi già finiti oggi e conserva date senza orario',()=>{
+test('Il primo accesso ai salvati conserva gli eventi di oggi fino alla mezzanotte e le date senza orario',()=>{
   const app=run();
   new Script(`events.push({id:'ended',title:'Finito',startsAt:'2026-10-17T06:00:00Z',endsAt:'2026-10-17T07:00:00Z',source:'Comune di Verona'},{id:'tomorrow',title:'Domani',startsAt:'2026-10-18',endsAt:'2026-10-18',source:'Comune di Verona'});preferences={ended:'going',tomorrow:'interested'};setView('saved')`).runInContext(app.context);
-  assert.equal(new Script('selected').runInContext(app.context),'2026-10-18');
+  assert.equal(new Script('selected').runInContext(app.context),'2026-10-17');
   assert.equal(new Script('agendaTime(events.find(e=>e.id==="tomorrow"))').runInContext(app.context),'Orario non indicato');
-  assert.equal(new Script('agendaTime({startsAt:"2026-10-17",endsAt:"2026-10-20"})').runInContext(app.context),'In corso · fino al 20 ott');
+  assert.equal(new Script('agendaTime({startsAt:"2026-10-16",endsAt:"2026-10-20"})').runInContext(app.context),'In corso · fino al 20 ott');
 });
 
 test('Le informazioni distinguono raccolta riuscita e tentativi falliti senza nascondere i dati conservati',()=>{
@@ -798,4 +807,203 @@ test('Il file distribuibile incorpora il catalogo e non dipende dal percorso del
   assert.equal(embedded.events.length,liveCatalog.events.length);
   assert.ok(!html.includes('__EVENT_DATA__'));
   assert.equal(embedded.busRoutes.assetBase,'bus-routes/');assert.ok(embedded.busRoutes.routes.every(route=>!route.stops&&!route.segments));const routeAsset=JSON.parse(await readFile(new URL('../public/bus-routes/atv-urban-12.json',import.meta.url),'utf8'));assert.ok(routeAsset.routes.every(route=>route.stops.length>1&&route.segments.length>0));
+});
+
+const officialLogic=await readFile(new URL('../public/bus-official.js',import.meta.url),'utf8');
+const official24=JSON.parse(await readFile(new URL('../data/bus-official/24.json',import.meta.url),'utf8'));
+function runOfficial(){const app=run(new Map(),'home');new Script(officialLogic).runInContext(app.context);app.context.fetch=async()=>({ok:true,json:async()=>structuredClone(official24)});return app;}
+test('Archivio ufficiale: 40 passaggi a Santini, calendario sabato e domenica, scadenza distinta da assenza',async()=>{
+  const app=runOfficial();await new Script('openOfficialBus("24");loadOfficialLine("24",{stopCode:"1974"})').runInContext(app.context);
+  app.get('official-date').value='2026-10-19';app.get('official-date').onchange();
+  assert.equal(app.get('official-results').children.length,40);assert.match(app.get('official-summary').textContent,/40 partenze/);
+  assert.equal(new Script('officialBusData.trips.filter(t=>t.dates.includes("2026-10-19")).length').runInContext(app.context),87);
+  assert.equal(new Script('officialBusData.trips.filter(t=>t.dates.includes("2026-10-24")).length').runInContext(app.context),59);
+  app.get('official-date').value='2026-10-25';app.get('official-date').onchange();assert.match(app.get('official-results').children[0].textContent,/Nessuna partenza/);
+  app.get('official-date').value='2026-11-18';app.get('official-date').onchange();assert.equal(app.get('official-results').children.length,0);assert.match(app.get('official-summary').textContent,/fuori dalla validità/);
+});
+test('Archivio ufficiale: tutte le 141 linee, accesso dalla scheda e dalla mappa con codice fermata',async()=>{
+  const app=runOfficial();assert.equal(app.get('bus-official-all').hidden,false);
+  new Script('openTimetable(busData.lines.find(l=>l.number==="24"))').runInContext(app.context);
+  assert.equal(app.get('official-bus-dialog').open,true);assert.equal(app.get('official-line').children.length,141);
+  const box=new Script('busRouteLine=busData.lines.find(l=>l.number==="24");busRouteStopContent({stops:[]},{name:"Via Santini",ref:"1974",lat:45.46,lon:10.98})').runInContext(app.context);
+  box.children.find(c=>c.textContent==='Orari ufficiali di questa fermata').onclick();
+  await new Script('loadOfficialLine("24",{stopCode:"1974"})').runInContext(app.context);
+  assert.equal(app.get('official-stop').value,'1974');
+  await new Script('loadOfficialLine("24",{stopCode:"unknown"})').runInContext(app.context);
+  assert.equal(app.get('official-stop').value,'');assert.match(app.get('official-summary').textContent,/non è presente/);
+});
+test('Archivio ufficiale: caricamento fallito recuperabile e risposta tardiva ignorata dopo la chiusura',async()=>{
+  const app=runOfficial();app.get('official-bus-dialog').showModal();app.context.fetch=async()=>({ok:false});
+  await new Script('loadOfficialLine("24")').runInContext(app.context);assert.match(app.get('official-summary').textContent,/Impossibile/);assert.equal(app.get('official-results').children[0].textContent,'Riprova');
+  let resolve;app.context.fetch=()=>new Promise(r=>resolve=r);const pending=new Script('loadOfficialLine("24")').runInContext(app.context);
+  app.get('close-official-bus').onclick();resolve({ok:true,json:async()=>structuredClone(official24)});await pending;
+  assert.equal(app.get('official-bus-dialog').open,false);assert.equal(new Script('officialBusData').runInContext(app.context),null);
+});
+test('Archivio ufficiale: terminali di sola discesa esclusi e passaggi del giorno successivo conservati',()=>{
+  const app=runOfficial();app.context.sample={validFrom:'2026-10-19',validTo:'2026-10-20',trips:[{id:'T',dates:['2026-10-19'],destination:'B',calls:[['A','23:55:00',0,true],['A','00:15:00',1,true],['B','00:30:00',1,false]]}]};
+  const rows=new Script('officialDepartures(sample,"2026-10-19","A")').runInContext(app.context);assert.equal(rows.length,2);assert.equal(rows[1].offset,1);assert.equal(rows[1].minutes,1455);
+  assert.equal(new Script('officialDepartures(sample,"2026-10-19","B").length').runInContext(app.context),0);
+});
+
+test('Scopri: la selezione iniziale include il catalogo reale, senza richiedere una revisione manuale',()=>{
+  const app=run(new Map(),'home');const base=structuredClone(liveCatalog.events[0]);app.context.liveEvents=[{...base,id:'default-unchecked',sourceUrl:'https://www.comune.verona.it/evento-a',startsAt:'2026-10-17',endsAt:'2026-10-18',localVerified:false},{...base,id:'default-checked',sourceUrl:'https://www.comune.verona.it/evento-b',startsAt:'2026-10-17',endsAt:'2026-10-18',localVerified:true}];
+  new Script('events.splice(0,events.length,...liveEvents);setView("discover")').runInContext(app.context);
+  const queue=new Script('discoveryEvents()').runInContext(app.context);
+  assert.equal(queue.length,2);assert.ok(queue.some(event=>!event.localVerified));
+  assert.equal(new Set(queue.map(event=>event.sourceUrl)).size,queue.length);
+  app.get('collection').value='local';app.get('collection').onchange();assert.ok(new Script('discoveryEvents().length').runInContext(app.context)<queue.length);
+  app.get('reset-filters').onclick();assert.equal(app.get('collection').value,'all');
+});
+test('Scopri: rivedere gli eventi passati conserva i salvati e persiste dopo il ricaricamento',()=>{
+  const app=run();const saved=new Script('currentDiscovery.id').runInContext(app.context);app.get('like').onclick();
+  const passed=[];let count=0;
+  while(!app.get('skip').disabled&&count++<100){passed.push(new Script('currentDiscovery.sourceUrl').runInContext(app.context));app.get('skip').onclick();}
+  assert.ok(passed.length);assert.equal(app.get('skip').disabled,true);
+  app.get('deck').children[0].children.find(child=>child.textContent==='Rivedi gli eventi saltati').onclick();
+  assert.ok(!app.get('skip').disabled);assert.equal(JSON.parse(app.storage.get('verona-events-v1'))[saved],'interested');
+  assert.deepEqual(JSON.parse(app.storage.get('verona-dismissed-v1')),{});
+  const reloaded=run(app.storage);assert.equal(new Script('discoveryEvents().some(e=>e.id==="'+saved+'")').runInContext(reloaded.context),false);
+  assert.ok(new Script('discoveryEvents()').runInContext(reloaded.context).some(e=>passed.includes(e.sourceUrl)));
+});
+
+function useRomeInstant(app,instant){const NativeDate=Date;app.context.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[instant]));}static now(){return NativeDate.parse(instant);}};new Script('refreshSavedDay()').runInContext(app.context);}
+test('Salvati: un evento che termina il 22 rimane prossimo tutto il 22 e passa nei passati alla mezzanotte di Verona',()=>{
+  const app=run(new Map(),'home');const base=structuredClone(catalog.events[0]);
+  app.context.historyFixture={...base,id:'history-multi',title:'Evento dal 19 al 22',startsAt:'2026-10-19',endsAt:'2026-10-22'};
+  new Script('events.push(historyFixture);save(historyFixture.id,"going");setView("saved")').runInContext(app.context);
+  useRomeInstant(app,'2026-10-22T21:59:59Z');assert.equal(new Script('visibleEvents().some(e=>e.id==="history-multi")').runInContext(app.context),true);
+  useRomeInstant(app,'2026-10-22T22:00:00Z');assert.equal(new Script('today').runInContext(app.context),'2026-10-23');assert.equal(new Script('visibleEvents().some(e=>e.id==="history-multi")').runInContext(app.context),false);
+  app.get('saved-past').onclick();assert.equal(new Script('visibleEvents().some(e=>e.id==="history-multi")').runInContext(app.context),true);
+  assert.equal(app.get('agenda-picker').hidden,true);assert.ok(app.get('events').children.some(card=>card.children.some(c=>c.textContent==='Evento dal 19 al 22')));
+  app.get('saved-upcoming').onclick();assert.equal(app.get('agenda-picker').hidden,false);
+});
+test('Salvati: storico persistente dopo la rimozione dal catalogo e rimozione esplicita dal dispositivo',()=>{
+  const app=run(new Map(),'home');const event=structuredClone(catalog.events[0]);event.id='removed-history';event.title='Evento non più nel catalogo';event.startsAt='2026-10-10';event.endsAt='2026-10-12';app.context.archived=event;
+  new Script('events.push(archived);save(archived.id,"interested")').runInContext(app.context);
+  const reloaded=run(app.storage,'home');new Script('setView("saved")').runInContext(reloaded.context);reloaded.get('saved-past').onclick();
+  assert.equal(new Script('events.some(e=>e.id==="removed-history")').runInContext(reloaded.context),false);
+  assert.equal(new Script('visibleEvents().some(e=>e.id==="removed-history")').runInContext(reloaded.context),true);
+  new Script('openDetails(savedEvents().find(e=>e.id==="removed-history"))').runInContext(reloaded.context);assert.ok(reloaded.get('detail-content').children.some(c=>c.textContent==='Rimuovi dai salvati'));
+  new Script('save("removed-history",null)').runInContext(reloaded.context);
+  assert.equal(JSON.parse(reloaded.storage.get('verona-saved-snapshots-v1'))['removed-history'],undefined);
+});
+test('Salvati: un evento futuro non scade il giorno dopo il salvataggio e le conferme non cambiano',()=>{
+  const app=run(new Map(),'home');app.context.futureSaved={...structuredClone(catalog.events[0]),id:'future-saved',startsAt:'2026-10-25',endsAt:'2026-10-25'};
+  new Script('events.push(futureSaved);save(futureSaved.id,"going");setView("saved")').runInContext(app.context);useRomeInstant(app,'2026-10-20T12:00:00Z');
+  assert.equal(new Script('visibleEvents().some(e=>e.id==="future-saved")').runInContext(app.context),true);assert.equal(JSON.parse(app.storage.get('verona-events-v1'))['future-saved'],'going');
+});
+
+test('Lo spostamento notturno segue la mezzanotte di Verona anche nei giorni da 23 e 25 ore',()=>{
+  const app=run(new Map(),'home');
+  for(const [instant,hours]of [['2026-10-24T22:00:00Z',25],['2026-03-28T23:00:00Z',23]]){
+    useRomeInstant(app,instant);new Script('scheduleSavedMidnight()').runInContext(app.context);
+    const timer=new Script('savedMidnightTimer').runInContext(app.context);assert.equal(app.timers.get(timer).ms,hours*3600000+50);
+  }
+});
+
+const eventBusLogic=await readFile(new URL('../public/event-bus.js',import.meta.url),'utf8');
+const eventBusIndexData=JSON.parse(await readFile(new URL('../public/bus-official/stops.json',import.meta.url),'utf8'));
+function runEventBus(){const app=runOfficial();new Script(eventBusLogic).runInContext(app.context);app.context.fetch=async url=>({ok:true,json:async()=>structuredClone(String(url).endsWith('/stops.json')?eventBusIndexData:official24)});return app;}
+test('Autobus vicini: distanze, limite 800 m, tre risultati e servizio reale della 24/96 per data',()=>{
+  const app=runEventBus();app.context.index=eventBusIndexData;
+  const nearby=new Script('nearbyBusStops(index,index.stops.find(s=>s.code==="1974"),"2026-10-19")').runInContext(app.context);
+  assert.equal(nearby[0].code,'1974');assert.equal(nearby[0].distance,0);assert.ok(nearby[0].lines.includes('24'));assert.ok(nearby.length<=3);assert.ok(nearby.every(stop=>stop.distance<=800));
+  const sunday=new Script('nearbyBusStops(index,index.stops.find(s=>s.code==="1974"),"2026-10-25")').runInContext(app.context);
+  assert.ok(!sunday[0].lines.includes('24'));assert.ok(sunday[0].lines.includes('96'));
+  const expired=new Script('nearbyBusStops(index,index.stops.find(s=>s.code==="1974"),"2026-12-01")').runInContext(app.context);assert.equal(expired[0].knownDate,false);
+  assert.equal(new Script('nearbyBusStops(index,{lat:46.2,lon:11.9},"2026-10-19").length').runInContext(app.context),0);
+});
+test('Evento → fermata → orari: conserva il codice e la data dell’evento, non il giorno corrente',async()=>{
+  const app=runEventBus();const stop=eventBusIndexData.stops.find(s=>s.code==='1974');app.context.busEvent={...structuredClone(catalog.events[0]),id:'nearby-event',title:'Evento vicino a Santini',startsAt:'2026-10-21',endsAt:'2026-10-21',coordinates:{lat:stop.lat,lon:stop.lon},mapDisabled:false};
+  new Script('openDetails(busEvent)').runInContext(app.context);assert.ok(app.get('detail-content').children.some(section=>section.className==='event-bus-entry'));
+  await new Script('openEventBus(busEvent)').runInContext(app.context);assert.equal(app.get('event-bus-date').value,'2026-10-21');assert.equal(app.get('event-bus-stops').children.length,3);
+  const first=app.get('event-bus-stops').children[0];first.children.find(c=>c.className==='nearby-bus-lines').children.find(c=>c.textContent==='Linea 24 · Orari').onclick();
+  await new Script('loadOfficialLine("24",{stopCode:"1974",date:"2026-10-21"})').runInContext(app.context);
+  assert.equal(app.get('official-date').value,'2026-10-21');assert.equal(app.get('official-stop').value,'1974');assert.match(app.get('official-summary').textContent,/40 partenze/);
+});
+test('Autobus vicini: posizione incerta, errore recuperabile e chiusura durante la ricerca',async()=>{
+  const app=runEventBus();app.context.uncertain={...structuredClone(catalog.events[0]),mapDisabled:true};new Script('openDetails(uncertain)').runInContext(app.context);
+  const section=app.get('detail-content').children.find(c=>c.className==='event-bus-entry');assert.match(section.children[1].textContent,/non è abbastanza precisa/);
+  const stop=eventBusIndexData.stops[0];app.context.busEvent={...structuredClone(catalog.events[0]),coordinates:{lat:stop.lat,lon:stop.lon},mapDisabled:false};
+  app.context.fetch=async()=>({ok:false});await new Script('openEventBus(busEvent)').runInContext(app.context);assert.match(app.get('event-bus-status').textContent,/temporaneamente/);assert.equal(app.get('event-bus-stops').children[0].textContent,'Riprova');
+  let resolve;app.context.fetch=()=>new Promise(r=>resolve=r);const pending=new Script('renderEventBus()').runInContext(app.context);app.get('close-event-bus').onclick();resolve({ok:true,json:async()=>eventBusIndexData});await pending;assert.equal(app.get('event-bus-stops').children.length,0);
+});
+test('Scheda fermata: stesso accesso agli orari in mappa ed elenco, senza link tecnico o falso messaggio bloccante',()=>{
+  const app=runOfficial();const box=new Script('busRouteLine=busData.lines.find(l=>l.number==="24");busRouteStopContent({stops:[]},{name:"Via Santini",ref:"1974",lat:45.46,lon:10.98})').runInContext(app.context);
+  assert.ok(box.children.some(c=>c.textContent==='Orari ufficiali di questa fermata'));assert.ok(!box.children.some(c=>/OpenStreetMap|non associati/.test(c.textContent)));
+  const unlinked=new Script('busRouteStopContent({stops:[]},{name:"Fermata senza codice",lat:45.46,lon:10.98})').runInContext(app.context);assert.ok(unlinked.children.some(c=>c.textContent==='Consulta orari linea 24'));assert.ok(!unlinked.children.some(c=>/non associati/.test(c.textContent)));
+});
+
+test('Popup fermata: carica automaticamente le prossime partenze senza aprire il pannello completo e con una sola richiesta per linea',async()=>{
+  const app=runOfficial();useRomeInstant(app,'2026-10-19T03:35:00Z');let calls=0;app.context.fetch=async()=>{calls++;return {ok:true,json:async()=>structuredClone(official24)}};
+  const boxes=new Script('busRouteLine=busData.lines.find(l=>l.number==="24");[busRouteStopContent({stops:[]},{name:"Santini B",ref:"1974",lat:45.46,lon:10.98},{preview:true}),busRouteStopContent({stops:[]},{name:"Santini A",ref:"1973",lat:45.46,lon:10.98},{preview:true})]').runInContext(app.context);
+  assert.equal(calls,0);await Promise.all(boxes.map(box=>box.loadDepartures()));assert.equal(calls,1);
+  const preview=boxes[0].children.find(child=>child.className==='bus-stop-preview');const rows=preview.children.filter(child=>child.className==='bus-stop-departure');assert.equal(rows.length,3);assert.equal(rows[0].children[0].children[0].textContent,'05:50');assert.match(rows[0].children[1].textContent,/PIAZZA RIGHETTI/);
+  assert.ok(boxes[0].children.some(child=>child.textContent==='Tutti gli orari'));assert.notEqual(app.get('official-bus-dialog').open,true);assert.equal(new Script('officialBusData').runInContext(app.context),null);
+});
+test('Prossime partenze: include corse notturne del giorno di servizio precedente senza riproporre passaggi già terminati',()=>{
+  const app=runOfficial();app.context.night={validFrom:'2026-10-19',validTo:'2026-10-21',trips:[{id:'N',dates:['2026-10-19'],destination:'Centro',calls:[['S','00:30:00',1,true]]},{id:'D',dates:['2026-10-20'],destination:'Stazione',calls:[['S','01:00:00',0,true],['S','00:05:00',0,true]]}]};
+  const rows=new Script('nextBusStopDepartures(night,"S",new Date("2026-10-19T22:10:00Z"))').runInContext(app.context);assert.deepEqual(Array.from(rows,row=>row.time),['00:30:00','01:00:00']);assert.equal(rows[0].offset,0);
+  assert.equal(new Script('nextBusStopDepartures(night,"S",new Date("2026-11-01T10:00:00Z"))').runInContext(app.context),null);
+});
+test('Popup fermata: rete non disponibile recuperabile, archivio scaduto e assenza di altre partenze sono stati distinti',async()=>{
+  const app=runOfficial();const box=app.get('inline-test');app.context.inlineBox=box;app.context.fetch=async()=>({ok:false});
+  await new Script('renderBusStopPreview(inlineBox,"24","1974")').runInContext(app.context);assert.match(box.children[0].textContent,/temporaneamente/);assert.equal(box.children[1].textContent,'Riprova');
+  app.context.fetch=async()=>({ok:true,json:async()=>structuredClone(official24)});
+  await new Script('renderBusStopPreview(inlineBox,"24","1974",new Date("2026-12-01T10:00:00Z"))').runInContext(app.context);assert.match(box.children[0].textContent,/scaduto/);
+  await new Script('renderBusStopPreview(inlineBox,"24","1974",new Date("2026-11-17T22:59:59Z"))').runInContext(app.context);assert.ok(box.children.some(child=>/Nessun’altra partenza/.test(child.textContent)));
+});
+
+test('Mappa evento: più linee colorate, varianti associate ai codici vicini e limite di otto linee',async()=>{
+  const app=runEventBus();app.context.index=eventBusIndexData;
+  const groups=await new Script('loadEventRouteGroups(nearbyBusStops(index,{lat:45.434644,lon:10.977568},"2026-10-26",{limit:Infinity}))').runInContext(app.context);
+  assert.ok(groups.length>1);assert.ok(groups.length<=8);assert.equal(new Set(groups.map(group=>group.color)).size,groups.length);
+  const line=groups.find(group=>group.number==='62');assert.ok(line);assert.equal(line.status,'ready');assert.equal(line.routes.length,2);
+  app.context.routeGroups=groups;
+  new Script('eventBusRouteGroups=routeGroups;eventBusCurrent={point:{lat:45.434644,lon:10.977568},stops:[]};renderEventBusLegend()').runInContext(app.context);
+  const buttons=app.get('event-bus-line-legend').children;assert.equal(buttons.length,groups.length+1);assert.equal(buttons[0].attributes['aria-pressed'],'true');
+  const target=buttons.find(button=>button.attributes['aria-label']==='Mostra linea 62');target.onclick();assert.equal(new Script('eventBusSelectedLine').runInContext(app.context),'62');
+});
+test('Tracciati vicini: scarica solo la linea richiesta, condivide la cache e rifiuta risposte di altre linee',async()=>{
+  const app=runEventBus(),calls=[];const routes=catalog.busRoutes.routes.filter(route=>route.number==='62');app.context.routes62=routes;
+  new Script('busRouteData.assetBase="bus-routes/";busRouteData.routes=routes62.map(({stops,segments,...r})=>r)').runInContext(app.context);
+  app.context.fetch=async url=>{calls.push(url);return {ok:true,json:async()=>({routes})}};
+  await new Script('loadEventRouteLine("62")').runInContext(app.context);await new Script('loadEventRouteLine("62")').runInContext(app.context);assert.deepEqual(calls,['bus-routes/atv-urban-62.json']);
+  const missing=await new Script('loadEventRouteLine("SC01")').runInContext(app.context);assert.equal(missing.length,0);assert.equal(calls.length,1);
+});
+test('Percorsi evento: il filtro cambia i tracciati ma mantiene il segnaposto evento in evidenza',()=>{
+  const app=runEventBus(),paths=[],icons=[],pins=[],fits=[];
+  const layer={addTo(){return this},clearLayers(){paths.length=0;pins.length=0;}};
+  const marker=options=>({bindPopup(){return this},addTo(){pins.push(options);return this}});
+  app.context.L={map:()=>({setView(){return this},invalidateSize(){},fitBounds(points){fits.push(points)}}),tileLayer:()=>({on(){return this},addTo(){}}),layerGroup:()=>layer,polyline:(segments,options)=>({bindPopup(){return this},addTo(){paths.push(options);return this}}),circleMarker:(point,options)=>marker(options),divIcon:options=>{icons.push(options);return options},marker:(point,options)=>marker(options)};
+  app.context.mapGroups=[{number:'11',color:'#245f9e',routes:[{label:'A → B',segments:[[[45.43,10.98],[45.44,10.99]]],stops:[{id:'a',ref:'1',name:'A',lat:45.43,lon:10.98}]}]},{number:'62',color:'#b13c45',routes:[{label:'C → D',segments:[[[45.42,10.97],[45.44,10.99]]],stops:[{id:'b',ref:'2',name:'B',lat:45.42,lon:10.97}]}]}];
+  new Script('eventBusEvent={title:"Il mio evento"};eventBusRouteGroups=mapGroups;eventBusFitFull=true;drawEventBusMap({lat:45.434,lon:10.977},[])').runInContext(app.context);
+  assert.ok(paths.some(path=>path.color==='#245f9e'));assert.ok(paths.some(path=>path.color==='#b13c45'));assert.ok(pins.some(pin=>pin.zIndexOffset===1000));assert.ok(icons.at(-1).html.includes('Evento'));
+  new Script('eventBusSelectedLine="62";drawEventBusMap({lat:45.434,lon:10.977},[])').runInContext(app.context);assert.ok(!paths.some(path=>path.color==='#245f9e'));assert.ok(paths.some(path=>path.color==='#b13c45'));assert.ok(pins.some(pin=>pin.zIndexOffset===1000));assert.ok(fits.at(-1).some(point=>point[0]===45.434));
+});
+
+const networkLogic=await readFile(new URL('../public/bus-network.js',import.meta.url),'utf8');
+function runNetwork(storage=new Map()){const app=run(new Map(storage),'home');new Script(officialLogic+'\n'+eventBusLogic+'\n'+networkLogic).runInContext(app.context);return app;}
+test('Mappa generale: linee iniziali, aggiunta e rimozione persistenti, massimo sei e ricerca fermate',async()=>{
+  const app=runNetwork();await new Script('openBusNetwork()').runInContext(app.context);assert.equal(app.get('bus-network-dialog').open,true);assert.equal(app.get('network-lines').children.length,3);
+  app.get('network-list-tab').onclick();app.get('network-stop-search').value='Maffei';app.get('network-stop-search').oninput();assert.ok(app.get('network-stops').children.length>0);assert.ok(app.get('network-stops').children.every(card=>card.children[0].textContent.includes('Maffei')));
+  app.get('network-line').value='24';app.get('network-add-line').onclick();await new Script('loadBusNetwork()').runInContext(app.context);assert.equal(app.get('network-lines').children.length,4);assert.ok(JSON.parse(app.storage.get('verona-bus-network-v1')).includes('24'));
+  app.get('network-lines').children.find(button=>button.attributes['aria-label']==='Rimuovi linea 24 dalla mappa').onclick();await new Script('loadBusNetwork()').runInContext(app.context);assert.equal(app.get('network-lines').children.length,3);
+  new Script('busNetworkLines=["11","12","13","21","22","23"]').runInContext(app.context);app.get('network-line').value='24';app.get('network-add-line').onclick();assert.match(app.get('network-status').textContent,/fino a 6 linee/);
+});
+test('Mappa generale: riprende le preferite e conserva anche una selezione svuotata intenzionalmente',async()=>{
+  const app=runNetwork(new Map([['verona-bus-v1',JSON.stringify({'atv-urban-24':true})]]));await new Script('openBusNetwork()').runInContext(app.context);assert.equal(app.get('network-lines').children.length,1);assert.equal(new Script('busNetworkLines[0]').runInContext(app.context),'24');
+  app.get('network-lines').children[0].onclick();await new Script('loadBusNetwork()').runInContext(app.context);assert.equal(new Script('busNetworkLines.length').runInContext(app.context),0);
+  const reloaded=runNetwork(app.storage);await new Script('openBusNetwork()').runInContext(reloaded.context);assert.equal(new Script('busNetworkLines.length').runInContext(reloaded.context),0);assert.deepEqual(JSON.parse(reloaded.storage.get('verona-bus-network-v1')),[]);
+});
+test('Mappa generale: chiudere durante il download non aggiorna la vista',async()=>{
+  const app=runNetwork();const routes=catalog.busRoutes.routes.filter(route=>route.lineId==='atv-urban-11');app.context.meta=routes.map(({stops,segments,...route})=>route);new Script('busRouteData.assetBase="bus-routes/";busRouteData.routes=meta').runInContext(app.context);
+  let resolve;app.context.fetch=()=>new Promise(r=>resolve=r);const pending=new Script('openBusNetwork()').runInContext(app.context);app.get('close-bus-network').onclick();resolve({ok:true,json:async()=>({routes})});await pending;assert.equal(app.get('bus-network-dialog').open,false);assert.equal(new Script('busNetworkGroups.length').runInContext(app.context),0);
+});
+test('Partenze in popup: una risposta tardiva di un’altra linea non sostituisce la scelta corrente',async()=>{
+  const app=runOfficial(),line11=JSON.parse(await readFile(new URL('../data/bus-official/11.json',import.meta.url),'utf8'));let resolve;
+  app.context.fetch=url=>String(url).endsWith('/11.json')?new Promise(r=>resolve=r):Promise.resolve({ok:true,json:async()=>structuredClone(official24)});app.context.inlineBox=app.get('switch-preview');
+  const first=new Script('renderBusStopPreview(inlineBox,"11","1104",new Date("2026-10-19T03:35:00Z"))').runInContext(app.context);
+  await new Script('renderBusStopPreview(inlineBox,"24","1974",new Date("2026-10-19T03:35:00Z"))').runInContext(app.context);resolve({ok:true,json:async()=>line11});await first;
+  const rows=app.get('switch-preview').children.filter(child=>child.className==='bus-stop-departure');assert.equal(rows[0].children[0].children[0].textContent,'05:50');assert.match(rows[0].children[1].textContent,/PIAZZA RIGHETTI/);
 });
