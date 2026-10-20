@@ -101,7 +101,7 @@ export function createGameHandler(options={}) {
     if(origin&&!sameOrigin&&origin!==options.allowedOrigin){res.writeHead(403).end();return true;}
     const headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Vary':'Origin'};
     if(origin)headers['Access-Control-Allow-Origin']=origin;
-    if(req.method==='OPTIONS'){res.writeHead(204,{...headers,'Access-Control-Allow-Methods':'POST','Access-Control-Allow-Headers':'Content-Type, Authorization'}).end();return true;}
+    if(req.method==='OPTIONS'){res.writeHead(204,{...headers,'Access-Control-Allow-Methods':'POST','Access-Control-Allow-Headers':'Content-Type, Authorization','Access-Control-Max-Age':'600'}).end();return true;}
     try{
       if(req.method!=='POST')fail('Metodo non consentito.',405);
       let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>2048)fail('Richiesta troppo grande.',413);}
@@ -113,6 +113,7 @@ export function createGameHandler(options={}) {
       for(const [key,value] of limits)if(time-value.time>60000)limits.delete(key);
       const limit=limits.get(bucket)||{time,count:0};limits.set(bucket,limit);if(++limit.count>(identity?300:240))fail('Troppe richieste. Attendi un minuto.',429);
       const result=await requestService.execute(action,body,token);
+      if(['create','join','play','rematch','leave'].includes(action))options.onChange?.({mode:'friendly',game:options.game||'briscola',code:result.state?.code||body.code,token});
       res.writeHead(200,headers).end(JSON.stringify(result));
     }catch(error){res.writeHead(error.status||500,headers).end(JSON.stringify({error:error.status?error.message:'Servizio temporaneamente non disponibile.'}));}
     return true;

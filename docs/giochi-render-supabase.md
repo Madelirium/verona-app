@@ -136,3 +136,23 @@ lancio pubblico. I backup non sono creati automaticamente da questo codice.
 
 Test locali: `npm ci`, `npm test`, `npm run build`. PGlite è una dipendenza solo di
 test; il server di produzione usa le API HTTPS Supabase senza SDK o dipendenze npm.
+
+## Aggiornamenti immediati dei turni
+
+Il server offre `/api/games/updates` su WebSocket. Il browser invia il token nel
+primo messaggio, mai nell’URL. La sottoscrizione è autorizzata dal normale handler
+della partita; le notifiche sono limitate alla propria stanza e contengono solo
+un avviso di cambiamento, senza carte, token o altri dati privati. Sono emesse
+soltanto dopo il salvataggio confermato, anche per le ranked. La mossa continua
+a essere validata e salvata prima di essere mostrata come riuscita.
+
+Con il canale attivo, il controllo periodico di sicurezza passa da 2,5 a 8 secondi;
+una notifica anticipa subito il recupero dello stato. Con canale interrotto o non
+supportato torna il polling da 2,5 secondi, con riconnessione e backoff sugli errori.
+Le scadenze ranked continuano a essere controllate e il conto alla rovescia locale
+si aggiorna ogni secondo. La pausa Briscola usa il tempo residuo comunicato dal
+server: una presa già conclusa non aggiunge altri 1,1 secondi.
+
+Le notifiche WebSocket appartengono al singolo processo Render. Su più istanze
+il polling resta la protezione per gli eventi di altri processi; per aggiornamenti
+immediati tra istanze occorrerà un canale condiviso. I dati restano su Supabase.

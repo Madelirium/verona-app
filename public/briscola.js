@@ -5,20 +5,21 @@
   let roomsTimer=null,roomsEpoch=0,roomsLoading=false,roomsSignature='',roomButtons=[];
   let selectedColumn=3,lastDiscEvent='';
   let trickUntil=0,trickTimer=null,lastReadTrick='',retryCount=0,entryReturn=null;
+  let updatesSocket=null,updatesScope='',updatesReady=false,nextUpdatesAttempt=0,polling=false,refreshRequested=false;
   const base=(payload.briscolaApi||'').replace(/\/$/,'');
   const ranks={1:'Asso',8:'Fante',9:'Cavallo',10:'Re'};
   const label=c=>(ranks[c.rank]||c.rank)+' di '+c.suit;
   function message(text){$('game-feedback').textContent=text;if($('game-entry-dialog').open)$('game-entry-feedback').textContent=text;}
   function remember(){if(session)sessions.set(selectedGame,session);else sessions.delete(selectedGame);try{if(session)localStorage.setItem(key(),JSON.stringify(session));else localStorage.removeItem(key());}catch{message('Il browser non salva la sessione: mantieni aperta questa scheda per conservare il tuo posto.');}}
   function restore(){session=sessions.get(selectedGame)||null;if(session)return;try{const saved=JSON.parse(localStorage.getItem(key())||'null');if(/^[A-Z2-9]{6}$/.test(saved?.code)&&/^[a-f0-9]{64}$/.test(saved?.token)){session=saved;sessions.set(selectedGame,saved);}}catch{}}
-  function reset(){epoch++;session=null;state=null;signature='';trickUntil=0;clearTimeout(trickTimer);clearTimeout(timer);$('game-forget').hidden=true;remember();draw();}
+  function reset(){epoch++;stopUpdates();session=null;state=null;signature='';trickUntil=0;clearTimeout(trickTimer);clearTimeout(timer);$('game-forget').hidden=true;remember();draw();}
   function applyState(next){
     if(state?.code===next.code&&state.version>next.version)return;
     if(state?.matchId!==next.matchId){selectedColumn=3;lastReadTrick='';trickUntil=0;}
     state=next;
     if(selectedGame==='briscola'&&next.lastTrick){
       const id=next.matchId+':'+next.lastTrick.id;
-      if(id!==lastReadTrick){lastReadTrick=id;trickUntil=Date.now()+Math.max(1100,next.trickWaitMs||0);clearTimeout(trickTimer);const generation=epoch;trickTimer=setTimeout(()=>{if(generation===epoch){signature='';draw();}},Math.max(1100,next.trickWaitMs||0)+30);}
+      if(id!==lastReadTrick){lastReadTrick=id;const wait=Math.max(0,next.trickWaitMs||0);trickUntil=Date.now()+wait;clearTimeout(trickTimer);const generation=epoch;trickTimer=setTimeout(()=>{if(generation===epoch){signature='';draw();}},wait+30);}
     }
   }
   async function request(action,body={}){
@@ -34,13 +35,46 @@
     }catch(error){if(error.name==='AbortError'||error instanceof TypeError)throw new Error('Connessione interrotta. Riprova: il tuo posto resta riservato.');throw error;}
     finally{clearTimeout(timeout);}
   }
-  function schedule(){clearTimeout(timer);if(session)timer=setTimeout(poll,Math.min(15000,2500*2**Math.min(retryCount,3)));}
+  function stopUpdates(){const socket=updatesSocket;updatesSocket=null;updatesReady=false;updatesScope='';refreshRequested=false;if(socket)socket.close();}
+  function connectUpdates(){
+    if(!session||typeof WebSocket==='undefined')return;
+    const scope=[selectedGame,session.mode||'friendly',session.code,session.token].join(':');
+    if(updatesSocket&&updatesScope===scope)return;
+    if(Date.now()<nextUpdatesAttempt)return;
+    stopUpdates();updatesScope=scope;
+    try{
+      const url=new URL(base||location.origin);url.protocol=url.protocol==='https:'?'wss:':'ws:';url.pathname='/api/games/updates';url.search='';url.hash='';
+      const socket=new WebSocket(url);updatesSocket=socket;
+      socket.onopen=async()=>{
+        try{const token=session?.mode==='ranked'?await globalThis.veronaAccount?.accessToken():session?.token;
+          if(updatesSocket!==socket||!token)return;
+          socket.send(JSON.stringify({mode:session.mode||'friendly',game:selectedGame,code:session.code,token}));
+        }catch{socket.close();}
+      };
+      socket.onmessage=event=>{
+        if(updatesSocket!==socket)return;
+        let data;try{data=JSON.parse(event.data);}catch{return;}
+        if(data.type==='ready')updatesReady=true;
+        if(['ready','changed'].includes(data.type)){if(busy||polling)refreshRequested=true;else poll();}
+      };
+      socket.onerror=()=>socket.close();
+      socket.onclose=()=>{if(updatesSocket!==socket)return;updatesSocket=null;updatesReady=false;nextUpdatesAttempt=Date.now()+5000;schedule();};
+    }catch{updatesSocket=null;updatesReady=false;nextUpdatesAttempt=Date.now()+5000;}
+  }
+  function schedule(){
+    clearTimeout(timer);if(!session)return;connectUpdates();
+    const normal=updatesReady?8000:2500;
+    const deadline=state?.ranked&&state.status==='playing'?Math.max(100,state.ranked.deadline-Date.now()+100):Infinity;
+    timer=setTimeout(poll,refreshRequested?0:Math.min(deadline,15000,normal*2**Math.min(retryCount,3)));
+  }
   async function poll(){
-    if(busy){schedule();return;}
+    clearTimeout(timer);
+    if(busy||polling){refreshRequested=true;return;}
+    polling=true;refreshRequested=false;
     const generation=epoch;
     try{const result=await request('state');if(generation!==epoch)return;applyState(result.state);retryCount=0;$('game-forget').hidden=true;message('');draw();}
     catch(error){if(generation!==epoch)return;retryCount++;$('game-forget').hidden=false;message(error.message+(error.status===404?' Crea una nuova partita.':' Riconnessione automatica in corso…'));if([401,404].includes(error.status))reset();else{signature='';draw();}}
-    finally{schedule();}
+    finally{polling=false;schedule();}
   }
   async function act(action,body={}){
     if(busy)return false;epoch++;busy=true;draw();message('');let success=false;
@@ -179,7 +213,7 @@
     $('forza4-selection-status').textContent=!active?'Partita conclusa.':('Colonna '+(selectedColumn+1)+(full?' piena.':'.')+(mine&&!full?' Anteprima nella riga '+(landing+1)+'. Premi Lascia cadere oppure Invio sul tabellone.':' Usa le frecce per scegliere la colonna.'));
   }
   function chooseGame(game){
-    if(busy)return;epoch++;clearTimeout(timer);clearTimeout(trickTimer);trickUntil=0;retryCount=0;state=null;signature='';selectedGame=game;restore();
+    if(busy)return;epoch++;stopUpdates();clearTimeout(timer);clearTimeout(trickTimer);trickUntil=0;retryCount=0;state=null;signature='';selectedGame=game;restore();
     $('game-room-code').value='';$('game-forget').hidden=true;message(session?'Riprendo la tua partita…':'');
     try{localStorage.setItem('verona-game-choice-v1',game);}catch{}
     render();draw();if(session)poll();
@@ -276,10 +310,11 @@
   globalThis.veronaGames={
     enterRanked(result){
       if(busy)return false;
-      epoch++;clearTimeout(timer);selectedGame=result.game;signature='';state=null;retryCount=0;
+      epoch++;stopUpdates();clearTimeout(timer);selectedGame=result.game;signature='';state=null;retryCount=0;
       session={mode:'ranked',code:result.state.code,token:result.token};remember();applyState(result.state);setView('games');draw();schedule();return true;
     }
   };
   restore();
+  setInterval(()=>{if(state?.ranked&&state.status==='playing')draw();},1000);
   draw();if(session){message('Riprendo la tua partita…');poll();}else if(invitation)openEntry('join');
 })();

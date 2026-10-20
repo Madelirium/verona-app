@@ -112,7 +112,7 @@ export function createRankedService({store,now=Date.now,turnMs=90000,readyMs=300
     const p=queue.get(user.id);return p?{phase:'searching',game:p.game,elo:p.elo,joined:p.joined}:{phase:'idle'};
   }};
 }
-export function createRankedHandler({service,verify,allowedOrigin}={}){
+export function createRankedHandler({service,verify,allowedOrigin,onChange}={}){
   const limits=new Map();
   return async(req,res)=>{
     const path=new URL(req.url,'http://localhost').pathname;
@@ -120,7 +120,7 @@ export function createRankedHandler({service,verify,allowedOrigin}={}){
     const origin=req.headers.origin;
     if(origin&&origin!==`http://${req.headers.host}`&&origin!==`https://${req.headers.host}`&&origin!==allowedOrigin){res.writeHead(403).end();return true;}
     const headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Vary':'Origin',...(origin?{'Access-Control-Allow-Origin':origin}:{})};
-    if(req.method==='OPTIONS'){res.writeHead(204,{...headers,'Access-Control-Allow-Methods':'POST','Access-Control-Allow-Headers':'Content-Type, Authorization'}).end();return true;}
+    if(req.method==='OPTIONS'){res.writeHead(204,{...headers,'Access-Control-Allow-Methods':'POST','Access-Control-Allow-Headers':'Content-Type, Authorization','Access-Control-Max-Age':'600'}).end();return true;}
     try{
       if(req.method!=='POST')fail('Metodo non consentito.',405);
       let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>2048)fail('Richiesta troppo grande.',413);}
@@ -132,7 +132,9 @@ export function createRankedHandler({service,verify,allowedOrigin}={}){
       if(action==='availability'){res.writeHead(200,headers).end(JSON.stringify({enabled:Boolean(service&&verify)}));return true;}
       if(!service||!verify)fail('Classificate in preparazione: occorre attivare login e server ranked.',503);
       const user=await verify((req.headers.authorization||'').replace(/^Bearer /,''));
-      res.writeHead(200,headers).end(JSON.stringify(await service.execute(action,body,user)));
+      const result=await service.execute(action,body,user);
+      if(['ready','play','leave'].includes(action))onChange?.({mode:'ranked',game:result.game||body.game,code:result.state?.code||body.code,token:(req.headers.authorization||'').replace(/^Bearer /,'')});
+      res.writeHead(200,headers).end(JSON.stringify(result));
     }catch(error){res.writeHead(error.status||500,headers).end(JSON.stringify({error:error.status?error.message:'Servizio ranked temporaneamente non disponibile.'}));}
     return true;
   };
