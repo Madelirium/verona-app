@@ -1,0 +1,240 @@
+{
+  "checkedAt": "2026-10-18T14:39:02.409Z",
+  "sourceUrl": "https://wiki.openstreetmap.org/wiki/Verona/Trasporti_pubblici",
+  "googleComparison": "Non eseguito. Collegamenti Google Maps per consultazione manuale.",
+  "lines": [
+    {
+      "lineId": "atv-urban-11",
+      "status": "ok",
+      "routes": 8,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-12",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-13",
+      "status": "ok",
+      "routes": 10,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-20",
+      "status": "not-listed",
+      "routes": 0
+    },
+    {
+      "lineId": "atv-urban-21",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-22",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-23",
+      "status": "ok",
+      "routes": 2,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-24",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-25",
+      "status": "ok",
+      "routes": 3,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-31",
+      "status": "ok",
+      "routes": 2,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-32",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-33",
+      "status": "ok",
+      "routes": 2,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-41",
+      "status": "ok",
+      "routes": 8,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-51",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-52",
+      "status": "ok",
+      "routes": 2,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-53",
+      "status": "not-listed",
+      "routes": 0
+    },
+    {
+      "lineId": "atv-urban-61",
+      "status": "ok",
+      "routes": 8,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-62",
+      "status": "ok",
+      "routes": 2,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-63",
+      "status": "not-listed",
+      "routes": 0
+    },
+    {
+      "lineId": "atv-urban-70",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-71",
+      "status": "ok",
+      "routes": 2,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-72",
+      "status": "ok",
+      "routes": 2,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-73",
+      "status": "ok",
+      "routes": 2,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-urban-74",
+      "status": "ok",
+      "routes": 2,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-evening-81",
+      "status": "not-listed",
+      "routes": 0
+    },
+    {
+      "lineId": "atv-evening-82",
+      "status": "not-listed",
+      "routes": 0
+    },
+    {
+      "lineId": "atv-evening-83",
+      "status": "not-listed",
+      "routes": 0
+    },
+    {
+      "lineId": "atv-evening-84",
+      "status": "not-listed",
+      "routes": 0
+    },
+    {
+      "lineId": "atv-evening-85",
+      "status": "not-listed",
+      "routes": 0
+    },
+    {
+      "lineId": "atv-holiday-90",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-holiday-91",
+      "status": "ok",
+      "routes": 6,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-holiday-92",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-holiday-93",
+      "status": "ok",
+      "routes": 8,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-holiday-94",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-holiday-95",
+      "status": "ok",
+      "routes": 6,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-holiday-96",
+      "status": "ok",
+      "routes": 1,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-holiday-97",
+      "status": "ok",
+      "routes": 1,
+      "retained": 0
+    },
+    {
+      "lineId": "atv-holiday-98",
+      "status": "ok",
+      "routes": 4,
+      "retained": 0
+    }
+  ],
+  "errors": [
+    {
+      "lineId": "atv-urban-74",
+      "relationId": 12532103,
+      "error": "Gruppo wiki incoerente; verificate singolarmente le relazioni elencate"
+    }
+  ],
+  "comparisonCounts": {
+    "exact": 342,
+    "unmatched": 2195,
+    "review": 1282,
+    "direction-unverified": 1146
+  }
+}

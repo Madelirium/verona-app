@@ -7,6 +7,7 @@ const logic = await readFile(new URL('../public/calendar.js',import.meta.url),'u
 const builtHtml = await readFile(new URL('../public/index.html',import.meta.url),'utf8');
 const catalog = JSON.parse(builtHtml.match(/<script id="event-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
 const liveCatalog = structuredClone(catalog);
+catalog.busRoutes=JSON.parse(await readFile(new URL('../data/bus-routes.json',import.meta.url),'utf8'));
 // Casi reali congelati: gli import futuri non spostano l’orologio dei test UI.
 const fixture=JSON.parse(await readFile(new URL('./fixtures/calendar-events.json',import.meta.url),'utf8'));
 catalog.events=fixture.events;catalog.updatedAt=fixture.updatedAt;
@@ -35,6 +36,28 @@ function run(storage = new Map(),initialView='discover',mapApi) {
   if(initialView==='discover')get('discover').onclick();
   return {get,context,storage};
 }
+
+test('Le mappe delle altre linee caricano soltanto il file richiesto e riusano i percorsi già letti',async()=>{
+  const app=run(new Map(),'home'),calls=[];
+  const routes=catalog.busRoutes.routes.filter(route=>route.lineId==='atv-urban-12');
+  app.context.fetch=async url=>{calls.push(url);return {ok:true,json:async()=>({routes})}};
+  new Script('busRouteData.assetBase="bus-routes/";busRouteData.routes=busRouteData.routes.map(({stops,segments,...route})=>route)').runInContext(app.context);
+  await new Script('openBusRoute(busData.lines.find(line=>line.id==="atv-urban-12"))').runInContext(app.context);
+  assert.deepEqual(calls,['bus-routes/atv-urban-12.json']);assert.match(app.get('bus-route-title').textContent,/Linea 12/);
+  app.get('bus-route-list-tab').onclick();assert.ok(app.get('bus-route-stops').children.length>20);
+  const first=app.get('bus-route-stops').children[0];assert.ok(first.children.some(child=>child.href?.startsWith('https://www.google.com/maps/search/')));
+  app.get('close-bus-route').onclick();await new Script('openBusRoute(busRouteLine)').runInContext(app.context);assert.equal(calls.length,1);
+});
+
+test('Una mappa non scaricata segnala l’errore e permette di ritentare senza bloccare gli orari',async()=>{
+  const app=run(new Map(),'home');let fail=true;
+  const routes=catalog.busRoutes.routes.filter(route=>route.lineId==='atv-urban-12');
+  app.context.fetch=async()=>({ok:!fail,status:503,json:async()=>({routes})});
+  new Script('busRouteData.assetBase="bus-routes/";busRouteData.routes=busRouteData.routes.map(({stops,segments,...route})=>route)').runInContext(app.context);
+  await new Script('openBusRoute(busData.lines.find(line=>line.id==="atv-urban-12"))').runInContext(app.context);
+  assert.match(app.get('bus-route-message').textContent,/Chiudi e riprova/);app.get('close-bus-route').onclick();fail=false;
+  await new Script('openBusRoute(busRouteLine)').runInContext(app.context);app.get('bus-route-list-tab').onclick();assert.ok(app.get('bus-route-stops').children.length>20);
+});
 
 function locationTestApp(){
   const maps=[0,1,2].map(()=>({fits:0,fitBounds(){this.fits++},closePopup(){}}));
@@ -774,5 +797,5 @@ test('Il file distribuibile incorpora il catalogo e non dipende dal percorso del
   const embedded=JSON.parse(html.match(/<script id="event-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
   assert.equal(embedded.events.length,liveCatalog.events.length);
   assert.ok(!html.includes('__EVENT_DATA__'));
-  assert.ok(!logic.includes('fetch('));
+  assert.equal(embedded.busRoutes.assetBase,'bus-routes/');assert.ok(embedded.busRoutes.routes.every(route=>!route.stops&&!route.segments));const routeAsset=JSON.parse(await readFile(new URL('../public/bus-routes/atv-urban-12.json',import.meta.url),'utf8'));assert.ok(routeAsset.routes.every(route=>route.stops.length>1&&route.segments.length>0));
 });

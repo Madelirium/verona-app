@@ -15,6 +15,7 @@ let busMode='lines',busFavorites={},busReturnFocus=null,busVisited=false,busAler
 const busQueries={lines:'',alerts:''};
 const timetableData=payload.busTimetables||{lines:[]};
 const busRouteData=payload.busRoutes||{routes:[]};
+const busRouteLoads=new Map();
 let busRouteMap=null,busRouteLayer=null,busRouteLine=null,busRouteReturnFocus=null,busRouteMode='map',busRouteTileFailed=false;
 let timetableMapStopKey='',timetableLine=null,timetableReturnFocus=null,timetableStopChoices=[],timetableChoices={};
 try{timetableChoices=JSON.parse(localStorage.getItem('verona-timetables-v1')||'{}')||{};}catch{}
@@ -389,7 +390,7 @@ function openBusMore(){const box=$('bus-source-status');box.replaceChildren();fo
 function openBusLine(line){
   if(!$('bus-detail-dialog').open)busReturnFocus=document.activeElement;const content=$('bus-detail-content');content.replaceChildren();const title=el('h2','Linea '+line.number);title.id='bus-detail-title';
   const timetableButton=el('button','Consulta gli orari nell’app','dialog-save');timetableButton.onclick=()=>openTimetable(line);content.append(title,el('span',line.serviceLabel,'source'),timetableButton);
-  if(busRoutesFor(line).length){const button=el('button','Mappa e fermate · prova linea 11','dialog-save');button.onclick=()=>openBusRoute(line);content.append(button);}content.append(officialBusLink(line.timetableUrl,'PDF originale ATV ↗','bus-secondary-link'));
+  if(busRoutesFor(line).length){const button=el('button','Mappa e fermate','dialog-save');button.onclick=()=>openBusRoute(line);content.append(button);}content.append(officialBusLink(line.timetableUrl,'PDF originale ATV ↗','bus-secondary-link'));
   for(const direction of line.directions||[{label:'Percorso indicato da ATV',path:line.route}]){const section=el('section','','bus-route-section');section.append(el('h3',direction.label),el('p',direction.path,'bus-route'));content.append(section);}
   content.append(el('p','Percorso sintetico dalla scheda ATV, non elenco completo delle fermate. Nel pannello Orari scegli il servizio indicato nella tabella. Il PDF resta la fonte per note e aggiornamenti. Non sono arrivi in tempo reale.','detail-note'),officialBusLink(line.sourceUrl,'Scheda della linea sul sito ATV ↗','bus-secondary-link'));
   const star=busStar(line);star.onclick=()=>{toggleBus(line.id);star.textContent=busFavorites[line.id]?'★':'☆';star.setAttribute('aria-pressed',String(Boolean(busFavorites[line.id])));star.setAttribute('aria-label',(busFavorites[line.id]?'Rimuovi dalle tue linee: ':'Aggiungi alle tue linee: ')+line.number+', '+line.serviceLabel);star.classList.toggle('chosen',Boolean(busFavorites[line.id]));};content.append(star);
@@ -609,14 +610,18 @@ function busRouteStopKey(route,stop){
 function busRouteStopContent(route,stop){
   const box=el('div','','bus-map-stop');box.append(el('strong',stop.name));if(stop.ref)box.append(el('small','Fermata OSM '+stop.ref));
   const key=busRouteStopKey(route,stop);if(key){const button=el('button','Orari di questa fermata');button.onclick=()=>openTimetable(busRouteLine,{direction:route.timetableDirection,stop:key});box.append(button);}else box.append(el('small','Orari non associati a questo punto.'));
+  if(!key&&stop.comparison?.candidates?.length)box.append(el('small','Nomi simili nel PDF, da verificare: '+stop.comparison.candidates.join(' · ')));
+  if(!route.timetableDirection)box.append(el('small','Direzione da verificare: nessun orario associato automaticamente.'));
+  const google=el('a','Apri posizione in Google Maps ↗');google.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(stop.lat+','+stop.lon);google.target='_blank';google.rel='noopener noreferrer';box.append(google);
+  const osm=el('a','Fermata originale OpenStreetMap ↗');osm.href=stop.sourceUrl;osm.target='_blank';osm.rel='noopener noreferrer';box.append(osm);
   return box;
 }
 function renderBusRoute(focusStop=null){
-  const route=busRoutesFor(busRouteLine).find(item=>item.id===$('bus-route-variant').value),list=$('bus-route-stops'),message=$('bus-route-message');list.replaceChildren();if(!route)return;
+  const route=busRoutesFor(busRouteLine).find(item=>item.id===$('bus-route-variant').value),list=$('bus-route-stops'),message=$('bus-route-message');list.replaceChildren();if(!route)return;if(!route.stops){message.textContent='Caricamento del percorso…';return;}
   $('bus-route-map').hidden=busRouteMode!=='map';list.hidden=busRouteMode!=='list';
   $('bus-route-map-tab').setAttribute('aria-pressed',String(busRouteMode==='map'));$('bus-route-list-tab').setAttribute('aria-pressed',String(busRouteMode==='list'));
   $('bus-route-summary').textContent=route.stops.length+' fermate · '+route.label;
-  $('bus-route-source').replaceChildren(el('span','Percorso OSM indicativo · raccolto il '+formatDay(dayInRome(busRouteData.collectedAt),{day:'numeric',month:'short',year:'numeric'})+'. Verifica variazioni e deviazioni sul sito ATV. '),officialBusLink(route.sourceUrl,'Fonte OpenStreetMap ↗'));
+  const source=el('a','Fonte OpenStreetMap ↗');source.href=route.sourceUrl;source.target='_blank';source.rel='noopener noreferrer';$('bus-route-source').replaceChildren(el('span','Percorso OSM indicativo · raccolto il '+formatDay(dayInRome(route.collectedAt||busRouteData.collectedAt),{day:'numeric',month:'short',year:'numeric'})+'. Verifica variazioni e deviazioni sul sito ATV. '),source);
   for(const stop of route.stops){const row=busRouteStopContent(route,stop),locate=el('button','Vedi sulla mappa');locate.onclick=()=>{busRouteMode='map';renderBusRoute(stop.id)};row.append(locate);list.append(row);}
   message.textContent=busRouteTileFailed?'Le strade non si caricano. Puoi usare l’elenco delle fermate.':'';
   if(busRouteMode!=='map')return;
@@ -627,10 +632,19 @@ function renderBusRoute(focusStop=null){
   let focused=null;for(const stop of route.stops){const marker=L.circleMarker([stop.lat,stop.lon],{radius:8,color:'#254f78',weight:2,fillColor:'#fffefa',fillOpacity:1}).bindPopup(busRouteStopContent(route,stop)).addTo(busRouteLayer);if(stop.id===focusStop)focused={stop,marker};}
   if(focused){busRouteMap.setView([focused.stop.lat,focused.stop.lon],17);focused.marker.openPopup();}else busRouteMap.fitBounds(route.segments.flat(),{padding:[20,20],maxZoom:14});
 }
-function openBusRoute(line){
+async function openBusRoute(line){
   const routes=busRoutesFor(line);if(!routes.length)return;busRouteReturnFocus=document.activeElement;const sameLine=busRouteLine?.id===line.id;busRouteLine=line;
-  const previous=sameLine?$('bus-route-variant').value:'11344295';timetableOptions('bus-route-variant',routes.map(route=>({value:route.id,label:route.label})),'Scegli il percorso',previous);if(!$('bus-route-variant').value)$('bus-route-variant').value=routes[0].id;
-  $('bus-route-dialog').showModal();renderBusRoute();
+  $('bus-route-title').textContent='Linea '+line.number+' · Mappa e fermate';$('bus-route-map').setAttribute('aria-label','Mappa del percorso della linea '+line.number);const previous=sameLine?$('bus-route-variant').value:line.number==='11'?'11344295':routes[0].id;timetableOptions('bus-route-variant',routes.map(route=>({value:route.id,label:route.label})),'Scegli il percorso',previous);if(!$('bus-route-variant').value)$('bus-route-variant').value=routes[0].id;
+  if(!$('bus-route-dialog').open)$('bus-route-dialog').showModal();
+  if(busRouteData.assetBase&&!routes[0].stops){
+    $('bus-route-map').hidden=true;$('bus-route-stops').hidden=true;$('bus-route-source').replaceChildren();$('bus-route-summary').textContent='Linea '+line.number;$('bus-route-message').textContent='Caricamento del percorso…';
+    try{
+      if(!busRouteLoads.has(line.id))busRouteLoads.set(line.id,(async()=>{const response=await fetch('bus-routes/'+line.id+'.json',{cache:'no-cache'});if(!response.ok)throw Error('HTTP '+response.status);const data=await response.json();if(!Array.isArray(data.routes)||!data.routes.length||data.routes.some(route=>route.lineId!==line.id||!Array.isArray(route.stops)||!Array.isArray(route.segments)))throw Error('Percorsi non validi');busRouteData.routes=busRouteData.routes.filter(route=>route.lineId!==line.id).concat(data.routes);})());
+      await busRouteLoads.get(line.id);
+    }catch{busRouteLoads.delete(line.id);if(busRouteLine?.id===line.id)$('bus-route-message').textContent='Percorso non disponibile. Chiudi e riprova; gli orari restano consultabili dalla scheda della linea.';return;}
+    if(busRouteLine?.id!==line.id||!$('bus-route-dialog').open)return;
+  }
+  renderBusRoute();
 }
 $('close-bus-route').onclick=()=>$('bus-route-dialog').close();
 $('bus-route-dialog').addEventListener('close',()=>{if(busRouteReturnFocus?.isConnected)busRouteReturnFocus.focus();else $('bus-list').focus()});

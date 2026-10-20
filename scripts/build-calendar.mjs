@@ -1,6 +1,6 @@
 import {authConfig} from './auth-config.mjs';
 import {loadEnvFile} from 'node:process';
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import {districtCatalog,districtMatches,explicitDistricts} from './districts.mjs';
 import {splitBusDirections,alertLines} from './bus.mjs';
 import {validateTimetables} from './timetables.mjs';
@@ -24,6 +24,11 @@ export async function buildCalendar() {
   if(data.busTimetables.lines.length){const manifest=JSON.parse(await readFile(new URL('data/bus-timetable-snapshots.json',root),'utf8'));validateTimetables(data.busTimetables,manifest);}
   try{data.busRoutes=JSON.parse(await readFile(new URL('data/bus-routes.json',root),'utf8'));validateBusRoutes(data.busRoutes);}
   catch(error){if(error.code!=='ENOENT')throw error;data.busRoutes={routes:[]};}
+  if(data.busRoutes.routes.length){
+    await mkdir(new URL('public/bus-routes/',root),{recursive:true});
+    for(const lineId of new Set(data.busRoutes.routes.map(route=>route.lineId))){const routes=data.busRoutes.routes.filter(route=>route.lineId===lineId);await writeFile(new URL('public/bus-routes/'+lineId+'.json',root),JSON.stringify({routes}));}
+    data.busRoutes={...data.busRoutes,assetBase:'bus-routes/',routes:data.busRoutes.routes.map(({segments,stops,...route})=>route)};
+  }
   try{data.places=JSON.parse(await readFile(new URL('data/places.json',root),'utf8'));}
   catch(error){if(error.code!=='ENOENT')throw error;data.places={items:[]};}
   const editorial=JSON.parse(editorialJson);
