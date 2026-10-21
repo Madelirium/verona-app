@@ -1,13 +1,271 @@
 {
-  "updatedAt": "2026-10-18T13:27:48.454Z",
+  "status": "ok",
+  "updatedAt": "2026-10-21T09:13:44.098Z",
+  "checkedAt": "2026-10-21T09:13:44.098Z",
   "scope": "Prime due pagine per fonte, pubblicazioni negli ultimi 90 giorni. Non è un archivio completo.",
   "items": [
+    {
+      "id": "comune-news-15379",
+      "title": "\"Pomeriggi in Casetta\" alla Casetta del Porto: incontri primavera 2026",
+      "summary": "La partecipazione è gratuita con iscrizione obbligatoria tramite QRcode",
+      "publishedOn": "2026-10-21",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Pomeriggi-in-Casetta-alla-Casetta-del-Porto-incontri-primavera-2026",
+      "sourceKey": "notizie",
+      "kind": "Notizia",
+      "category": "Cultura e tempo libero",
+      "categoryMethod": "automatic",
+      "area": null,
+      "license": "CC BY 4.0 salvo eccezioni",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "imageId": 15638,
+      "image": {
+        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/incontri-alla-casetta-del-porto/338754-2-ita-IT/Incontri-alla-Casetta-del-Porto.png",
+        "alt": "Incontri alla Casetta del Porto",
+        "author": "Comune di Verona",
+        "caption": "",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
+        "sourceUrl": "https://www.comune.verona.it/Media/Images/Incontri-alla-Casetta-del-Porto",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "id": "comune-news-25165",
+      "title": "Adozione del \"Piano regionale di previsione, prevenzione e lotta attiva contro gli incendi boschivi\"",
+      "summary": "Consultazione pubblica del provvedimento: eventuali osservazioni da inoltrare entro il 12 novembre 2026",
+      "publishedOn": "2026-10-21",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Adozione-del-Piano-regionale-di-previsione-prevenzione-e-lotta-attiva-contro-gli-incendi-boschivi",
+      "sourceKey": "notizie",
+      "kind": "Notizia",
+      "category": "Dal Comune",
+      "categoryMethod": "automatic",
+      "area": null,
+      "license": "CC BY 4.0 salvo eccezioni",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "imageId": 25169,
+      "image": {
+        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/prevenzione-incendi-boschivi/597765-1-ita-IT/Prevenzione-incendi-boschivi.png",
+        "alt": "Prevenzione incendi boschivi",
+        "author": "Comune di Verona",
+        "caption": "",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
+        "sourceUrl": "https://www.comune.verona.it/Media/Images/Prevenzione-incendi-boschivi",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "id": "comune-news-25163",
+      "title": "Incontro formativo: Ricordati di stare bene",
+      "summary": "Incontro formativo, martedì 24 novembre ore 10 al Centro di Comunità D'Azeglio",
+      "publishedOn": "2026-10-21",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Incontro-formativo-Ricordati-di-stare-bene",
+      "sourceKey": "notizie",
+      "kind": "Notizia",
+      "category": "Cultura e tempo libero",
+      "categoryMethod": "automatic",
+      "area": null,
+      "license": "CC BY 4.0 salvo eccezioni",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "imageId": 13036,
+      "image": {
+        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizi-sociali/immagini-centri-di-comunita/incontri-formativi/conferenza/288667-1-ita-IT/Conferenza.png",
+        "alt": "Conferenza",
+        "author": "Comune di Verona e Aribandus",
+        "caption": "",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
+        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Incontri-formativi/Conferenza",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "id": "comune-news-25161",
+      "title": "Promozione alla salute",
+      "summary": "Martedì 10 novembre alle ore 10 al Centro di Comunità D'Azeglio",
+      "publishedOn": "2026-10-21",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Promozione-alla-salute",
+      "sourceKey": "notizie",
+      "kind": "Notizia",
+      "category": "Cultura e tempo libero",
+      "categoryMethod": "automatic",
+      "area": null,
+      "license": "CC BY 4.0 salvo eccezioni",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "imageId": 13036,
+      "image": {
+        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizi-sociali/immagini-centri-di-comunita/incontri-formativi/conferenza/288667-1-ita-IT/Conferenza.png",
+        "alt": "Conferenza",
+        "author": "Comune di Verona e Aribandus",
+        "caption": "",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
+        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Incontri-formativi/Conferenza",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "id": "comune-news-25147",
+      "title": "Ricordati di stare bene",
+      "summary": "Incontri informativi gratuiti nei centri di comunità dedicati ad over 60, loro familiari e caregiver",
+      "publishedOn": "2026-10-20",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Ricordati-di-stare-bene",
+      "sourceKey": "notizie",
+      "kind": "Notizia",
+      "category": "Dal Comune",
+      "categoryMethod": "automatic",
+      "area": null,
+      "license": "CC BY 4.0 salvo eccezioni",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "imageId": 3565,
+      "image": {
+        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/luoghi/icona-centri-di-comunita/73524-2-ita-IT/Icona-Centri-di-Comunita.png",
+        "alt": "Icona Centri di Comunità",
+        "author": "Comune di Verona",
+        "caption": "Icona identificativa dei Centri di Comunità",
+        "license": "Licenza non specificata",
+        "licenseUrl": null,
+        "rightsStatus": "unverified",
+        "sourceLicense": [
+          "Licenza sconosciuta"
+        ],
+        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Icona-Centri-di-Comunita",
+        "width": 2400,
+        "height": 1600
+      }
+    },
+    {
+      "id": "comune-news-10540",
+      "title": "Seduta del Consiglio comunale giovedì 22 ottobre 2026 ore 17.30",
+      "summary": "Il Consiglio si riunisce in Sala Gozzi di Palazzo Barbieri: i lavori dell'assemblea sono trasmessi in diretta streaming sul canale YouTube del Consiglio comunale",
+      "publishedOn": "2026-10-20",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Seduta-del-Consiglio-comunale-giovedi-22-ottobre-2026-ore-17.30",
+      "sourceKey": "notizie",
+      "kind": "Notizia",
+      "category": "Dal Comune",
+      "categoryMethod": "automatic",
+      "area": null,
+      "license": "CC BY 4.0 salvo eccezioni",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "imageId": 10542,
+      "image": {
+        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/organi-istituzionali/sala-gozzi/225504-1-ita-IT/Sala-Gozzi.png",
+        "alt": "Sala Gozzi",
+        "author": "Comune di Verona",
+        "caption": "L'aula in cui si svolge il Consiglio comunale",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
+        "sourceUrl": "https://www.comune.verona.it/Media/Images/Organi-Istituzionali/Sala-Gozzi",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "id": "comune-news-25119",
+      "title": "Alla scoperta dei sentieri con carta e bussola",
+      "summary": "Sabato 24 ottobre 2026 alle ore 8:30 nella sala civica “Giovanni Paolo II” Piazza delle Penne Nere, n. 1 Montorio (VR)",
+      "publishedOn": "2026-10-19",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Alla-scoperta-dei-sentieri-con-carta-e-bussola",
+      "sourceKey": "notizie",
+      "kind": "Notizia",
+      "category": "Dal Comune",
+      "categoryMethod": "automatic",
+      "area": null,
+      "license": "CC BY 4.0 salvo eccezioni",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "imageId": 25121,
+      "image": {
+        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/forte-john/596741-1-ita-IT/forte-John.jpg",
+        "alt": "forte John",
+        "author": "Comitato Fossi Montorio",
+        "caption": "",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
+        "sourceUrl": "https://www.comune.verona.it/Media/Images/forte-John",
+        "width": 1632,
+        "height": 1232
+      }
+    },
+    {
+      "id": "comune-news-24794",
+      "title": "Verona 1866–2026: 160 anni dall’annessione del Veneto al Regno d’Italia",
+      "summary": "Cerimonia commemorativa sabato 24 e domenica 25 ottobre. La mappa “I Luoghi del Risorgimento” è disponibile allo IAT, online e distribuita in edicola insieme al quotidiano l’Arena, sabato 24",
+      "publishedOn": "2026-10-19",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Verona-1866-2026-160-anni-dall-annessione-del-Veneto-al-Regno-d-Italia",
+      "sourceKey": "notizie",
+      "kind": "Notizia",
+      "category": "Dal Comune",
+      "categoryMethod": "automatic",
+      "area": null,
+      "license": "CC BY 4.0 salvo eccezioni",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "imageId": 25124,
+      "image": {
+        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/160-anniversario-annessione-del-veneto-al-regno-d-italia/596806-2-ita-IT/160-anniversario-annessione-del-Veneto-al-Regno-d-Italia.png",
+        "alt": "160° anniversario annessione del Veneto al Regno d’Italia",
+        "author": "Comune di Verona",
+        "caption": "",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
+        "sourceUrl": "https://www.comune.verona.it/Media/Images/160-anniversario-annessione-del-Veneto-al-Regno-d-Italia",
+        "width": 1600,
+        "height": 900
+      }
+    },
     {
       "id": "comune-news-9292",
       "title": "Autovelox e Ufficio Mobile di Prossimità: postazioni dal 19 al 25 ottobre",
       "summary": "I controlli della Polizia Locale per contrastare la velocità eccessiva dei veicoli sulle strade cittadine",
       "publishedOn": "2026-10-16",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Autovelox-e-Ufficio-Mobile-di-Prossimita-postazioni-dal-19-al-25-ottobre",
       "sourceKey": "notizie",
@@ -25,6 +283,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Polizia-locale-e-Protezione-civile/Autovelox",
         "width": 1600,
         "height": 900
@@ -35,7 +297,7 @@
       "title": "Centro di Consulenza Educativa L'Arca. Nuove iniziative mensili per genitori e bambine/i fino ai 6 anni di età",
       "summary": "Ogni mese nuovi incontri",
       "publishedOn": "2026-10-16",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Centro-di-Consulenza-Educativa-L-Arca.-Nuove-iniziative-mensili-per-genitori-e-bambine-i-fino-ai-6-anni-di-eta",
       "sourceKey": "notizie",
@@ -53,17 +315,39 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Immagine-Arca",
         "width": 1600,
         "height": 900
       }
     },
     {
+      "id": "comune-news-25058",
+      "title": "Convocazione Commissione Permanente di Lavoro n. 4 Circoscrizione 8^",
+      "summary": "Convocazione Commissione 4 del 21 ottobre 2026 alle ore 20:45 presso la sala polifunzionale di Montorio - piazza delle Penne Nere, 1 -Verona",
+      "publishedOn": "2026-10-16",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Convocazione-Commissione-Permanente-di-Lavoro-n.-4-Circoscrizione-84",
+      "sourceKey": "notizie",
+      "kind": "Notizia",
+      "category": "Dal Comune",
+      "categoryMethod": "automatic",
+      "area": "Circoscrizione 8",
+      "license": "CC BY 4.0 salvo eccezioni",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "imageId": null,
+      "image": null
+    },
+    {
       "id": "comune-news-25066",
       "title": "Convocazione Consiglio circoscrizionale 3^ circoscrizione",
       "summary": "Convocazione Consiglio circoscrizionale 3^ circoscrizione mercoledì 21 ottobre 2026 ore 19:15",
       "publishedOn": "2026-10-16",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Convocazione-Consiglio-circoscrizionale-3-circoscrizione5",
       "sourceKey": "notizie",
@@ -77,75 +361,11 @@
       "image": null
     },
     {
-      "id": "comune-news-25051",
-      "title": "Giappone ieri e oggi",
-      "summary": "Martedì 17 novembre 2026 il C.d.C. Casetta Maritati organizza un incontro a cura di Pierantonio Bimbato",
-      "publishedOn": "2026-10-16",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Giappone-ieri-e-oggi",
-      "sourceKey": "notizie",
-      "kind": "Notizia",
-      "category": "Cultura e tempo libero",
-      "categoryMethod": "automatic",
-      "area": null,
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25072,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/giappone-ieri-e-oggi/595420-1-ita-IT/Giappone-ieri-e-oggi.png",
-        "alt": "Giappone ieri e oggi",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "Licenza non specificata",
-        "licenseUrl": null,
-        "rightsStatus": "unverified",
-        "sourceLicense": [
-          "Licenza sconosciuta"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Giappone-ieri-e-oggi",
-        "width": 1600,
-        "height": 900
-      }
-    },
-    {
-      "id": "comune-news-25073",
-      "title": "Il Natale nell’Arte",
-      "summary": "Martedì 1 dicembre 2026 il C.d.C. Casetta Maritati organizza un incontro a cura di Pierantonio Bimbato",
-      "publishedOn": "2026-10-16",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Il-Natale-nell-Arte",
-      "sourceKey": "notizie",
-      "kind": "Notizia",
-      "category": "Cultura e tempo libero",
-      "categoryMethod": "automatic",
-      "area": null,
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25074,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/natale-nell-arte/595451-1-ita-IT/Natale-nell-arte.png",
-        "alt": "Natale nell'arte",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "Licenza non specificata",
-        "licenseUrl": null,
-        "rightsStatus": "unverified",
-        "sourceLicense": [
-          "Licenza sconosciuta"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Natale-nell-arte",
-        "width": 1600,
-        "height": 900
-      }
-    },
-    {
       "id": "comune-news-25071",
       "title": "Ispezioni ai ponti sulla Tangenziale T4 - T9: da lunedì 19 a giovedì 22 ottobre restringimenti di carreggiata",
       "summary": "Chiusa a turno la corsia di sorpasso tra Porta Nuova e Verona Nord, in entrambe le direzioni. La viabilità resta sempre garantita.",
       "publishedOn": "2026-10-16",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Ispezioni-ai-ponti-sulla-Tangenziale-T4-T9-da-lunedi-19-a-giovedi-22-ottobre-restringimenti-di-carreggiata",
       "sourceKey": "notizie",
@@ -163,6 +383,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/T4-T9-restringimenti-carreggiata",
         "width": 1600,
         "height": 900
@@ -173,7 +397,7 @@
       "title": "Centri per le Famiglie: sono aperte le iscrizioni per gli eventi speciali autunno-invernali!",
       "summary": "Iscrizioni aperte per gli eventi gratuiti in programma nei prossimi mesi e dedicati a condividere in famiglia momenti speciali come San Martino, l'arrivo dell'inverno e l'attesa del natale.",
       "publishedOn": "2026-10-14",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Centri-per-le-Famiglie-sono-aperte-le-iscrizioni-per-gli-eventi-speciali-autunno-invernali",
       "sourceKey": "notizie",
@@ -187,47 +411,11 @@
       "image": null
     },
     {
-      "id": "comune-news-25009",
-      "title": "Convocazione Commissione Circoscrizionale permanente di lavoro 6^ - Politiche Culturali – Politiche per l'Istruzione – Biblioteche – Politiche per le Famiglie - Lunedì 19 ottobre 2026.",
-      "summary": "Convocazione Commissione Circoscrizionale permanente di lavoro 6^ - Politiche Culturali – Politiche per l'Istruzione – Biblioteche – Politiche per le Famiglie - Lunedì 19 ottobre 2026 ore 19.00",
-      "publishedOn": "2026-10-14",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Convocazione-Commissione-Circoscrizionale-permanente-di-lavoro-6-Politiche-Culturali-Politiche-per-l-Istruzione-Biblioteche-Politiche-per-le-Famiglie-Lunedi-19-ottobre-2026",
-      "sourceKey": "notizie",
-      "kind": "Notizia",
-      "category": "Comunità",
-      "categoryMethod": "automatic",
-      "area": null,
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": null,
-      "image": null
-    },
-    {
-      "id": "comune-news-25017",
-      "title": "Convocazione Commissione Permanente di Lavoro n. 3 Circoscrizione 8^",
-      "summary": "Convocazione Commissione 3 del 19 ottobre 2026 alle ore 20.30 nella Sala Consiliare di Quinto in via Valpantena 40",
-      "publishedOn": "2026-10-14",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Convocazione-Commissione-Permanente-di-Lavoro-n.-3-Circoscrizione-84",
-      "sourceKey": "notizie",
-      "kind": "Notizia",
-      "category": "Dal Comune",
-      "categoryMethod": "automatic",
-      "area": "Circoscrizione 8",
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": null,
-      "image": null
-    },
-    {
       "id": "comune-news-24963",
       "title": "Prospettive",
       "summary": "Quattro serate di cinema gratuito con la rassegna “Prospettive”, in programma dal 15 ottobre al 26 novembre al Cinema Teatro Aurora | Le proiezioni iniziano alle ore 20.45",
       "publishedOn": "2026-10-13",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Prospettive",
       "sourceKey": "notizie",
@@ -245,7 +433,7 @@
       "title": "\"Piano B\", lo spettacolo di Beppe Braida al Camploy a sostegno della Ricerca sulla Fibrosi Cistica",
       "summary": "Giovedì 15 ottobre il comico, volto amato di Zelig e Colorado, sarà protagonista di una serata speciale a sostegno della Fondazione per la Ricerca sulla Fibrosi Cistica – ETS (FFC Ricerca)",
       "publishedOn": "2026-10-12",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Piano-B-lo-spettacolo-di-Beppe-Braida-al-Camploy-a-sostegno-della-Ricerca-sulla-Fibrosi-Cistica",
       "sourceKey": "notizie",
@@ -259,39 +447,11 @@
       "image": null
     },
     {
-      "id": "comune-news-24953",
-      "title": "Declino cognitivo: la prevenzione possibile",
-      "summary": "Una serata informativa dedicata agli stili di vita e alla prevenzione delle malattie neurodegenerative, lunedì 19 ottobre alla Sala Polifunzionale Alberto Benato.",
-      "publishedOn": "2026-10-12",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Declino-cognitivo-la-prevenzione-possibile",
-      "sourceKey": "notizie",
-      "kind": "Notizia",
-      "category": "Dal Comune",
-      "categoryMethod": "automatic",
-      "area": null,
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 24954,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/circoscrizione-4-2026-alzheimer-2026/592946-1-ita-IT/Circoscrizione-4-2026-Alzheimer-2026.jpg",
-        "alt": "Circoscrizione 4 - 2026 - Alzheimer 2026",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Circoscrizione-4-2026-Alzheimer-2026",
-        "width": 1600,
-        "height": 900
-      }
-    },
-    {
       "id": "comune-news-24944",
       "title": "Giro del Veneto 2026: provvedimenti viabilistici",
       "summary": "Mercoledì 14 ottobre: divieti di transito e di sosta per lo svolgimento della gara ciclistica che parte da Piazza Bra",
       "publishedOn": "2026-10-12",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Giro-del-Veneto-2026-provvedimenti-viabilistici",
       "sourceKey": "notizie",
@@ -309,6 +469,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Giro-del-Veneto3",
         "width": 1600,
         "height": 900
@@ -319,7 +483,7 @@
       "title": "Sportelli Polifunzionali e Uffici Demografici: modalità di accesso e prenotazione appuntamenti. Sospensione dei servizi per attività formative",
       "summary": "I servizi sono erogati su appuntamento on line o telefonico",
       "publishedOn": "2026-10-12",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Sportelli-Polifunzionali-e-Uffici-Demografici-modalita-di-accesso-e-prenotazione-appuntamenti.-Sospensione-dei-servizi-per-attivita-formative",
       "sourceKey": "notizie",
@@ -337,6 +501,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Sportello-polifunzionale-Adigetto",
         "width": 1600,
         "height": 900
@@ -347,7 +515,7 @@
       "title": "Believe Film Festival 2026",
       "summary": "Dal 15 al 18 ottobre 2026 torna a Verona il primo festival italiano dedicato ai cortometraggi realizzati da autori e crew tra i 14 e i 24 anni",
       "publishedOn": "2026-10-09",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Believe-Film-Festival-2026",
       "sourceKey": "notizie",
@@ -365,6 +533,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Believe-Film-Festival-2026",
         "width": 1600,
         "height": 900
@@ -375,7 +547,7 @@
       "title": "Intrecci di storie e speranza nei Centri di Comunità, percorsi per la terza età",
       "summary": "Al via dal 13 ottobre, un percorso dedicato a persone con più di 65 anni, pensato per creare uno spazio accogliente di incontro, ascolto e condivisione. Per aprirsi a nuove relazioni e combattere le solitudini, per riscoprire se stessi e gli altri nella terza età",
       "publishedOn": "2026-10-09",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Intrecci-di-storie-e-speranza-nei-Centri-di-Comunita-percorsi-per-la-terza-eta",
       "sourceKey": "notizie",
@@ -393,7 +565,7 @@
       "title": "Alla ricerca del Tempo Perduto - Testimonianze della vita di Verona",
       "summary": "Giovedì 15 ottobre, alle ore 16, conferenza al CdC Borgo Trento | Giovedì 22 ottobre, alle ore 10, passeggiata con partenza da Castelvecchio",
       "publishedOn": "2026-10-08",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Alla-ricerca-del-Tempo-Perduto-Testimonianze-della-vita-di-Verona",
       "sourceKey": "notizie",
@@ -411,6 +583,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Alla-Ricerca-del-Tempo-Perduto",
         "width": 1844,
         "height": 1048
@@ -421,7 +597,7 @@
       "title": "Festa di Halloween 4/8 anni al Centro di Comunità di Borgo Trento",
       "summary": "Festa di Halloween 4/8 anni al Centro di Comunità di Borgo Trento, giovedì 29 ottobre dalle 16.30 alle 18.30",
       "publishedOn": "2026-10-08",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Festa-di-Halloween-4-8-anni-al-Centro-di-Comunita-di-Borgo-Trento",
       "sourceKey": "notizie",
@@ -439,7 +615,7 @@
       "title": "Le paure che ci abitano",
       "summary": "Martedì 27 ottobre 2026 il C.d.C. Casetta Maritati organizza un incontro a cura di Gemma Zandegiacomo",
       "publishedOn": "2026-10-08",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Le-paure-che-ci-abitano",
       "sourceKey": "notizie",
@@ -467,11 +643,43 @@
       }
     },
     {
+      "id": "comune-news-24837",
+      "title": "5 minuti di poesia",
+      "summary": "Mercoledì 21 ottobre 2026 alle ore 16.30 al Centro di Comunità Dell'Isolo",
+      "publishedOn": "2026-10-07",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
+      "source": "Comune di Verona",
+      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/5-minuti-di-poesia",
+      "sourceKey": "notizie",
+      "kind": "Notizia",
+      "category": "Dal Comune",
+      "categoryMethod": "automatic",
+      "area": null,
+      "license": "CC BY 4.0 salvo eccezioni",
+      "licenseUrl": "https://www.comune.verona.it/Note-legali",
+      "imageId": 13016,
+      "image": {
+        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizi-sociali/immagini-centri-di-comunita/lettura/gruppo-di-lettura-sul-tavolo/288405-1-ita-IT/Gruppo-di-lettura-sul-tavolo.png",
+        "alt": "Gruppo di lettura sul tavolo",
+        "author": "Comune di Verona e Aribandus",
+        "caption": "",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
+        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Lettura/Gruppo-di-lettura-sul-tavolo",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
       "id": "comune-news-24827",
       "title": "Affidamento del servizio di gestione sperimentale del compendio della Gran Guardia: consultazione preliminare di mercato",
       "summary": "Proposte da depositare entro le ore 12.00 del 26 ottobre 2026",
       "publishedOn": "2026-10-07",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Affidamento-del-servizio-di-gestione-sperimentale-del-compendio-della-Gran-Guardia-consultazione-preliminare-di-mercato",
       "sourceKey": "avvisi",
@@ -489,6 +697,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Avviso-pubblico-generico",
         "width": 1600,
         "height": 900
@@ -499,7 +711,7 @@
       "title": "Balli Popolari",
       "summary": "Da lunedì 2 novembre dalle 15:30 alle 16:30 al Centro di Comunità Casetta Maritati (via Pigafetta n° 17 - Verona)",
       "publishedOn": "2026-10-07",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Balli-Popolari2",
       "sourceKey": "notizie",
@@ -517,6 +729,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Ballo-adulti/Ballo-adulti-generica",
         "width": 1600,
         "height": 900
@@ -527,7 +743,7 @@
       "title": "Festa delle Associazioni 2026",
       "summary": "Disponibile la nuova edizione di \"Comunità in rete\" , la guida aggiornata delle associazioni culturali, sportive e di servizio al cittadino della Circoscrizione 6^",
       "publishedOn": "2026-10-07",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Festa-delle-Associazioni-2026",
       "sourceKey": "notizie",
@@ -545,7 +761,7 @@
       "title": "100° Centenario 1926-2026",
       "summary": "16-17-18 ottobre 2026 100 anni di storia, valori e solidarietà nel segno degli Alpini",
       "publishedOn": "2026-10-06",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/100-Centenario-1926-2026",
       "sourceKey": "notizie",
@@ -563,7 +779,7 @@
       "title": "Avviso pubblico per l’attribuzione di contributi economici per l'attività sportiva 2026",
       "summary": "Presentazione delle domande per l’attribuzione di contributi economici a favore delle Associazioni e Società Sportive dilettantistiche anno 2026 - Scadenza 30/11/2026",
       "publishedOn": "2026-10-06",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Avviso-pubblico-per-l-attribuzione-di-contributi-economici-per-l-attivita-sportiva-2026",
       "sourceKey": "avvisi",
@@ -581,7 +797,7 @@
       "title": "Direzione SUAP e SUEP variazione temporanea del servizio di consulenza telefonica",
       "summary": "Nei mesi di ottobre e novembre 2026, ogni giovedì, la consulenza telefonica sarà sospesa per un corso di aggiornamento del personale e verrà attivata il martedì dalle 09:00 alle 10:30",
       "publishedOn": "2026-10-06",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Direzione-SUAP-e-SUEP-variazione-temporanea-del-servizio-di-consulenza-telefonica",
       "sourceKey": "notizie",
@@ -595,39 +811,11 @@
       "image": null
     },
     {
-      "id": "comune-news-10540",
-      "title": "Seduta del Consiglio comunale giovedì 8 ottobre 2026 ore 17.30",
-      "summary": "Il Consiglio si riunisce in Sala Gozzi di Palazzo Barbieri: i lavori dell'assemblea sono trasmessi in diretta streaming sul canale YouTube del Consiglio comunale",
-      "publishedOn": "2026-10-06",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Seduta-del-Consiglio-comunale-giovedi-8-ottobre-2026-ore-17.30",
-      "sourceKey": "notizie",
-      "kind": "Notizia",
-      "category": "Dal Comune",
-      "categoryMethod": "automatic",
-      "area": null,
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 10542,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/organi-istituzionali/sala-gozzi/225504-1-ita-IT/Sala-Gozzi.png",
-        "alt": "Sala Gozzi",
-        "author": "Comune di Verona",
-        "caption": "L'aula in cui si svolge il Consiglio comunale",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Organi-Istituzionali/Sala-Gozzi",
-        "width": 1600,
-        "height": 900
-      }
-    },
-    {
       "id": "comune-news-13741",
       "title": "Il Tempo per Famiglie: pubblicate le graduatorie dei bambini accolti. Domande di iscrizione per i posti rimasti disponibili",
       "summary": "Graduatorie per l'anno educativo 2026-27. E' possibile presentare domanda di iscrizione durante tutto l'anno educativo per i posti rimasti disponibili.",
       "publishedOn": "2026-10-05",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Il-Tempo-per-Famiglie-pubblicate-le-graduatorie-dei-bambini-accolti.-Domande-di-iscrizione-per-i-posti-rimasti-disponibili",
       "sourceKey": "notizie",
@@ -645,6 +833,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Il-Tempo-per-le-Famiglie",
         "width": 2000,
         "height": 1595
@@ -655,7 +847,7 @@
       "title": "Il Tempo per le Famiglie: iscrizioni",
       "summary": "Servizio dedicato alle bambine ed ai bambini da zero a tre anni accompagnati da familiari o da un adulto di fiducia della famiglia",
       "publishedOn": "2026-10-05",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Il-Tempo-per-le-Famiglie-iscrizioni",
       "sourceKey": "notizie",
@@ -673,6 +865,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Il-Tempo-per-le-Famiglie",
         "width": 2000,
         "height": 1595
@@ -683,7 +879,7 @@
       "title": "Le attività dei Centri di Comunità della Circoscrizione 4^",
       "summary": "Al via le attività gratuite del trimestre Ottobre-Dicembre 2026. Aperte le iscrizioni",
       "publishedOn": "2026-10-05",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Le-attivita-dei-Centri-di-Comunita-della-Circoscrizione-4",
       "sourceKey": "notizie",
@@ -701,6 +897,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Iscrizioni-trimestrali/Attivita-gratuite-centri-di-comunita-Circoscrizione-4",
         "width": 1600,
         "height": 900
@@ -711,7 +911,7 @@
       "title": "A ottobre e novembre Educazione finanziaria per tutti nei Centri di Comunità",
       "summary": "Diversi incontri tra ottobre e novembre dedicati all’Educazione Finanziaria, pensati per tutti i cittadini e le cittadine che desiderano gestire meglio il proprio denaro e saperne di più su finanza, banche, bilancio familiare e altri aspetti in grado di aumentare la propria consapevolezza finanziaria",
       "publishedOn": "2026-10-02",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/A-ottobre-e-novembre-Educazione-finanziaria-per-tutti-nei-Centri-di-Comunita",
       "sourceKey": "notizie",
@@ -729,6 +929,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Educazione-finanziaria",
         "width": 1600,
         "height": 900
@@ -739,7 +943,7 @@
       "title": "Avvisi pubblici elettorali",
       "summary": "Manifesti pubblicati all'Albo Pretorio on line e consultabili in questa pagina per finalità meramente ricognitive e di aggiornamento informativo",
       "publishedOn": "2026-10-02",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Avvisi-pubblici-elettorali",
       "sourceKey": "notizie",
@@ -757,6 +961,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Immagine-Elezioni-e-Referendum",
         "width": 1600,
         "height": 900
@@ -767,7 +975,7 @@
       "title": "Iscrizione all'Albo dei Presidenti di Seggio Elettorale",
       "summary": "Nel mese di Ottobre è possibile presentare domanda di inclusione nell'Albo delle persone idonee ad essere nominate Presidente di Seggio Elettorale",
       "publishedOn": "2026-10-02",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Iscrizione-all-Albo-dei-Presidenti-di-Seggio-Elettorale",
       "sourceKey": "notizie",
@@ -785,6 +993,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Immagine-Elezioni-e-Referendum",
         "width": 1600,
         "height": 900
@@ -795,7 +1007,7 @@
       "title": "Mani nell'argilla",
       "summary": "Da lunedì 19 ottobre 2026 dalle 15:00 alle 17:00 al CdC Borgo Nuovo",
       "publishedOn": "2026-10-02",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Mani-nell-argilla",
       "sourceKey": "notizie",
@@ -813,6 +1025,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Laboratorio-creativo/Scultura-argilla",
         "width": 1600,
         "height": 900
@@ -823,7 +1039,7 @@
       "title": "PM10: allerta - colore Arancione",
       "summary": "Allerta di livello 1 - arancione per il PM10 nel Comune di Verona",
       "publishedOn": "2026-10-02",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/PM10-allerta-colore-Arancione",
       "sourceKey": "notizie",
@@ -841,6 +1057,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Ambiente-e-transizione-ecologica/Allerta-arancione",
         "width": 1600,
         "height": 900
@@ -851,7 +1071,7 @@
       "title": "Ufficio morti: chiusure per attività formativa nel mese di ottobre e novembre",
       "summary": "Le mattine del 10 e del 17 novembre",
       "publishedOn": "2026-10-02",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Ufficio-morti-chiusure-per-attivita-formativa-nel-mese-di-ottobre-e-novembre",
       "sourceKey": "notizie",
@@ -869,7 +1089,7 @@
       "title": "Inizia a fine ottobre un nuovo corso sull'Affido e la solidarietà familiare",
       "summary": "Iscrizioni entro il 22 ottobre per il corso grautuito gestito dagli operatori del Centro per l’Affido e la Solidarietà Familiare del Comune di Verona: quattro incontri rivolti a famiglie con figli, coppie, single che abbiano voglia di fare un’esperienza di apertura e accoglienza",
       "publishedOn": "2026-10-01",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Inizia-a-fine-ottobre-un-nuovo-corso-sull-Affido-e-la-solidarieta-familiare",
       "sourceKey": "notizie",
@@ -887,7 +1107,7 @@
       "title": "Ottobre a DesTEENazione!",
       "summary": "Tantissime le nuove attività in programma nel mese di ottobre presso lo spazio multidimensionale DesTEENazione - Desideri in azione, aperto dal lunedì al sabato nella fascia pomeridiana, dalle 13 alle 22.",
       "publishedOn": "2026-10-01",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Ottobre-a-DesTEENazione",
       "sourceKey": "notizie",
@@ -905,7 +1125,7 @@
       "title": "PM10: nessuna allerta - colore verde",
       "summary": "Livello verde per il PM10 nel Comune di Verona",
       "publishedOn": "2026-10-01",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/PM10-nessuna-allerta-colore-verde",
       "sourceKey": "notizie",
@@ -923,6 +1143,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Ambiente-e-transizione-ecologica/Allerta-verde",
         "width": 1600,
         "height": 900
@@ -933,7 +1157,7 @@
       "title": "Rinnovo Consiglio Direttivo del Consorzio Zona Agricolo Industriale (ZAI) di Verona",
       "summary": "Curricula candidati",
       "publishedOn": "2026-10-01",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Rinnovo-Consiglio-Direttivo-del-Consorzio-Zona-Agricolo-Industriale-ZAI-di-Verona",
       "sourceKey": "notizie",
@@ -951,7 +1175,7 @@
       "title": "Il Comune cerca quattro Assistenti Sociali per la Direzione Servizi Sociali",
       "summary": "Conferimento di 4 posti a tempo pieno ed indeterminato: domande entro il 22 ottobre 2026 alle ore 12",
       "publishedOn": "2026-09-30",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Il-Comune-cerca-quattro-Assistenti-Sociali-per-la-Direzione-Servizi-Sociali",
       "sourceKey": "avvisi",
@@ -969,6 +1193,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Ufficio-Web/Selezioni-di-personale",
         "width": 1600,
         "height": 900
@@ -979,7 +1207,7 @@
       "title": "Linea AV/AC Verona-Padova: avviso di messa in tensione della linea elettrica ferroviaria",
       "summary": "Dal 28 settembre 2026, nel tratto Verona Porta Vescovo – Bivio Vicenza, la linea aerea e le relative apparecchiature sono sempre sotto tensione a 3.000 Volt. È severamente vietato toccare o avvicinarsi ai cavi e agli impianti oltre le distanze di sicurezza previste.",
       "publishedOn": "2026-09-30",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Linea-AV-AC-Verona-Padova-avviso-di-messa-in-tensione-della-linea-elettrica-ferroviaria",
       "sourceKey": "notizie",
@@ -997,6 +1225,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Linea-ferroviaria-in-tensione",
         "width": 1600,
         "height": 900
@@ -1007,7 +1239,7 @@
       "title": "Carta dedicata a te 2026/2027",
       "summary": "La Carta dedicata a te 2026/2027 è un'iniziativa statale che rientra tra gli aiuti previsti dalla Legge di Bilancio 2026 e riguarda l’acquisto di beni alimentari di prima necessità",
       "publishedOn": "2026-09-29",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Carta-dedicata-a-te-2026-2027",
       "sourceKey": "avvisi",
@@ -1025,7 +1257,7 @@
       "title": "Ripartono le misure per il contenimento dell'inquinamento atmosferico",
       "summary": "Le regole in vigore dal 1° ottobre 2026 al 30 aprile 2027",
       "publishedOn": "2026-09-29",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Ripartono-le-misure-per-il-contenimento-dell-inquinamento-atmosferico",
       "sourceKey": "notizie",
@@ -1043,6 +1275,10 @@
         "caption": "Provvedimenti qualità dell'aria",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Ambiente-e-transizione-ecologica/Provvedimenti-qualita-dell-aria",
         "width": 2400,
         "height": 1600
@@ -1053,7 +1289,7 @@
       "title": "Avviso per il rilascio di una concessione gratuita a soggetti senza scopo di lucro di un immobile confiscato alla criminalità organizzata",
       "summary": "Immobile di proprietà comunale sito in strada Bresciana 84. Manifestazione d'interesse entro il 12 novembre 2026",
       "publishedOn": "2026-09-28",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Avviso-per-il-rilascio-di-una-concessione-gratuita-a-soggetti-senza-scopo-di-lucro-di-un-immobile-confiscato-alla-criminalita-organizzata",
       "sourceKey": "avvisi",
@@ -1071,6 +1307,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Avviso-concessione-immobile-confiscato",
         "width": 1600,
         "height": 900
@@ -1081,7 +1321,7 @@
       "title": "Il Comune cerca un Funzionario per i servizi culturali e museali",
       "summary": "Conferimento di 1 posto a tempo pieno ed indeterminato: domande entro il 10 novembre 2026 ore 12",
       "publishedOn": "2026-09-28",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Il-Comune-cerca-un-Funzionario-per-i-servizi-culturali-e-museali",
       "sourceKey": "avvisi",
@@ -1099,6 +1339,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Ufficio-Web/Selezioni-di-personale",
         "width": 1600,
         "height": 900
@@ -1109,7 +1353,7 @@
       "title": "Nuove proposte per l'autunno, Centro di Comunità Valpantena",
       "summary": "Corsi, incontri e spazi di condivisione",
       "publishedOn": "2026-09-28",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Nuove-proposte-per-l-autunno-Centro-di-Comunita-Valpantena",
       "sourceKey": "notizie",
@@ -1141,7 +1385,7 @@
       "title": "Avviso di pubblicazione e deposito DCC n. 54 del 17 settembre 2026 – Adozione Variante n. 63 al PI-realizzazione, a cura e spese di Progeco Ambiente S.P.A., dei lavori di allargamento e adeguamento di...",
       "summary": "Si pubblica l'avviso relativo all'adozione della Variante Urbanistica N. 63 al PI",
       "publishedOn": "2026-09-23",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Avviso-di-pubblicazione-e-deposito-DCC-n.-54-del-17-settembre-2026-Adozione-Variante-n.-63-al-PI-realizzazione-a-cura-e-spese-di-Progeco-Ambiente-S.P.A.-dei-lavori-di-allargamento-e-adeguamento-di-un-tratto-di-Via-Sasse-Approvazione-progetto-di-fatt",
       "sourceKey": "notizie",
@@ -1159,7 +1403,7 @@
       "title": "Le attività dei Centri di Comunità della Circoscrizione 1^",
       "summary": "Al via le attività gratuite del trimestre ottobre-dicembre 2026. Aperte le iscrizioni",
       "publishedOn": "2026-09-22",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Le-attivita-dei-Centri-di-Comunita-della-Circoscrizione-1",
       "sourceKey": "notizie",
@@ -1177,6 +1421,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Iscrizioni-trimestrali/Attivita-gratuite-centri-di-comunita-Circoscrizione-1",
         "width": 1600,
         "height": 900
@@ -1187,7 +1435,7 @@
       "title": "Messa in tensione delle linee aeree di alimentazione elettrica della filovia di Verona",
       "summary": "Da lunedì 5 ottobre si deve evitare in modo assoluto qualsiasi contatto, anche indiretto e l'avvicinamento a distanza minore di 3 metri dalla linea aerea della Filovia",
       "publishedOn": "2026-09-22",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Messa-in-tensione-delle-linee-aeree-di-alimentazione-elettrica-della-filovia-di-Verona",
       "sourceKey": "notizie",
@@ -1205,35 +1453,11 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Pericolo-alta-tensione",
-        "width": 1600,
-        "height": 900
-      }
-    },
-    {
-      "id": "comune-news-24445",
-      "title": "Gruppo di lettura Libreggiando",
-      "summary": "A partire dal 7 ottobre, un mercoledì al mese dalle 15.30 alle 18, al Centro di Comunità Tommasoli",
-      "publishedOn": "2026-09-21",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Gruppo-di-lettura-Libreggiando2",
-      "sourceKey": "notizie",
-      "kind": "Notizia",
-      "category": "Dal Comune",
-      "categoryMethod": "automatic",
-      "area": null,
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 13015,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizi-sociali/immagini-centri-di-comunita/lettura/gruppo-di-lettura-in-cerchio/288396-1-ita-IT/Gruppo-di-lettura-in-cerchio.png",
-        "alt": "Gruppo di lettura in cerchio",
-        "author": "Comune di Verona e Aribandus",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Lettura/Gruppo-di-lettura-in-cerchio",
         "width": 1600,
         "height": 900
       }
@@ -1243,7 +1467,7 @@
       "title": "Il giovedì a DesTEENazione un ciclo di incontri per ragazzi per creare assieme un videogioco",
       "summary": "Tutti i giovedì dal 24 settembre al 29 ottobre, è in programma un ciclo di incontri per ragazzi dai 14 ai 21 anni appassionati di gaming per creare insieme un nuovo videogioco con un esperto programmatore",
       "publishedOn": "2026-09-21",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Il-giovedi-a-DesTEENazione-un-ciclo-di-incontri-per-ragazzi-per-creare-assieme-un-videogioco",
       "sourceKey": "notizie",
@@ -1257,95 +1481,11 @@
       "image": null
     },
     {
-      "id": "comune-news-24446",
-      "title": "Pittura e disegno",
-      "summary": "A partire dal 5 ottobre, ogni lunedì e mercoledì dalle 9 alle 12, al Centro di Comunità Tommasoli",
-      "publishedOn": "2026-09-21",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Pittura-e-disegno",
-      "sourceKey": "notizie",
-      "kind": "Notizia",
-      "category": "Dal Comune",
-      "categoryMethod": "automatic",
-      "area": null,
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 12949,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizi-sociali/immagini-centri-di-comunita/laboratorio-creativo/laboratorio-di-pittura/286760-4-ita-IT/Laboratorio-di-pittura.png",
-        "alt": "Laboratorio di pittura",
-        "author": "Comune di Verona e Aribandus",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Laboratorio-creativo/Laboratorio-di-pittura",
-        "width": 1600,
-        "height": 900
-      }
-    },
-    {
-      "id": "comune-news-24448",
-      "title": "Spazio Bebè",
-      "summary": "A partire dall'8 ottobre, tutti i giovedì dalle 10 alle 12, al Centro di Comunità Tommasoli",
-      "publishedOn": "2026-09-21",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Spazio-Bebe2",
-      "sourceKey": "notizie",
-      "kind": "Notizia",
-      "category": "Dal Comune",
-      "categoryMethod": "automatic",
-      "area": null,
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 13487,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizi-sociali/immagini-centri-di-comunita/eventi-per-famiglie/spazio-bebe/298496-1-ita-IT/Spazio-bebe.png",
-        "alt": "Spazio bebè",
-        "author": "Comune di Verona e Aribandus",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Eventi-per-famiglie/Spazio-bebe",
-        "width": 1600,
-        "height": 900
-      }
-    },
-    {
-      "id": "comune-news-24450",
-      "title": "Vita da Teatro",
-      "summary": "Tutti i giovedì dalle 19.15 alle 21, al Centro di Comunità Tommasoli",
-      "publishedOn": "2026-09-21",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Vita-da-Teatro",
-      "sourceKey": "notizie",
-      "kind": "Notizia",
-      "category": "Dal Comune",
-      "categoryMethod": "automatic",
-      "area": null,
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 13466,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizi-sociali/immagini-centri-di-comunita/cinema-e-teatro/palco-teatro/298243-1-ita-IT/Palco-teatro.png",
-        "alt": "Palco teatro",
-        "author": "Comune di Verona e Aribandus",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Cinema-e-teatro/Palco-teatro",
-        "width": 1600,
-        "height": 900
-      }
-    },
-    {
       "id": "comune-news-24202",
       "title": "Nonno Vigile: conferimento incarico di sorveglianza davanti alle scuole 2026",
       "summary": "Domanda da depositare entro il 16 ottobre per ottenere l'incarico riservato a persone pensionate residenti nel comune di Verona che non abbiano compiuto 75 anni di età",
       "publishedOn": "2026-09-10",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Nonno-Vigile-conferimento-incarico-di-sorveglianza-davanti-alle-scuole-2026",
       "sourceKey": "avvisi",
@@ -1363,6 +1503,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Nonno-vigile-2026",
         "width": 1600,
         "height": 900
@@ -1373,7 +1517,7 @@
       "title": "Agevolazioni per il trasporto pubblico urbano ATV per studenti appartenenti a famiglie numerose e su base Isee",
       "summary": "Agevolazioni ATV per il trasporto pubblico urbano destinate agli studenti appartenenti a nuclei familiari con limite Isee inferiore o uguale a 10.632,94 € e nuclei familiari con almeno 4 figli a carico",
       "publishedOn": "2026-08-17",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Agevolazioni-per-il-trasporto-pubblico-urbano-ATV-per-studenti-appartenenti-a-famiglie-numerose-e-su-base-Isee",
       "sourceKey": "avvisi",
@@ -1391,6 +1535,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Bus-verde-blu-1600x900",
         "width": 1600,
         "height": 900
@@ -1401,7 +1549,7 @@
       "title": "Pubblicata la graduatoria del Voucher 2025 per i servizi prima infanzia 0-3 anni",
       "summary": "Pubblicata la graduatoria dei Voucher 2025 per la frequenza dei servizi alla prima infanzia mediante l'applicazione delle scale di equivalenza di cui alla D.G.R. n. 1054/2025 - Legge regionale numero 20 del 28 maggio 2020 “lnterventi a sostegno della famiglia e della natalità”.",
       "publishedOn": "2026-08-10",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Pubblicata-la-graduatoria-del-Voucher-2025-per-i-servizi-prima-infanzia-0-3-anni",
       "sourceKey": "avvisi",
@@ -1419,7 +1567,7 @@
       "title": "Avviso di selezione per incarico professionale per attività di supporto allo sviluppo dei processi e della programmazione culturale per i Musei Civici di Verona",
       "summary": "Candidature entro e non oltre le ore 23:59 di domenica 13 settembre 2026",
       "publishedOn": "2026-08-07",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Avviso-di-selezione-per-incarico-professionale-per-attivita-di-supporto-allo-sviluppo-dei-processi-e-della-programmazione-culturale-per-i-Musei-Civici-di-Verona",
       "sourceKey": "avvisi",
@@ -1437,6 +1585,10 @@
         "caption": "",
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "rightsStatus": "declared",
+        "sourceLicense": [
+          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+        ],
         "sourceUrl": "https://www.comune.verona.it/Media/Images/Ufficio-Web/Selezioni-di-personale",
         "width": 1600,
         "height": 900
@@ -1447,7 +1599,7 @@
       "title": "Avviso per manifestazione di interesse per lo svolgimento dell’incarico di società guida presso gli impianti sportivi comunali in capo alla Direzione Sport e Benessere",
       "summary": "L’incarico avrà durata per la stagione sportiva 2026-2027: manifestazioni di interesse da inoltrare online",
       "publishedOn": "2026-08-07",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Avviso-per-manifestazione-di-interesse-per-lo-svolgimento-dell-incarico-di-societa-guida-presso-gli-impianti-sportivi-comunali-in-capo-alla-Direzione-Sport-e-Benessere",
       "sourceKey": "avvisi",
@@ -1479,27 +1631,9 @@
       "title": "Contributi per l'attivazione di Centri Estivi Privati dal 24 agosto al 9 settembre 2026",
       "summary": "Erogazione di contributi da parte del Comune di Verona a sostegno di Associazioni Sportive Dilettantistiche e Società Sportive Dilettantistiche - ASD e SSD - o professionistiche, Associazioni di Promozione Sociale – APS, Enti del Terzo Settore, Associazioni culturali, ricreative e socio-educative, altri soggetti senza scopo di lucro regolarmente costituiti, per la realizzazone sul territorio del Comune di Verona di centri estivi per bambini/e e ragazzi/e dai 3 ai 13 anni nel periodo dal 24 agosto al 9 settembre 2026.",
       "publishedOn": "2026-08-06",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
+      "checkedAt": "2026-10-21T09:13:44.098Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Contributi-per-l-attivazione-di-Centri-Estivi-Privati-dal-24-agosto-al-9-settembre-2026",
-      "sourceKey": "avvisi",
-      "kind": "Avviso",
-      "category": "Bandi e opportunità",
-      "categoryMethod": "automatic",
-      "area": null,
-      "license": "CC BY 4.0 salvo eccezioni",
-      "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": null,
-      "image": null
-    },
-    {
-      "id": "comune-news-23400",
-      "title": "Aggiornamento dell'Albo Comunale dei Rilevatori Statistici – Biennio 2026-2027",
-      "summary": "Scadenza presentazione domande: entro le ore 12 del 10 agosto 2026",
-      "publishedOn": "2026-07-22",
-      "checkedAt": "2026-10-18T13:27:48.454Z",
-      "source": "Comune di Verona",
-      "sourceUrl": "https://www.comune.verona.it/Novita/Avvisi/Aggiornamento-dell-Albo-Comunale-dei-Rilevatori-Statistici-Biennio-2026-2027",
       "sourceKey": "avvisi",
       "kind": "Avviso",
       "category": "Bandi e opportunità",
@@ -1515,12 +1649,14 @@
     {
       "source": "notizie",
       "status": "ok",
-      "count": 48
+      "count": 48,
+      "lastSuccessAt": "2026-10-21T09:13:44.098Z"
     },
     {
       "source": "avvisi",
       "status": "ok",
-      "count": 13
+      "count": 12,
+      "lastSuccessAt": "2026-10-21T09:13:44.098Z"
     }
   ]
 }
