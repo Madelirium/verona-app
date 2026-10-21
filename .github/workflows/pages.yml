@@ -13,6 +13,10 @@ on:
         description: Raccolta manuale ATV (non eseguita dalla pianificazione)
         type: boolean
         default: false
+      refresh_news:
+        description: Raccogli notizie e avvisi del Comune prima di pubblicare
+        type: boolean
+        default: true
   schedule:
     - cron: '17 4 * * *'
 
@@ -32,7 +36,7 @@ jobs:
       SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
       SUPABASE_AUTH_ENABLED: ${{ vars.SUPABASE_AUTH_ENABLED }}
       SUPABASE_AUTH_METHOD: google
-    timeout-minutes: 15
+    timeout-minutes: 25
     permissions:
       contents: write
     steps:
@@ -49,39 +53,45 @@ jobs:
         continue-on-error: true
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_events)
         run: npm run import:events -- --allow-partial
+      - name: Aggiorna notizie e avvisi del Comune
+        id: refresh_news
+        continue-on-error: true
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_news)
+        run: npm run import:news -- --allow-partial
       - name: Aggiorna schede e pubblicazioni ATV
         id: refresh_bus
         continue-on-error: true
         if: github.event_name == 'workflow_dispatch' && inputs.refresh_bus
         run: npm run import:bus -- --allow-partial
       - name: Conserva il rapporto della raccolta
-        if: always() && (steps.refresh.outcome == 'success' || steps.refresh.outcome == 'failure' || steps.refresh_bus.outcome == 'success' || steps.refresh_bus.outcome == 'failure')
+        if: always() && (steps.refresh.outcome == 'success' || steps.refresh.outcome == 'failure' || steps.refresh_news.outcome == 'success' || steps.refresh_news.outcome == 'failure' || steps.refresh_bus.outcome == 'success' || steps.refresh_bus.outcome == 'failure')
         uses: actions/upload-artifact@v4
         with:
           name: rapporti-fonti
           path: |
             data/import-report.json
+            data/news-import-report.json
             data/bus-import-report.json
           retention-days: 14
       - name: Verifica il risultato delle raccolte
-        if: success() && (steps.refresh.outcome == 'failure' || steps.refresh_bus.outcome == 'failure')
+        if: success() && (steps.refresh.outcome == 'failure' || steps.refresh_news.outcome == 'failure' || steps.refresh_bus.outcome == 'failure')
         run: |
           echo "::warning::Una raccolta non è riuscita: i suoi dati precedenti sono conservati. Consultare i rapporti fonti."
-          if [ "${{ steps.refresh.outcome }}" != "success" ] && [ "${{ steps.refresh_bus.outcome }}" != "success" ]; then
+          if [ "${{ steps.refresh.outcome }}" != "success" ] && [ "${{ steps.refresh_news.outcome }}" != "success" ] && [ "${{ steps.refresh_bus.outcome }}" != "success" ]; then
             echo "::error::Nessuna raccolta richiesta è riuscita: il sito pubblico non viene sostituito."
             exit 1
           fi
       - name: Verifica il frontend dopo la raccolta
-        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_bus.outcome == 'success')
+        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_news.outcome == 'success' || steps.refresh_bus.outcome == 'success')
         run: npm test
       - name: Conserva i dati aggiornati nel repository
-        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_bus.outcome == 'success')
+        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_news.outcome == 'success' || steps.refresh_bus.outcome == 'success')
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/events.json data/import-report.json data/bus.json data/bus-import-report.json
+          git add data/events.json data/import-report.json data/news.json data/news-import-report.json data/bus.json data/bus-import-report.json
           if ! git diff --cached --quiet; then
-            git commit -m "Aggiorna eventi e dati ATV dalle fonti ufficiali"
+            git commit -m "Aggiorna eventi, notizie e dati ATV dalle fonti ufficiali"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
       - name: Prepara i soli file del sito

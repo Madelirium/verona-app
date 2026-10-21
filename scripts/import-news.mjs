@@ -1,5 +1,5 @@
 import {mkdir,readFile,writeFile,rename} from 'node:fs/promises';
-import {newsSources,parseNews,mergeNews} from './news.mjs';
+import {newsSources,parseNews,mergeNews,newsCollectionState} from './news.mjs';
 import {romeDay} from './parsers.mjs';
 import {buildCalendar} from './build-calendar.mjs';
 import {attachNewsImages} from './news-images.mjs';
@@ -25,6 +25,7 @@ function loadResource(id){
   return resources.get(id);
 }
 for(const source of newsSources){
+  const lastSuccessAt=previous.sources?.find(s=>s.source===source.key)?.lastSuccessAt||previous.items.filter(i=>i.sourceKey===source.key).map(i=>i.checkedAt).filter(Boolean).sort().at(-1)||null;
   try{
     let imported=[];
     for(const offset of [0,24]){
@@ -38,10 +39,13 @@ for(const source of newsSources){
     imported=mergeNews(imported);
     if(!imported.length)throw new Error('Nessuna pubblicazione recente: mantenuti i dati precedenti');
     imported=await attachNewsImages(imported,loadResource,{onError:(id,error)=>console.warn('Immagine notizia '+id+' non disponibile: '+error.message)});
-    items.push(...imported);report.sources.push({source:source.key,status:'ok',count:imported.length});
-  }catch(error){const retained=previous.items.filter(i=>i.sourceKey===source.key);items.push(...retained);report.sources.push({source:source.key,status:'error',error:error.message,retained:retained.length});process.exitCode=1;}
+    items.push(...imported);report.sources.push({source:source.key,status:'ok',count:imported.length,lastSuccessAt:checkedAt});
+  }catch(error){const retained=previous.items.filter(i=>i.sourceKey===source.key);items.push(...retained);report.sources.push({source:source.key,status:'error',error:error.message,retained:retained.length,lastSuccessAt});}
 }
-const data={updatedAt:checkedAt,scope:report.scope,items:mergeNews(items),sources:report.sources};
+const state=newsCollectionState(report.sources,checkedAt,previous.updatedAt||null);
+report.status=state.status;
+if(state.status==='error'||(state.status==='partial'&&!process.argv.includes('--allow-partial')))process.exitCode=1;
+const data={...state,checkedAt,scope:report.scope,items:mergeNews(items),sources:report.sources};
 await writeFile(new URL('data/news.json.tmp',root),JSON.stringify(data,null,2)+'\n');
 await rename(new URL('data/news.json.tmp',root),new URL('data/news.json',root));
 await writeFile(new URL('data/news-import-report.json',root),JSON.stringify(report,null,2)+'\n');

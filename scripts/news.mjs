@@ -37,3 +37,8 @@ export function parseNews(html,source,{checkedAt,from,to}){
   return items;
 }
 export function mergeNews(items){return [...new Map(items.map(i=>[i.id,i])).values()].sort((a,b)=>b.publishedOn.localeCompare(a.publishedOn)||a.title.localeCompare(b.title,'it'));}
+
+export function newsCollectionState(sources,checkedAt,previousUpdatedAt=null){
+  const succeeded=sources.filter(source=>source.status==='ok').length;
+  return {status:succeeded===sources.length&&succeeded>0?'ok':succeeded?'partial':'error',updatedAt:succeeded?checkedAt:previousUpdatedAt};
+}

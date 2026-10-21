@@ -1,7 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {parseNews,mergeNews,newsSources} from './news.mjs';
+import {parseNews,mergeNews,newsSources,newsCollectionState} from './news.mjs';
 const options={checkedAt:'2026-10-17T10:00:00Z',from:'2026-07-19',to:'2026-10-17'};
+test('La raccolta notizie non dichiara un aggiornamento riuscito quando tutte le fonti falliscono',()=>{
+  const old='2026-10-18T10:00:00Z',now='2026-10-21T10:00:00Z';
+  assert.deepEqual(newsCollectionState([{status:'error'},{status:'error'}],now,old),{status:'error',updatedAt:old});
+  assert.deepEqual(newsCollectionState([{status:'error'}],now),{status:'error',updatedAt:null});
+  assert.deepEqual(newsCollectionState([{status:'ok'},{status:'error'}],now,old),{status:'partial',updatedAt:now});
+  assert.deepEqual(newsCollectionState([{status:'ok'},{status:'ok'}],now,old),{status:'ok',updatedAt:now});
+});
 function card({id='123',title='Viabilità: lavori in tangenziale',date='16/10/2026',summary='Restringimenti di carreggiata.',url='https://www.comune.verona.it/Novita/Notizie/Lavori'}={}){
   return `<div data-object_id="${id}" class="card"><h3 class="card-title other">${title}</h3><div class="text-paragraph-card"><p>${summary}</p><p><strong>Data di pubblicazione:</strong> ${date}</p></div><a class="read-more" href="${url}">Dettagli</a></div>`;
 }
