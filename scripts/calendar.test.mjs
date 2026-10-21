@@ -38,6 +38,54 @@ function run(storage = new Map(),initialView='discover',mapApi) {
   return {get,context,storage,timers};
 }
 
+const agendaLogic=await readFile(new URL('../public/agenda.js',import.meta.url),'utf8');
+function runAgenda(){const app=run(new Map(),'home');app.context.TextEncoder=TextEncoder;new Script(agendaLogic).runInContext(app.context);return app;}
+function agendaFixture(app,rows,day='2026-10-23'){
+  app.context.agendaRows=rows.map((row,i)=>({id:'agenda-'+i,title:'Evento '+i,source:'Comune di Verona',sourceUrl:'https://www.comune.verona.it/evento-'+i,category:[],...row}));
+  app.context.agendaTestDay=day;new Script('events.splice(0,events.length,...agendaRows);selected=agendaTestDay;month=selected.slice(0,7);view="calendar";agendaShowAll=true;render()').runInContext(app.context);
+}
+function agendaTitles(app){return app.get('events').children.filter(c=>c.className==='event-card agenda-rich-card').map(card=>card.children[1].children[0].children[0].children[0].textContent);}
+test('Nuova agenda: ordina gli istanti con offset diversi e mantiene i gruppi senza orario',()=>{
+  const app=runAgenda();agendaFixture(app,[{title:'Dieci',startsAt:'2026-10-23T10:00:00+02:00',endsAt:'2026-10-23T11:30:00+02:00'},{title:'Nove',startsAt:'2026-10-23T10:00:00+03:00',endsAt:'2026-10-23T11:00:00+03:00'},{title:'Senza ora',startsAt:'2026-10-23',endsAt:'2026-10-23'}]);
+  assert.deepEqual(agendaTitles(app),['Nove','Dieci','Senza ora']);assert.ok(app.get('events').children.some(e=>e.textContent==='Mattina'));
+});
+test('Nuova agenda: Da adesso nasconde solo corse concluse con fine nota, giornata completa reversibile',()=>{
+  const app=runAgenda();useRomeInstant(app,'2026-10-23T08:30:00Z');agendaFixture(app,[{title:'Finito',startsAt:'2026-10-23T08:00:00+02:00',endsAt:'2026-10-23T09:00:00+02:00'},{title:'Iniziato',startsAt:'2026-10-23T10:00:00+02:00',endsAt:'2026-10-23T11:00:00+02:00'},{title:'Fine non nota',startsAt:'2026-10-23T09:00:00+02:00',endsAt:'2026-10-23T09:00:00+02:00'}]);
+  new Script('agendaShowAll=false;render()').runInContext(app.context);assert.deepEqual(agendaTitles(app),['Fine non nota','Iniziato']);
+  app.get('agenda-day-mode').onclick();assert.deepEqual(agendaTitles(app),['Finito','Fine non nota','Iniziato']);
+});
+test('Weekend: mostra sabato e domenica, conteggi distinti e cambio anno/ora',()=>{
+  const app=runAgenda();useRomeInstant(app,'2026-10-25T09:00:00Z');agendaFixture(app,[{title:'Sabato',startsAt:'2026-10-24T10:00:00+02:00',endsAt:'2026-10-24T11:00:00+02:00'},{title:'Domenica',startsAt:'2026-10-25T10:00:00+01:00',endsAt:'2026-10-25T11:00:00+01:00'}]);
+  app.get('agenda-weekend').onclick();assert.equal(new Script('selected').runInContext(app.context),'2026-10-24');assert.deepEqual(agendaTitles(app),['Sabato','Domenica']);assert.match(app.get('count').textContent,/2 appuntamenti/);
+  app.get('calendar-event-map').onclick();assert.equal(app.get('event-map-period').value,'2');assert.equal(new Script('eventMapEvents().length').runInContext(app.context),2);app.get('event-map-back').onclick();assert.equal(new Script('agendaRange').runInContext(app.context),'weekend');
+  assert.equal(new Script('agendaWeekend("2027-01-01").join(",")').runInContext(app.context),'2027-01-02,2027-01-03');
+  app.get('agenda-tomorrow').onclick();assert.equal(new Script('agendaRange').runInContext(app.context),'day');assert.equal(new Script('selected').runInContext(app.context),'2026-10-26');
+});
+test('Filtri agenda: categoria, fascia, prezzo dichiarato, annullamento e coerenza con la mappa',()=>{
+  const app=runAgenda();agendaFixture(app,[{title:'Mostra libera',category:['Mostra'],priceLabel:'Ingresso gratuito',startsAt:'2026-10-23T10:00:00+02:00',endsAt:'2026-10-23T11:00:00+02:00'},{title:'Corso',category:['Corso'],startsAt:'2026-10-23T20:00:00+02:00',endsAt:'2026-10-23T21:00:00+02:00'}]);
+  app.get('agenda-open-filters').onclick();app.get('agenda-category').value='Mostra';app.get('close-filters').onclick();assert.equal(app.get('agenda-category').value,'');
+  app.get('agenda-open-filters').onclick();app.get('agenda-category').value='Mostra';app.get('agenda-price').value='free';app.get('apply-filters').onclick();assert.deepEqual(agendaTitles(app),['Mostra libera']);
+  app.get('calendar-event-map').onclick();assert.equal(new Script('eventMapEvents().length').runInContext(app.context),1);app.get('event-map-back').onclick();assert.equal(app.get('agenda-category').value,'Mostra');
+});
+test('Programmi personali: conflitti solo con durata nota e salvati riconoscibili nei giorni del mese',()=>{
+  const app=runAgenda();agendaFixture(app,[{title:'Uno',startsAt:'2026-10-23T10:00:00+02:00',endsAt:'2026-10-23T11:00:00+02:00'},{title:'Due',startsAt:'2026-10-23T10:30:00+02:00',endsAt:'2026-10-23T11:30:00+02:00'},{title:'Periodo',startsAt:'2026-10-23',endsAt:'2026-10-25'}]);
+  new Script('preferences[events[0].id]="interested";preferences[events[1].id]="going";preferences[events[2].id]="interested"').runInContext(app.context);
+  assert.equal(new Script('agendaConflicts(events[0]).length').runInContext(app.context),1);assert.equal(new Script('agendaConflicts(events[2]).length').runInContext(app.context),0);
+  app.get('open-month').onclick();assert.ok(app.get('grid').children.some(button=>/3 salvati/.test(button.attributes['aria-label'])));
+});
+test('Esportazione ICS: UTC, date senza orario con fine esclusiva, escape e righe UTF-8',()=>{
+  const app=runAgenda();app.context.exportEvent={id:'123',title:'Caffè, musica; incontri\n'+('è'.repeat(90)),source:'Comune',sourceUrl:'https://www.comune.verona.it/evento',location:'Verona',startsAt:'2026-10-25T01:30:00+02:00',endsAt:'2026-10-25T02:30:00+01:00'};
+  const ics=new Script('agendaIcs(exportEvent)').runInContext(app.context);assert.match(ics,/DTSTART:20261024T233000Z/);assert.match(ics,/DTEND:20261025T013000Z/);assert.match(ics,/Caffè\\, musica\\; incontri\\n/);assert.ok(ics.split('\r\n').every(row=>new TextEncoder().encode(row).length<=75));
+  app.context.exportEvent.startsAt='2026-12-31';app.context.exportEvent.endsAt='2027-01-02';const allDay=new Script('agendaIcs(exportEvent)').runInContext(app.context);assert.match(allDay,/DTSTART;VALUE=DATE:20261231/);assert.match(allDay,/DTEND;VALUE=DATE:20270103/);
+});
+test('Esportazione ICS: genera il download su richiesta e comunica anche un errore del browser',()=>{
+  const app=runAgenda(),files=[];app.context.Blob=class {constructor(parts,options){this.parts=parts;this.type=options.type;}};app.context.URL=class extends URL{static createObjectURL(blob){files.push(blob);return 'blob:test';}static revokeObjectURL(){}};
+  app.context.document.body={append(){}};const create=app.context.document.createElement;app.context.document.createElement=tag=>tag==='a'?{click(){},remove(){}}:create(tag);
+  app.context.exportTarget=app.get('export-target');new Script('appendAgendaExport(exportTarget,events[0])').runInContext(app.context);
+  const [button,feedback]=app.get('export-target').children;assert.equal(files.length,0);button.onclick();assert.equal(files.length,1);assert.match(files[0].parts[0],/BEGIN:VCALENDAR/);assert.match(feedback.textContent,/File .ics pronto/);
+  app.context.URL.createObjectURL=()=>{throw Error('Browser unavailable');};button.onclick();assert.match(feedback.textContent,/non disponibile/);
+});
+
 test('Le mappe delle altre linee caricano soltanto il file richiesto e riusano i percorsi già letti',async()=>{
   const app=run(new Map(),'home'),calls=[];
   const routes=catalog.busRoutes.routes.filter(route=>route.lineId==='atv-urban-12');
@@ -237,9 +285,9 @@ test('Dettagli e mappa condividono il salvataggio e scartano sedi ambigue',()=>{
 
 test('I punti raggruppano appuntamenti reali e aprono dettagli e data corretti',()=>{
   const markers=[];let mapCount=0;
-  const map={setView(){return this},invalidateSize(){},fitBounds(){}};
+  const map={setView(){return this},invalidateSize(){},fitBounds(){},remove(){}};
   const layer={addTo(){return this},clearLayers(){markers.length=0}};
-  const L={map(){mapCount++;return map},tileLayer(){return {on(){return this},addTo(){return this}}},layerGroup(){return layer},circleMarker(position,options){const marker={position,options,bindPopup(popup){this.popup=popup;return this},addTo(){markers.push(this);return this},openPopup(){this.open=true}};return marker}};
+  const L={map(target){if(target==='events-map')mapCount++;return map},tileLayer(){return {on(){return this},addTo(){return this}}},layerGroup(){return layer},circleMarker(position,options){const marker={position,options,bindPopup(popup){this.popup=popup;return this},addTo(){markers.push(this);return this},openPopup(){this.open=true}};return marker}};
   const app=run(new Map(),'home',L);app.get('calendar-event-map').onclick();
   assert.ok(markers.length>0);assert.equal(mapCount,1);
   const expected=new Script('new Set(eventMapEvents().filter(eventPosition).map(e=>{const p=eventPosition(e);return p.lat.toFixed(5)+","+p.lon.toFixed(5)})).size').runInContext(app.context);
@@ -250,6 +298,25 @@ test('I punti raggruppano appuntamenti reali e aprono dettagli e data corretti',
   new Script('openDetails(events.find(e=>eventPosition(e)))').runInContext(app.context);
   app.get('detail-content').children.find(b=>b.className==='dialog-save event-map-detail-button').onclick();
   assert.ok(markers.some(m=>m.open));assert.equal(mapCount,1);
+});
+
+test('Anteprima evento: posizione reale, nessun gesto che blocca lo scroll, pulizia e risposte tardive isolate',()=>{
+  const maps=[],tiles=[],points=[];
+  const L={map(box,options){const map={box,options,setView(point,zoom){this.point=point;this.zoom=zoom;return this},remove(){this.removed=true}};maps.push(map);return map;},tileLayer(){const tile={handlers:{},on(event,fn){this.handlers[event]=fn;return this},addTo(){return this}};tiles.push(tile);return tile;},circleMarker(point,options){points.push({point,options});return {addTo(){return this}}}};
+  const app=run(new Map(),'home',L);new Script('openDetails(events.find(e=>eventPosition(e)))').runInContext(app.context);
+  assert.equal(maps.length,1);assert.equal(maps[0].options.dragging,false);assert.equal(maps[0].options.scrollWheelZoom,false);assert.equal(maps[0].options.keyboard,false);
+  const section=app.get('detail-content').children.find(child=>child.className==='event-location-preview');assert.ok(section);assert.equal(points[0].options.interactive,false);
+  assert.deepEqual(points[0].point,maps[0].point);tiles[0].handlers.tileerror();assert.match(section.children[2].textContent,/Sfondo/);
+  new Script('openDetails({...events.find(e=>eventPosition(e)),coordinates:{lat:45.44,lon:10.99}})').runInContext(app.context);
+  assert.equal(maps[0].removed,true);const current=app.get('detail-content').children.find(child=>child.className==='event-location-preview');tiles[0].handlers.load();assert.match(current.children[2].textContent,/Caricamento/);
+  tiles[1].handlers.load();assert.equal(current.children[2].textContent,'');app.get('close-detail').onclick();assert.equal(maps[1].removed,true);
+});
+test('Anteprima evento: sedi ambigue escluse e indicazioni accessibili se Leaflet non è disponibile',()=>{
+  const app=run(new Map(),'home');new Script('openDetails(events.find(e=>eventPosition(e)))').runInContext(app.context);
+  const section=app.get('detail-content').children.find(child=>child.className==='event-location-preview');assert.match(section.children[2].textContent,/non disponibile/);
+  assert.ok(app.get('detail-content').children.some(child=>child.href?.includes('maps/dir/')));
+  new Script('openDetails({...events[0],mapDisabled:true,coordinates:{lat:45.44,lon:10.99}})').runInContext(app.context);
+  assert.ok(!app.get('detail-content').children.some(child=>child.className==='event-location-preview'));
 });
 
 test('Il quartiere è attivo dalla Home e la scelta si applica solo alla conferma',()=>{
@@ -904,6 +971,98 @@ test('Lo spostamento notturno segue la mezzanotte di Verona anche nei giorni da 
 const eventBusLogic=await readFile(new URL('../public/event-bus.js',import.meta.url),'utf8');
 const eventBusIndexData=JSON.parse(await readFile(new URL('../public/bus-official/stops.json',import.meta.url),'utf8'));
 function runEventBus(){const app=runOfficial();new Script(eventBusLogic).runInContext(app.context);app.context.fetch=async url=>({ok:true,json:async()=>structuredClone(String(url).endsWith('/stops.json')?eventBusIndexData:official24)});return app;}
+
+const busCatalogLogic=await readFile(new URL('../public/bus-catalog.js',import.meta.url),'utf8');
+function runBusCatalog(){const app=runEventBus();new Script(busCatalogLogic+'\nview="bus"').runInContext(app.context);return app;}
+test('Rete e vista sono indipendenti: Fermate segue la rete e mantiene la ricerca',async()=>{
+  const app=runBusCatalog();app.get('bus-extraurban').onclick();app.get('bus-search').value='San Bonifacio';
+  app.get('bus-stops').onclick();await new Script('renderBus()').runInContext(app.context);
+  assert.equal(new Script('busMode').runInContext(app.context),'stops');assert.equal(app.get('bus-search').value,'San Bonifacio');
+  assert.equal(app.get('bus-stops').attributes['aria-pressed'],'true');assert.equal(app.get('bus-extraurban').attributes['aria-pressed'],'true');
+  assert.ok(!app.get('bus-list').children.some(child=>child.className==='bus-card bus-catalog-card'));
+  const results=app.get('bus-list').children.at(-1);assert.ok(results.children.some(child=>child.className==='bus-search-stop'));
+  app.get('bus-scope-urban').onclick();await new Script('renderBus()').runInContext(app.context);
+  assert.equal(new Script('busMode').runInContext(app.context),'stops');assert.match(app.get('bus-count').textContent,/0 fermate/);
+  app.get('bus-scope-all').onclick();assert.equal(app.get('bus-scope-all').attributes['aria-pressed'],'true');
+});
+test('Avvisi per rete: conserva i generali, esclude le altre reti e mantiene i preferiti condivisi',()=>{
+  const app=runBusCatalog();app.get('bus-extraurban').onclick();
+  assert.equal(new Script('busAlertMatchesNetwork({lines:["130"]})').runInContext(app.context),true);
+  assert.equal(new Script('busAlertMatchesNetwork({lines:["24"]})').runInContext(app.context),false);
+  assert.equal(new Script('busAlertMatchesNetwork({lines:[]})').runInContext(app.context),true);
+  new Script('busCatalogStar(busCatalogLines().find(line=>line.number==="130")).onclick()').runInContext(app.context);
+  app.get('bus-favorites').onclick();assert.match(app.get('bus-count').textContent,/1 linea/);
+  app.get('bus-scope-urban').onclick();assert.match(app.get('bus-list').children[0].children[0].textContent,/Nessuna linea/);
+  assert.ok(JSON.parse(app.storage.get('verona-bus-v1'))['official-130']);
+  app.get('bus-scope-all').onclick();assert.match(app.get('bus-count').textContent,/1 linea/);
+});
+test('Mappa della rete: nessuna urbana nelle extraurbane e selezione recuperata tornando a Tutte',async()=>{
+  const app=runBusCatalog(),logic=await readFile(new URL('../public/bus-network.js',import.meta.url),'utf8');new Script(logic).runInContext(app.context);
+  app.storage.set('verona-bus-network-v1',JSON.stringify(['11','24']));app.get('bus-extraurban').onclick();
+  await new Script('openBusNetwork()').runInContext(app.context);assert.equal(new Script('networkAvailableLines().length').runInContext(app.context),0);assert.equal(app.get('network-add-line').disabled,true);
+  assert.deepEqual(JSON.parse(app.storage.get('verona-bus-network-v1')),['11','24']);
+  app.get('close-bus-network').onclick();app.get('bus-scope-all').onclick();await new Script('openBusNetwork()').runInContext(app.context);
+  assert.equal(new Script('busNetworkLines.join(",")').runInContext(app.context),'11,24');
+});
+test('Extraurbane: filtro verificato su ATV, urbane escluse e ripristino del catalogo completo',async()=>{
+  const app=runBusCatalog();app.get('bus-extraurban').onclick();assert.match(app.get('bus-count').textContent,/73 linee · Extraurbane/);
+  const numbers=new Script('busCatalogLines().filter(line=>busLineCategory(line)==="extraurban").map(line=>line.number)').runInContext(app.context);
+  assert.ok(numbers.includes('130')&&numbers.includes('484')&&numbers.includes('X02'));assert.ok(!numbers.includes('11')&&!numbers.includes('24')&&!numbers.includes('SC01'));
+  app.get('bus-network-scope').value='urban';app.get('bus-network-scope').onchange();assert.match(app.get('bus-count').textContent,/38 linee · Urbane/);
+  app.get('bus-filter-reset').onclick();assert.match(app.get('bus-count').textContent,/141 linee/);
+});
+test('Extraurbane: ricerca destinazione e orari interni della 130 dal file ufficiale',async()=>{
+  const app=runBusCatalog();app.get('bus-extraurban').onclick();app.get('bus-search').value='San Bonifacio';await new Script('renderBus()').runInContext(app.context);
+  assert.ok(app.get('bus-list').children.some(card=>card.children.some(child=>child.attributes['aria-label']==='Orari linea 130, VERONA - SAN BONIFACIO')));
+  const data=JSON.parse(await readFile(new URL('../data/bus-official/130.json',import.meta.url),'utf8'));
+  const trip=data.trips.find(trip=>trip.dates.includes('2026-10-21')&&trip.calls.some(call=>call[3]));assert.ok(trip);
+  app.context.fetch=async()=>({ok:true,json:async()=>structuredClone(data)});app.context.extraStop=trip.calls.find(call=>call[3])[0];
+  await new Script('openOfficialBus("130");loadOfficialLine("130",{stopCode:extraStop,date:"2026-10-21"})').runInContext(app.context);
+  assert.equal(app.get('official-stop').value,app.context.extraStop);assert.ok(app.get('official-results').children.length>0);assert.match(app.get('official-summary').textContent,/partenze/);
+});
+test('Catalogo unico: include le linee senza scheda, ricerca fermata 1974 e apertura senza ricompilare il codice',async()=>{
+  const app=runBusCatalog();await new Script('renderBus()').runInContext(app.context);
+  assert.match(app.get('bus-count').textContent,/141 linee/);
+  app.get('bus-search').value='1974';await new Script('renderBus()').runInContext(app.context);
+  assert.match(app.get('bus-count').textContent,/0 linee · 1 fermata/);
+  const results=app.get('bus-list').children.at(-1),stopButton=results.children[0];assert.equal(stopButton.children[0].textContent,'VIA SANTINI B');
+  stopButton.onclick();assert.equal(app.get('bus-stop-dialog').open,true);assert.equal(app.get('bus-stop-line').children.length,2);
+  app.get('bus-stop-line').value='24';app.get('bus-stop-all').onclick();
+  await new Script('loadOfficialLine("24",{stopCode:"1974",date:"2026-10-21"})').runInContext(app.context);
+  assert.equal(app.get('official-stop').value,'1974');assert.match(app.get('official-summary').textContent,/40 partenze/);
+});
+test('Catalogo: preferiti delle linee senza scheda persistono e gli avvisi ne riconoscono il numero',async()=>{
+  const app=runBusCatalog();const line=new Script('busCatalogLines().find(line=>!line.sheets.length)').runInContext(app.context);assert.ok(line);
+  app.context.onlyOfficial=line;new Script('busCatalogStar(onlyOfficial).onclick()').runInContext(app.context);
+  assert.ok(JSON.parse(app.storage.get('verona-bus-v1'))['official-'+line.number]);
+  assert.equal(new Script('busFavoriteNumbers().has(onlyOfficial.number)').runInContext(app.context),true);
+  await new Script('busMode="favorites";renderBus()').runInContext(app.context);assert.match(app.get('bus-count').textContent,/1 linea/);
+  new Script('busCatalogStar(onlyOfficial).onclick()').runInContext(app.context);assert.match(app.get('bus-list').children[0].children[0].textContent,/Nessuna linea/);
+});
+test('Ricerca fermate: errore recuperabile e risposta tardiva non sovrascrive una ricerca successiva',async()=>{
+  const app=runBusCatalog();app.get('bus-search').value='1974';app.context.fetch=async()=>({ok:false});await new Script('renderBus()').runInContext(app.context);
+  let results=app.get('bus-list').children.at(-1);assert.equal(results.children[1].textContent,'Riprova ricerca fermate');
+  let resolve;app.context.fetch=()=>new Promise(r=>resolve=r);const pending=results.children[1].onclick();
+  app.get('bus-search').value='';new Script('renderBus()').runInContext(app.context);const first=app.get('bus-list').children[0];
+  resolve({ok:true,json:async()=>structuredClone(eventBusIndexData)});await pending;assert.equal(app.get('bus-list').children[0],first);assert.match(app.get('bus-count').textContent,/141 linee/);
+});
+test('Prossime partenze: filtra il passato, mantiene il servizio dopo mezzanotte e distingue una data non coperta',()=>{
+  const app=runOfficial();app.context.sample={validFrom:'2026-10-18',validTo:'2026-11-17',trips:[
+    {id:'yesterday',dates:['2026-10-18'],destination:'Centro',calls:[['X','00:45:00',1,true]]},
+    {id:'today',dates:['2026-10-19'],destination:'Centro',calls:[['X','00:10:00',0,true],['X','01:00:00',0,true]]}
+  ]};
+  const rows=new Script('officialUpcomingRows(sample,"2026-10-19","X","",new Date("2026-10-18T22:30:00Z"))').runInContext(app.context);
+  assert.deepEqual(Array.from(rows,row=>row.time),['00:45:00','01:00:00']);assert.equal(rows[0].offset,0);
+  assert.equal(new Script('officialUpcomingRows(sample,"2026-11-18","X")').runInContext(app.context),null);
+});
+test('Consultatore: oggi apre sulle prossime corse, giornata completa recuperabile e destinazioni pertinenti',async()=>{
+  const app=runOfficial();useRomeInstant(app,'2026-10-19T10:00:00Z');
+  await new Script('openOfficialBus("24");loadOfficialLine("24",{stopCode:"1974",date:"2026-10-19"})').runInContext(app.context);
+  const count=app.get('official-results').children.length;assert.ok(count>0&&count<40);assert.equal(app.get('official-next').attributes['aria-pressed'],'true');
+  assert.ok(app.get('official-destination').children.length<8);
+  app.get('official-day').onclick();assert.equal(app.get('official-results').children.length,40);
+  app.get('official-next').onclick();assert.equal(app.get('official-results').children.length,count);
+});
 test('Autobus vicini: distanze, limite 800 m, tre risultati e servizio reale della 24/96 per data',()=>{
   const app=runEventBus();app.context.index=eventBusIndexData;
   const nearby=new Script('nearbyBusStops(index,index.stops.find(s=>s.code==="1974"),"2026-10-19")').runInContext(app.context);

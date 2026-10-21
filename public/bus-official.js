@@ -2,6 +2,19 @@
 const officialBus = payload.busOfficial || {lines:[]};
 const officialBusCache = new Map(),officialBusLoads=new Map();
 let officialBusData=null, officialBusRequest=0, officialBusFocus=null;
+let officialTimeMode='next';
+function officialUpcomingRows(data,day,stop,destination='',now=new Date()){
+  const rows=officialDepartures(data,day,stop,destination);if(rows===null)return null;
+  if(day!==dayInRome(now))return rows;
+  const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(now).split(':').map(Number),seconds=parts[0]*3600+parts[1]*60+parts[2];
+  const overnight=(officialDepartures(data,shiftDay(day,-1),stop,destination)||[]).filter(row=>row.offset>0).map(row=>({...row,minutes:row.minutes-1440,offset:row.offset-1}));
+  return [...overnight,...rows].filter(row=>row.minutes*60+Number(row.time.slice(6,8)||0)>=seconds).sort((a,b)=>a.minutes-b.minutes);
+}
+function updateOfficialDestinations(preferred=$('official-destination').value){
+  if(!officialBusData)return;
+  const day=$('official-date').value,stop=$('official-stop').value,rows=officialDepartures(officialBusData,day,stop)||[];
+  officialOptions('official-destination',[...new Set(rows.map(row=>row.destination))].sort().map(value=>({value,label:value})),preferred,'Tutte le destinazioni');
+}
 function officialDepartures(data,day,stop,destination=''){
   if(day<data.validFrom||day>data.validTo)return null;
   const rows=[];
@@ -49,12 +62,14 @@ function renderOfficialTimes(){
   const list=$('official-results');list.replaceChildren();
   if(!officialBusData)return;
   const day=$('official-date').value,stop=$('official-stop').value;
+  const isToday=day===dayInRome(new Date()),next=isToday&&officialTimeMode==='next';
+  $('official-next').hidden=!isToday;$('official-next').setAttribute('aria-pressed',String(next));$('official-day').setAttribute('aria-pressed',String(!next));
   if(!day||day<officialBusData.validFrom||day>officialBusData.validTo){$('official-summary').textContent='Data fuori dalla validità dell’archivio: aggiorna i dati o consulta ATV.';return;}
   if(!stop){$('official-summary').textContent='Scegli una fermata per vedere gli orari.';return;}
-  const rows=officialDepartures(officialBusData,day,stop,$('official-destination').value);
+  const rows=next?officialUpcomingRows(officialBusData,day,stop,$('official-destination').value):officialDepartures(officialBusData,day,stop,$('official-destination').value);
   $('official-summary').textContent=rows.length+' partenze · '+formatDay(day,{day:'numeric',month:'long'})+' · '+officialBusData.stops[stop].name;
-  if(!rows.length){list.append(el('p','Nessuna partenza programmata per questa fermata, data e destinazione nell’archivio.','timetable-prompt'));return;}
-  for(const row of rows){const item=el('div','','timetable-row'),clock=el('div'),meta=el('div','','timetable-row-meta');clock.append(el('strong',row.time.slice(0,5),'timetable-time'));if(row.offset)clock.append(el('small','Giorno successivo +'+row.offset));meta.append(el('strong','→ '+row.destination),el('small','Corsa '+row.trip));item.append(clock,meta);list.append(item);}
+  if(!rows.length){list.append(el('p',next?'Nessun’altra partenza per il servizio di oggi. Consulta Tutta la giornata o scegli un’altra data.':'Nessuna partenza programmata per questa fermata, data e destinazione nell’archivio.','timetable-prompt'));return;}
+  for(const row of rows){const item=el('div','','timetable-row'),clock=el('div'),meta=el('div','','timetable-row-meta');clock.append(el('strong',row.time.slice(0,5),'timetable-time'));if(row.offset)clock.append(el('small','Giorno successivo +'+row.offset));meta.append(el('strong','→ '+row.destination));item.append(clock,meta);list.append(item);}
   try{localStorage.setItem('verona-official-bus-'+officialBusData.number,JSON.stringify({stop,destination:$('official-destination').value}));}catch{}
 }
 async function loadOfficialLine(number,preset={}){
@@ -71,12 +86,13 @@ async function loadOfficialLine(number,preset={}){
     const input=$('official-date');input.min=data.validFrom;input.max=data.validTo;input.value=preset.date||dayInRome(new Date().toISOString());
     $('official-validity').textContent='Archivio valido dal '+formatDay(data.validFrom,{day:'numeric',month:'long'})+' al '+formatDay(data.validTo,{day:'numeric',month:'long',year:'numeric'})+'. Fonte: ATV / RAP Veneto · NAP. Pubblicato il '+formatDay(dayInRome(data.publicationTimestamp),{day:'numeric',month:'long'})+'.';
     for(const id of ['official-date','official-stop','official-destination'])$(id).disabled=false;
-    renderOfficialTimes();
+    updateOfficialDestinations(preset.stopCode?'':saved.destination);renderOfficialTimes();
     if(preset.stopCode&&!data.stops[preset.stopCode])$('official-summary').textContent='Questo codice fermata non è presente nella linea ufficiale. Scegli una fermata dall’elenco.';
   }catch{if(request!==officialBusRequest)return;$('official-summary').textContent='Impossibile caricare gli orari. Controlla la connessione e riprova.';const retry=el('button','Riprova');retry.onclick=()=>loadOfficialLine(number,preset);$('official-results').append(retry);}
 }
 function openOfficialBus(number='',preset={}){
   officialBusFocus=document.activeElement;
+  officialTimeMode='next';
   const lines=[...officialBus.lines].sort((a,b)=>a.number.localeCompare(b.number,'it',{numeric:true}));
   officialOptions('official-line',lines.map(line=>({value:line.number,label:line.number+' · '+line.name})),number||lines[0]?.number);
   $('official-bus-dialog').showModal();loadOfficialLine($('official-line').value,preset);
@@ -84,7 +100,9 @@ function openOfficialBus(number='',preset={}){
 $('close-official-bus').onclick=()=>$('official-bus-dialog').close();
 $('official-bus-dialog').addEventListener('close',()=>{officialBusRequest++;if(officialBusFocus?.isConnected)officialBusFocus.focus();});
 $('official-line').onchange=()=>loadOfficialLine($('official-line').value,{date:$('official-date').value});
-for(const id of ['official-date','official-stop','official-destination'])$(id).onchange=()=>{renderOfficialTimes();$('official-results').scrollTop=0;};
+for(const id of ['official-date','official-stop','official-destination'])$(id).onchange=()=>{if(id!=='official-destination')updateOfficialDestinations();renderOfficialTimes();$('official-results').scrollTop=0;};
+$('official-next').onclick=()=>{officialTimeMode='next';renderOfficialTimes();$('official-results').scrollTop=0;};
+$('official-day').onclick=()=>{officialTimeMode='day';renderOfficialTimes();$('official-results').scrollTop=0;};
 
 $('bus-official-all').hidden=!officialBus.lines.length;
 $('bus-official-all').onclick=()=>openOfficialBus();

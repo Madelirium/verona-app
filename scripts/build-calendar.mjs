@@ -15,6 +15,7 @@ export async function buildCalendar() {
   const data=JSON.parse(json);
   data.auth=authConfig();
   data.busOfficial=JSON.parse(await readFile(new URL('data/bus-official.json',root),'utf8'));
+  data.busCategories=JSON.parse(await readFile(new URL('data/bus-categories.json',root),'utf8'));
   await mkdir(new URL('public/bus-official/',root),{recursive:true});
   const officialAssets=[];
   for(const line of data.busOfficial.lines){
@@ -63,11 +64,13 @@ export async function buildCalendar() {
   const officialLogic=await readFile(new URL('public/bus-official.js',root),'utf8');
   const eventBusLogic=await readFile(new URL('public/event-bus.js',root),'utf8');
   const networkLogic=await readFile(new URL('public/bus-network.js',root),'utf8');
+  const catalogLogic=await readFile(new URL('public/bus-catalog.js',root),'utf8');
+  const agendaLogic=await readFile(new URL('public/agenda.js',root),'utf8');
   const gamesLogic=await readFile(new URL('public/briscola.js',root),'utf8');
-  const gamesCss=await readFile(new URL('public/games.css',root),'utf8');
+  const gamesCss=(await readFile(new URL('public/games.css',root),'utf8'))+'\n'+await readFile(new URL('public/bus-catalog.css',root),'utf8')+'\n'+await readFile(new URL('public/agenda.css',root),'utf8');
   const authLogic=await readFile(new URL('public/auth.js',root),'utf8');
   const rankedLogic=await readFile(new URL('public/ranked.js',root),'utf8');
-  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>logic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+networkLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
+  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>logic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
   await writeFile(new URL('public/index.html',root),html);
   return data.events.length;
 }

@@ -1,15 +1,16 @@
 let busNetworkInitialized=false;
 let busNetworkMap=null,busNetworkLayer=null,busNetworkLines=[],busNetworkGroups=[],busNetworkStops=[],busNetworkRequest=0,busNetworkFocus=null,busNetworkMode='map',busNetworkFit=true;
-function networkAvailableLines(){return [...new Set(busRouteData.routes.map(route=>route.number))].sort((a,b)=>a.localeCompare(b,'it',{numeric:true}));}
+function networkAvailableLines(){const allowed=view==='bus'&&typeof busCatalogFilteredLines==='function'?new Set(busCatalogFilteredLines().map(line=>line.number)):null;return [...new Set(busRouteData.routes.map(route=>route.number))].filter(number=>!allowed||allowed.has(number)).sort((a,b)=>a.localeCompare(b,'it',{numeric:true}));}
 function networkStops(groups){
   const stops=new Map();for(const group of groups)for(const route of group.routes)for(const stop of route.stops){const key=stop.ref||stop.id;if(!stops.has(key))stops.set(key,{...stop,numbers:[],color:group.color});const item=stops.get(key);if(!item.numbers.includes(group.number))item.numbers.push(group.number);}return [...stops.values()];
 }
 function rememberNetworkLines(){try{localStorage.setItem('verona-bus-network-v1',JSON.stringify(busNetworkLines));}catch{}}
 function openBusNetwork(){
   busNetworkFocus=document.activeElement;const available=networkAvailableLines();
-  if(!busNetworkInitialized){busNetworkInitialized=true;let saved=null;try{saved=JSON.parse(localStorage.getItem('verona-bus-network-v1')||'null');}catch{}
+  {busNetworkInitialized=true;let saved=null;try{saved=JSON.parse(localStorage.getItem('verona-bus-network-v1')||'null');}catch{}
     const preferred=Array.isArray(saved)?saved:[...busFavoriteNumbers()];busNetworkLines=[...new Set(preferred)].filter(number=>available.includes(number)).slice(0,6);if(!busNetworkLines.length&&!Array.isArray(saved))busNetworkLines=['11','12','13'].filter(number=>available.includes(number));}
   officialOptions('network-line',available.map(number=>({value:number,label:'Linea '+number})),'','Aggiungi una linea');
+  $('network-line').disabled=!available.length;$('network-add-line').disabled=!available.length;$('network-favorites').disabled=!available.length;
   busNetworkMode='map';busNetworkFit=true;$('network-stop-search').value='';if(!$('bus-network-dialog').open)$('bus-network-dialog').showModal();return loadBusNetwork();
 }
 async function loadBusNetwork(){
@@ -32,6 +33,7 @@ function renderBusNetwork(focusStop=null){
   renderNetworkChips();const list=$('network-stops'),mapBox=$('network-map'),isMap=busNetworkMode==='map';mapBox.hidden=!isMap;list.hidden=isMap;$('network-stop-search').hidden=isMap;
   $('network-map-tab').setAttribute('aria-pressed',String(isMap));$('network-list-tab').setAttribute('aria-pressed',String(!isMap));
   const failed=busNetworkGroups.filter(group=>!group.routes.length);$('network-status').textContent=busNetworkLines.length?busNetworkLines.length+' linee · '+busNetworkStops.length+' fermate'+(failed.length?' · Percorso non disponibile: '+failed.map(group=>group.number).join(', '):''):'Aggiungi una linea per vedere percorsi e fermate.';
+  if(!networkAvailableLines().length)$('network-status').textContent='Nessun tracciato disponibile per la rete e i filtri scelti. Puoi consultare fermate e orari dalla sezione Autobus.';
   $('network-retry').hidden=!failed.length;list.replaceChildren();
   if(!isMap){const query=placeSearchText($('network-stop-search').value);const stops=busNetworkStops.filter(stop=>placeSearchText(stop.name+' '+(stop.ref||'')).includes(query)).sort((a,b)=>a.name.localeCompare(b.name,'it'));
     if(!stops.length)list.append(el('p',query?'Nessuna fermata con questo nome o codice nelle linee selezionate.':'Nessuna fermata da mostrare. Aggiungi una linea.','timetable-prompt'));
