@@ -74,8 +74,8 @@ function save(id, state) {
   render();
 }
 function render() {
-  $('page-heading').hidden=view==='home';
-  $('app-shell').classList.toggle('home-layout',view==='home');
+  $('page-heading').hidden=view==='home'||view==='bus';
+  $('app-shell').classList.toggle('home-layout',view==='home'||view==='bus');
   $('app-shell').classList.toggle('game-session-layout',view==='games'&&Boolean(globalThis.veronaGameSession));
   const filtered=visibleEvents();
   $('month').textContent=formatDay(month+'-01',{month:'long',year:'numeric'});
@@ -482,12 +482,14 @@ function openNews(item){
   $('news-detail-dialog').showModal();
 }
 function setView(next) {
+  if(view==='bus'&&next!=='bus'&&typeof leaveBusMapHome==='function')leaveBusMapHome();
   if(next==='bus'&&!busVisited){busVisited=true;busMode=busFavoriteNumbers().size?'favorites':'lines';}
   if(next!=='discover')showDiscoveryFeedback('');
   view=next;onlySaved=next==='saved';
   // Aprendo i salvati, mostra il prossimo appuntamento anziché un giorno vuoto.
   if(onlySaved&&!savedVisited){savedVisited=true;const future=savedEvents().filter(e=>!isPastSavedEvent(e)).sort((a,b)=>a.startsAt.localeCompare(b.startsAt));if(future.length){selected=eventDay(future[0].startsAt)<today?today:eventDay(future[0].startsAt);month=selected.slice(0,7);}}
   render();
+  if(next==='bus'&&typeof enterBusMapHome==='function')enterBusMapHome();
 }
 function discoveryEvents() {
   const now=Date.now();const period=$('period').value||'30';
@@ -762,7 +764,7 @@ $('explore-events').onclick=()=>{
   eventMapReturn={...eventMapReturn,...previous,view:'explore'};$('event-map-back').textContent='← Esplora';
 };
 
-function locationMapVisible(key){if(key==='network')return $('bus-network-dialog').open;if(key==='event-bus')return $('event-bus-dialog').open;return key==='events'?view==='eventmap':key==='places'?view==='explore'&&exploreMode==='map':$('bus-route-dialog').open&&busRouteMode==='map';}
+function locationMapVisible(key){if(key==='network')return typeof networkIsOpen==='function'?networkIsOpen():$('bus-network-dialog').open;if(key==='event-bus')return $('event-bus-dialog').open;return key==='events'?view==='eventmap':key==='places'?view==='explore'&&exploreMode==='map':$('bus-route-dialog').open&&busRouteMode==='map';}
 function drawMapLocation(state,center=false){
   state.layer.clearLayers();if(!currentUserLocation)return;
   const {lat,lon,accuracy}=currentUserLocation,point=[lat,lon];
@@ -780,7 +782,7 @@ function installMapLocation(map,key){
 }
 function requestMapLocation(key){
   const state=mapLocationStates.get(key);if(!state||state.button.disabled)return;
-  const show=message=>{state.status.hidden=false;state.status.textContent=message;};
+  const show=message=>{state.status.hidden=false;state.status.textContent=message;if(key==='network'&&$('network-location-note')){$('network-location-note').hidden=false;$('network-location-note').textContent=message;}};
   if(typeof isSecureContext!=='undefined'&&!isSecureContext){show('Per usare la posizione dal telefono serve la versione HTTPS. L’anteprima Wi-Fi HTTP non la supporta.');return;}
   if(typeof navigator==='undefined'||!navigator.geolocation){show('Posizione non disponibile in questo browser. Puoi spostare la mappa manualmente.');return;}
   state.button.disabled=true;state.button.textContent='…';state.button.setAttribute('aria-busy','true');show('Ricerca della posizione…');

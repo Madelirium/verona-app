@@ -1026,8 +1026,8 @@ test('Catalogo unico: include le linee senza scheda, ricerca fermata 1974 e aper
   app.get('bus-search').value='1974';await new Script('renderBus()').runInContext(app.context);
   assert.match(app.get('bus-count').textContent,/0 linee · 1 fermata/);
   const results=app.get('bus-list').children.at(-1),stopButton=results.children[0];assert.equal(stopButton.children[0].textContent,'VIA SANTINI B');
-  stopButton.onclick();assert.equal(app.get('bus-stop-dialog').open,true);assert.equal(app.get('bus-stop-line').children.length,2);
-  app.get('bus-stop-line').value='24';app.get('bus-stop-all').onclick();
+  stopButton.onclick();assert.equal(app.get('bus-stop-dialog').open,true);assert.equal(app.get('bus-stop-shared').stopUi.buttons.size,2);
+  await app.get('bus-stop-shared').stopUi.buttons.get('24').onclick();app.get('bus-stop-shared').stopUi.day.onclick();
   await new Script('loadOfficialLine("24",{stopCode:"1974",date:"2026-10-21"})').runInContext(app.context);
   assert.equal(app.get('official-stop').value,'1974');assert.match(app.get('official-summary').textContent,/40 partenze/);
 });
@@ -1143,6 +1143,113 @@ test('Percorsi evento: il filtro cambia i tracciati ma mantiene il segnaposto ev
 
 const networkLogic=await readFile(new URL('../public/bus-network.js',import.meta.url),'utf8');
 function runStopsNetwork(){const app=runBusCatalog();new Script(networkLogic).runInContext(app.context);return app;}
+test('Elenco linee sopra la mappa: scelta percorso, cambio linea e ripristino di tutte le fermate',async()=>{
+  const app=runStopsNetwork();new Script('setView("bus")').runInContext(app.context);await new Script('loadNetworkStops()').runInContext(app.context);
+  const rail=app.get('network-line-rail');assert.equal(rail.hidden,false);assert.ok(rail.lineButtons.has('24'));const button=rail.lineButtons.get('24');
+  new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);await button.onclick();
+  assert.equal(new Script('networkChosenStop').runInContext(app.context),null);assert.equal(new Script('networkChosenLine').runInContext(app.context),'24');assert.equal(new Script('networkRouteState').runInContext(app.context),'ready');assert.equal(button.attributes['aria-pressed'],'true');assert.equal(rail.lineButtons.get('24'),button);
+  await rail.lineButtons.get('130').onclick();assert.equal(button.attributes['aria-pressed'],'false');assert.equal(new Script('networkRouteState').runInContext(app.context),'missing');assert.ok(new Script('networkExplorerMatches().length').runInContext(app.context)>10);
+  rail.allButton.onclick();assert.equal(new Script('networkChosenLine').runInContext(app.context),'');assert.equal(rail.allButton.attributes['aria-pressed'],'true');assert.ok(new Script('networkExplorerMatches().length').runInContext(app.context)>4000);
+  app.get('network-list-tab').onclick();assert.equal(rail.hidden,true);app.get('network-map-tab').onclick();assert.equal(rail.hidden,false);
+  app.get('bus-catalog-entry').onclick();app.get('bus-extraurban').onclick();await app.get('bus-map-entry').onclick();assert.equal(rail.lineButtons.has('24'),false);assert.ok(rail.lineButtons.has('130'));
+});
+test('Tendina linee: ricerca numero e destinazione, vuoto, annullamento e scelta con focus conservato',async()=>{
+  const app=runStopsNetwork();new Script('setView("bus")').runInContext(app.context);await new Script('loadNetworkStops()').runInContext(app.context);
+  const toggle=app.get('network-line-toggle'),menu=app.get('network-line-menu'),input=app.get('network-line-query'),rail=app.get('network-line-rail');menu.hidden=true;
+  let inputFocusCount=0,toggleFocusCount=0;input.focus=()=>inputFocusCount++;toggle.focus=()=>toggleFocusCount++;
+  toggle.onclick();assert.equal(menu.hidden,false);assert.equal(toggle.attributes['aria-expanded'],'true');input.value='Quinzano';input.oninput();assert.equal(rail.lineButtons.get('24').hidden,false);assert.equal(rail.lineButtons.get('11').hidden,true);
+  assert.equal(inputFocusCount,0,'Aprire la tendina non deve attivare la tastiera');assert.equal(toggleFocusCount,1);
+  input.value='nessuna destinazione xyz';input.oninput();assert.equal(app.get('network-line-empty').hidden,false);assert.equal(rail.allButton.hidden,true);
+  menu.onkeydown({key:'Escape',preventDefault(){}});assert.equal(menu.hidden,true);assert.equal(new Script('networkChosenLine').runInContext(app.context),'');
+  toggle.onclick();assert.equal(input.value,'');input.value='24';input.oninput();assert.equal(rail.lineButtons.get('24').hidden,false);let focused=false;toggle.focus=()=>{focused=true;};await rail.lineButtons.get('24').onclick();assert.equal(menu.hidden,true);assert.equal(focused,true);assert.equal(toggle.attributes['aria-expanded'],'false');assert.match(toggle.textContent,/Linea 24/);
+  toggle.onclick();app.get('bus-catalog-entry').onclick();assert.equal(menu.hidden,true);
+});
+test('Mappa comoda: ricerca apribile senza tastiera e cache fermate coerente con linea e rete',async()=>{
+  const app=runStopsNetwork();new Script('setView("bus")').runInContext(app.context);await new Script('loadNetworkStops()').runInContext(app.context);
+  let inputFocus=0;app.get('network-stop-search').focus=()=>inputFocus++;app.get('network-search-toggle').onclick();assert.equal(inputFocus,0);assert.equal(app.get('network-search-toggle').attributes['aria-expanded'],'true');
+  const first=new Script('networkOfficialStops()').runInContext(app.context),matches=new Script('networkExplorerMatches()').runInContext(app.context);assert.equal(new Script('networkOfficialStops()').runInContext(app.context),first);assert.equal(new Script('networkExplorerMatches()').runInContext(app.context),matches);
+  await app.get('network-line-rail').lineButtons.get('24').onclick();assert.equal(app.get('network-search-toggle').attributes['aria-expanded'],'false');const filtered=new Script('networkExplorerMatches()').runInContext(app.context);assert.notEqual(filtered,matches);assert.ok(filtered.every(stop=>stop.numbers.includes('24')));
+  app.get('network-fit').onclick();assert.equal(new Script('networkChosenLine').runInContext(app.context),'24');
+  app.get('network-search-toggle').onclick();app.get('network-stop-search').value='1974';app.get('network-stop-search').oninput();app.get('network-search-results').children[0].onclick();assert.equal(new Script('networkChosenLine').runInContext(app.context),'24');assert.equal(new Script('networkChosenStop.code').runInContext(app.context),'1974');assert.equal(app.get('network-search-toggle').attributes['aria-expanded'],'false');
+  app.get('bus-catalog-entry').onclick();app.get('bus-extraurban').onclick();await app.get('bus-map-entry').onclick();assert.notEqual(new Script('networkOfficialStops()').runInContext(app.context),first);assert.equal(new Script('networkOfficialStops().some(stop=>stop.numbers.includes("24"))').runInContext(app.context),false);
+});
+test('Menu laterale mappa: azioni contestuali, chiusura dopo scelta e annullamento da tastiera',async()=>{
+  const app=runStopsNetwork();new Script('setView("bus")').runInContext(app.context);await new Script('loadNetworkStops()').runInContext(app.context);
+  const toggle=app.get('network-actions-toggle'),menu=app.get('network-actions-menu');assert.equal(toggle.hidden,false);assert.equal(app.get('network-return-stop').hidden,true);assert.equal(app.get('network-fit').hidden,true);assert.equal(app.get('page-heading').hidden,true);assert.ok(app.get('network-actions-items').children.includes(app.get('bus-catalog-entry')));
+  toggle.onclick();assert.equal(menu.hidden,false);assert.equal(toggle.attributes['aria-expanded'],'true');app.get('network-options-toggle').onclick();assert.equal(app.get('network-extra-options').hidden,false);
+  menu.onkeydown({key:'Escape',preventDefault(){}});assert.equal(menu.hidden,true);assert.equal(toggle.attributes['aria-expanded'],'false');
+  new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);await new Script('selectNetworkLine("24")').runInContext(app.context);assert.equal(app.get('network-return-stop').hidden,false);assert.equal(app.get('network-fit').hidden,false);
+  toggle.onclick();app.get('network-return-stop').onclick();assert.equal(menu.hidden,true);toggle.onclick();app.get('network-fit').onclick();assert.equal(menu.hidden,true);assert.equal(new Script('networkChosenLine').runInContext(app.context),'24');
+  toggle.onclick();app.get('bus-catalog-entry').onclick();assert.equal(menu.hidden,true);assert.equal(app.get('bus-map-home').hidden,true);await app.get('bus-map-entry').onclick();assert.equal(app.get('bus-map-home').hidden,false);assert.equal(new Script('networkChosenStop.code').runInContext(app.context),'1974');
+});
+test('Ingresso Autobus: mappa nella schermata principale, elenco alternativo e ritorno senza perdere la fermata',async()=>{
+  const app=runStopsNetwork();new Script('setView("bus")').runInContext(app.context);await new Script('loadNetworkStops()').runInContext(app.context);
+  assert.equal(new Script('busNetworkInline&&networkIsOpen()').runInContext(app.context),true);assert.notEqual(app.get('bus-network-dialog').open,true);assert.equal(app.get('bus-map-home').hidden,false);
+  new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);app.get('bus-catalog-entry').onclick();assert.equal(new Script('networkIsOpen()').runInContext(app.context),false);
+  await app.get('bus-map-entry').onclick();assert.equal(new Script('networkChosenStop.code').runInContext(app.context),'1974');assert.equal(app.get('bus-map-entry').attributes['aria-pressed'],'true');
+  app.get('home').onclick();assert.equal(new Script('networkIsOpen()').runInContext(app.context),false);
+});
+test('Scheda sulla mappa: tre dimensioni, pulsanti e gesto con annullamento',async()=>{
+  const app=runStopsNetwork();new Script('setView("bus")').runInContext(app.context);await new Script('loadNetworkStops()').runInContext(app.context);new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);
+  assert.equal(app.get('network-sheet').attributes['data-size'],'compact');app.get('network-sheet-more').onclick();assert.equal(app.get('network-sheet').attributes['data-size'],'medium');app.get('network-sheet-more').onclick();assert.equal(app.get('network-map').inert,true);assert.equal(app.get('network-sheet-more').attributes['aria-disabled'],'true');
+  app.get('network-sheet-less').onclick();assert.equal(app.get('network-map').inert,false);const tools=app.get('network-sheet-tools');tools.onpointerdown({clientY:100,pointerId:1});tools.onpointercancel();tools.onpointerup({clientY:20,pointerId:1});assert.equal(app.get('network-sheet').attributes['data-size'],'medium');
+  tools.onpointerdown({clientY:100,pointerId:2});tools.onpointerup({clientY:160,pointerId:2});assert.equal(app.get('network-sheet').attributes['data-size'],'compact');
+  app.get('network-sheet-more').onclick();app.get('network-sheet-more').onclick();app.get('network-selected-stop').stopUi.options.onClose();new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);assert.equal(app.get('network-sheet').attributes['data-size'],'compact');assert.equal(app.get('network-map').inert,false);
+});
+test('Ricerca sulla mappa: distingue linea e fermata, mantiene il codice e permette di cambiare rete',async()=>{
+  const app=runStopsNetwork();new Script('setView("bus")').runInContext(app.context);await new Script('loadNetworkStops()').runInContext(app.context);app.get('network-stop-search').value='24';app.get('network-stop-search').oninput();
+  assert.match(app.get('network-search-results').children[0].textContent,/^Linea 24 ·/);await app.get('network-search-results').children[0].onclick();assert.equal(new Script('networkChosenLine').runInContext(app.context),'24');
+  app.get('network-stop-search').value='1974';app.get('network-stop-search').oninput();const stop=app.get('network-search-results').children[0];assert.match(stop.textContent,/Fermata 1974/);stop.onclick();assert.equal(new Script('networkChosenStop.code').runInContext(app.context),'1974');
+  app.get('bus-catalog-entry').onclick();app.get('bus-extraurban').onclick();await app.get('bus-map-entry').onclick();assert.equal(new Script('networkChosenStop').runInContext(app.context),null);assert.equal(new Script('networkOfficialStops().some(stop=>stop.numbers.includes("24"))').runInContext(app.context),false);
+});
+test('Gruppi di fermate: conservano tutti i codici e separano celle differenti senza inventare percorsi',()=>{
+  const app=runStopsNetwork();app.context.groupPoints=[{code:'A',lat:45,lon:11,x:5,y:5},{code:'B',lat:47,lon:13,x:15,y:10},{code:'C',lat:44,lon:10,x:100,y:5}];
+  const groups=new Script('clusterNetworkStops(groupPoints,stop=>({x:stop.x,y:stop.y}),64)').runInContext(app.context);assert.equal(groups.length,2);assert.equal(groups[0].stops.length,2);assert.equal(groups[0].lat,46);assert.equal(groups[0].lon,12);assert.equal(groups.flatMap(g=>g.stops).length,3);
+});
+test('Mappa compatta: scegliendo una linea il focus passa a Espandi e non resta su un pulsante nascosto',async()=>{
+  const app=runStopsNetwork();useRomeInstant(app,'2026-10-21T08:00:00Z');new Script('setView("bus")').runInContext(app.context);await new Script('loadNetworkStops()').runInContext(app.context);new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);
+  const panel=app.get('network-selected-stop'),button=panel.stopUi.buttons.get('24');panel.contains=element=>element===button;app.context.document.activeElement=button;let focused=false;app.get('network-sheet-more').focus=()=>{focused=true;};await button.onclick();assert.equal(focused,true);assert.equal(app.get('network-sheet').attributes['data-size'],'compact');
+});
+test('Scheda mappa: trenta partenze scorribili e posizione conservata durante aggiornamento',async()=>{
+  const app=runStopsNetwork();useRomeInstant(app,'2026-10-21T08:00:00Z');new Script('setView("bus")').runInContext(app.context);await new Script('loadNetworkStops()').runInContext(app.context);new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);
+  const box=app.get('network-selected-stop');await box.stopUi.buttons.get('24').onclick();await box.stopUi.pending;const ui=box.stopUi;assert.equal(ui.results.children.length,30);assert.equal(app.get('network-sheet').attributes['data-size'],'compact');assert.equal(app.get('network-sheet-label').textContent,'Scorri gli orari');
+  ui.results.scrollTop=160;app.timers.get(ui.timer).fn();await box.stopUi.pending;assert.equal(ui.results.scrollTop,160);assert.equal(ui.results.children.length,30);
+});
+test('Corsa esatta: sequenza dalla salita, arrivi distinti dalle partenze e cambio giorno',()=>{
+  const app=runStopsNetwork();app.context.tripSample={number:'T',validFrom:'2026-10-19',validTo:'2026-10-21',stops:{A:{name:'Partenza'},B:{name:'Destinazione'}},trips:[{id:'T1',dates:['2026-10-19'],destination:'B',calls:[['A','23:50:00',0,true,null,0],['A','00:10:00',1,true,'00:09:00',1],['B','00:30:00',1,false,'00:25:00',1]]},{id:'T2',dates:['2026-10-19'],destination:'Altra',calls:[['A','00:10:00',1,true],['B','00:50:00',1,false]]}]};
+  const rows=new Script('officialDepartures(tripSample,"2026-10-19","A")').runInContext(app.context);app.context.tripRow=rows.find(row=>row.trip==='T1'&&row.order===1);
+  const calls=new Script('busTripTimeline(tripSample,tripRow)').runInContext(app.context);assert.equal(calls.length,2);assert.equal(calls[0].time,'00:10:00');assert.equal(calls[0].day,'2026-10-20');assert.equal(calls[1].time,'00:25:00');assert.equal(calls[1].minutes,15);
+  new Script('openBusTrip(tripSample,tripRow)').runInContext(app.context);assert.equal(app.get('bus-trip-dialog').open,true);assert.equal(app.get('bus-trip-stops').children.length,2);app.get('bus-trip-search').value='Destinazione';app.get('bus-trip-search').oninput();assert.equal(app.get('bus-trip-stops').children.length,1);assert.match(app.get('bus-trip-stops').children[0].children[1].children[1].textContent,/15 min/);app.get('bus-trip-search').value='inesistente';app.get('bus-trip-search').oninput();assert.match(app.get('bus-trip-count').textContent,/Nessuna fermata/);app.get('bus-trip-close').onclick();assert.equal(app.get('bus-trip-dialog').open,false);
+});
+test('Orario nella mappa: apre solo le fermate della corsa selezionata dal dato ufficiale',async()=>{
+  const app=runStopsNetwork();useRomeInstant(app,'2026-10-21T08:00:00Z');new Script('setView("bus")').runInContext(app.context);await new Script('loadNetworkStops()').runInContext(app.context);new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);const box=app.get('network-selected-stop');await box.stopUi.buttons.get('24').onclick();await box.stopUi.pending;
+  const card=box.stopUi.results.children[0];assert.match(card.attributes['aria-label'],/Vedi fermate della corsa/);card.onclick();assert.equal(app.get('bus-trip-dialog').open,true);assert.ok(app.get('bus-trip-stops').children.length>1);assert.match(app.get('bus-trip-summary').textContent,/Via Santini B/);assert.match(app.get('bus-trip-stops').children[0].children[1].children[1].textContent,/La tua partenza/);
+});
+test('Scheda fermata condivisa: nessuna linea arbitraria, pulsanti stabili e destinazioni con prossime partenze',async()=>{
+  const app=runStopsNetwork();useRomeInstant(app,'2026-10-21T08:00:00Z');await new Script('openBusNetwork()').runInContext(app.context);new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);
+  const box=app.get('network-selected-stop'),ui=box.stopUi,button=ui.buttons.get('24');assert.equal(ui.selected,'');assert.equal(ui.day.hidden,true);
+  await button.onclick();await box.stopUi.pending;assert.equal(box.stopUi.buttons.get('24'),button);assert.equal(button.attributes['aria-pressed'],'true');
+  assert.ok(box.stopUi.results.children.length>0);assert.match(box.stopUi.results.children[0].children[1].children[1].textContent,/Piazza Righetti/);
+  await new Script('renderNetworkExplorer()').runInContext(app.context);assert.equal(box.stopUi.buttons.get('24'),button);
+});
+test('Scheda fermata: orari completi con codice conservato e ritorno alla stessa linea senza dialoghi sovrapposti',async()=>{
+  const app=runStopsNetwork();await new Script('openBusNetwork()').runInContext(app.context);app.context.testStop=new Script('networkOfficialStops().find(stop=>stop.code==="1974")').runInContext(app.context);
+  app.get('close-bus-network').onclick();await new Script('openCatalogStop(testStop,{line:"24"})').runInContext(app.context);app.get('bus-stop-shared').stopUi.day.onclick();
+  assert.equal(app.get('bus-stop-dialog').open,false);assert.equal(app.get('official-bus-dialog').open,true);assert.equal(app.get('close-official-bus').attributes['aria-label'],'Torna alla fermata');
+  assert.equal(new Script('officialTimeMode').runInContext(app.context),'day');
+  app.get('close-official-bus').onclick();assert.equal(app.get('bus-stop-dialog').open,true);assert.equal(app.get('bus-stop-shared').stopUi.selected,'24');
+});
+test('Scheda fermata: la risposta tardiva di una linea non sostituisce una scelta successiva',async()=>{
+  const app=runStopsNetwork();await new Script('openBusNetwork()').runInContext(app.context);new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);
+  let resolve;app.context.fetch=url=>String(url).endsWith('/24.json')?new Promise(r=>resolve=r):Promise.resolve({ok:false,status:503});
+  const box=app.get('network-selected-stop');const pending=box.stopUi.buttons.get('24').onclick();await box.stopUi.buttons.get('96').onclick();await box.stopUi.pending;
+  resolve({ok:true,json:async()=>structuredClone(official24)});await pending;await Promise.resolve();assert.equal(box.stopUi.selected,'96');assert.match(box.stopUi.caption.textContent,/temporaneamente non disponibili/);
+});
+test('Scheda fermata: aggiorna le prossime corse dalla cache e interrompe il timer alla chiusura',async()=>{
+  const app=runStopsNetwork();useRomeInstant(app,'2026-10-21T08:00:00Z');await new Script('openBusNetwork()').runInContext(app.context);new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.code==="1974"))').runInContext(app.context);
+  const box=app.get('network-selected-stop');await box.stopUi.buttons.get('24').onclick();await box.stopUi.pending;const button=box.stopUi.buttons.get('24'),timer=box.stopUi.timer;assert.equal(app.timers.get(timer).ms,60000);
+  app.timers.get(timer).fn();await box.stopUi.pending;assert.equal(box.stopUi.buttons.get('24'),button);const next=box.stopUi.timer;assert.notEqual(next,timer);app.get('close-bus-network').onclick();assert.equal(app.timers.has(next),false);
+});
 test('Mappa fermate: apertura predefinita dall’indice ufficiale, ricerca e scelta linea con percorso',async()=>{
   const app=runStopsNetwork();await new Script('openBusNetwork()').runInContext(app.context);
   assert.equal(new Script('busNetworkExplore').runInContext(app.context),true);assert.equal(app.get('network-picker').hidden,true);
@@ -1150,7 +1257,7 @@ test('Mappa fermate: apertura predefinita dall’indice ufficiale, ricerca e sce
   app.get('network-list-tab').onclick();app.get('network-stop-search').value='1974';app.get('network-stop-search').oninput();assert.equal(app.get('network-stops').children.length,1);
   app.get('network-stops').children[0].children[2].onclick();const panel=app.get('network-selected-stop');assert.equal(panel.hidden,false);
   assert.match(panel.children[0].children[0].children[1].textContent,/1974/);
-  assert.ok(panel.children[1].children.some(button=>button.textContent==='Linea 24'));
+  assert.ok(panel.stopUi.buttons.has('24'));
   await new Script('selectNetworkLine("24")').runInContext(app.context);assert.equal(new Script('networkRouteState').runInContext(app.context),'ready');
   assert.ok(new Script('networkChosenRoutes.length').runInContext(app.context)>0);assert.equal(app.get('network-stop-search').value,'');
   assert.ok(new Script('networkExplorerMatches().every(stop=>stop.numbers.includes("24"))').runInContext(app.context));
