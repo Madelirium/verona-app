@@ -999,9 +999,9 @@ test('Avvisi per rete: conserva i generali, esclude le altre reti e mantiene i p
 test('Mappa della rete: nessuna urbana nelle extraurbane e selezione recuperata tornando a Tutte',async()=>{
   const app=runBusCatalog(),logic=await readFile(new URL('../public/bus-network.js',import.meta.url),'utf8');new Script(logic).runInContext(app.context);
   app.storage.set('verona-bus-network-v1',JSON.stringify(['11','24']));app.get('bus-extraurban').onclick();
-  await new Script('openBusNetwork()').runInContext(app.context);assert.equal(new Script('networkAvailableLines().length').runInContext(app.context),0);assert.equal(app.get('network-add-line').disabled,true);
+  await new Script('openBusNetwork({compare:true})').runInContext(app.context);assert.equal(new Script('networkAvailableLines().length').runInContext(app.context),0);assert.equal(app.get('network-add-line').disabled,true);
   assert.deepEqual(JSON.parse(app.storage.get('verona-bus-network-v1')),['11','24']);
-  app.get('close-bus-network').onclick();app.get('bus-scope-all').onclick();await new Script('openBusNetwork()').runInContext(app.context);
+  app.get('close-bus-network').onclick();app.get('bus-scope-all').onclick();await new Script('openBusNetwork({compare:true})').runInContext(app.context);
   assert.equal(new Script('busNetworkLines.join(",")').runInContext(app.context),'11,24');
 });
 test('Extraurbane: filtro verificato su ATV, urbane escluse e ripristino del catalogo completo',async()=>{
@@ -1142,22 +1142,49 @@ test('Percorsi evento: il filtro cambia i tracciati ma mantiene il segnaposto ev
 });
 
 const networkLogic=await readFile(new URL('../public/bus-network.js',import.meta.url),'utf8');
+function runStopsNetwork(){const app=runBusCatalog();new Script(networkLogic).runInContext(app.context);return app;}
+test('Mappa fermate: apertura predefinita dall’indice ufficiale, ricerca e scelta linea con percorso',async()=>{
+  const app=runStopsNetwork();await new Script('openBusNetwork()').runInContext(app.context);
+  assert.equal(new Script('busNetworkExplore').runInContext(app.context),true);assert.equal(app.get('network-picker').hidden,true);
+  assert.ok(new Script('networkOfficialStops().length').runInContext(app.context)>4000);
+  app.get('network-list-tab').onclick();app.get('network-stop-search').value='1974';app.get('network-stop-search').oninput();assert.equal(app.get('network-stops').children.length,1);
+  app.get('network-stops').children[0].children[2].onclick();const panel=app.get('network-selected-stop');assert.equal(panel.hidden,false);
+  assert.match(panel.children[0].children[0].children[1].textContent,/1974/);
+  assert.ok(panel.children[1].children.some(button=>button.textContent==='Linea 24'));
+  await new Script('selectNetworkLine("24")').runInContext(app.context);assert.equal(new Script('networkRouteState').runInContext(app.context),'ready');
+  assert.ok(new Script('networkChosenRoutes.length').runInContext(app.context)>0);assert.equal(app.get('network-stop-search').value,'');
+  assert.ok(new Script('networkExplorerMatches().every(stop=>stop.numbers.includes("24"))').runInContext(app.context));
+});
+test('Mappa fermate: extraurbane con fermate anche senza tracciato, ripristino e filtri coerenti',async()=>{
+  const app=runStopsNetwork();app.get('bus-extraurban').onclick();await new Script('openBusNetwork()').runInContext(app.context);
+  assert.ok(new Script('networkOfficialStops().length').runInContext(app.context)>0);
+  assert.equal(new Script('networkOfficialStops().some(stop=>stop.numbers.includes("24"))').runInContext(app.context),false);
+  new Script('selectNetworkStop(networkOfficialStops().find(stop=>stop.numbers.includes("130")))').runInContext(app.context);
+  await new Script('selectNetworkLine("130")').runInContext(app.context);assert.equal(new Script('networkRouteState').runInContext(app.context),'missing');
+  assert.ok(new Script('networkExplorerMatches().length').runInContext(app.context)>10);assert.match(app.get('network-selected-stop').children.at(-1).textContent,/Tracciato non disponibile/);
+  await app.get('network-all-stops').onclick();assert.equal(new Script('networkChosenLine').runInContext(app.context),'');assert.equal(app.get('network-selected-stop').hidden,true);
+});
+test('Mappa fermate: errore ritentabile e risposta tardiva dopo la chiusura ignorata',async()=>{
+  const app=runStopsNetwork();app.context.fetch=async()=>({ok:false,status:503});await new Script('openBusNetwork()').runInContext(app.context);assert.equal(app.get('network-retry').hidden,false);
+  let resolve;app.context.fetch=()=>new Promise(r=>resolve=r);const pending=app.get('network-retry').onclick();app.get('close-bus-network').onclick();resolve({ok:true,json:async()=>eventBusIndexData});await pending;
+  assert.equal(new Script('networkStopIndex').runInContext(app.context),null);
+});
 function runNetwork(storage=new Map()){const app=run(new Map(storage),'home');new Script(officialLogic+'\n'+eventBusLogic+'\n'+networkLogic).runInContext(app.context);return app;}
 test('Mappa generale: linee iniziali, aggiunta e rimozione persistenti, massimo sei e ricerca fermate',async()=>{
-  const app=runNetwork();await new Script('openBusNetwork()').runInContext(app.context);assert.equal(app.get('bus-network-dialog').open,true);assert.equal(app.get('network-lines').children.length,3);
+  const app=runNetwork();await new Script('openBusNetwork({compare:true})').runInContext(app.context);assert.equal(app.get('bus-network-dialog').open,true);assert.equal(app.get('network-lines').children.length,3);
   app.get('network-list-tab').onclick();app.get('network-stop-search').value='Maffei';app.get('network-stop-search').oninput();assert.ok(app.get('network-stops').children.length>0);assert.ok(app.get('network-stops').children.every(card=>card.children[0].textContent.includes('Maffei')));
   app.get('network-line').value='24';app.get('network-add-line').onclick();await new Script('loadBusNetwork()').runInContext(app.context);assert.equal(app.get('network-lines').children.length,4);assert.ok(JSON.parse(app.storage.get('verona-bus-network-v1')).includes('24'));
   app.get('network-lines').children.find(button=>button.attributes['aria-label']==='Rimuovi linea 24 dalla mappa').onclick();await new Script('loadBusNetwork()').runInContext(app.context);assert.equal(app.get('network-lines').children.length,3);
   new Script('busNetworkLines=["11","12","13","21","22","23"]').runInContext(app.context);app.get('network-line').value='24';app.get('network-add-line').onclick();assert.match(app.get('network-status').textContent,/fino a 6 linee/);
 });
 test('Mappa generale: riprende le preferite e conserva anche una selezione svuotata intenzionalmente',async()=>{
-  const app=runNetwork(new Map([['verona-bus-v1',JSON.stringify({'atv-urban-24':true})]]));await new Script('openBusNetwork()').runInContext(app.context);assert.equal(app.get('network-lines').children.length,1);assert.equal(new Script('busNetworkLines[0]').runInContext(app.context),'24');
+  const app=runNetwork(new Map([['verona-bus-v1',JSON.stringify({'atv-urban-24':true})]]));await new Script('openBusNetwork({compare:true})').runInContext(app.context);assert.equal(app.get('network-lines').children.length,1);assert.equal(new Script('busNetworkLines[0]').runInContext(app.context),'24');
   app.get('network-lines').children[0].onclick();await new Script('loadBusNetwork()').runInContext(app.context);assert.equal(new Script('busNetworkLines.length').runInContext(app.context),0);
-  const reloaded=runNetwork(app.storage);await new Script('openBusNetwork()').runInContext(reloaded.context);assert.equal(new Script('busNetworkLines.length').runInContext(reloaded.context),0);assert.deepEqual(JSON.parse(reloaded.storage.get('verona-bus-network-v1')),[]);
+  const reloaded=runNetwork(app.storage);await new Script('openBusNetwork({compare:true})').runInContext(reloaded.context);assert.equal(new Script('busNetworkLines.length').runInContext(reloaded.context),0);assert.deepEqual(JSON.parse(reloaded.storage.get('verona-bus-network-v1')),[]);
 });
 test('Mappa generale: chiudere durante il download non aggiorna la vista',async()=>{
   const app=runNetwork();const routes=catalog.busRoutes.routes.filter(route=>route.lineId==='atv-urban-11');app.context.meta=routes.map(({stops,segments,...route})=>route);new Script('busRouteData.assetBase="bus-routes/";busRouteData.routes=meta').runInContext(app.context);
-  let resolve;app.context.fetch=()=>new Promise(r=>resolve=r);const pending=new Script('openBusNetwork()').runInContext(app.context);app.get('close-bus-network').onclick();resolve({ok:true,json:async()=>({routes})});await pending;assert.equal(app.get('bus-network-dialog').open,false);assert.equal(new Script('busNetworkGroups.length').runInContext(app.context),0);
+  let resolve;app.context.fetch=()=>new Promise(r=>resolve=r);const pending=new Script('openBusNetwork({compare:true})').runInContext(app.context);app.get('close-bus-network').onclick();resolve({ok:true,json:async()=>({routes})});await pending;assert.equal(app.get('bus-network-dialog').open,false);assert.equal(new Script('busNetworkGroups.length').runInContext(app.context),0);
 });
 test('Partenze in popup: una risposta tardiva di un’altra linea non sostituisce la scelta corrente',async()=>{
   const app=runOfficial(),line11=JSON.parse(await readFile(new URL('../data/bus-official/11.json',import.meta.url),'utf8'));let resolve;
