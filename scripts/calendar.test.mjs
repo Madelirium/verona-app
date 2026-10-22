@@ -14,6 +14,7 @@ const catalog = JSON.parse(builtHtml.match(/<script id="event-data" type="applic
 const liveCatalog = structuredClone(catalog);
 catalog.busRoutes=JSON.parse(await readFile(new URL('../data/bus-routes.json',import.meta.url),'utf8'));
 catalog.pharmacies=JSON.parse(await readFile(new URL('./fixtures/pharmacies.json',import.meta.url),'utf8'));
+catalog.news=JSON.parse(await readFile(new URL('./fixtures/calendar-news.json',import.meta.url),'utf8'));
 // Casi reali congelati: gli import futuri non spostano l’orologio dei test UI.
 const fixture=JSON.parse(await readFile(new URL('./fixtures/calendar-events.json',import.meta.url),'utf8'));
 catalog.events=fixture.events;catalog.updatedAt=fixture.updatedAt;
