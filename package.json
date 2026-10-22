@@ -13,7 +13,8 @@
     "test": "node --test",
     "start": "node scripts/serve.mjs",
     "start:lan": "node scripts/serve.mjs --lan",
-    "games:check-cloud": "node scripts/check-games-cloud.mjs"
+    "games:check-cloud": "node scripts/check-games-cloud.mjs",
+    "import:pharmacies": "node scripts/import-pharmacies.mjs"
   },
   "engines": {
     "node": ">=22.13"

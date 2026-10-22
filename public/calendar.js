@@ -4,6 +4,8 @@ var agendaReady=false;
 const newsData=payload.news||{items:[],sources:[]},newsItems=newsData.items||[];
 const busData=payload.bus||{lines:[],alerts:[],sources:[]};
 const placesData=payload.places||{items:[]},places=placesData.items||[];
+const pharmacyData=payload.pharmacies||{periods:[]};
+let pharmacyMode='list',pharmacyScope='city',pharmacyQuery='',pharmacyTimer=null,pharmacyReturnFocus=null,pharmacyMap=null,pharmacyLayer=null,pharmacyMapSignature=null,pharmacyTilesFailed=false;
 const districtsData=payload.districts||{items:[]};
 const districtChoices=districtsData.items.flatMap(d=>[{value:d.id+':*',name:'Tutta la circoscrizione',district:d,quarter:null},...d.quarters.map((q,i)=>({value:d.id+':'+i,name:q,district:d,quarter:q}))]);
 let districtChoice='',districtMode='news',districtSaved=false;
@@ -275,6 +277,7 @@ function resetExplore(){exploreBounds=null;placeMapFocus=null;exploreSaved=false
 function togglePlace(id){if(placeFavorites[id])delete placeFavorites[id];else placeFavorites[id]=true;try{localStorage.setItem('verona-places-v1',JSON.stringify(placeFavorites));$('explore-feedback').textContent=placeFavorites[id]?'Attività salvata nei preferiti.':'Attività rimossa dai preferiti.';}catch{$('explore-feedback').textContent='Scelta disponibile per questa visita. Il browser non consente il salvataggio.';}render();}
 function placeStar(place){const b=el('button',placeFavorites[place.id]?'★':'☆','bus-favorite'+(placeFavorites[place.id]?' chosen':''));b.type='button';b.setAttribute('aria-label',`${placeFavorites[place.id]?'Rimuovi dai':'Aggiungi ai'} preferiti: ${place.name}`);b.setAttribute('aria-pressed',String(Boolean(placeFavorites[place.id])));b.onclick=()=>togglePlace(place.id);return b;}
 function renderExplore(){
+  refreshPharmacyEntry();
   const matches=filteredPlaces();
   $('explore-map-tab').classList.toggle('active',exploreMode==='map');$('explore-list-tab').classList.toggle('active',exploreMode==='list');
   $('explore-map-tab').setAttribute('aria-pressed',String(exploreMode==='map'));$('explore-list-tab').setAttribute('aria-pressed',String(exploreMode==='list'));
@@ -301,6 +304,7 @@ function renderPlacesMap(matches){
 function openPlace(p){
   placeReturnFocus=document.activeElement;const content=$('place-detail-content');content.replaceChildren();const title=el('h2',p.name);title.id='place-detail-title';
   content.append(el('span',p.category,'source'),title,el('p',p.address||'Indirizzo non disponibile. Usa la posizione sulla mappa.'),el('p','Dati della community OpenStreetMap, non ancora verificati dal titolare.','detail-note'));
+  if(p.category==='Farmacie'){const duty=el('button','Cerca le farmacie di turno','dialog-save');duty.onclick=()=>{$('place-detail-dialog').close();openPharmacies();};content.append(el('p','Gli orari ordinari non indicano il turno farmaceutico.','detail-note'),duty);}
   const mapButton=el('button','⌖ Mostra sulla mappa','dialog-save');mapButton.onclick=()=>{$('place-detail-dialog').close();placeMapFocus=p.id;exploreMode='map';renderExplore();$('explore-map-tab').focus()};content.append(mapButton);
   if(p.openingHours)content.append(el('h3','Orari riportati nella fonte'),el('p',p.openingHours,'place-hours'));else content.append(el('p','Orari non disponibili. Verifica direttamente con l’attività.','detail-note'));
   if(p.wheelchair)content.append(el('p',`Accesso in sedia a rotelle indicato nella fonte: ${{yes:'sì',no:'no',limited:'limitato'}[p.wheelchair]}. Da verificare con l’attività.`,'detail-note'));

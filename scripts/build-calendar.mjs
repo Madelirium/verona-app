@@ -1,3 +1,4 @@
+import {validatePharmacies,pharmacyPeriods} from './pharmacies.mjs';
 import {eventBusIndex} from './event-bus-index.mjs';
 import {validateOfficialLine} from './official-bus.mjs';
 import {authConfig} from './auth-config.mjs';
@@ -46,6 +47,7 @@ export async function buildCalendar() {
   }
   try{data.places=JSON.parse(await readFile(new URL('data/places.json',root),'utf8'));}
   catch(error){if(error.code!=='ENOENT')throw error;data.places={items:[]};}
+  data.pharmacies=JSON.parse(await readFile(new URL('data/pharmacies.json',root),'utf8'));validatePharmacies(data.pharmacies);
   const editorial=JSON.parse(editorialJson);
   data.events=data.events.map(e=>{
     const review=editorial[e.sourceUrl];
@@ -61,16 +63,17 @@ export async function buildCalendar() {
   const safe=JSON.stringify(data).replaceAll('<','\\u003c').replaceAll('>','\\u003e').replaceAll('&','\\u0026');
   const [mapCss,mapJs]=await Promise.all(['public/vendor/leaflet.css','public/vendor/leaflet.js'].map(p=>readFile(new URL(p,root),'utf8').catch(e=>{if(e.code!=='ENOENT')throw e;return '';})));
   const assets=mapJs?`<style>${mapCss}</style><script>${mapJs.replaceAll('</script','<\\/script')}</script>`:'';
+  const pharmacyLogic=await readFile(new URL('public/pharmacies.js',root),'utf8');
   const officialLogic=await readFile(new URL('public/bus-official.js',root),'utf8');
   const eventBusLogic=await readFile(new URL('public/event-bus.js',root),'utf8');
   const networkLogic=await readFile(new URL('public/bus-network.js',root),'utf8');
   const catalogLogic=await readFile(new URL('public/bus-catalog.js',root),'utf8');
   const agendaLogic=await readFile(new URL('public/agenda.js',root),'utf8');
   const gamesLogic=await readFile(new URL('public/briscola.js',root),'utf8');
-  const gamesCss=(await readFile(new URL('public/games.css',root),'utf8'))+'\n'+await readFile(new URL('public/bus-catalog.css',root),'utf8')+'\n'+await readFile(new URL('public/agenda.css',root),'utf8');
+  const gamesCss=(await readFile(new URL('public/games.css',root),'utf8'))+'\n'+await readFile(new URL('public/bus-catalog.css',root),'utf8')+'\n'+await readFile(new URL('public/agenda.css',root),'utf8')+'\n'+await readFile(new URL('public/pharmacies.css',root),'utf8');
   const authLogic=await readFile(new URL('public/auth.js',root),'utf8');
   const rankedLogic=await readFile(new URL('public/ranked.js',root),'utf8');
-  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>logic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
+  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>pharmacyPeriods.toString()+'\n'+logic+'\n'+pharmacyLogic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
   await writeFile(new URL('public/index.html',root),html);
   return data.events.length;
 }

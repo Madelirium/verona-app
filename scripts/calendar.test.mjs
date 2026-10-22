@@ -1,13 +1,15 @@
+import {pharmacyPeriods} from './pharmacies.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { Script, createContext } from 'node:vm';
 
-const logic = await readFile(new URL('../public/calendar.js',import.meta.url),'utf8');
+const logic = pharmacyPeriods.toString()+'\n'+await readFile(new URL('../public/calendar.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/pharmacies.js',import.meta.url),'utf8');
 const builtHtml = await readFile(new URL('../public/index.html',import.meta.url),'utf8');
 const catalog = JSON.parse(builtHtml.match(/<script id="event-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
 const liveCatalog = structuredClone(catalog);
 catalog.busRoutes=JSON.parse(await readFile(new URL('../data/bus-routes.json',import.meta.url),'utf8'));
+catalog.pharmacies=JSON.parse(await readFile(new URL('./fixtures/pharmacies.json',import.meta.url),'utf8'));
 // Casi reali congelati: gli import futuri non spostano l’orologio dei test UI.
 const fixture=JSON.parse(await readFile(new URL('./fixtures/calendar-events.json',import.meta.url),'utf8'));
 catalog.events=fixture.events;catalog.updatedAt=fixture.updatedAt;
@@ -1299,4 +1301,23 @@ test('Partenze in popup: una risposta tardiva di un’altra linea non sostituisc
   const first=new Script('renderBusStopPreview(inlineBox,"11","1104",new Date("2026-10-19T03:35:00Z"))').runInContext(app.context);
   await new Script('renderBusStopPreview(inlineBox,"24","1974",new Date("2026-10-19T03:35:00Z"))').runInContext(app.context);resolve({ok:true,json:async()=>line11});await first;
   const rows=app.get('switch-preview').children.filter(child=>child.className==='bus-stop-departure');assert.equal(rows[0].children[0].children[0].textContent,'05:50');assert.match(rows[0].children[1].textContent,/PIAZZA RIGHETTI/);
+});
+
+test('Farmacie: accesso da Esplora, filtri città/provincia, chiamata e nessuna apertura inventata',()=>{
+  const app=run(new Map(),'home');useRomeInstant(app,'2026-10-22T10:00:00Z');new Script('setView("explore")').runInContext(app.context);assert.equal(app.get('explore-pharmacies').hidden,true);app.get('explore-category').value='Farmacie';app.get('explore-category').onchange();assert.equal(app.get('explore-pharmacies').hidden,false);app.get('explore-pharmacies').onclick();assert.equal(app.get('pharmacy-dialog').open,true);assert.match(app.get('pharmacy-count').textContent,/4 farmacie/);
+  let cards=app.get('pharmacy-list').children.filter(child=>child.className==='pharmacy-card');assert.equal(cards.length,4);assert.ok(cards[0].children.at(-1).children[0].href.startsWith('tel:'));assert.ok(cards[0].children.at(-1).children[1].href.includes('destination='));
+  app.get('pharmacy-scope').value='all';app.get('pharmacy-scope').onchange();assert.match(app.get('pharmacy-count').textContent,/13 farmacie/);app.get('pharmacy-search').value='Legnago';app.get('pharmacy-search').oninput();assert.match(app.get('pharmacy-count').textContent,/1 farmacia/);
+  app.get('pharmacy-search').value='inesistente';app.get('pharmacy-search').oninput();app.get('pharmacy-list').children.find(child=>child.className==='pharmacy-reset').onclick();assert.match(app.get('pharmacy-count').textContent,/13 farmacie/);
+});
+test('Farmacie: pannello aperto cambia turno alle 9 e non mostra dati scaduti',()=>{
+  const app=run(new Map(),'home');useRomeInstant(app,'2026-10-22T06:59:59Z');new Script('openPharmacies()').runInContext(app.context);assert.ok(app.get('pharmacy-list').children.some(card=>card.children?.[0]?.textContent.includes('CAPRI')));
+  useRomeInstant(app,'2026-10-22T07:00:00Z');const id=new Script('pharmacyTimer').runInContext(app.context);app.timers.get(id).fn();assert.ok(app.get('pharmacy-list').children.some(card=>card.children?.[0]?.textContent.includes('DUE CAMPANE')));assert.ok(!app.get('pharmacy-list').children.some(card=>card.children?.[0]?.textContent.includes('CAPRI')));
+  useRomeInstant(app,'2026-11-01T08:00:00Z');new Script('renderPharmacies()').runInContext(app.context);assert.equal(app.get('pharmacy-list').children.filter(child=>child.className==='pharmacy-card').length,0);assert.equal(app.get('pharmacy-count').textContent,'Turni da aggiornare');assert.ok(app.get('pharmacy-list').children.some(child=>child.href==='https://farmamiaverona.it/'));
+  app.get('pharmacy-map-tab').onclick();assert.match(app.get('pharmacy-map-message').textContent,/non disponibile/);const timer=new Script('pharmacyTimer').runInContext(app.context);app.get('pharmacy-close').onclick();assert.equal(app.timers.has(timer),false);
+});
+test('Farmacie: mappa parziale, punto della farmacia, navigazione conservata e pulizia alla scadenza',()=>{
+  const calls={markers:[],fit:0},map={setView(){return this},invalidateSize(){},fitBounds(){calls.fit++}},api={map:()=>map,tileLayer:()=>({on(){return this},addTo(){return this}}),layerGroup:()=>({addTo(){return this},clearLayers(){calls.markers=[]}}),circleMarker:(position)=>({bindPopup(card){this.card=card;return this},addTo(){calls.markers.push({position,card:this.card});return this}})};
+  const app=run(new Map(),'home',api);useRomeInstant(app,'2026-10-22T10:00:00Z');new Script('openPharmacies()').runInContext(app.context);app.get('pharmacy-map-tab').onclick();assert.ok(calls.markers.length>0);assert.match(app.get('pharmacy-map-message').textContent,/indirizzi solo in Elenco/);const fit=calls.fit;new Script('renderPharmacies()').runInContext(app.context);assert.equal(calls.fit,fit);
+  const popup=calls.markers[0].card;assert.ok(popup.children.at(-1).children[0].href.startsWith('tel:'));
+  useRomeInstant(app,'2026-11-01T08:00:00Z');new Script('renderPharmacies()').runInContext(app.context);assert.equal(calls.markers.length,0);assert.match(app.get('pharmacy-map-message').textContent,/Turni da aggiornare/);
 });

@@ -1,0 +1,259 @@
+{
+  "current": {
+    "text": "ORDINE DEI FARMACISTI DELLA PROVINCIA DI VERONA\nTURNO N. 13 - DALLE ORE 9,00 DEL 22/10/2026 ALLE ORE 9,00 DEL 24/10/2026\nCODICE NUMERO\nNOME FARMACIA INDIRIZZO LOCALITA'\nFARMACIA TELEFONICO\nVIA ENRICO NORIS,\n011 LAFARMACIA.DUE CAMPANE VERONA 045/8006660\n2/B\nVERONA-\n028 FARMACIA ALL' ALBARO SNC PIAZZA BUCCARI, 3 045/557037\nMONTORIO\n055 LAFARMACIA.LEGNAGO VIA CASETTE, 16 LEGNAGO 0442/601400\nMONTECCHIA DI\n086 FARMACIA PALLARO DR. GIANUGO PALLARO SNC VIA ROMA 12 045/7450042\nCROSARA\n114 FARMACIA DELLA MADONNA DI PEROLO CHIARA E GIOVANNI SNC PIAZZA MARCONI 2 ZEVIO 045/7850021\nCASELLE DI\n152 FARMACIA S.TERESA DI TRESPIDI GAETANO E SILVIA E C. S.A.S. VIA SCUOLE 25 SOMMACAMPA 045/8581003\nGNA\nISOLA DELLA\n158 FARMACIA MODERNA SNC VIA GARIBALDI 1 045/7300261\nSCALA\nVALGATARA DI\n159 FARMACIA FERRARI DOTT.SSA FIAMMETTA VIA DEL LAVORO, 3 MARANO DI 045/7701219\nV.LLA\n202 FARMACIA DONADUZZI VIA MARSALA 19A VERONA 045/912401\nVIA S. GIOVANNI VERONA -\n206 FARMACIA COMUNALE PALAZZINA 045/582401\nLUPATOTO 22/B PALAZZINA\nPACENGO DI\n212 FARMACIA LAZISE PESCHIERA VIA PESCHIERA N. 8 045/7590073\nLAZISE\n235 FARMACIA GALLO DOTT.SSA SILVIA VIA DEI DOGI, 23 ZIMELLA 0442/412839\nRIVALTA DI\nVIA DON CESARE\n276 FARMACIA MONTE BALDO S.R.L. BRENTINO 045/9232410\nSCALA, 27\nBELLUNO",
+    "tables": [
+      [
+        [
+          "ORDINE DEI FARMACISTI DELLA PROVINCIA DI VERONA",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          "TURNO N. 13 - DALLE ORE 9,00 DEL 22/10/2026 ALLE ORE 9,00 DEL 24/10/2026",
+          null,
+          null,
+          null,
+          null,
+          "",
+          ""
+        ],
+        [
+          "CODICE\nFARMACIA",
+          "NOME FARMACIA",
+          "INDIRIZZO",
+          "LOCALITA'",
+          "NUMERO\nTELEFONICO",
+          null,
+          null
+        ],
+        [
+          "011",
+          "LAFARMACIA.DUE CAMPANE",
+          "VIA ENRICO NORIS,\n2/B",
+          "VERONA",
+          "045/8006660",
+          null,
+          null
+        ],
+        [
+          "028",
+          "FARMACIA ALL' ALBARO SNC",
+          "PIAZZA BUCCARI, 3",
+          "VERONA-\nMONTORIO",
+          "045/557037",
+          null,
+          null
+        ],
+        [
+          "055",
+          "LAFARMACIA.LEGNAGO",
+          "VIA CASETTE, 16",
+          "LEGNAGO",
+          "0442/601400",
+          null,
+          null
+        ],
+        [
+          "086",
+          "FARMACIA PALLARO DR. GIANUGO PALLARO SNC",
+          "VIA ROMA 12",
+          "MONTECCHIA DI\nCROSARA",
+          "045/7450042",
+          null,
+          null
+        ],
+        [
+          "114",
+          "FARMACIA DELLA MADONNA DI PEROLO CHIARA E GIOVANNI SNC",
+          "PIAZZA MARCONI 2",
+          "ZEVIO",
+          "045/7850021",
+          null,
+          null
+        ],
+        [
+          "152",
+          "FARMACIA S.TERESA DI TRESPIDI GAETANO E SILVIA E C. S.A.S.",
+          "VIA SCUOLE 25",
+          "CASELLE DI\nSOMMACAMPA\nGNA",
+          "045/8581003",
+          null,
+          null
+        ],
+        [
+          "158",
+          "FARMACIA MODERNA SNC",
+          "VIA GARIBALDI 1",
+          "ISOLA DELLA\nSCALA",
+          "045/7300261",
+          null,
+          null
+        ],
+        [
+          "159",
+          "FARMACIA FERRARI DOTT.SSA FIAMMETTA",
+          "VIA DEL LAVORO, 3",
+          "VALGATARA DI\nMARANO DI\nV.LLA",
+          "045/7701219",
+          null,
+          null
+        ],
+        [
+          "202",
+          "FARMACIA DONADUZZI",
+          "VIA MARSALA 19A",
+          "VERONA",
+          "045/912401",
+          null,
+          null
+        ],
+        [
+          "206",
+          "FARMACIA COMUNALE PALAZZINA",
+          "VIA S. GIOVANNI\nLUPATOTO 22/B",
+          "VERONA -\nPALAZZINA",
+          "045/582401",
+          null,
+          null
+        ],
+        [
+          "212",
+          "FARMACIA LAZISE PESCHIERA",
+          "VIA PESCHIERA N. 8",
+          "PACENGO DI\nLAZISE",
+          "045/7590073",
+          null,
+          null
+        ],
+        [
+          "235",
+          "FARMACIA GALLO DOTT.SSA SILVIA",
+          "VIA DEI DOGI, 23",
+          "ZIMELLA",
+          "0442/412839",
+          null,
+          null
+        ],
+        [
+          "276",
+          "FARMACIA MONTE BALDO S.R.L.",
+          "VIA DON CESARE\nSCALA, 27",
+          "RIVALTA DI\nBRENTINO\nBELLUNO",
+          "045/9232410",
+          null,
+          null
+        ]
+      ]
+    ]
+  },
+  "next": {
+    "text": "SERVIZIO DI GUARDIA FARMACEUTICA\nTURNO N. 14 - dalle ore 09:00 del 24/10/2026 alle ore 09:00 del 26/10/2026\nNOME FARMACIA INDIRIZZO LOCALITA' CITTA' NUMERO TELEFONICO\nLAFARMACIA.PORTA NUOVA C.SO PORTA NUOVA 27 CENTRO STORICO VERONA 045 8005427\nBORGO MILANO CORSO MILANO 69 BORGO MILANO VERONA 045 574192\nFARMACIA DEI SANTI DI RIGHETTO\nVIA BELFIORE 59 CADIDAVID VERONA 045 540131\nDOTT.SSA OLIVIA E C. SAS\nPIEROPAN SRL VIA ROMA 1 MINERBE 0442 640093\nRIZZINI ALBERTO E ILARIA SNC VIA VITTORIO VENETO 22 MONTEFORTE 045 6102898\nAGOSTI DOTT.SSA GIULIANA MANARA VIA S. PANCRAZIO 3 CAPRINO VERONESE 045 6114229\nFARMACIA DONATO SNC DI DONATO\nvia OSTERIA GRANDE 26 SOMMACAMPAGNA 045 515163\nGIAMBATTISTA E C.\nISALBERTI DOTT. STECCANELLA GIAN\nPIAZZA VITTORIO EMANUELE 15 BOVOLONE 045 7100062\nANTONIO SNC\nCOMUNALE S. ROCCO VIA FABBRICATO SCOLASTICO 31 QUINZANO VERONA 045 8349619\nGIUBERTONI VIA MILANO 22 PESCHIERA DEL GARDA 045 7550582\nBALCONI SRL VIA BRENNERO 71 B BALCONI PESCANTINA 045 6705020\nDOTT. MARCO MANTOVANI VIA E. NICOLINI 8 MIZZOLE VERONA 045 2227224",
+    "tables": [
+      [
+        [
+          ""
+        ],
+        [
+          "SERVIZIO DI GUARDIA FARMACEUTICA\nTURNO N. 14 - dalle ore 09:00 del 24/10/2026 alle ore 09:00 del 26/10/2026"
+        ]
+      ],
+      [
+        [
+          "NOME FARMACIA",
+          "INDIRIZZO",
+          "LOCALITA'",
+          "CITTA'",
+          "NUMERO TELEFONICO"
+        ],
+        [
+          "LAFARMACIA.PORTA NUOVA",
+          "C.SO PORTA NUOVA 27",
+          "CENTRO STORICO",
+          "VERONA",
+          "045 8005427"
+        ],
+        [
+          "BORGO MILANO",
+          "CORSO MILANO 69",
+          "BORGO MILANO",
+          "VERONA",
+          "045 574192"
+        ],
+        [
+          "FARMACIA DEI SANTI DI RIGHETTO\nDOTT.SSA OLIVIA E C. SAS",
+          "VIA BELFIORE 59",
+          "CADIDAVID",
+          "VERONA",
+          "045 540131"
+        ],
+        [
+          "PIEROPAN SRL",
+          "VIA ROMA 1",
+          "",
+          "MINERBE",
+          "0442 640093"
+        ],
+        [
+          "RIZZINI ALBERTO E ILARIA SNC",
+          "VIA VITTORIO VENETO 22",
+          "",
+          "MONTEFORTE",
+          "045 6102898"
+        ],
+        [
+          "AGOSTI DOTT.SSA GIULIANA MANARA",
+          "VIA S. PANCRAZIO 3",
+          "",
+          "CAPRINO VERONESE",
+          "045 6114229"
+        ],
+        [
+          "FARMACIA DONATO SNC DI DONATO\nGIAMBATTISTA E C.",
+          "via OSTERIA GRANDE 26",
+          "",
+          "SOMMACAMPAGNA",
+          "045 515163"
+        ],
+        [
+          "ISALBERTI DOTT. STECCANELLA GIAN\nANTONIO SNC",
+          "PIAZZA VITTORIO EMANUELE 15",
+          "",
+          "BOVOLONE",
+          "045 7100062"
+        ],
+        [
+          "COMUNALE S. ROCCO",
+          "VIA FABBRICATO SCOLASTICO 31",
+          "QUINZANO",
+          "VERONA",
+          "045 8349619"
+        ],
+        [
+          "GIUBERTONI",
+          "VIA MILANO 22",
+          "",
+          "PESCHIERA DEL GARDA",
+          "045 7550582"
+        ],
+        [
+          "BALCONI SRL",
+          "VIA BRENNERO 71 B",
+          "BALCONI",
+          "PESCANTINA",
+          "045 6705020"
+        ],
+        [
+          "DOTT. MARCO MANTOVANI",
+          "VIA E. NICOLINI 8",
+          "MIZZOLE",
+          "VERONA",
+          "045 2227224"
+        ]
+      ]
+    ]
+  }
+}

@@ -17,6 +17,10 @@ on:
         description: Raccogli notizie e avvisi del Comune prima di pubblicare
         type: boolean
         default: true
+      refresh_pharmacies:
+        description: Aggiorna i turni ufficiali delle farmacie
+        type: boolean
+        default: true
   schedule:
     - cron: '17 4 * * *'
 
@@ -63,8 +67,32 @@ jobs:
         continue-on-error: true
         if: github.event_name == 'workflow_dispatch' && inputs.refresh_bus
         run: npm run import:bus -- --allow-partial
+      - name: Prepara Python per i turni delle farmacie
+        id: pharmacy_python
+        continue-on-error: true
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_pharmacies)
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/pharmacy-requirements.txt
+      - name: Aggiorna i turni dalle pubblicazioni dell'Ordine
+        id: refresh_pharmacies
+        continue-on-error: true
+        timeout-minutes: 8
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_pharmacies)
+        env:
+          PHARMACY_PYTHON: python
+          PYTHON_SETUP_OUTCOME: ${{ steps.pharmacy_python.outcome }}
+        run: |
+          if [ "$PYTHON_SETUP_OUTCOME" != "success" ]; then
+            echo "::error::Python non disponibile: conservati i turni precedenti."
+            exit 1
+          fi
+          python -m pip install --disable-pip-version-check -r scripts/pharmacy-requirements.txt
+          npm run import:pharmacies
       - name: Conserva il rapporto della raccolta
-        if: always() && (steps.refresh.outcome == 'success' || steps.refresh.outcome == 'failure' || steps.refresh_news.outcome == 'success' || steps.refresh_news.outcome == 'failure' || steps.refresh_bus.outcome == 'success' || steps.refresh_bus.outcome == 'failure')
+        if: always() && (steps.refresh.outcome == 'success' || steps.refresh.outcome == 'failure' || steps.refresh_news.outcome == 'success' || steps.refresh_news.outcome == 'failure' || steps.refresh_bus.outcome == 'success' || steps.refresh_bus.outcome == 'failure' || steps.refresh_pharmacies.outcome == 'success' || steps.refresh_pharmacies.outcome == 'failure')
         uses: actions/upload-artifact@v4
         with:
           name: rapporti-fonti
@@ -72,26 +100,30 @@ jobs:
             data/import-report.json
             data/news-import-report.json
             data/bus-import-report.json
+            data/pharmacy-import-report.json
           retention-days: 14
       - name: Verifica il risultato delle raccolte
-        if: success() && (steps.refresh.outcome == 'failure' || steps.refresh_news.outcome == 'failure' || steps.refresh_bus.outcome == 'failure')
+        if: success() && (steps.refresh.outcome == 'failure' || steps.refresh_news.outcome == 'failure' || steps.refresh_bus.outcome == 'failure' || steps.refresh_pharmacies.outcome == 'failure')
         run: |
           echo "::warning::Una raccolta non è riuscita: i suoi dati precedenti sono conservati. Consultare i rapporti fonti."
-          if [ "${{ steps.refresh.outcome }}" != "success" ] && [ "${{ steps.refresh_news.outcome }}" != "success" ] && [ "${{ steps.refresh_bus.outcome }}" != "success" ]; then
+          if [ "${{ steps.refresh.outcome }}" != "success" ] && [ "${{ steps.refresh_news.outcome }}" != "success" ] && [ "${{ steps.refresh_bus.outcome }}" != "success" ] && [ "${{ steps.refresh_pharmacies.outcome }}" != "success" ]; then
             echo "::error::Nessuna raccolta richiesta è riuscita: il sito pubblico non viene sostituito."
             exit 1
           fi
+      - name: Rigenera il frontend dopo le raccolte
+        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_news.outcome == 'success' || steps.refresh_bus.outcome == 'success' || steps.refresh_pharmacies.outcome == 'success')
+        run: npm run build
       - name: Verifica il frontend dopo la raccolta
-        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_news.outcome == 'success' || steps.refresh_bus.outcome == 'success')
+        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_news.outcome == 'success' || steps.refresh_bus.outcome == 'success' || steps.refresh_pharmacies.outcome == 'success')
         run: npm test
       - name: Conserva i dati aggiornati nel repository
-        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_news.outcome == 'success' || steps.refresh_bus.outcome == 'success')
+        if: success() && (steps.refresh.outcome == 'success' || steps.refresh_news.outcome == 'success' || steps.refresh_bus.outcome == 'success' || steps.refresh_pharmacies.outcome == 'success')
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/events.json data/import-report.json data/news.json data/news-import-report.json data/bus.json data/bus-import-report.json
+          git add data/events.json data/import-report.json data/news.json data/news-import-report.json data/bus.json data/bus-import-report.json data/pharmacies.json data/pharmacy-import-report.json
           if ! git diff --cached --quiet; then
-            git commit -m "Aggiorna eventi, notizie e dati ATV dalle fonti ufficiali"
+            git commit -m "Aggiorna eventi, notizie, ATV e farmacie dalle fonti ufficiali"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
       - name: Prepara i soli file del sito

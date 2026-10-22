@@ -1,0 +1,1333 @@
+{
+  "source": "Ordine dei Farmacisti della Provincia di Verona",
+  "sourceUrl": "https://www.ordinefarmacisti.vr.it/turni-farmacie/",
+  "checkedAt": "2026-10-22T06:27:39.493Z",
+  "status": "ok",
+  "positionStatus": "ok",
+  "scope": "Turni pubblicati nei PDF disponibili alla raccolta. Nessuna apertura in tempo reale o modalità su chiamata dedotta.",
+  "license": "Nessuna licenza aperta dichiarata per i PDF. Indice fattuale derivato con attribuzione; originali non ripubblicati.",
+  "positionLicense": "OpenStreetMap contributors · ODbL 1.0",
+  "positionLicenseUrl": "https://www.openstreetmap.org/copyright",
+  "farmamiaUrl": "https://farmamiaverona.it/",
+  "periods": [
+    {
+      "id": "turno-2026-10-18T07:00:00.000Z",
+      "startsAt": "2026-10-18T07:00:00.000Z",
+      "endsAt": "2026-10-20T07:00:00.000Z",
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/09_Dalle-ore-9.00-del-18.10.2026-alle-ore-9.00-del-20.10.2026.pdf",
+      "checkedAt": "2026-10-22T06:27:39.493Z",
+      "items": [
+        {
+          "id": "pharmacy-02b895e33acf7d9a",
+          "name": "AL GIGLIO Snc",
+          "address": "CORSO PORTA BORSARI 46",
+          "city": "VERONA",
+          "locality": "CENTRO STORICO",
+          "phone": "0458003680",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4421032,
+            "lon": 10.993567,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/4553730528",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-4942d3e68fe05c62",
+          "name": "FARMACIA CENTRALE SAN MICHELE",
+          "address": "VIA UNITA' D'ITALIA 120",
+          "city": "VERONA",
+          "locality": "SAN MICHELE EX.",
+          "phone": "045975292",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4337113,
+            "lon": 11.0428772,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3904412500",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-3fcf2738d463fc63",
+          "name": "SAN MASSIMO SRL",
+          "address": "VIA STANGA 4",
+          "city": "VERONA",
+          "locality": "CROCE BIANCA",
+          "phone": "0458903636",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4469785,
+            "lon": 10.9443864,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/4553780565",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-2db4c8f53b62335a",
+          "name": "SANTA TERESA SRL",
+          "address": "VIA CENTRO N. 13",
+          "city": "VERONA",
+          "locality": "BORGO ROMA",
+          "phone": "045500387",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4150242,
+            "lon": 10.9900656,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3898395674",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-36d45d4464efa3c1",
+          "name": "ZANONI GIOVANNI SAS",
+          "address": "VIA MAZZINI 2",
+          "city": "LEGNAGO",
+          "locality": "PORTO",
+          "phone": "044220525",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-89182802f1fa6043",
+          "name": "CENTRALE SOAVE SRL",
+          "address": "PIAZZA AL COMBATTENTE 1",
+          "city": "SOAVE",
+          "locality": "",
+          "phone": "0457680012",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4211909,
+            "lon": 11.2474449,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3930463947",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-0c14d3e8917c0f54",
+          "name": "INFANTI",
+          "address": "VIA C. BATTISTI 21",
+          "city": "BADIA CALAVENA",
+          "locality": "",
+          "phone": "0457810501",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-0295d72eba454827",
+          "name": "SAN ROCCO SNC DI TONIN DR. FRANCESCO & C.",
+          "address": "VIA CAMPOSTRINI 45",
+          "city": "SAN PIETRO IN CARIANO",
+          "locality": "PEDEMONTE",
+          "phone": "0457701155",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-14efebcb5dfc67f1",
+          "name": "FARMACIE BRAGHETTA SRL - SEDE: S. AMBROGIO VALP.",
+          "address": "VIA MATTEOTTI 10",
+          "city": "SANT'AMBROGIO VALP.",
+          "locality": "",
+          "phone": "0456861028",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-501e5c6a742e8fc0",
+          "name": "BORDOGNA DI BORDOGNA DR.EMILIO SAS",
+          "address": "VIA G. GARIBALDI 17",
+          "city": "BOVOLONE",
+          "locality": "",
+          "phone": "0457100035",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.2573181,
+            "lon": 11.1216699,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/4016710070",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-d9fadc1980658672",
+          "name": "PIETROPOLI DI PIETROPOLI DOTT. ALESSIO",
+          "address": "VAI SALGARI 5",
+          "city": "CASTELNUOVO DEL GARDA",
+          "locality": "SANDRA'",
+          "phone": "0457595138",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-e27c3c5a0076bf49",
+          "name": "FORETTE SAN MARTINO SNC DEL DOTT. CORRADO CABRI & C.",
+          "address": "VIA CUSTOZA 2 A",
+          "city": "VIGASIO",
+          "locality": "FORETTE",
+          "phone": "0459584160",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        }
+      ],
+      "sha256": "a897e28970cd5b9a6e4d14ef66f949a9d79a4df76926baa7bf23fdab8a8933c8"
+    },
+    {
+      "id": "turno-2026-10-20T07:00:00.000Z",
+      "startsAt": "2026-10-20T07:00:00.000Z",
+      "endsAt": "2026-10-22T07:00:00.000Z",
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/10_Dalle-ore-9.00-del-20.10.2026-alle-ore-9.00-del-22.10.2026.pdf",
+      "checkedAt": "2026-10-22T06:27:39.493Z",
+      "items": [
+        {
+          "id": "pharmacy-a30c8aaec9c7dff1",
+          "name": "CAPRI DOTT.SSA ARIANNA",
+          "address": "VIA BASSONE 56",
+          "city": "VERONA",
+          "locality": "BASSONA",
+          "phone": "045595638",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4521857,
+            "lon": 10.899346,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/1827288212",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-3f728278b60846d3",
+          "name": "LIO DEL DOTT. LIO GIULIANO E C SAS",
+          "address": "VIA UNITA' D'ITALIA 169",
+          "city": "VERONA",
+          "locality": "SAN MICHELE EX.",
+          "phone": "045973984",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4340535,
+            "lon": 11.0419288,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/1495298997",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-7cfee05289adcde0",
+          "name": "DELL'ASSUNTA SNC",
+          "address": "VIA ROMA 43",
+          "city": "GREZZANA",
+          "locality": "",
+          "phone": "045908600",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.5190584,
+            "lon": 11.0160348,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/592295631",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-f31ffcf367749f75",
+          "name": "FIORI S.N.C.",
+          "address": "VIA ALEARDI 3",
+          "city": "NEGRAR",
+          "locality": "PRUN",
+          "phone": "0457525645",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-b11e15fe6074c073",
+          "name": "DR. ALBERTINI GERMANO E C. SNC",
+          "address": "VIA MUNICIPIO 4 A",
+          "city": "CEREA",
+          "locality": "",
+          "phone": "044280078",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-12294e7c1aa06b63",
+          "name": "FARMACIA GIOVANNINI DELLA DOTT.SSA PAOLA SECURANI",
+          "address": "VIA BON BRENZONI N. 2",
+          "city": "MOZZECANE",
+          "locality": "",
+          "phone": "0457930015",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-838daf32718f4ac7",
+          "name": "CASTELNUOVO SRL",
+          "address": "PIAZZA DELLA LIBERTA' 10",
+          "city": "CASTELNUOVO DEL GARDA",
+          "locality": "",
+          "phone": "0456450240",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-77c81403ef1d0301",
+          "name": "COMUNALE CADORE",
+          "address": "VIA POERIO 28 A",
+          "city": "VERONA",
+          "locality": "VERONA",
+          "phone": "0458348754",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-02453b547fbbf33c",
+          "name": "GIOVANNI XXIII SRL",
+          "address": "VIA CESARE BATTISTI 19",
+          "city": "SAN GIOVANNI LUPATOTO",
+          "locality": "POZZO",
+          "phone": "0458753667",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-7e791a7e5c415e0f",
+          "name": "CAV. DOTT. REALDON GIAN DOMENICO SRL",
+          "address": "VIA VILLAFRANCA 48",
+          "city": "VERONA",
+          "locality": "S. LUCIA",
+          "phone": "045953553",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4196851,
+            "lon": 10.9542918,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3139593353",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-aec5dcb2aa1e7e22",
+          "name": "FARMACIA DOTT.SSA LAURA RIZZOTTI",
+          "address": "VIA VIGO 4",
+          "city": "RIVOLI V.SE",
+          "locality": "",
+          "phone": "0456284057",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-64c89859af57692b",
+          "name": "SAN GIOVANNI SRL",
+          "address": "VIA FIUME 59",
+          "city": "SAN BONIFACIO",
+          "locality": "",
+          "phone": "0456104388",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.3990793,
+            "lon": 11.2844522,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/2173963626",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        }
+      ],
+      "sha256": "b41c3de892efab75d725fde2e47a855100f5498d447d8efcd365a66798e1584d"
+    },
+    {
+      "id": "turno-2026-10-22T07:00:00.000Z",
+      "startsAt": "2026-10-22T07:00:00.000Z",
+      "endsAt": "2026-10-24T07:00:00.000Z",
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/11_Dalle-ore-9.00-del-22.10.2026-alle-ore-9.00-del-24.10.2026.pdf",
+      "checkedAt": "2026-10-22T06:27:39.493Z",
+      "items": [
+        {
+          "id": "pharmacy-1bd47ed17079304b",
+          "name": "LAFARMACIA.DUE CAMPANE",
+          "address": "VIA ENRICO NORIS, 2/B",
+          "city": "VERONA",
+          "locality": "",
+          "phone": "0458006660",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-3ae3706df085f59e",
+          "name": "FARMACIA ALL' ALBARO SNC",
+          "address": "PIAZZA BUCCARI, 3",
+          "city": "VERONA- MONTORIO",
+          "locality": "",
+          "phone": "045557037",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-53544dfddfbdf8b5",
+          "name": "LAFARMACIA.LEGNAGO",
+          "address": "VIA CASETTE, 16",
+          "city": "LEGNAGO",
+          "locality": "",
+          "phone": "0442601400",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.18728,
+            "lon": 11.3094125,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3948169303",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-1afb51c7b56d2d2c",
+          "name": "FARMACIA PALLARO DR. GIANUGO PALLARO SNC",
+          "address": "VIA ROMA 12",
+          "city": "MONTECCHIA DI CROSARA",
+          "locality": "",
+          "phone": "0457450042",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.484867,
+            "lon": 11.2543974,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/13002108782",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-8156ebf41da05b56",
+          "name": "FARMACIA DELLA MADONNA DI PEROLO CHIARA E GIOVANNI SNC",
+          "address": "PIAZZA MARCONI 2",
+          "city": "ZEVIO",
+          "locality": "",
+          "phone": "0457850021",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-d6c2e70f9b1eaa9d",
+          "name": "FARMACIA S.TERESA DI TRESPIDI GAETANO E SILVIA E C. S.A.S.",
+          "address": "VIA SCUOLE 25",
+          "city": "CASELLE DI SOMMACAMPAGNA",
+          "locality": "",
+          "phone": "0458581003",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-248e95e9eac3669d",
+          "name": "FARMACIA MODERNA SNC",
+          "address": "VIA GARIBALDI 1",
+          "city": "ISOLA DELLA SCALA",
+          "locality": "",
+          "phone": "0457300261",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-8c3d527f806f2a1b",
+          "name": "FARMACIA FERRARI DOTT.SSA FIAMMETTA",
+          "address": "VIA DEL LAVORO, 3",
+          "city": "VALGATARA DI MARANO DI V.LLA",
+          "locality": "",
+          "phone": "0457701219",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-1f9a8c6966400c36",
+          "name": "FARMACIA DONADUZZI",
+          "address": "VIA MARSALA 19A",
+          "city": "VERONA",
+          "locality": "",
+          "phone": "045912401",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4527106,
+            "lon": 11.0008908,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3884967273",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-49e1327e38c79a41",
+          "name": "FARMACIA COMUNALE PALAZZINA",
+          "address": "VIA S. GIOVANNI LUPATOTO 22/B",
+          "city": "VERONA - PALAZZINA",
+          "locality": "",
+          "phone": "045582401",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-cde0b14a82469133",
+          "name": "FARMACIA LAZISE PESCHIERA",
+          "address": "VIA PESCHIERA N. 8",
+          "city": "PACENGO DI LAZISE",
+          "locality": "",
+          "phone": "0457590073",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-46dbb2a4c8539574",
+          "name": "FARMACIA GALLO DOTT.SSA SILVIA",
+          "address": "VIA DEI DOGI, 23",
+          "city": "ZIMELLA",
+          "locality": "",
+          "phone": "0442412839",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-ccdf89d08405cea5",
+          "name": "FARMACIA MONTE BALDO S.R.L.",
+          "address": "VIA DON CESARE SCALA, 27",
+          "city": "RIVALTA DI BRENTINO BELLUNO",
+          "locality": "",
+          "phone": "0459232410",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        }
+      ],
+      "sha256": "f6d46e833eee2571970a5fd79f7762aef6c678c9f99f7012f9f1195eda399235"
+    },
+    {
+      "id": "turno-2026-10-24T07:00:00.000Z",
+      "startsAt": "2026-10-24T07:00:00.000Z",
+      "endsAt": "2026-10-26T08:00:00.000Z",
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/12_Dalle-ore-9.00-del-24.10.2026-alle-ore-9.00-del-26.10.2026.pdf",
+      "checkedAt": "2026-10-22T06:27:39.493Z",
+      "items": [
+        {
+          "id": "pharmacy-45ca3bd481a5ebc2",
+          "name": "LAFARMACIA.PORTA NUOVA",
+          "address": "C.SO PORTA NUOVA 27",
+          "city": "VERONA",
+          "locality": "CENTRO STORICO",
+          "phone": "0458005427",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4366573,
+            "lon": 10.9911096,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/9051815490",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-8b61b80c0c7e0b86",
+          "name": "BORGO MILANO",
+          "address": "CORSO MILANO 69",
+          "city": "VERONA",
+          "locality": "BORGO MILANO",
+          "phone": "045574192",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4432829,
+            "lon": 10.97108,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/273484864",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-232daf11542f2127",
+          "name": "FARMACIA DEI SANTI DI RIGHETTO DOTT.SSA OLIVIA E C. SAS",
+          "address": "VIA BELFIORE 59",
+          "city": "VERONA",
+          "locality": "CADIDAVID",
+          "phone": "045540131",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-cbb43dde9fe27857",
+          "name": "PIEROPAN SRL",
+          "address": "VIA ROMA 1",
+          "city": "MINERBE",
+          "locality": "",
+          "phone": "0442640093",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.24086,
+            "lon": 11.3381755,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3944457140",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-fdd3a59a2011e93c",
+          "name": "RIZZINI ALBERTO E ILARIA SNC",
+          "address": "VIA VITTORIO VENETO 22",
+          "city": "MONTEFORTE",
+          "locality": "",
+          "phone": "0456102898",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-7974ca2fcf00d676",
+          "name": "AGOSTI DOTT.SSA GIULIANA MANARA",
+          "address": "VIA S. PANCRAZIO 3",
+          "city": "CAPRINO VERONESE",
+          "locality": "",
+          "phone": "0456114229",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-0b6e57817d895edf",
+          "name": "FARMACIA DONATO SNC DI DONATO GIAMBATTISTA E C.",
+          "address": "via OSTERIA GRANDE 26",
+          "city": "SOMMACAMPAGNA",
+          "locality": "",
+          "phone": "045515163",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.408521,
+            "lon": 10.8489806,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3874524098",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-2c8a7f9332c37d4a",
+          "name": "ISALBERTI DOTT. STECCANELLA GIAN ANTONIO SNC",
+          "address": "PIAZZA VITTORIO EMANUELE 15",
+          "city": "BOVOLONE",
+          "locality": "",
+          "phone": "0457100062",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-548c03a85e8123c2",
+          "name": "COMUNALE S. ROCCO",
+          "address": "VIA FABBRICATO SCOLASTICO 31",
+          "city": "VERONA",
+          "locality": "QUINZANO",
+          "phone": "0458349619",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4652913,
+            "lon": 10.9752974,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/4553746170",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-78c3391692bf887b",
+          "name": "GIUBERTONI",
+          "address": "VIA MILANO 22",
+          "city": "PESCHIERA DEL GARDA",
+          "locality": "",
+          "phone": "0457550582",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4401265,
+            "lon": 10.6861229,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3884525562",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-0edf8fade16c5c53",
+          "name": "BALCONI SRL",
+          "address": "VIA BRENNERO 71 B",
+          "city": "PESCANTINA",
+          "locality": "BALCONI",
+          "phone": "0456705020",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4966277,
+            "lon": 10.8699917,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3887425919",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-f0a1b024e0f3d28e",
+          "name": "DOTT. MARCO MANTOVANI",
+          "address": "VIA E. NICOLINI 8",
+          "city": "VERONA",
+          "locality": "MIZZOLE",
+          "phone": "0452227224",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        }
+      ],
+      "sha256": "8b30edcfc78f0f743fa63c241b3cd4cca7ffcc798d38d8e9f6013fc06fd8544a"
+    },
+    {
+      "id": "turno-2026-10-26T08:00:00.000Z",
+      "startsAt": "2026-10-26T08:00:00.000Z",
+      "endsAt": "2026-10-28T08:00:00.000Z",
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/13_Dalle-ore-9.00-del-26.10.2026-alle-ore-9.00-del-28.10.2026.pdf",
+      "checkedAt": "2026-10-22T06:27:39.493Z",
+      "items": [
+        {
+          "id": "pharmacy-aadec9963d702e07",
+          "name": "FARMACIA S. FERMO",
+          "address": "STRADONE S. FERMO 40",
+          "city": "VERONA",
+          "locality": "CENTRO STORICO",
+          "phone": "045595930",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-1e4b469ec64c9ee8",
+          "name": "DR. S. SOAVE",
+          "address": "VIA S. LUCILLO 8",
+          "city": "VERONA",
+          "locality": "S. MASSIMO",
+          "phone": "0458901470",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-69d0a00ce5c168fc",
+          "name": "DOTT.SSA ERIKA ZERBINATO",
+          "address": "VIA ROMA 239",
+          "city": "BEVILACQUA",
+          "locality": "",
+          "phone": "044293309",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-9039579975c8bcd6",
+          "name": "COLALTO SRL",
+          "address": "P.ZZA DELL'OSTO 37",
+          "city": "SAN GIOVANNI ILARIONE",
+          "locality": "",
+          "phone": "0457465049",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.5231557,
+            "lon": 11.2350426,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/1936535612",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-ab5950db0f1308cd",
+          "name": "FARMACIA PERETTI di PERETTI DR.SSA BIANCA",
+          "address": "VIA CAVOUR 86",
+          "city": "VILLAFRANCA DI VERONA",
+          "locality": "DOSSOBUONO",
+          "phone": "045513006",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-e1e30cbb36f4def1",
+          "name": "PREMIATA FARMACIA MARCOLUNGO di MARCOLUNGO DOTT. GUGLIELMO & C. SAS",
+          "address": "VIA GENERALE DALLA CHIESA 25",
+          "city": "NOGARA",
+          "locality": "",
+          "phone": "0442510510",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-45023dc2528391e3",
+          "name": "RUZZA CLAUDIO E C. SAS",
+          "address": "VIA MARZAN 4",
+          "city": "PESCHIERA DEL GARDA",
+          "locality": "",
+          "phone": "0456401053",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4413471,
+            "lon": 10.6996007,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/385661083",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-87b148bea1fc0430",
+          "name": "FARMACIA ZIMELLA LIBERTA' di NEO FARMA 20 SRL",
+          "address": "VIA M. LIBERTA' 76",
+          "city": "ZIMELLA",
+          "locality": "S. STEFANO",
+          "phone": "0442490005",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-6b2938e167a5a618",
+          "name": "NIKLA SRL DI PROSIT FARMA HOLDING SPA SOCIETA' BENEFIT",
+          "address": "VIA BOSCAROLA464",
+          "city": "DOLCE'",
+          "locality": "VOLARGNE",
+          "phone": "0457270009",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-88776f5c52de8f1b",
+          "name": "POMARI DEL DOTT. PAOLO POMARI E C. SAS",
+          "address": "VIA NAZIONALE 7 9B",
+          "city": "SAN MARTINO BUON ALBERGO",
+          "locality": "",
+          "phone": "0458799263",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-066af712a145ab50",
+          "name": "PONTE CATENA SNC",
+          "address": "VIA VASCO DE GAMA 6 C",
+          "city": "VERONA",
+          "locality": "ZONA NAVIGATORI",
+          "phone": "045912867",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4493819,
+            "lon": 10.9798366,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/2017110630",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-d579f1d8d1287b1d",
+          "name": "POZZO SNC",
+          "address": "VIA XXIV MAGGIO 16",
+          "city": "S. GIOVANNI LUPATOTO",
+          "locality": "POZZO",
+          "phone": "0458750635",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        }
+      ],
+      "sha256": "9fb05bdb88a94c7409c448e4a94459b3d370f147794354abbfd6c2f1228675be"
+    },
+    {
+      "id": "turno-2026-10-28T08:00:00.000Z",
+      "startsAt": "2026-10-28T08:00:00.000Z",
+      "endsAt": "2026-10-30T08:00:00.000Z",
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/14_Dalle-ore-9.00-del-28.10.2026-alle-ore-9.00-del-30.10.2026.pdf",
+      "checkedAt": "2026-10-22T06:27:39.493Z",
+      "items": [
+        {
+          "id": "pharmacy-9cd3dcc46a54889d",
+          "name": "SACRA FAMIGLIA",
+          "address": "VIA VIGASIO 51",
+          "city": "VERONA",
+          "locality": "SACRA FAMIGLIA",
+          "phone": "045540463",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.3893453,
+            "lon": 10.974996,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/4553782731",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-30f3741d72b1c4cf",
+          "name": "NIGRI SNC DI NIGRI M.",
+          "address": "P.ZZA DEL POPOLO 2",
+          "city": "SAN MARTINO BUON ALBERGO",
+          "locality": "",
+          "phone": "045990045",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-dfc4ff45ebf1aa3f",
+          "name": "FARMACIA SANGUINETTO - CPHARMA SNC",
+          "address": "VIA C. BATTISTI 124",
+          "city": "SANGUINETTO",
+          "locality": "",
+          "phone": "0442365144",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-e44fe7d29b6a5070",
+          "name": "FERRON di FERRON DR.SSA LAURA",
+          "address": "VIA RISORGIMENTO 2",
+          "city": "VIGASIO",
+          "locality": "",
+          "phone": "0457363009",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-0fbc67c11938c388",
+          "name": "FARMACIA VERONELLA MARCELLO di NEO FARMA 20 SRL",
+          "address": "VIA S. MARCELLO 4",
+          "city": "VERONELLA",
+          "locality": "",
+          "phone": "044247005",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-da7f6fb712d80bc8",
+          "name": "BELLONZI",
+          "address": "VIA SAN GIOVANNI DI DIO 29",
+          "city": "MEZZANE DI SOTTO",
+          "locality": "",
+          "phone": "0455703086",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-938dbf06d0ab118a",
+          "name": "LAFARMACIA.SOAVE SRL",
+          "address": "PIAZZA CASTAGNEDI 9",
+          "city": "SOAVE",
+          "locality": "",
+          "phone": "0457680074",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-befa61eb42335b58",
+          "name": "DANI DOTT. ROBERTO SNC",
+          "address": "VIA ROMA 16",
+          "city": "PALU'",
+          "locality": "",
+          "phone": "0456070188",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-d8bb216cfb6eee45",
+          "name": "SETTIMO MIGLIO DOTT.SSA CAOBELLI",
+          "address": "VIA A. BERTOLDI 84",
+          "city": "PESCANTINA",
+          "locality": "SETTIMO",
+          "phone": "0457150797",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-29a507790c198edd",
+          "name": "VERONA MILLE - NEO FARMA 20 SRL",
+          "address": "VIA DEI MILLE 22",
+          "city": "VERONA",
+          "locality": "BORGO TRENTO",
+          "phone": "0458348115",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4485939,
+            "lon": 10.9877307,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/667000717",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-5c80b475a72106de",
+          "name": "DELL'IMMACOLATA SRL",
+          "address": "VIA DON LUIGI STURZO 3",
+          "city": "VERONA",
+          "locality": "VERONA",
+          "phone": "0458100511",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-9dc4474a44a2a45a",
+          "name": "COMUNALE VITALBA",
+          "address": "VIA FESTARA 1 A",
+          "city": "SONA",
+          "locality": "Sona",
+          "phone": "0454950692",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4399894,
+            "lon": 10.8659278,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/5308494809",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-1d9fda038940d88f",
+          "name": "SANT'ANNA SRL",
+          "address": "VIA VERONA 63",
+          "city": "BARDOLINO",
+          "locality": "CALMASINO",
+          "phone": "0457236063",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        }
+      ],
+      "sha256": "488539d01c9efce32cbb1058fd45d9ef22332b92a9ed2622cd170bd495a62822"
+    },
+    {
+      "id": "turno-2026-10-30T08:00:00.000Z",
+      "startsAt": "2026-10-30T08:00:00.000Z",
+      "endsAt": "2026-11-01T08:00:00.000Z",
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/15_Dalle-ore-9.00-del-30.10.2026-alle-ore-9.00-del-01.11.2026.pdf",
+      "checkedAt": "2026-10-22T06:27:39.493Z",
+      "items": [
+        {
+          "id": "pharmacy-003894df7453f810",
+          "name": "LAFARMACIA.SAN GIUSEPPE VERONA SRL",
+          "address": "VIA SPOLVERINI 2",
+          "city": "VERONA",
+          "locality": "BORGO VENEZIA",
+          "phone": "045528488",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-ec7a9a8f9324d680",
+          "name": "SEGALA DEL DOTT MAURO SEGALA E C. SNC",
+          "address": "LARGO BUSSE' 890",
+          "city": "ANGIARI",
+          "locality": "",
+          "phone": "044297026",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-31866ac5245a9cf2",
+          "name": "AL REDENTORE DELLA DOTT.SSA LINDA RATTI E C. SAS",
+          "address": "PIAZZA COSTITUZIONE 21",
+          "city": "SAN BONIFACIO",
+          "locality": "",
+          "phone": "0457610352",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-f03c54a63300f6b7",
+          "name": "FARMACIA PIEROPAN DI CRACCO PAOLA E TESSARI MARIANGELA SNC",
+          "address": "VIA C. BATTISTI 16",
+          "city": "TREGNAGO",
+          "locality": "",
+          "phone": "0457808030",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.5179247,
+            "lon": 11.1639713,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3993323651",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-57268387c392493f",
+          "name": "CHIMICA ORLANDI",
+          "address": "VIA FRACASTORO 1 I",
+          "city": "CAVAION V.SE",
+          "locality": "CAVAION VERONESE",
+          "phone": "0455869120",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-5abebb0c2cc1a6e4",
+          "name": "OLIVATO SRL",
+          "address": "viale del lavoro 1/a",
+          "city": "COLOGNA VENETA",
+          "locality": "cologna",
+          "phone": "044285049",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.3094638,
+            "lon": 11.3847375,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/4005343524",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-e848ca29f3c0f145",
+          "name": "COMUNALE TOMBA",
+          "address": "VIA CENTRO 239",
+          "city": "VERONA",
+          "locality": "VERONA",
+          "phone": "045584066",
+          "scope": "city",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4064361,
+            "lon": 10.9851698,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3898395672",
+            "match": "unique-phone",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-d3c14bb56ceb982c",
+          "name": "SAN MARTINO DEL LAVORO DI NEO FARMA20 SRL",
+          "address": "VIALE DEL LAVORO 39",
+          "city": "SAN MARTINO BUON ALBERGO",
+          "locality": "",
+          "phone": "045990558",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": {
+            "lat": 45.4158305,
+            "lon": 11.0861923,
+            "source": "OpenStreetMap contributors",
+            "sourceUrl": "https://www.openstreetmap.org/node/3932256003",
+            "match": "unique-address-city",
+            "checkedAt": "2026-10-22T06:27:39.493Z"
+          },
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-49ca8719a1524b00",
+          "name": "SPADA DOTT.SSA BEATRICE SRL",
+          "address": "VIA CEDRARE 51",
+          "city": "S. PIETRO IN CARIANO",
+          "locality": "CORRUBBIO DI NEGARINE",
+          "phone": "0456859023",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-1accf3472a373c26",
+          "name": "COMUNALE E. BASSINI - C.S.A.",
+          "address": "PIAZZA PAPA ALBINO LUCIANI 6",
+          "city": "VIGASIO",
+          "locality": "",
+          "phone": "0452050567",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-af48cce51d98fc19",
+          "name": "PUMO SRL",
+          "address": "VIA CAO DEL PRA' 53",
+          "city": "SONA",
+          "locality": "LUGAGNANO",
+          "phone": "0458322058",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        },
+        {
+          "id": "pharmacy-d82431fa16a40b6f",
+          "name": "DELLA PUNTA SNC",
+          "address": "VIA MARCONI 22",
+          "city": "SAN GIOVANNI LUPATOTO",
+          "locality": "",
+          "phone": "0458321516",
+          "scope": "province",
+          "serviceMode": "unspecified",
+          "position": null,
+          "checkedAt": "2026-10-22T06:27:39.493Z"
+        }
+      ],
+      "sha256": "e1a5d12321e77fca8d518bc6967130478762594e4ccec6c6a543d4360d475a27"
+    }
+  ]
+}

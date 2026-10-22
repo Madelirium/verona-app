@@ -1,0 +1,2 @@
+# Same PDF reader version used to verify the two official table layouts.
+pdfplumber==0.11.9

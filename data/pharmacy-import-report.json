@@ -1,0 +1,53 @@
+{
+  "sourceUrl": "https://www.ordinefarmacisti.vr.it/turni-farmacie/",
+  "attemptedAt": "2026-10-22T07:21:56.117Z",
+  "status": "ok",
+  "items": [
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/10_Dalle-ore-9.00-del-20.10.2026-alle-ore-9.00-del-22.10.2026.pdf",
+      "sha256": "b41c3de892efab75d725fde2e47a855100f5498d447d8efcd365a66798e1584d",
+      "count": 12,
+      "extraction": "unchanged"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/11_Dalle-ore-9.00-del-22.10.2026-alle-ore-9.00-del-24.10.2026.pdf",
+      "sha256": "f6d46e833eee2571970a5fd79f7762aef6c678c9f99f7012f9f1195eda399235",
+      "count": 13,
+      "extraction": "unchanged"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/12_Dalle-ore-9.00-del-24.10.2026-alle-ore-9.00-del-26.10.2026.pdf",
+      "sha256": "8b30edcfc78f0f743fa63c241b3cd4cca7ffcc798d38d8e9f6013fc06fd8544a",
+      "count": 12,
+      "extraction": "unchanged"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/13_Dalle-ore-9.00-del-26.10.2026-alle-ore-9.00-del-28.10.2026.pdf",
+      "sha256": "9fb05bdb88a94c7409c448e4a94459b3d370f147794354abbfd6c2f1228675be",
+      "count": 12,
+      "extraction": "unchanged"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/14_Dalle-ore-9.00-del-28.10.2026-alle-ore-9.00-del-30.10.2026.pdf",
+      "sha256": "488539d01c9efce32cbb1058fd45d9ef22332b92a9ed2622cd170bd495a62822",
+      "count": 13,
+      "extraction": "unchanged"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/15_Dalle-ore-9.00-del-30.10.2026-alle-ore-9.00-del-01.11.2026.pdf",
+      "sha256": "e1a5d12321e77fca8d518bc6967130478762594e4ccec6c6a543d4360d475a27",
+      "count": 12,
+      "extraction": "unchanged"
+    }
+  ],
+  "warnings": [],
+  "error": null,
+  "preservedPrevious": false,
+  "coverage": {
+    "currentPeriodId": "turno-2026-10-22T07:00:00.000Z",
+    "startsAt": "2026-10-22T07:00:00.000Z",
+    "endsAt": "2026-11-01T08:00:00.000Z",
+    "remainingHours": 240
+  },
+  "positionStatus": "cached"
+}
