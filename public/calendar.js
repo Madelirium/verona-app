@@ -11,7 +11,7 @@ const wasteData=payload.waste||{zones:[],centers:[],links:{}};
 let wasteSelection=null,wasteTab='collection',wasteEditing=false,wasteDraft=null,wasteReturnFocus=null,wasteAddress=null;
 try{const saved=JSON.parse(localStorage.getItem('verona-waste-v1')||'null');if(validateWasteSelection(wasteData,saved))wasteSelection=saved;}catch{}
 const districtChoices=districtsData.items.flatMap(d=>[{value:d.id+':*',name:'Tutta la circoscrizione',district:d,quarter:null},...d.quarters.map((q,i)=>({value:d.id+':'+i,name:q,district:d,quarter:q}))]);
-let districtChoice='',districtMode='news',districtSaved=false;
+let districtChoice='',districtMode='updates',districtSaved=false;
 try{const stored=JSON.parse(localStorage.getItem('verona-district-v1')||'null');if(districtChoices.some(c=>c.value===stored))districtChoice=stored;}catch{}
 let exploreBounds=null,placeMapFocus=null,placeTilesFailed=false;
 let exploreNearbyPoint=null;
@@ -99,8 +99,8 @@ function render() {
   $('district-view').hidden=view!=='district';
   $('games-view').hidden=view!=='games';
   $('open-filters').hidden=['home','explore','district','news','bus','games'].includes(view);
-  $('page-title').textContent=view==='home'?'':view==='explore'?'Esplora Verona':view==='bus'?'Autobus':view==='news'?'Notizie e Comune':view==='discover'?'Scopri Verona':onlySaved?'I tuoi salvati':'Il calendario';
-  $('page-intro').textContent=view==='home'?'':view==='explore'?'Piccole scoperte, vicino a te.':view==='bus'?'ATV · percorsi e orari programmati':view==='news'?'Ultime pubblicazioni · Comune di Verona':view==='discover'?'Il tuo prossimo programma è qui.':onlySaved?'Da “mi interessa” a “ci vediamo lì”.':'Scegli un giorno. Trova qualcosa di bello.';
+  $('page-title').textContent=view==='home'?'':view==='district'?'Il mio quartiere':view==='explore'?'Esplora Verona':view==='bus'?'Autobus':view==='news'?'Notizie e Comune':view==='discover'?'Scopri Verona':onlySaved?'I tuoi salvati':'Il calendario';
+  $('page-intro').textContent=view==='home'?'':view==='district'?'Notizie e iniziative della tua zona.':view==='explore'?'Piccole scoperte, vicino a te.':view==='bus'?'ATV · percorsi e orari programmati':view==='news'?'Ultime pubblicazioni · Comune di Verona':view==='discover'?'Il tuo prossimo programma è qui.':onlySaved?'Da “mi interessa” a “ci vediamo lì”.':'Scegli un giorno. Trova qualcosa di bello.';
   $('filter-dot').hidden=!($('search').value||$('source').value||($('period').value&&$('period').value!=='30')||($('collection').value&&$('collection').value!=='all'));
   renderAgenda(filtered);
   const monthly=filtered.filter(e=>eventDay(e.startsAt)<=month+'-31'&&eventDay(e.endsAt)>=month+'-01').length;
@@ -221,6 +221,7 @@ function districtRows(){
   return (isEvent?events:newsItems).filter(i=>{
     if(isEvent&&(i.endsAt.length===10?eventDay(i.endsAt)<today:Date.parse(i.endsAt)<Date.now()))return false;
     if(districtMode==='city'?(i.districtMatches||[]).length>0:!districtMatch(i))return false;
+    if(districtMode==='updates'&&!districtSaved&&(['expired','withdrawn'].includes(newsValidity(i).state)||newsPastSeason(i,today)||(newsValidity(i).state!=='open'&&i.publishedOn<shiftDay(today,-30))))return false;
     if(districtMode==='news'&&i.sourceKey!=='notizie'||districtMode==='notices'&&i.sourceKey!=='avvisi')return false;
     if(districtSaved&&!(isEvent?['interested','going'].includes(preferences[i.id]):newsBookmarks[i.id]))return false;
     return `${i.title} ${i.summary||''} ${i.location||''}`.toLocaleLowerCase('it').includes(q);
@@ -230,22 +231,24 @@ function districtReason(item){const m=districtMatch(item);return m?.explicit?`Ci
 function openDistrictChoice(){
   const select=$('district-choice');select.replaceChildren();const empty=el('option','Scegli una zona…');empty.value='';select.append(empty);
   for(const d of districtsData.items){const group=el('optgroup','');group.label=`Circoscrizione ${d.id} · ${d.name}`;for(const c of districtChoices.filter(c=>c.district.id===d.id)){const option=el('option',c.name);option.value=c.value;group.append(option);}select.append(group);}
-  select.value=districtChoice;$('apply-district').disabled=!districtChoice;$('district-dialog').showModal();
+  select.value=districtChoice;$('apply-district').disabled=!districtChoice;if(typeof renderDistrictPicker==='function'){$('district-picker-search').value='';renderDistrictPicker();}$('district-dialog').showModal();$('close-district').focus();
 }
 function applyDistrict(value){
   if(value&&!districtChoices.some(c=>c.value===value))return;
   districtChoice=value;$('district-feedback').textContent='';
   try{localStorage.setItem('verona-district-v1',JSON.stringify(value));}catch{$('district-feedback').textContent='Zona selezionata per questa visita. Il browser non consente il salvataggio.';}
-  $('district-dialog').close();$('district-search').value='';districtSaved=false;if(view==='news')newsMode='zone';render();$(view==='news'?'news-zone':'district-zone').focus();
+  $('district-dialog').close();$('district-search').value='';districtSaved=false;if(view==='news')newsMode='zone';else districtMode='updates';render();$('district-list').scrollTop=0;$(view==='news'?'news-zone':'district-zone').focus();
 }
 function renderDistrict(){
   renderWasteEntry();
   const chosen=currentDistrict(),isEvent=districtMode==='events';
+  if(typeof renderDistrictControls==='function')renderDistrictControls();
   $('district-name').textContent=chosen?(chosen.quarter||chosen.district.name):'La tua zona, ogni giorno.';
   $('district-area').textContent=chosen?`Circoscrizione ${chosen.district.id} · ${chosen.district.name}`:'Scegli il tuo quartiere a Verona';
   $('district-change').textContent=chosen?'Cambia →':'Scegli →';
   $('district-saved').classList.toggle('active',districtSaved);$('district-saved').setAttribute('aria-pressed',String(districtSaved));
-  for(const [id,mode]of [['district-news','news'],['district-notices','notices'],['district-events','events'],['district-city','city']]){$(id).classList.toggle('active',districtMode===mode);$(id).setAttribute('aria-pressed',String(districtMode===mode));}
+  for(const [id,mode]of [['district-updates','updates'],['district-news','news'],['district-notices','notices'],['district-events','events'],['district-city','city']]){$(id).classList.toggle('active',districtMode===mode);$(id).setAttribute('aria-pressed',String(districtMode===mode));}
+  if(typeof renderDistrictControls==='function')renderDistrictControls();
   $('district-office').href=chosen?chosen.district.sourceUrl:districtsData.sourceUrl;
   $('district-office').textContent=chosen?'La circoscrizione ↗':'Le circoscrizioni ↗';
   const updated=isEvent?payload.updatedAt:newsData.updatedAt;
@@ -254,10 +257,11 @@ function renderDistrict(){
   if(!chosen&&districtMode!=='city'){
     $('district-summary').textContent='';
     const card=el('div','','district-onboarding');const b=el('button','Scegli il mio quartiere');b.onclick=openDistrictChoice;
-    card.append(el('span','⌂','district-symbol'),el('h2','Partiamo da dove sei.'),el('p','Segui le notizie, gli avvisi e gli eventi che citano il tuo quartiere o la sua circoscrizione.'),b,el('p','Puoi cambiare zona in ogni momento.'));list.append(card);return;
+    card.append(el('span','⌂','district-symbol'),el('h2','Qual è il tuo quartiere?'),el('p','Sceglilo una volta per ritrovare qui notizie, avvisi e iniziative della zona.'),b,el('p','Puoi cambiare zona in ogni momento.'));list.append(card);return;
   }
   const rows=districtRows();
   $('district-summary').textContent=`${rows.length} ${isEvent?'appuntamenti futuri':'pubblicazioni'}${districtSaved?' salvati':''} · `+(districtMode==='city'?'Dal Comune, senza zona indicata. Non necessariamente riferite al tuo quartiere.':isEvent?'Zona ricavata dalla sede riportata. Verifica i dettagli.':'Quartiere e circoscrizione citati nei testi. Raccolta parziale.');
+  if(districtMode==='updates')$('district-summary').textContent=rows.length+(districtSaved?' notizie e avvisi salvati della zona':' notizie e avvisi della zona · ultimi 30 giorni e scadenze aperte');
   if(!isEvent&&newsData.sources?.some(s=>s.status==='error'))$('district-summary').textContent+=' Aggiornamento incompleto: verifica la fonte.';
   if(!rows.length){const card=el('div','','district-onboarding');card.append(el('h2',districtSaved?'Nessun contenuto salvato.':'Per ora non ci sono risultati.'),el('p',districtSaved?'Salva una notizia o un evento per ritrovarlo qui.':'La raccolta può non includere tutte le iniziative della zona. Prova un’altra scheda o cambia ricerca.'));const b=el('button',districtSaved?'Mostra tutti':$('district-search').value?'Azzera ricerca':'Leggi dal Comune');b.onclick=()=>{if(districtSaved)districtSaved=false;else if($('district-search').value)$('district-search').value='';else districtMode='city';render()};card.append(b);list.append(card);return;}
   for(const item of rows){
@@ -717,13 +721,13 @@ $('explore-search').oninput=()=>{placeMapFocus=null;placesShown=60;render()};$('
 $('close-place-detail').onclick=()=>$('place-detail-dialog').close();$('place-detail-dialog').addEventListener('close',()=>{if(placeReturnFocus?.isConnected)placeReturnFocus.focus();else $('explore-list-tab').focus()});
 $('district-back').onclick=()=>setView('home');$('district-zone').onclick=openDistrictChoice;
 $('close-district').onclick=()=>$('district-dialog').close();
-$('district-dialog').addEventListener('close',()=>$(view==='news'?'news-zone':'district-zone').focus());
+$('district-dialog').addEventListener('close',()=>$(view==='news'?'news-zone':currentDistrict()?'district-zone':'district-list').focus());
 $('apply-district').onclick=()=>{if($('district-choice').value)applyDistrict($('district-choice').value)};
 $('district-choice').onchange=()=>{$('apply-district').disabled=!districtChoices.some(c=>c.value===$('district-choice').value)};
 $('clear-district').onclick=()=>applyDistrict('');
 $('district-search').oninput=render;
 $('district-saved').onclick=()=>{districtSaved=!districtSaved;$('district-feedback').textContent='';render()};
-for(const [id,mode]of [['district-news','news'],['district-notices','notices'],['district-events','events'],['district-city','city']])$(id).onclick=()=>{districtMode=mode;$('district-feedback').textContent='';render()};
+for(const [id,mode]of [['district-updates','updates'],['district-news','news'],['district-notices','notices'],['district-events','events'],['district-city','city']])$(id).onclick=()=>{districtMode=mode;$('district-feedback').textContent='';render();$('district-list').scrollTop=0};
 storeSavedSnapshots();
 let savedMidnightTimer=null;
 function scheduleSavedMidnight(){

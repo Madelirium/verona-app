@@ -8,7 +8,7 @@ import {validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStr
 import {pharmacyPeriods} from './pharmacies.mjs';
 
 const newsServicesLogic=await readFile(new URL('../public/news-services.js',import.meta.url),'utf8');
-const logic = [datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+newsServicesLogic+'\n'+await readFile(new URL('../public/calendar.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/waste.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/pharmacies.js',import.meta.url),'utf8');
+const logic = [datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+newsServicesLogic+'\n'+await readFile(new URL('../public/calendar.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/waste.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/pharmacies.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/district-ui.js',import.meta.url),'utf8');
 const builtHtml = await readFile(new URL('../public/index.html',import.meta.url),'utf8');
 const catalog = JSON.parse(builtHtml.match(/<script id="event-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
 const liveCatalog = structuredClone(catalog);
@@ -1568,4 +1568,43 @@ test('Esplora posizione: solo su richiesta, errore Wi-Fi, successo e risposta do
  app.context.isSecureContext=true;app.get('explore-use-location').onclick();assert.equal(calls,1);success({coords:{latitude:45.4384,longitude:10.9916,accuracy:20}});assert.equal(app.get('explore-nearby-dialog').open,false);assert.ok(new Script('exploreNearbyPoint').runInContext(app.context));
  new Script('resetExplore();openExploreNeed("nearby")').runInContext(app.context);app.get('explore-use-location').onclick();app.get('explore-nearby-close').onclick();success({coords:{latitude:45.45,longitude:11,accuracy:20}});assert.equal(new Script('exploreNearbyPoint').runInContext(app.context),null);assert.equal(app.get('explore-use-location').disabled,false);
  new Script('openExploreNeed("nearby")').runInContext(app.context);app.get('explore-pick-area').onclick();assert.match(app.get('explore-feedback').textContent,/Cerca qui/);assert.equal(app.get('explore-nearby-dialog').open,false);
+});
+
+test('Quartiere semplificato: due viste, filtri in bozza e ripristino',()=>{
+ const app=run(new Map(),'home');new Script('applyDistrict("2:1");setView("district")').runInContext(app.context);
+ assert.equal(app.get('page-title').textContent,'Il mio quartiere');
+ assert.equal(app.get('district-updates').attributes['aria-pressed'],'true');
+ assert.equal(app.get('district-events').attributes['aria-pressed'],'false');
+ app.get('district-open-filters').onclick();
+ app.get('district-filter-search').value='inesistente';app.get('district-filter-saved').checked=true;
+ app.get('district-filters-close').onclick();
+ assert.equal(app.get('district-search').value,'');assert.equal(app.get('district-active-filter').hidden,true);
+ app.get('district-open-filters').onclick();assert.equal(app.get('district-filter-search').value,'');
+ app.get('district-filter-search').value='inesistente';app.get('district-filters-apply').onclick();
+ assert.equal(new Script('districtRows().length').runInContext(app.context),0);
+ assert.equal(app.get('district-active-filter').hidden,false);
+ app.get('district-active-filter').onclick();assert.equal(app.get('district-search').value,'');
+ app.get('district-events').onclick();assert.equal(app.get('district-events').attributes['aria-pressed'],'true');
+ app.get('district-open-filters').onclick();assert.equal(app.get('district-filter-type-field').hidden,true);
+ app.get('district-filters-reset').onclick();assert.equal(app.get('district-events').attributes['aria-pressed'],'true');
+});
+test('Quartiere: ricerca per nome, conferma esplicita e annullamento senza modifiche',()=>{
+ const app=run(new Map(),'home');new Script('setView("district")').runInContext(app.context);app.get('district-zone').onclick();
+ app.get('district-picker-search').value='citta';app.get('district-picker-search').oninput();
+ const first=app.get('district-picker-results').children[0];assert.equal(first.children[0].textContent,'Città antica');
+ first.onclick();assert.equal(app.get('district-choice').value,'1:0');assert.equal(app.storage.get('verona-district-v1'),undefined);
+ app.get('close-district').onclick();app.get('district-zone').onclick();assert.equal(app.get('district-choice').value,'');
+ app.get('district-picker-search').value='borgo trento';app.get('district-picker-search').oninput();app.get('district-picker-results').children[0].onclick();
+ app.get('apply-district').onclick();assert.equal(app.get('district-name').textContent,'Borgo Trento');
+ const next=run(app.storage,'home');assert.equal(new Script('currentDistrict().quarter').runInContext(next.context),'Borgo Trento');
+ app.get('district-zone').onclick();app.get('district-picker-search').value='zzzz';app.get('district-picker-search').oninput();
+ assert.match(app.get('district-picker-results').children[0].textContent,/Nessun quartiere/);
+});
+test('Quartiere: Da sapere esclude vecchie pubblicazioni ma conserva i salvati',()=>{
+ const app=run(new Map(),'home');new Script('applyDistrict("2:1");setView("district")').runInContext(app.context);
+ const initial=new Script('districtRows().length').runInContext(app.context);assert.ok(initial>0);
+ new Script('newsBookmarks[districtRows()[0].id]=true;for(const n of newsItems)n.publishedOn="2020-01-01";districtMode="updates";render()').runInContext(app.context);
+ assert.equal(new Script('districtRows().filter(n=>newsValidity(n).state!=="open").length').runInContext(app.context),0);
+ new Script('districtSaved=true;render()').runInContext(app.context);assert.equal(new Script('districtRows().length').runInContext(app.context),1);assert.match(app.get('district-summary').textContent,/salvati/);
+ app.get('district-events').onclick();app.get('district-updates').onclick();assert.equal(app.get('district-updates').attributes['aria-pressed'],'true');
 });
