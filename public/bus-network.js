@@ -3,7 +3,7 @@ let busNetworkMap=null,busNetworkLayer=null,busNetworkLines=[],busNetworkGroups=
 let busNetworkExplore=true,networkStopIndex=null,networkChosenStop=null,networkChosenLine='',networkChosenRoutes=[],networkRouteState='',networkStopError=false;
 let networkStopsRenderer=null;
 let networkStopsCache=null,networkMatchCache=null,networkSearchOpen=false;
-function networkMapTopPadding(){return busNetworkInline?68+(networkSearchOpen?54:0):110;}
+function networkMapTopPadding(){return busNetworkInline?68+(networkSearchOpen?54:0)+($('network-data-warning').hidden?0:$('network-data-warning').clientHeight||44):110;}
 function closeNetworkActions(restoreFocus=false){const open=!$('network-actions-menu').hidden;$('network-actions-menu').hidden=true;$('network-actions-toggle').setAttribute('aria-expanded','false');if(open&&restoreFocus)$('network-actions-toggle').focus();}
 function mountNetworkActions(){
   closeNetworkActions();$('network-actions-toggle').hidden=!busNetworkInline;
@@ -158,6 +158,7 @@ function renderNetworkExplorer(focusCode=null){
   drawNetworkExplorer();installMapLocation(busNetworkMap,'network');
 }
 function renderNetworkLineRail(){
+  renderDataHealth();
   const rail=$('network-line-rail');rail.hidden=!busNetworkInline||!busNetworkExplore||busNetworkMode!=='map';if(rail.hidden){closeNetworkLineMenu(false);return;}
   const lines=(typeof busCatalogFilteredLines==='function'?busCatalogFilteredLines():officialBus.lines).slice().sort((a,b)=>a.number.localeCompare(b.number,'it',{numeric:true}));
   const signature=lines.map(line=>line.number+'|'+line.name).join(';');

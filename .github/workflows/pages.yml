@@ -126,6 +126,8 @@ jobs:
             git commit -m "Aggiorna eventi, notizie, ATV e farmacie dalle fonti ufficiali"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
+      - name: Controlla aggiornamento e validità dei dati
+        run: npm run check:data
       - name: Prepara i soli file del sito
         run: |
           mkdir -p _site

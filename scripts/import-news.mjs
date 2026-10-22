@@ -3,6 +3,7 @@ import {newsSources,parseNews,mergeNews,newsCollectionState} from './news.mjs';
 import {romeDay} from './parsers.mjs';
 import {buildCalendar} from './build-calendar.mjs';
 import {attachNewsImages} from './news-images.mjs';
+import {attachNewsTiming} from './news-timing.mjs';
 const root=new URL('../',import.meta.url),checkedAt=new Date().toISOString(),to=romeDay();
 const from=new Date(Date.parse(to+'T12:00:00Z')-90*86400000).toISOString().slice(0,10);
 await mkdir(new URL('data/',root),{recursive:true});
@@ -39,6 +40,7 @@ for(const source of newsSources){
     imported=mergeNews(imported);
     if(!imported.length)throw new Error('Nessuna pubblicazione recente: mantenuti i dati precedenti');
     imported=await attachNewsImages(imported,loadResource,{onError:(id,error)=>console.warn('Immagine notizia '+id+' non disponibile: '+error.message)});
+    imported=await attachNewsTiming(imported,loadResource,{onError:(id,error)=>console.warn('Validità notizia '+id+' da verificare: '+error.message)});
     items.push(...imported);report.sources.push({source:source.key,status:'ok',count:imported.length,lastSuccessAt:checkedAt});
   }catch(error){const retained=previous.items.filter(i=>i.sourceKey===source.key);items.push(...retained);report.sources.push({source:source.key,status:'error',error:error.message,retained:retained.length,lastSuccessAt});}
 }
@@ -48,6 +50,7 @@ if(state.status==='error'||(state.status==='partial'&&!process.argv.includes('--
 const data={...state,checkedAt,scope:report.scope,items:mergeNews(items),sources:report.sources};
 await writeFile(new URL('data/news.json.tmp',root),JSON.stringify(data,null,2)+'\n');
 await rename(new URL('data/news.json.tmp',root),new URL('data/news.json',root));
-await writeFile(new URL('data/news-import-report.json',root),JSON.stringify(report,null,2)+'\n');
+await writeFile(new URL('data/news-import-report.json.tmp',root),JSON.stringify(report,null,2)+'\n');
+await rename(new URL('data/news-import-report.json.tmp',root),new URL('data/news-import-report.json',root));
 console.log(JSON.stringify(report,null,2));
 await buildCalendar();

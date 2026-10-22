@@ -17,7 +17,7 @@ function updateOfficialDestinations(preferred=$('official-destination').value){
   officialOptions('official-destination',[...new Set(rows.map(row=>row.destination))].sort().map(value=>({value,label:value})),preferred,'Tutte le destinazioni');
 }
 function officialDepartures(data,day,stop,destination=''){
-  if(day<data.validFrom||day>data.validTo)return null;
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(day)||!data.validFrom||!data.validTo||day<data.validFrom||day>data.validTo)return null;
   const rows=[];
   for(const trip of data.trips){
     if(!trip.dates.includes(day)||(destination&&trip.destination!==destination))continue;
@@ -29,7 +29,7 @@ async function getOfficialBusLine(number){
   if(officialBusCache.has(number))return officialBusCache.get(number);
   if(!officialBusLoads.has(number))officialBusLoads.set(number,(async()=>{
     const response=await fetch(officialBus.assetBase+encodeURIComponent(number)+'.json');if(!response.ok)throw new Error('HTTP '+response.status);
-    const data=await response.json();if(data.number!==number||data.sha256!==officialBus.sha256||!Array.isArray(data.trips)||!data.stops)throw new Error('Archivio non coerente');officialBusCache.set(number,data);return data;
+    const data=await response.json();if(data.number!==number||data.sha256!==officialBus.sha256||data.validFrom!==officialBus.validFrom||data.validTo!==officialBus.validTo||!Array.isArray(data.trips)||!data.stops)throw new Error('Archivio non coerente');officialBusCache.set(number,data);return data;
   })().finally(()=>officialBusLoads.delete(number)));
   return officialBusLoads.get(number);
 }

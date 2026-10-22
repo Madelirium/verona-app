@@ -1,0 +1,200 @@
+{
+  "updatedAt": "2026-10-21T21:28:28.731Z",
+  "lastAttemptAt": "2026-10-21T21:28:28.731Z",
+  "status": "ok",
+  "source": "Comune di Verona",
+  "sourceUrl": "https://www.comune.verona.it/Amministrazione/Documenti-e-dati/Dataset/Parcheggi-a-Verona",
+  "csvUrl": "https://www.comune.verona.it/customexport/dataset-csv_resource-10720",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "scope": "Principali parcheggi del dataset comunale; elenco non esaustivo. Nessun dato di disponibilità in tempo reale.",
+  "items": [
+    {
+      "id": "comune-parking-1",
+      "name": "Arena",
+      "address": "via M. Bentegodi, 8 - 37122 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 8009333",
+      "website": "https://www.sabait.it/it/parcheggio-verona/parcheggio-saba-arena",
+      "lat": 45.43557131087127,
+      "lon": 10.992020778656007
+    },
+    {
+      "id": "comune-parking-2",
+      "name": "Arsenale",
+      "address": "via Cappellini, 2 - 37126 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 8009333",
+      "website": "https://www.sabait.it/it/parcheggio-verona/parcheggio-saba-arsenale",
+      "lat": 45.4430697575766,
+      "lon": 10.989233129893405
+    },
+    {
+      "id": "comune-parking-3",
+      "name": "Centro (ex Gasometro) con terminal Bus - AMT",
+      "address": "via Campo Marzo - 37133 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel.+39 045 2320025",
+      "website": "https://www.amt3.it/parcheggi-verona/parcheggi-auto-in-struttura/",
+      "lat": 45.43355,
+      "lon": 11.00277
+    },
+    {
+      "id": "comune-parking-4",
+      "name": "Cittadella Apcoa Italia",
+      "address": "piazza Cittadella - 37122 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 596500",
+      "website": "https://www.apcoa.it/parcheggi-in/verona/cittadella-piano-1/",
+      "lat": 45.43673121255489,
+      "lon": 10.991765135350766
+    },
+    {
+      "id": "comune-parking-6",
+      "name": "Garage Italia",
+      "address": "corso Porta Nuova, 91 - 37122 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 8006312",
+      "website": "https://www.parcheggiogarageitalia.com/it/",
+      "lat": 45.43407743235902,
+      "lon": 10.989782354909197
+    },
+    {
+      "id": "comune-parking-5",
+      "name": "Isolo",
+      "address": "via Ponte Pignolo, 6/c - 37129 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "",
+      "website": "https://www.sabait.it/it/parcheggio-verona/parcheggio-saba-isolo",
+      "lat": 45.44471802705072,
+      "lon": 11.003412283744865
+    },
+    {
+      "id": "comune-parking-7",
+      "name": "Metropark Stazione FS",
+      "address": "piazzale XXV Aprile - 37138 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "N. Verde 800 90 96 36",
+      "website": "https://www.fspark.it/content/metropark_nd/it/parcheggi/nord-est-italia/verona.html",
+      "lat": 45.42932,
+      "lon": 10.981456
+    },
+    {
+      "id": "comune-parking-8",
+      "name": "Ospedale Borgo Trento Saba Italia",
+      "address": "via San Camillo De Lellis -37126 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 8009333",
+      "website": "https://www.sabait.it/it/parcheggio-verona/parcheggio-saba-ospedale-borgo-trento",
+      "lat": 45.450452660532534,
+      "lon": 10.983999998424055
+    },
+    {
+      "id": "comune-parking-9",
+      "name": "Paradiso",
+      "address": "via Paradiso, 13/a - 37129 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 8006354",
+      "website": "https://garageparadisoit.wordpress.com/",
+      "lat": 45.44135778348359,
+      "lon": 11.005881463186615
+    },
+    {
+      "id": "comune-parking-10",
+      "name": "Piazzale Guardini",
+      "address": "piazzale Guardini - 37138 Verona",
+      "type": "libero",
+      "typeKey": "free",
+      "contact": "",
+      "website": null,
+      "lat": 45.42919861153121,
+      "lon": 10.974194893491589
+    },
+    {
+      "id": "comune-parking-11",
+      "name": "Polo Zanotto Saba Italia",
+      "address": "viale dell'Università, 4 - 37129 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 8009333",
+      "website": "https://www.amt3.it/parcheggio-polo-zanotto-verona/",
+      "lat": 45.43605199339064,
+      "lon": 11.004170443711308
+    },
+    {
+      "id": "comune-parking-12",
+      "name": "Porta Palio",
+      "address": "viale Gallianostradone Porta Palio",
+      "type": "libero",
+      "typeKey": "free",
+      "contact": "",
+      "website": null,
+      "lat": 45.436179236874636,
+      "lon": 10.978835790348265
+    },
+    {
+      "id": "comune-parking-13",
+      "name": "Porta Vescovo Amt",
+      "address": "via M. Bassetti - 37133 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 2320025",
+      "website": "https://www.amt3.it/parcheggio-porta-vescovo-verona/",
+      "lat": 45.43779625151703,
+      "lon": 11.01475972000268
+    },
+    {
+      "id": "comune-parking-14",
+      "name": "Stadio  - (3 parcheggi scambiatori) con terminal bus turistici",
+      "address": "piazzale Olimpia - 37138 Verona",
+      "type": "libero",
+      "typeKey": "free",
+      "contact": "",
+      "website": null,
+      "lat": 45.43683761093362,
+      "lon": 10.963019673935342
+    },
+    {
+      "id": "comune-parking-16",
+      "name": "Stazione Est Amt",
+      "address": "via Città di Nimes - 37122 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 2320025",
+      "website": "https://www.amt3.it/parcheggio-stazione-ovest-verona/",
+      "lat": 45.43237540563716,
+      "lon": 10.98362144193567
+    },
+    {
+      "id": "comune-parking-15",
+      "name": "Stazione Ovest Amt",
+      "address": "via Città di Nimes - 37122 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 2320025",
+      "website": "https://www.amt3.it/parcheggi-verona/parcheggi-auto-in-struttura/",
+      "lat": 45.43166930296936,
+      "lon": 10.983340935339221
+    },
+    {
+      "id": "comune-parking-17",
+      "name": "Tribunale Amt",
+      "address": "via dello Zappatore - 37122 Verona",
+      "type": "a pagamento",
+      "typeKey": "paid",
+      "contact": "tel. +39 045 2320025",
+      "website": "https://www.amt3.it/parcheggio-tribunale-verona/",
+      "lat": 45.432959365076634,
+      "lon": 10.994640463204432
+    }
+  ]
+}

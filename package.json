@@ -14,7 +14,9 @@
     "start": "node scripts/serve.mjs",
     "start:lan": "node scripts/serve.mjs --lan",
     "games:check-cloud": "node scripts/check-games-cloud.mjs",
-    "import:pharmacies": "node scripts/import-pharmacies.mjs"
+    "import:pharmacies": "node scripts/import-pharmacies.mjs",
+    "import:parking": "node scripts/import-parking.mjs",
+    "check:data": "node scripts/check-data-status.mjs"
   },
   "engines": {
     "node": ">=22.13"

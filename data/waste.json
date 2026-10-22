@@ -1,0 +1,693 @@
+{
+  "version": "c7-2026-01-30-pilot-1",
+  "checkedOn": "2026-10-22",
+  "sourceUpdatedOn": "2026-01-30",
+  "source": "Comune di Verona",
+  "sourceUrl": "https://www.comune.verona.it/Novita/Comunicati/NUOVI-GIORNI-PER-LA-RACCOLTA-DIFFERENZIATA-IN-CIRCOSCRIZIONE-7",
+  "license": "CC BY 4.0 salvo eccezioni",
+  "licenseUrl": "https://www.comune.verona.it/Note-legali",
+  "validFrom": "2026-02-02",
+  "validTo": "2026-12-31",
+  "validToReason": "Limite editoriale della prova 2026, non data di scadenza dichiarata dal Comune",
+  "scope": "Solo carta e plastica/metalli, nelle vie interessate della Circoscrizione 7. Non comprende tutta la città o tutte le frazioni di rifiuto.",
+  "exposureTime": null,
+  "holidayExceptionsVerified": false,
+  "zones": [
+    {
+      "id": "c7-brown",
+      "name": "Zona Marrone",
+      "district": "7",
+      "rules": [
+        {
+          "weekday": 3,
+          "material": "Carta"
+        },
+        {
+          "weekday": 4,
+          "material": "Plastica e metalli"
+        }
+      ]
+    },
+    {
+      "id": "c7-yellow",
+      "name": "Zona Gialla",
+      "district": "7",
+      "rules": [
+        {
+          "weekday": 2,
+          "material": "Plastica e metalli"
+        },
+        {
+          "weekday": 5,
+          "material": "Carta"
+        }
+      ]
+    },
+    {
+      "id": "c7-red",
+      "name": "Zona Rossa",
+      "district": "7",
+      "rules": [
+        {
+          "weekday": 1,
+          "material": "Carta"
+        },
+        {
+          "weekday": 6,
+          "material": "Plastica e metalli"
+        }
+      ]
+    }
+  ],
+  "links": {
+    "streets": "https://www.comune.verona.it/ocmultibinary/download/17157/382436/1/9f3e96a27fb5d27ce67bada00410d029.pdf/file/Volantino%2BAMIA%2Belenco%2Bstrade.pdf",
+    "map": "https://www.comune.verona.it/ocmultibinary/download/17157/382436/1/492d3b04ec005a8f8938444c1bcad3aa.pdf/file/Volantino%2BAMIA.pdf",
+    "calendars": "https://www.amiavr.it/Raccolta-differenziata/I-calendari-del-porta-a-porta",
+    "centers": "https://www.amiavr.it/URP/Isole-ecologiche",
+    "changes": "https://www.amiavr.it/Trasparenza-e-qualit%C3%A0/In-evidenza-Variazioni-condizioni-di-erogazione-dei-servizi",
+    "terms": "https://www.amiavr.it/Terms"
+  },
+  "centers": [
+    {
+      "id": "basso-acquar",
+      "name": "Basso Acquar",
+      "address": "Via Bartolomeo Avesani 34, Verona",
+      "hours": [
+        "Lunedì–sabato: 07:30–12:30 e 14:00–18:00"
+      ],
+      "source": "AMIA Verona",
+      "sourceUrl": "https://www.amiavr.it/URP/Isole-ecologiche",
+      "checkedOn": "2026-10-22",
+      "license": "Nessuna licenza aperta dichiarata; scheda informativa originale, senza ripubblicazione dei materiali AMIA"
+    },
+    {
+      "id": "mattarana",
+      "name": "Mattarana",
+      "address": "Strada Mattaranetta 41, Verona",
+      "hours": [
+        "Lunedì–sabato: 08:30–12:30",
+        "Martedì, giovedì e sabato anche 14:00–18:00"
+      ],
+      "source": "AMIA Verona",
+      "sourceUrl": "https://www.amiavr.it/URP/Isole-ecologiche",
+      "checkedOn": "2026-10-22",
+      "license": "Nessuna licenza aperta dichiarata; scheda informativa originale, senza ripubblicazione dei materiali AMIA"
+    }
+  ],
+  "addressIndex": {
+    "source": "AMIA · elenco allegato alla comunicazione del Comune di Verona",
+    "sourceUrl": "https://www.comune.verona.it/ocmultibinary/download/17157/382436/1/9f3e96a27fb5d27ce67bada00410d029.pdf/file/Volantino%2BAMIA%2Belenco%2Bstrade.pdf",
+    "checkedOn": "2026-10-22",
+    "method": "Indice fattuale di nomi, zone e delimitazioni, trascritto e controllato visivamente; non riproduce il volantino. Nessuna licenza aperta attribuita al materiale AMIA.",
+    "entries": [
+      {
+        "street": "Corte Convento",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Lungadige Galtarossa",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Piazza del Popolo",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via A. Nichesola",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Agostino Mainardi",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Aldo Fedeli",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Arnaldo da Brescia",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Arturo Zenorini",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Asiago",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Belluno",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Bencivenga/Biondani",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Benedettine",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Cimitero",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Conegliano",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Danilo Preto",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via F. Torbido",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Francesco Chesta",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via G. Deambrogi",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Galeazzo Florimonte",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Galileo Galilei",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Giobatta Domaschi",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Giordano Bruno",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Giovanni e Vittorio Duca",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Girolamo Savonarola",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Giuseppe Marconcini",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Lazzaretto",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Luciano Ligabo'",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Luigi Motta",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Marcantonio Bassetti",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Marcantonio Flaminio",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Marengo",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Monte Tesoro",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Monti Lessini",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Muro Lungo Campo Marzo",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Nicolo' Giolfino",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Palestro",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Palmino e Silvino Stoppele",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Paolo Sarpi",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Pietro Rotari",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Ponte San Pancrazio",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Porto S. Michele",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Porto S. Pancrazio",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Pra' Molin",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Tomaso Campanella",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Unita' d'Italia",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Ventotto Marzo",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Vincenzo Bellini",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Via Vincenzo Monti",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Viale Caduti Senza Croce",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Viale Stazione P. Vescovo",
+        "zoneId": "c7-brown",
+        "kind": "street"
+      },
+      {
+        "street": "Contrada del Forte",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Strada Mattaranetta",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via A. Caperle",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Adamello",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Aldo Fedeli",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Alessandro Carlotti",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Anti Carlo",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Antonio Cernisone",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Antonio Guglielmi",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via B. Finetto",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via C. Aschieri",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Cervino",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Colli Berici",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Colli Euganei",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Dolomiti",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via E. Gallizioli",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via F. Balconi",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via G. Belluzzo",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Gottardo",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Gran Sasso",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Luigi Rossi",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Maiella",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Mons. Giacomo Gentilin",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Monte Bianco",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Monte Rosa",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Monte Tenda",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Monte Tesoro",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Nino Martini",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via P. Sgulmero",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Paganella",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Piero Confortini",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Pietro Zenati",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Rinaldo Olivieri",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Via Ulderico Marotto",
+        "zoneId": "c7-yellow",
+        "kind": "street"
+      },
+      {
+        "street": "Piazza Garibaldi",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Piazza Madonna di Campagna",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Adamello",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Alessandro Canobbio",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Andrea d'Angeli",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Antonio Avena",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Antonio Salieri",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Castelnuovo",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Custoza",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via dei Sogari",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via della Concordia",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Dietro Salieri",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via E. C. Davila",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Goito",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Luigi Dorigo",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Madonna di Campagna",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Marmolada",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Montebello",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Paquara",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Pastrengo",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Presanella",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Ruberio",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Solferino",
+        "zoneId": "c7-red",
+        "kind": "street"
+      },
+      {
+        "street": "Via Giordano Corsini",
+        "zoneId": "c7-brown",
+        "kind": "range",
+        "from": 7,
+        "to": 13,
+        "note": "Da civico 7 a civico 13"
+      },
+      {
+        "street": "Via Tiberghien",
+        "zoneId": "c7-brown",
+        "kind": "range",
+        "from": 1,
+        "to": 38,
+        "note": "Da civico 1 a civico 38"
+      },
+      {
+        "street": "Via Unita' d'Italia",
+        "zoneId": "c7-yellow",
+        "kind": "range",
+        "from": 322,
+        "to": 382,
+        "note": "Da civico 322 a civico 382, ambo i lati"
+      },
+      {
+        "street": "Via Dolomiti",
+        "zoneId": "c7-red",
+        "kind": "range",
+        "from": 2,
+        "to": 18,
+        "note": "Da civico 2 a civico 18"
+      },
+      {
+        "street": "Via Monte Bianco",
+        "zoneId": "c7-red",
+        "kind": "range",
+        "from": 3,
+        "to": 11,
+        "note": "Da civico 3 a civico 11"
+      },
+      {
+        "street": "Via Bernini Buri",
+        "zoneId": "c7-red",
+        "kind": "landmark",
+        "note": "Da civico 88 fino al sottopasso"
+      },
+      {
+        "street": "Via Unita' d'Italia",
+        "zoneId": "c7-red",
+        "kind": "landmark",
+        "note": "Da civico 98 a via Marmolada, lato pari"
+      }
+    ],
+    "sourceSha256": "580fdeb3fee97b5e644b06525654caefeb86461647a746cceac68823a2810423"
+  }
+}

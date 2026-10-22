@@ -50,3 +50,10 @@
 .agenda-workspace .news-refresh-note{font-size:11px;line-height:1.35;margin:0 3px}
 .agenda-sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 @media(max-height:680px){.agenda-workspace{gap:3px}.agenda-picker .week-day{min-height:56px}.agenda-toolbar #open-month{font-size:13px}.agenda-shortcuts{gap:4px}}
+
+/* Status is explicit, never inferred from the publication date. */
+.news-card-meta{flex-wrap:wrap;justify-content:flex-start;row-gap:6px}.news-validity-badge{font-size:12px;line-height:1.4;padding:4px 7px;border-radius:6px;background:var(--page-bg);color:var(--text-secondary)}
+.news-validity-badge[data-state="open"]{background:#e7f0e9;color:#285537}.news-validity-badge[data-state="expired"],.news-validity-badge[data-state="withdrawn"]{background:#f4e9e5;color:#7b3e2b}
+.news-validity{padding:12px;border:1px solid var(--control-border);border-radius:12px;margin:12px 0;background:var(--page-bg)}.news-validity>strong{font-size:16px}.news-validity p{font-size:15px;line-height:1.5}.news-validity small{display:block;font-size:13px;line-height:1.5;color:var(--text-secondary)}.news-validity .dialog-save{font-size:15px;min-height:44px;margin-top:12px}
+.news-deadline-card{padding:12px;border:1px solid var(--control-border);border-left:4px solid var(--primary);border-radius:12px;background:var(--surface);margin:8px 0}.news-deadline-card>strong{font-size:14px;color:var(--primary)}.news-deadline-card p{font-size:13px;line-height:1.4}.news-deadline-card .news-title{font-size:16px}
+#news-detail-dialog .detail-bar{position:sticky;top:0;z-index:1;background:var(--surface);padding:10px 0}.home-news{min-height:44px!important;font-size:13px!important}

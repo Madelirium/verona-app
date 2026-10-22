@@ -1,6 +1,9 @@
-import {validatePharmacies,pharmacyPeriods} from './pharmacies.mjs';
 import {eventBusIndex} from './event-bus-index.mjs';
 import {validateOfficialLine} from './official-bus.mjs';
+import {datasetStatus} from './data-status.mjs';
+import {extractNewsTiming,newsDeadlineInstant,newsValidity,newsPastSeason} from './news-timing.mjs';
+import {validateWasteData,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress} from './waste.mjs';
+import {validatePharmacies,pharmacyPeriods} from './pharmacies.mjs';
 import {authConfig} from './auth-config.mjs';
 import {loadEnvFile} from 'node:process';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
@@ -47,6 +50,11 @@ export async function buildCalendar() {
   }
   try{data.places=JSON.parse(await readFile(new URL('data/places.json',root),'utf8'));}
   catch(error){if(error.code!=='ENOENT')throw error;data.places={items:[]};}
+  try{data.parking=JSON.parse(await readFile(new URL('data/parking.json',root),'utf8'));}
+  catch(error){if(error.code!=='ENOENT')throw error;data.parking={items:[]};}
+  data.waste=JSON.parse(await readFile(new URL('data/waste.json',root),'utf8'));
+  const amia=JSON.parse(await readFile(new URL('data/waste-calendars.json',root),'utf8'));
+  data.waste.zones.forEach(zone=>{zone.validFrom=data.waste.validFrom;});data.waste.zones.push(...amia.zones);data.waste.validFrom='2026-01-01';data.waste.calendarsCheckedOn=amia.checkedOn;validateWasteData(data.waste);
   data.pharmacies=JSON.parse(await readFile(new URL('data/pharmacies.json',root),'utf8'));validatePharmacies(data.pharmacies);
   const editorial=JSON.parse(editorialJson);
   data.events=data.events.map(e=>{
@@ -59,21 +67,24 @@ export async function buildCalendar() {
   });
   data.districts=districtCatalog;
   data.events=data.events.map(e=>({...e,districtMatches:districtMatches(e.location||'')}));
-  data.news.items=data.news.items.map(i=>{const value=`${i.title} ${i.summary}`,zone=explicitDistricts(value)[0];return {...i,area:zone?`Circoscrizione ${zone}`:null,districtMatches:districtMatches(value)};});
+  data.news.items=data.news.items.map(i=>{const value=`${i.title} ${i.summary}`,zone=explicitDistricts(value)[0];return {...i,timing:i.timing||extractNewsTiming(i),area:zone?`Circoscrizione ${zone}`:null,districtMatches:districtMatches(value)};});
   const safe=JSON.stringify(data).replaceAll('<','\\u003c').replaceAll('>','\\u003e').replaceAll('&','\\u0026');
   const [mapCss,mapJs]=await Promise.all(['public/vendor/leaflet.css','public/vendor/leaflet.js'].map(p=>readFile(new URL(p,root),'utf8').catch(e=>{if(e.code!=='ENOENT')throw e;return '';})));
   const assets=mapJs?`<style>${mapCss}</style><script>${mapJs.replaceAll('</script','<\\/script')}</script>`:'';
-  const pharmacyLogic=await readFile(new URL('public/pharmacies.js',root),'utf8');
   const officialLogic=await readFile(new URL('public/bus-official.js',root),'utf8');
   const eventBusLogic=await readFile(new URL('public/event-bus.js',root),'utf8');
+  const parkingLogic=await readFile(new URL('public/parking.js',root),'utf8');
+  const newsLogic=await readFile(new URL('public/news-services.js',root),'utf8');
+  const wasteLogic=await readFile(new URL('public/waste.js',root),'utf8');
+  const pharmacyLogic=await readFile(new URL('public/pharmacies.js',root),'utf8');
   const networkLogic=await readFile(new URL('public/bus-network.js',root),'utf8');
   const catalogLogic=await readFile(new URL('public/bus-catalog.js',root),'utf8');
   const agendaLogic=await readFile(new URL('public/agenda.js',root),'utf8');
   const gamesLogic=await readFile(new URL('public/briscola.js',root),'utf8');
-  const gamesCss=(await readFile(new URL('public/games.css',root),'utf8'))+'\n'+await readFile(new URL('public/bus-catalog.css',root),'utf8')+'\n'+await readFile(new URL('public/agenda.css',root),'utf8')+'\n'+await readFile(new URL('public/pharmacies.css',root),'utf8');
+  const gamesCss=(await readFile(new URL('public/games.css',root),'utf8'))+'\n'+await readFile(new URL('public/bus-catalog.css',root),'utf8')+'\n'+await readFile(new URL('public/agenda.css',root),'utf8')+'\n'+await readFile(new URL('public/parking.css',root),'utf8')+'\n'+await readFile(new URL('public/waste.css',root),'utf8')+'\n'+await readFile(new URL('public/pharmacies.css',root),'utf8');
   const authLogic=await readFile(new URL('public/auth.js',root),'utf8');
   const rankedLogic=await readFile(new URL('public/ranked.js',root),'utf8');
-  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>pharmacyPeriods.toString()+'\n'+logic+'\n'+pharmacyLogic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
+  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>[datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+logic+'\n'+newsLogic+'\n'+wasteLogic+'\n'+pharmacyLogic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+parkingLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
   await writeFile(new URL('public/index.html',root),html);
   return data.events.length;
 }

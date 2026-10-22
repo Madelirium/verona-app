@@ -50,7 +50,7 @@ function renderBusCatalog(){
   $('bus-count').textContent=matches.length+(matches.length===1?' linea':' linee')+(scopeLabel?' · '+scopeLabel:'')+(service?' · filtro servizio attivo':'')+(query?(matches.length===1?' trovata':' trovate'):' · orari programmati');
   $('bus-filter-open').setAttribute('aria-label',service||busCatalogScope?'Filtri autobus: filtri attivi':'Filtri autobus');$('bus-filter-open').classList.toggle('active',Boolean(service||busCatalogScope));
   $('bus-extraurban').setAttribute('aria-pressed',String(busCatalogScope==='extraurban'));$('bus-network-scope').value=busCatalogScope;$('bus-service').disabled=Boolean(busCatalogScope&&busCatalogScope!=='urban');
-  const day=dayInRome(new Date());$('bus-stale').textContent=day<officialBus.validFrom||day>officialBus.validTo?'Orari fuori validità: consulta ATV prima di partire.':'';
+  const health=officialArchiveStatus();$('bus-stale').textContent=health.state==='current'?'':health.message;
   if(!query&&!stopsOnly){
     if(!matches.length)busEmpty(list,'Nessuna linea da mostrare.',service||busCatalogScope?'Prova a rimuovere i filtri.':'Salva con la stella le linee che usi di più.',service||busCatalogScope?'Rimuovi filtri':'Mostra tutte le linee',()=>{busCatalogScope='';busOnlyFavorites=false;$('bus-service').value='';setBusMode('lines');});
     else for(const line of matches)appendBusCatalogLine(list,line);return;

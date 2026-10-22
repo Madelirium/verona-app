@@ -36,6 +36,7 @@ function renderEnhancedAgenda(filtered,past){
   for(const [id,active]of [['today',agendaRange==='day'&&selected===today],['agenda-tomorrow',agendaRange==='day'&&selected===shiftDay(today,1)],['agenda-weekend',agendaRange==='weekend']])$(id).setAttribute('aria-pressed',String(active));
   $('agenda-day-mode').hidden=past||agendaRange!=='day'||selected!==today;$('agenda-day-mode').textContent=agendaShowAll?'Tutta la giornata':'Da adesso';$('agenda-day-mode').setAttribute('aria-pressed',String(!agendaShowAll));
   const days=agendaDaysSelected(),list=$('events');list.replaceChildren();let total=0,saved=0;
+  const deadlineCount=appendPersonalDeadlines(list,days,past);
   if(past){$('selected').textContent='Eventi passati';const rows=[...filtered].sort((a,b)=>Date.parse(b.endsAt)-Date.parse(a.endsAt));for(const e of rows)list.append(agendaCard(e,eventDay(e.startsAt),true));total=rows.length;}
   else{
     $('selected').textContent=agendaRange==='weekend'?'Weekend · '+formatDay(selected,{day:'numeric',month:'short'})+'–'+formatDay(shiftDay(selected,1),{day:'numeric',month:'short'}):selected===today?'Oggi · '+formatDay(selected,{day:'numeric',month:'long'}):formatDay(selected,{weekday:'long',day:'numeric',month:'long'});
@@ -52,8 +53,8 @@ function renderEnhancedAgenda(filtered,past){
       if(hidden){const show=el('button',hidden+' eventi già terminati · mostra tutta la giornata','agenda-show-past');show.onclick=()=>{agendaShowAll=true;render();};list.append(show);}
     }
   }
-  $('count').textContent=total+' '+(total===1?'appuntamento':'appuntamenti')+(saved?' · '+saved+' salvati':'')+(agendaRange==='weekend'&&!past?' distinti':'');
-  if(!total){const box=el('div','','agenda-empty');box.append(el('h3',past?'Non hai ancora eventi passati.':onlySaved?'Nessun programma salvato per queste date.':'Nessun evento raccolto con questi filtri.'),el('p','Puoi cambiare giorno, rimuovere i filtri o esplorare altre proposte.'));
+  $('count').textContent=total+' '+(total===1?'appuntamento':'appuntamenti')+(saved?' · '+saved+' salvati':'')+(agendaRange==='weekend'&&!past?' distinti':'')+(deadlineCount?' · '+deadlineCount+(deadlineCount===1?' scadenza':' scadenze'):'');
+  if(!total&&!deadlineCount){const box=el('div','','agenda-empty');box.append(el('h3',past?'Non hai ancora eventi o scadenze passati.':onlySaved?'Nessun programma salvato per queste date.':'Nessun evento raccolto con questi filtri.'),el('p','Puoi cambiare giorno, rimuovere i filtri o esplorare altre proposte.'));
     const reset=el('button','Rimuovi filtri');reset.onclick=()=>{for(const id of ['search','source',...agendaFilterIds])$(id).value='';render();};box.append(reset);
     const next=filtered.filter(e=>eventDay(e.endsAt)>selected).map(e=>eventDay(e.startsAt)>selected?eventDay(e.startsAt):shiftDay(selected,1)).sort()[0];if(next){const button=el('button','Prossimi eventi · '+formatDay(next,{day:'numeric',month:'short'}));button.onclick=()=>selectAgendaDay(next);box.append(button);}list.append(box);
   }
@@ -63,7 +64,7 @@ function agendaIcs(e,now=new Date()){
   const allDay=e.startsAt.length===10,lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Verona//Eventi//IT','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:'+encodeURIComponent(e.id)+'@verona-app.local','DTSTAMP:'+utc(now)];
   if(allDay){lines.push('DTSTART;VALUE=DATE:'+eventDay(e.startsAt).replaceAll('-',''),'DTEND;VALUE=DATE:'+shiftDay(eventDay(e.endsAt),1).replaceAll('-',''));}
   else{lines.push('DTSTART:'+utc(e.startsAt));if(e.endsAt.length>10&&Date.parse(e.endsAt)>Date.parse(e.startsAt))lines.push('DTEND:'+utc(e.endsAt));}
-  lines.push('SUMMARY:'+text(e.title),'LOCATION:'+text(e.location),'DESCRIPTION:'+text((e.summary||'Consulta il programma ufficiale.')+(agendaBand(e)==='period'?'\nPeriodo indicato dalla fonte: verifica giorni e orari effettivi.':'')+'\nFonte: '+e.source+'\n'+(e.sourceUrl||'')));
+  lines.push('SUMMARY:'+text(e.title),'LOCATION:'+text(e.location),'DESCRIPTION:'+text((e.summary||'Consulta il programma ufficiale.')+(e.recordType!=='deadline'&&agendaBand(e)==='period'?'\nPeriodo indicato dalla fonte: verifica giorni e orari effettivi.':'')+'\nFonte: '+e.source+'\n'+(e.sourceUrl||'')));
   try{const url=new URL(e.sourceUrl);if(url.protocol==='https:')lines.push('URL:'+url.href);}catch{}
   lines.push('END:VEVENT','END:VCALENDAR');
   return lines.map(line=>{let out='',row='',bytes=0;for(const char of line){const n=new TextEncoder().encode(char).length;if(bytes+n>75){out+=row+'\r\n';row=' ';bytes=1;}row+=char;bytes+=n;}return out+row;}).join('\r\n')+'\r\n';
