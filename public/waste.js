@@ -4,6 +4,10 @@ function renderWasteEntry(){
   const zone=wasteSelection&&wasteData.zones.find(zone=>zone.id===wasteSelection.zoneId),button=$('home-waste'),next=zone&&wasteUpcoming(wasteData,zone.id,today,1)[0];button.hidden=true;
   if(zone)button.textContent=next?wasteDayLabel(next.day)+' · '+next.material:'Raccolta: calendario da aggiornare';
   $('utilities-waste-preview').textContent=zone?(button.textContent+(next&&zone.dates?' · '+zone.exposureTime:'')):'Scegli la zona · giorni e isole ecologiche';
+  const home=$('home-daily-waste');home.replaceChildren();
+  home.append(el('span','Raccolta porta a porta','home-row-label'),el('strong',zone?button.textContent:'Scegli la tua zona →'));
+  if(next&&zone.dates)home.append(el('span',zone.exposureTime,'home-row-note'));
+  home.onclick=()=>openWaste();
   $('district-waste').textContent=zone?'♻ Rifiuti · '+zone.name:'♻ Rifiuti e raccolta';
 }
 function openWaste(tab='collection'){
@@ -41,7 +45,7 @@ function renderWasteCollection(){
         wasteSelection={zoneId:draftZone.id,version:wasteData.version,confirmedAt:new Date().toISOString()};saveWasteSelection();wasteEditing=false;renderWasteCollection();renderWasteEntry();body.scrollTop=0;body.children[0]?.focus();
       },true),wasteAction('Torna indietro',()=>wasteStep(found?'help':'')));
     }else{
-      body.append(wasteHeading('Il calendario della tua zona'),wasteAction('Trova la mia zona',()=>wasteStep('help'),true),el('p','Oppure scegli il colore, se lo conosci già.','waste-note'));
+      body.append(wasteHeading('Raccolta porta a porta'),wasteAction('Trova la zona di raccolta',()=>wasteStep('help'),true),el('p','Oppure scegli il colore, se lo conosci già.','waste-note'));
       const zones=el('details','','waste-more');zones.append(el('summary','Conosco già la zona o il calendario'));
       for(const zone of wasteData.zones){const button=wasteAction(zone.name,()=>wasteStep(zone.id));button.className='waste-zone';button.setAttribute('data-zone',zone.id);const dot=el('span','','waste-zone-dot');dot.setAttribute('aria-hidden','true');button.append(dot);zones.append(button);if(zone.area)zones.append(el('p',zone.area,'waste-note'));}
       body.append(zones,el('p','Ricerca per via: alcune vie della Circoscrizione 7. Sono disponibili anche i cinque calendari annuali AMIA: scegli il tuo solo se conosci la zona.','waste-note'));
@@ -49,7 +53,7 @@ function renderWasteCollection(){
     if(wasteSelection)body.append(wasteAction('Annulla modifica',()=>{wasteEditing=false;wasteStep('');}));
   }else{
     const zone=wasteData.zones.find(zone=>zone.id===wasteSelection.zoneId),rows=wasteUpcoming(wasteData,zone.id,today);
-    body.append(wasteHeading('La tua raccolta'));
+    body.append(wasteHeading('Raccolta porta a porta'));
     const zoneRow=el('div','','waste-zone-row');zoneRow.append(el('span',zone.name),wasteAction('Cambia zona',()=>{wasteEditing=true;wasteStep('');}));body.append(zoneRow);
     if(!rows.length)body.append(el('p','Il calendario va aggiornato. Consulta i giorni di raccolta sul sito AMIA.','waste-empty'),wasteLink('Apri i calendari AMIA ↗',wasteData.links.calendars));
     else{
@@ -68,7 +72,7 @@ function wasteDayCard(row){const card=el('article','','waste-day');card.append(e
 function renderWasteAddress(body){
   if(!wasteAddress)wasteAddress={query:'',street:'',civic:'',result:null};
   const address=wasteAddress;
-  body.append(wasteHeading('Trova la mia zona'),el('p','Cerca la tua via. La prova copre solo alcune vie della Circoscrizione 7.','waste-note'));
+  body.append(wasteHeading('Trova la zona di raccolta'),el('p','Cerca la tua via. La prova copre solo alcune vie della Circoscrizione 7.','waste-note'));
   const form=el('form','','waste-address-form');form.noValidate=true;
   const streetLabel=el('label','1. Come si chiama la tua via?','waste-address-field'),input=el('input');input.type='search';input.id='waste-street';input.value=address.query;input.autocomplete='off';input.placeholder='Per esempio: Tiberghien';streetLabel.htmlFor=input.id;streetLabel.append(input);
   const suggestions=el('div','','waste-street-results');suggestions.setAttribute('role','group');suggestions.setAttribute('aria-label','Vie trovate');

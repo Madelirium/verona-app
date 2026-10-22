@@ -23,6 +23,8 @@ function openEventParking(event){
   $('parking-radius').value='1500';$('parking-type').value='';$('parking-dialog').showModal();renderEventParking();$('parking-close').focus();
 }
 function configureParkingView(eventMode){
+  $('parking-travel-modes').hidden=!eventMode;
+  if(eventMode&&typeof travelModeButtons==='function'){travelEvent=parkingEvent;travelModeButtons($('parking-travel-modes'),'car');}
   $('parking-eyebrow').textContent=eventMode?'Arrivare all’evento':'Muoversi a Verona';
   $('parking-title').textContent=eventMode?'Dove parcheggiare':'Parcheggi a Verona';
   $('parking-distance-control').hidden=!parkingPoint();

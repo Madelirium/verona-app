@@ -18,10 +18,11 @@ function appendEventBus(content,event){
   else{const button=el('button','Fermate e autobus vicini','dialog-save');button.onclick=()=>openEventBus(event);section.append(button,el('p','Fino a 3 fermate entro 800 m · distanza in linea d’aria.','detail-note'));}
   content.append(section);
 }
-function openEventBus(event){
+function openEventBus(event,{date:chosenDay}={}){
   if(!eventPosition(event))return;eventBusFocus=document.activeElement;eventBusEvent=event;
   $('event-bus-title').textContent='Autobus per l’evento';$('event-bus-name').textContent=event.title;
-  const date=$('event-bus-date');date.min=eventDay(event.startsAt);date.max=eventDay(event.endsAt);date.value=today>=date.min&&today<=date.max?today:date.min;
+  const date=$('event-bus-date');date.min=eventDay(event.startsAt);date.max=eventDay(event.endsAt);date.value=chosenDay>=date.min&&chosenDay<=date.max?chosenDay:today>=date.min&&today<=date.max?today:date.min;
+  if(typeof travelModeButtons==='function'){$('event-bus-travel-modes').hidden=false;travelModeButtons($('event-bus-travel-modes'),'bus');travelEvent=event;}
   if(!$('event-bus-dialog').open)$('event-bus-dialog').showModal();return renderEventBus();
 }
 function matchingEventBusRoutes(routes,stops,number){

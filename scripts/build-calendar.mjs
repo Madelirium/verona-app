@@ -74,6 +74,9 @@ export async function buildCalendar() {
   const officialLogic=await readFile(new URL('public/bus-official.js',root),'utf8');
   const eventBusLogic=await readFile(new URL('public/event-bus.js',root),'utf8');
   const parkingLogic=await readFile(new URL('public/parking.js',root),'utf8');
+  const travelLogic=await readFile(new URL('public/event-travel.js',root),'utf8');
+  const weatherLogic=await readFile(new URL('public/weather.js',root),'utf8');
+  const exploreNeedsLogic=await readFile(new URL('public/explore-needs.js',root),'utf8');
   const newsLogic=await readFile(new URL('public/news-services.js',root),'utf8');
   const wasteLogic=await readFile(new URL('public/waste.js',root),'utf8');
   const pharmacyLogic=await readFile(new URL('public/pharmacies.js',root),'utf8');
@@ -84,7 +87,7 @@ export async function buildCalendar() {
   const gamesCss=(await readFile(new URL('public/games.css',root),'utf8'))+'\n'+await readFile(new URL('public/bus-catalog.css',root),'utf8')+'\n'+await readFile(new URL('public/agenda.css',root),'utf8')+'\n'+await readFile(new URL('public/parking.css',root),'utf8')+'\n'+await readFile(new URL('public/waste.css',root),'utf8')+'\n'+await readFile(new URL('public/pharmacies.css',root),'utf8');
   const authLogic=await readFile(new URL('public/auth.js',root),'utf8');
   const rankedLogic=await readFile(new URL('public/ranked.js',root),'utf8');
-  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>[datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+logic+'\n'+newsLogic+'\n'+wasteLogic+'\n'+pharmacyLogic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+parkingLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
+  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>[datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+logic+'\n'+newsLogic+'\n'+wasteLogic+'\n'+pharmacyLogic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+parkingLogic+'\n'+travelLogic+'\n'+weatherLogic+'\n'+exploreNeedsLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic);
   await writeFile(new URL('public/index.html',root),html);
   return data.events.length;
 }

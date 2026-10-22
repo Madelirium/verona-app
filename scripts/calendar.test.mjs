@@ -69,13 +69,13 @@ test('Farmacie: mappa parziale, punto della farmacia, navigazione conservata e p
 });
 function wasteForm(app){const form=app.get('waste-collection-panel').children.find(c=>c.className==='waste-address-form');return {form,street:form.children[0].children[0],civic:form.children[3].children[0],result:form.children[5]};}
 test('Trova zona: ricerca, scelta via, civico, conferma e persistenza della sola zona',()=>{
-  const app=run(new Map(),'home');app.get('district-waste').onclick();wasteFind(app,'Trova la mia zona').onclick();let fields=wasteForm(app);fields.street.value='tiber';fields.street.oninput();wasteFind(app,'Via Tiberghien').onclick();fields=wasteForm(app);fields.civic.value='12';fields.civic.oninput();fields.form.onsubmit({preventDefault(){}});
+  const app=run(new Map(),'home');app.get('district-waste').onclick();wasteFind(app,'Trova la zona di raccolta').onclick();let fields=wasteForm(app);fields.street.value='tiber';fields.street.oninput();wasteFind(app,'Via Tiberghien').onclick();fields=wasteForm(app);fields.civic.value='12';fields.civic.oninput();fields.form.onsubmit({preventDefault(){}});
   assert.ok(wasteFind(app,'Via Tiberghien, civico 12'));assert.equal(app.storage.has('verona-waste-v1'),false);wasteFind(app,'Torna indietro').onclick();assert.equal(wasteForm(app).civic.value,'12');wasteForm(app).form.onsubmit({preventDefault(){}});wasteFind(app,'Conferma zona').onclick();
   const saved=JSON.parse(app.storage.get('verona-waste-v1'));assert.equal(saved.zoneId,'c7-brown');assert.deepEqual(Object.keys(saved).sort(),['confirmedAt','version','zoneId']);app.get('waste-close').onclick();assert.equal(new Script('wasteAddress').runInContext(app.context),null);
   const reload=run(app.storage,'home');assert.equal(reload.get('home-waste').hidden,true);
 });
 test('Trova zona: civico mancante, intervallo escluso, ambiguità e nessun risultato non salvano',()=>{
-  const app=run(new Map(),'home');app.get('district-waste').onclick();wasteFind(app,'Trova la mia zona').onclick();let fields=wasteForm(app);fields.street.value='tiber';fields.street.oninput();wasteFind(app,'Via Tiberghien').onclick();fields=wasteForm(app);fields.form.onsubmit({preventDefault(){}});assert.match(fields.result.textContent,/Scrivi il numero/);
+  const app=run(new Map(),'home');app.get('district-waste').onclick();wasteFind(app,'Trova la zona di raccolta').onclick();let fields=wasteForm(app);fields.street.value='tiber';fields.street.oninput();wasteFind(app,'Via Tiberghien').onclick();fields=wasteForm(app);fields.form.onsubmit({preventDefault(){}});assert.match(fields.result.textContent,/Scrivi il numero/);
   fields.civic.value='39';fields.form.onsubmit({preventDefault(){}});assert.match(fields.result.textContent,/non è coperto/);assert.equal(wasteFind(app,'Conferma zona'),undefined);
   fields.street.value='monte bianco';fields.street.oninput();wasteFind(app,'Via Monte Bianco').onclick();fields=wasteForm(app);fields.civic.value='5';fields.form.onsubmit({preventDefault(){}});assert.match(fields.result.textContent,/Non possiamo scegliere/);
   fields.street.value='nome inesistente';fields.street.oninput();assert.equal(fields.form.children[1].children.length,0);assert.equal(fields.form.children[4].hidden,true);assert.equal(app.storage.has('verona-waste-v1'),false);
@@ -92,7 +92,7 @@ test('Raccolta semplice: scelta e conferma separate, persistenza e annullamento'
 });
 test('Raccolta semplice: aiuto, ritorno indietro, versione obsoleta e memoria bloccata',()=>{
   const app=run(new Map([['verona-waste-v1','{"version":"old","zoneId":"c7-red","confirmedAt":"2026-10-22"}']]),'home');assert.equal(app.get('home-waste').hidden,true);app.get('district-waste').onclick();
-  wasteFind(app,'Trova la mia zona').onclick();assert.ok(wasteFind(app,'Trova la mia zona'));assert.ok(wasteFind(app,'Cerca le altre zone sul sito AMIA ↗'));assert.equal(wasteFind(app,'Conferma zona'),undefined);
+  wasteFind(app,'Trova la zona di raccolta').onclick();assert.ok(wasteFind(app,'Trova la zona di raccolta'));assert.ok(wasteFind(app,'Cerca le altre zone sul sito AMIA ↗'));assert.equal(wasteFind(app,'Conferma zona'),undefined);
   wasteFind(app,'Torna alla scelta della zona').onclick();wasteFind(app,'Zona Gialla').onclick();wasteFind(app,'Torna indietro').onclick();assert.equal(app.storage.get('verona-waste-v1').includes('old'),true);
   wasteFind(app,'Zona Gialla').onclick();app.context.localStorage.setItem=()=>{throw Error('blocked')};wasteFind(app,'Conferma zona').onclick();assert.match(app.get('waste-feedback').textContent,/questa visita/);assert.equal(app.get('home-waste').hidden,true);
 });
@@ -523,7 +523,7 @@ test('La Home contiene sei servizi e Permessi ZTL sostituisce Persone con il por
 });
 test('Esplora è attiva dalla Home, filtra luoghi reali e conserva i preferiti',()=>{
   const app=run(new Map(),'home');app.get('services').children.find(e=>e.attributes['data-service']==='explore').onclick();
-  assert.equal(app.get('explore-view').hidden,false);assert.match(app.get('places-map-message').textContent,/Lista/);
+  assert.equal(app.get('explore-view').hidden,false);assert.match(app.get('places-map-message').textContent,/Elenco/);
   app.get('explore-list-tab').onclick();assert.equal(app.get('places-list').hidden,false);
   const first=catalog.places.items[0];app.get('explore-search').value=first.name;app.get('explore-search').oninput();
   assert.ok(app.get('places-list').children.length>0);
@@ -1480,4 +1480,92 @@ test('Autobus dal parcheggio: errore recuperabile, cache e risposta tardiva dopo
 test('Percorso dal parcheggio: una linea senza corrispondenza della fermata non apre un percorso errato',async()=>{
  const app=runParking();useRomeInstant(app,'2026-10-22T10:00:00Z');await new Script('openParkingBus(parkingData.items[0])').runInContext(app.context);const row=app.get('parking-bus-stops').children.flatMap(card=>card.children).find(row=>row.className==='parking-bus-line'&&row.children[1].children.length===2);assert.ok(row);
  let opened=0;app.context.openBusRoute=async()=>{opened++};app.context.loadEventRouteLine=async()=>[{stops:[{ref:'not-a-stop'}]}];await row.children[1].children[1].onclick();assert.equal(opened,0);assert.match(row.children[2].textContent,/non è associato/);assert.equal(row.children[1].children[1].disabled,false);
+});
+
+
+test('Home personale: prossimo salvato anche fuori dal feed, esclusione fine nota e ripristino dopo riavvio',()=>{
+  const app=run(new Map(),'home');useRomeInstant(app,'2026-10-22T10:00:00Z');
+  new Script('const base=events[0];savedSnapshots={next:{...base,id:"next",title:"Il mio programma",startsAt:"2026-10-23T18:00:00+02:00",endsAt:"2026-10-23T20:00:00+02:00"},ended:{...base,id:"ended",title:"Finito stamattina",startsAt:"2026-10-22T08:00:00+02:00",endsAt:"2026-10-22T09:00:00+02:00"}};preferences.next="interested";preferences.ended="going";storeSavedSnapshots();localStorage.setItem("verona-events-v1",JSON.stringify(preferences));renderHome()').runInContext(app.context);
+  let card=app.get('home-featured').children[0];assert.equal(card.children[0].textContent,'Il tuo prossimo evento');assert.equal(card.children[1].textContent,'Il mio programma');card.onclick();assert.equal(app.get('detail-dialog').open,true);
+  const reload=run(app.storage,'home');useRomeInstant(reload,'2026-10-22T10:00:00Z');new Script('renderHome()').runInContext(reload.context);assert.equal(reload.get('home-featured').children[0].children[1].textContent,'Il mio programma');
+  new Script('preferences.next="";renderHome()').runInContext(app.context);card=app.get('home-featured').children[0];assert.notEqual(card.children[1]?.textContent,'Finito stamattina');assert.equal(card.children[0].textContent,'Un’idea per uscire');
+});
+
+test('Home personale: zona confermata, cambio giorno e rimozione aggiornano il riepilogo',()=>{
+  const app=run(new Map(),'home');assert.equal(app.get('home-daily-waste').children[1].textContent,'Scegli la tua zona →');app.get('home-daily-waste').onclick();assert.equal(app.get('waste-dialog').open,true);
+  new Script('wasteSelection={zoneId:"c7-red",version:wasteData.version,confirmedAt:new Date().toISOString()};saveWasteSelection();renderWasteEntry()').runInContext(app.context);
+  assert.equal(app.get('home-daily-waste').children[0].textContent,'Raccolta porta a porta');
+  const reload=run(app.storage,'home');assert.equal(reload.get('home-daily-waste').children[0].textContent,'Raccolta porta a porta');useRomeInstant(reload,'2027-01-01T12:00:00Z');new Script('renderHome()').runInContext(reload.context);assert.match(reload.get('home-daily-waste').children[1].textContent,/aggiornare/);
+  new Script('wasteSelection=null;saveWasteSelection();renderWasteEntry()').runInContext(reload.context);assert.equal(reload.get('home-daily-waste').children[1].textContent,'Scegli la tua zona →');
+});
+
+
+const travelLogic=await readFile(new URL('../public/event-travel.js',import.meta.url),'utf8');
+function runTravel(){const app=runParking();new Script(travelLogic).runInContext(app.context);useRomeInstant(app,'2026-10-22T10:00:00Z');new Script('parkingFixture.startsAt="2026-10-22T10:00:00+02:00";parkingFixture.endsAt="2026-10-24T18:00:00+02:00"').runInContext(app.context);return app;}
+test('Come arrivare: mezzo, evento e giorno conservati, indicazioni a piedi e rientro nei dettagli',async()=>{
+ const app=runTravel();new Script('openDetails(parkingFixture)').runInContext(app.context);const sections=app.get('detail-content').children.filter(node=>node.className==='event-bus-entry');assert.equal(sections.length,1);assert.equal(sections[0].children[0].textContent,'Come arrivare');sections[0].children[0].onclick();assert.equal(app.get('event-travel-dialog').open,true);assert.match(app.get('event-travel-walk').href,/travelmode=walking/);assert.match(app.get('event-travel-map-note').textContent,/Mappa non disponibile/);
+ await app.get('event-travel-modes').children[0].onclick();assert.equal(app.get('event-travel-dialog').open,false);assert.equal(app.get('event-bus-dialog').open,true);assert.equal(app.get('event-bus-name').textContent,'Evento in Arena');app.get('event-bus-date').value='2026-10-23';
+ app.get('event-bus-travel-modes').children[1].onclick();assert.equal(app.get('event-bus-dialog').open,false);assert.equal(app.get('parking-dialog').open,true);assert.equal(app.get('parking-event-name').textContent,'Evento in Arena');
+ await app.get('parking-travel-modes').children[0].onclick();assert.equal(app.get('parking-dialog').open,false);assert.equal(app.get('event-bus-date').value,'2026-10-23');app.get('event-bus-travel-modes').children[2].onclick();assert.equal(app.get('event-bus-dialog').open,false);assert.equal(app.get('event-travel-dialog').open,true);app.get('event-travel-close').onclick();assert.equal(app.get('detail-dialog').open,true);assert.equal(app.get('event-travel-dialog').open,false);
+ new Script('openParkingCatalog()').runInContext(app.context);assert.equal(app.get('parking-travel-modes').hidden,true);
+});
+test('Come arrivare: sede assente senza suggerimenti inventati e risposta autobus tardiva ignorata',async()=>{
+ const app=runTravel();new Script('openDetails({...parkingFixture,mapDisabled:true})').runInContext(app.context);const section=app.get('detail-content').children.find(node=>node.className==='event-bus-entry');assert.match(section.children[1].textContent,/non è abbastanza preciso/);assert.equal(app.get('event-travel-dialog').open,undefined);
+ let finish;app.context.fetch=()=>new Promise(resolve=>{finish=resolve});new Script('openEventTravel(parkingFixture)').runInContext(app.context);const pending=app.get('event-travel-modes').children[0].onclick();app.get('event-bus-travel-modes').children[1].onclick();finish({ok:true,json:async()=>structuredClone(eventBusIndexData)});await pending;assert.equal(app.get('event-bus-dialog').open,false);assert.equal(app.get('parking-dialog').open,true);assert.equal(app.get('event-bus-stops').children.length,0);
+});
+
+
+const weatherLogic=await readFile(new URL('../public/weather.js',import.meta.url),'utf8');
+function runWeather(storage=new Map()){
+ const app=run(storage,'home');app.context.AbortController=AbortController;new Script(weatherLogic).runInContext(app.context);useRomeInstant(app,'2026-10-22T13:00:00Z');
+ app.context.weatherFixture={day:'2026-10-22',time:'13:00',fetchedAt:'2026-10-22T13:00:00Z',zones:['14','15'].map(id=>({id,days:[{day:'2026-10-22',period:'am',sky:'Nuvoloso',rain:'Assenti',probability:0,min:'8/10',max:'18/20'},{day:'2026-10-22',period:'pm',sky:'Sereno o poco nuvoloso',rain:'Assenti',probability:0,min:'',max:id==='14'?'18/20':'19/21'},{day:'2026-10-23',period:'am',sky:'Variabile',rain:'Piogge sparse',probability:60,min:'8/10',max:'17/19'}]}))};
+ return app;
+}
+test('Meteo ARPAV: intervalli originali, zero precipitazioni, area persistente e scadenza del bollettino',()=>{
+ const app=runWeather();new Script('weatherData=weatherFixture;renderWeather()').runInContext(app.context);assert.equal(app.get('home-weather-value').textContent,'Max 18–20 °C →');assert.equal(app.get('weather-days').children.length,2);assert.match(app.get('weather-days').children[0].children[2].textContent,/Max 18–20/);assert.doesNotMatch(app.get('weather-days').children[0].children[2].textContent,/Min/);assert.match(app.get('weather-days').children[0].children[3].textContent,/0%/);
+ app.get('weather-area').value='15';app.get('weather-area').onchange();assert.equal(app.get('home-weather-label').textContent,'Meteo Garda');assert.equal(app.storage.get('verona-weather-area-v1'),'15');
+ for(const [input,expected]of [['',''],['n.d.',''],['18x',''],['70',''],['20/18',''],['-2/0','-2–0 °C']]){app.context.tempInput=input;assert.equal(new Script('weatherTemperature(tempInput)').runInContext(app.context),expected);}
+ useRomeInstant(app,'2026-10-24T13:00:00Z');new Script('renderWeather()').runInContext(app.context);assert.match(app.get('home-weather-value').textContent,/aggiornare/);assert.equal(app.get('weather-days').children[0].className,'weather-empty');assert.throws(()=>new Script('parseWeatherXML("<!DOCTYPE bulletin><bulletin/>")').runInContext(app.context),/non valido/);
+});
+test('Meteo ARPAV: cache evita richieste duplicate, errore conserva il bollettino, ricarica e cache corrotta',async()=>{
+ const app=runWeather();new Script('weatherData=weatherFixture;localStorage.setItem("verona-weather-v1",JSON.stringify(weatherData))').runInContext(app.context);let calls=0;app.context.fetch=async()=>{calls++;throw Error('offline')};await new Script('loadWeather()').runInContext(app.context);assert.equal(calls,0);await new Script('loadWeather(true)').runInContext(app.context);assert.equal(calls,1);assert.match(app.get('weather-status').textContent,/ultimo bollettino/);assert.equal(app.get('weather-days').children.length,2);assert.equal(app.get('weather-refresh').disabled,false);
+ const reload=runWeather(app.storage);new Script('renderWeather()').runInContext(reload.context);assert.equal(reload.get('home-weather-value').textContent,'Max 18–20 °C →');
+ const broken=runWeather(new Map([['verona-weather-v1','{bad JSON']]));assert.equal(new Script('weatherData').runInContext(broken.context),null);broken.context.fetch=async()=>{throw Error('offline')};await new Script('openWeather()').runInContext(broken.context);assert.match(broken.get('weather-status').textContent,/non disponibile/);broken.get('weather-close').onclick();assert.equal(broken.get('weather-dialog').open,false);
+});
+
+
+function eventWeatherFixture(app,changes={}){app.context.eventWeatherFixture={...structuredClone(catalog.events[0]),title:'Evento meteo Verona',location:'Via Aspromonte 4, 37126 Verona',coordinates:{lat:45.446798,lon:10.986527},mapDisabled:false,area:'Verona',areaConfirmed:false,datePrecision:'datetime',startsAt:'2026-10-22T17:00:00+02:00',endsAt:'2026-10-22T18:00:00+02:00',...changes};return app.context.eventWeatherFixture;}
+test('Meteo evento: area esplicita, fascia pertinente e nessuna assegnazione generica alla provincia',()=>{
+ const app=runWeather();eventWeatherFixture(app);new Script('weatherData=weatherFixture;openDetails(eventWeatherFixture)').runInContext(app.context);let preview=app.get('detail-content').children.find(node=>node.className==='event-weather-preview');assert.equal(preview.hidden,false);assert.match(preview.children[0].children[1].textContent,/Pomeriggio.*Sereno/);assert.match(preview.children[0].children[2].textContent,/Max 18–20.*0%/);
+ for(const changes of [{location:'Sede da definire'},{location:'Provincia di Verona'},{location:'Bardolino, provincia di Verona',coordinates:{lat:45.546,lon:10.72}},{mapDisabled:true},{coordinates:null},{startsAt:'2026-10-22T08:00:00+02:00',endsAt:'2026-10-22T10:00:00+02:00'}]){eventWeatherFixture(app,changes);assert.equal(new Script('eventWeatherContext(eventWeatherFixture)').runInContext(app.context),null);}
+ eventWeatherFixture(app,{startsAt:'2026-10-23T11:00:00+02:00',endsAt:'2026-10-23T12:00:00+02:00'});assert.equal(JSON.stringify(new Script('eventWeatherContext(eventWeatherFixture).periods').runInContext(app.context)),JSON.stringify(['am']));
+ eventWeatherFixture(app,{startsAt:'2026-10-23T11:00:00+02:00',endsAt:'2026-10-23T13:00:00+02:00'});assert.equal(JSON.stringify(new Script('eventWeatherContext(eventWeatherFixture).periods').runInContext(app.context)),JSON.stringify(['am','pm']));
+ eventWeatherFixture(app,{startsAt:'2026-10-22T22:00:00+02:00',endsAt:'2026-10-23T00:00:00+02:00'});new Script('selected="2026-10-23"').runInContext(app.context);assert.equal(new Script('eventWeatherContext(eventWeatherFixture)').runInContext(app.context),null);
+});
+test('Meteo evento: dettaglio filtrato senza cambiare la preferenza Garda, rientro e assenza di copertura',async()=>{
+ const app=runWeather();eventWeatherFixture(app);new Script('weatherData=weatherFixture;weatherArea="15";localStorage.setItem("verona-weather-area-v1","15");openDetails(eventWeatherFixture)').runInContext(app.context);const preview=app.get('detail-content').children.find(node=>node.className==='event-weather-preview');await preview.children[0].onclick();assert.equal(app.get('weather-area').value,'14');assert.equal(app.get('weather-days').children.length,1);assert.match(app.get('weather-event-context').textContent,/Evento meteo Verona/);assert.equal(app.get('home-weather-label').textContent,'Meteo Garda');assert.equal(app.storage.get('verona-weather-area-v1'),'15');app.get('weather-all-days').onclick();assert.equal(app.get('weather-area').value,'14');assert.equal(app.get('weather-days').children.length,2);app.get('weather-close').onclick();assert.equal(app.get('detail-dialog').open,true);
+ await app.get('home-weather').onclick();assert.equal(app.get('weather-area').value,'15');assert.equal(app.get('weather-event-context').hidden,true);app.get('weather-close').onclick();
+ eventWeatherFixture(app,{startsAt:'2026-11-20T17:00:00+01:00',endsAt:'2026-11-20T18:00:00+01:00'});new Script('openDetails(eventWeatherFixture)').runInContext(app.context);assert.equal(app.get('detail-content').children.find(node=>node.className==='event-weather-preview').hidden,true);
+ new Script('weatherData.day="2026-10-19";renderWeather()').runInContext(app.context);assert.equal(app.get('detail-content').children.find(node=>node.className==='event-weather-preview').hidden,true);app.get('close-detail').onclick();assert.equal(new Script('eventWeatherPreview').runInContext(app.context),null);
+});
+
+
+const exploreNeedsLogic=await readFile(new URL('../public/explore-needs.js',import.meta.url),'utf8');
+function runExploreNeeds(){const app=runParking();new Script(exploreNeedsLogic).runInContext(app.context);new Script('setView("explore")').runInContext(app.context);return app;}
+test('Esplora per bisogni: ricerca suggerita, servizi ufficiali e ritorno senza perdere i filtri',()=>{
+ const app=runExploreNeeds();app.get('explore-search').value='parcheggio';app.get('explore-search').oninput();assert.equal(app.get('explore-need-hint').hidden,false);app.get('explore-need-hint').onclick();assert.equal(app.get('parking-dialog').open,true);assert.equal(app.get('explore-search').value,'parcheggio');app.get('parking-close').onclick();
+ app.get('explore-needs-open').onclick();app.get('explore-need-pharmacies').onclick();assert.equal(app.get('explore-needs-dialog').open,false);assert.equal(app.get('pharmacy-dialog').open,true);app.get('pharmacy-close').onclick();app.get('explore-needs-open').onclick();app.get('explore-need-waste').onclick();assert.equal(app.get('waste-dialog').open,true);assert.equal(app.get('waste-centers-panel').hidden,false);app.get('waste-close').onclick();
+ app.get('explore-category').value='Farmacie';app.get('explore-category').onchange();app.get('explore-search').value='farmacia';app.get('explore-search').oninput();assert.equal(app.get('explore-need-hint').hidden,true);assert.equal(app.get('explore-pharmacies').hidden,false);
+ app.get('explore-needs-open').onclick();app.get('explore-needs-close').onclick();assert.equal(app.get('explore-search').value,'farmacia');assert.equal(app.get('explore-category').value,'Farmacie');app.get('explore-needs-open').onclick();app.get('explore-events').onclick();assert.equal(app.get('explore-needs-dialog').open,false);assert.equal(app.get('event-map-period').value,'7');app.get('event-map-back').onclick();assert.equal(app.get('explore-category').value,'Farmacie');
+});
+test('Esplora nelle vicinanze: raggio reale, ordine per distanza, filtri, stato vuoto e ripristino',()=>{
+ const app=runExploreNeeds();new Script('places.splice(0,places.length,{id:"far",name:"Lontano",category:"Negozi",lat:45.46,lon:11},{id:"near",name:"Vicino",category:"Negozi",lat:45.4385,lon:10.9916},{id:"middle",name:"Medio",category:"Bar e caffè",lat:45.441,lon:10.9916});setExploreNearby({lat:45.4384,lon:10.9916});exploreMode="list";renderExplore()').runInContext(app.context);
+ assert.equal(new Script('filteredPlaces().map(p=>p.id).join(",")').runInContext(app.context),'near,middle');assert.match(app.get('explore-count').textContent,/entro 1 km/);assert.match(app.get('places-list').children[0].children[0].children[3].textContent,/in linea d’aria/);
+ app.get('explore-category').value='Negozi';app.get('explore-category').onchange();assert.equal(new Script('filteredPlaces().length').runInContext(app.context),1);new Script('setExploreNearby({lat:46,lon:12})').runInContext(app.context);assert.match(app.get('places-list').children[0].textContent,/catalogo.*parziale/);app.get('explore-reset').onclick();assert.equal(new Script('exploreNearbyPoint').runInContext(app.context),null);assert.equal(new Script('filteredPlaces().length').runInContext(app.context),3);
+});
+test('Esplora posizione: solo su richiesta, errore Wi-Fi, successo e risposta dopo annullamento ignorata',()=>{
+ const app=locationTestApp();new Script(exploreNeedsLogic).runInContext(app.context);app.context.renderPlacesMap=()=>{};new Script('view="explore"').runInContext(app.context);let calls=0,success;app.context.navigator={geolocation:{getCurrentPosition(ok){calls++;success=ok;}}};app.context.isSecureContext=false;new Script('openExploreNeed("nearby")').runInContext(app.context);assert.equal(calls,0);app.get('explore-use-location').onclick();assert.equal(calls,0);assert.match(app.get('explore-nearby-status').textContent,/HTTPS/);assert.equal(app.get('explore-use-location').disabled,false);
+ app.context.isSecureContext=true;app.get('explore-use-location').onclick();assert.equal(calls,1);success({coords:{latitude:45.4384,longitude:10.9916,accuracy:20}});assert.equal(app.get('explore-nearby-dialog').open,false);assert.ok(new Script('exploreNearbyPoint').runInContext(app.context));
+ new Script('resetExplore();openExploreNeed("nearby")').runInContext(app.context);app.get('explore-use-location').onclick();app.get('explore-nearby-close').onclick();success({coords:{latitude:45.45,longitude:11,accuracy:20}});assert.equal(new Script('exploreNearbyPoint').runInContext(app.context),null);assert.equal(app.get('explore-use-location').disabled,false);
+ new Script('openExploreNeed("nearby")').runInContext(app.context);app.get('explore-pick-area').onclick();assert.match(app.get('explore-feedback').textContent,/Cerca qui/);assert.equal(app.get('explore-nearby-dialog').open,false);
 });

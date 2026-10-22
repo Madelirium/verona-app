@@ -14,6 +14,7 @@ const districtChoices=districtsData.items.flatMap(d=>[{value:d.id+':*',name:'Tut
 let districtChoice='',districtMode='news',districtSaved=false;
 try{const stored=JSON.parse(localStorage.getItem('verona-district-v1')||'null');if(districtChoices.some(c=>c.value===stored))districtChoice=stored;}catch{}
 let exploreBounds=null,placeMapFocus=null,placeTilesFailed=false;
+let exploreNearbyPoint=null;
 let exploreMode='map',exploreSaved=false,placeFavorites={},placeMap=null,placeLayer=null,placeMapSignature=null,placeReturnFocus=null,placesShown=60;
 try{placeFavorites=JSON.parse(localStorage.getItem('verona-places-v1')||'{}')||{};}catch{}
 if(typeof placeFavorites!=='object'||Array.isArray(placeFavorites))placeFavorites={};
@@ -297,8 +298,9 @@ function renderEventMap(){
   else if(mapped.length)eventMap.fitBounds(mapped.map(e=>[eventPosition(e).lat,eventPosition(e).lon]),{padding:[28,28],maxZoom:15});
 }
 function placeSearchText(value){return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('it').replace(/[^a-z0-9]+/g,' ').trim();}
-function filteredPlaces(){const words=placeSearchText($('explore-search').value).split(' ').filter(Boolean);return places.filter(p=>(!$('explore-category').value||p.category===$('explore-category').value)&&(!exploreSaved||placeFavorites[p.id])&&(!exploreBounds||(p.lat>=exploreBounds.south&&p.lat<=exploreBounds.north&&p.lon>=exploreBounds.west&&p.lon<=exploreBounds.east))&&words.every(word=>placeSearchText(`${p.name} ${p.address||''} ${p.category}`).includes(word)));}
-function resetExplore(){exploreBounds=null;placeMapFocus=null;exploreSaved=false;placesShown=60;$('explore-search').value='';$('explore-category').value='';placeMapSignature=null;renderExplore();}
+function exploreDistance(point,place){const rad=Math.PI/180,a=(place.lat-point.lat)*rad,b=(place.lon-point.lon)*rad,h=Math.sin(a/2)**2+Math.cos(point.lat*rad)*Math.cos(place.lat*rad)*Math.sin(b/2)**2;return 6371000*2*Math.atan2(Math.sqrt(h),Math.sqrt(Math.max(0,1-h)));}
+function filteredPlaces(){const words=placeSearchText($('explore-search').value).split(' ').filter(Boolean);const rows=places.filter(p=>(!$('explore-category').value||p.category===$('explore-category').value)&&(!exploreSaved||placeFavorites[p.id])&&(!exploreBounds||(p.lat>=exploreBounds.south&&p.lat<=exploreBounds.north&&p.lon>=exploreBounds.west&&p.lon<=exploreBounds.east))&&(!exploreNearbyPoint||exploreDistance(exploreNearbyPoint,p)<=1000)&&words.every(word=>placeSearchText(`${p.name} ${p.address||''} ${p.category}`).includes(word)));return exploreNearbyPoint?rows.sort((a,b)=>exploreDistance(exploreNearbyPoint,a)-exploreDistance(exploreNearbyPoint,b)||a.id.localeCompare(b.id)):rows;}
+function resetExplore(){$('explore-feedback').textContent='';exploreBounds=null;exploreNearbyPoint=null;placeMapFocus=null;exploreSaved=false;placesShown=60;$('explore-search').value='';$('explore-category').value='';placeMapSignature=null;renderExplore();}
 
 function togglePlace(id){if(placeFavorites[id])delete placeFavorites[id];else placeFavorites[id]=true;try{localStorage.setItem('verona-places-v1',JSON.stringify(placeFavorites));$('explore-feedback').textContent=placeFavorites[id]?'Attività salvata nei preferiti.':'Attività rimossa dai preferiti.';}catch{$('explore-feedback').textContent='Scelta disponibile per questa visita. Il browser non consente il salvataggio.';}render();}
 function placeStar(place){const b=el('button',placeFavorites[place.id]?'★':'☆','bus-favorite'+(placeFavorites[place.id]?' chosen':''));b.type='button';b.setAttribute('aria-label',`${placeFavorites[place.id]?'Rimuovi dai':'Aggiungi ai'} preferiti: ${place.name}`);b.setAttribute('aria-pressed',String(Boolean(placeFavorites[place.id])));b.onclick=()=>togglePlace(place.id);return b;}
@@ -309,23 +311,24 @@ function renderExplore(){
   $('explore-map-tab').setAttribute('aria-pressed',String(exploreMode==='map'));$('explore-list-tab').setAttribute('aria-pressed',String(exploreMode==='list'));
   $('explore-saved').classList.toggle('active',exploreSaved);$('explore-saved').setAttribute('aria-pressed',String(exploreSaved));
   $('places-map').hidden=exploreMode!=='map';$('places-list').hidden=exploreMode!=='list';$('places-map-message').hidden=exploreMode!=='map';
-  $('explore-count').textContent=`${matches.length} attività${exploreSaved?' preferite':''}${exploreBounds?' · zona selezionata':''}${placesData.status==='error'?' · aggiornamento non riuscito':''}`;$('explore-reset').hidden=!exploreBounds&&!exploreSaved&&!$('explore-search').value&&!$('explore-category').value;$('explore-search-area').hidden=exploreMode!=='map';$('explore-search-area').disabled=!placeMap;
+  $('explore-count').textContent=`${matches.length} attività${exploreSaved?' preferite':''}${exploreNearbyPoint?' · entro 1 km, in linea d’aria':exploreBounds?' · zona selezionata':''}${placesData.status==='error'?' · aggiornamento non riuscito':''}`;$('explore-reset').hidden=!exploreNearbyPoint&&!exploreBounds&&!exploreSaved&&!$('explore-search').value&&!$('explore-category').value;$('explore-search-area').hidden=exploreMode!=='map';$('explore-search-area').disabled=!placeMap;
+  if(typeof renderExploreNeedHint==='function')renderExploreNeedHint();
   const list=$('places-list');list.replaceChildren();
-  if(!matches.length){list.append(el('p',exploreSaved?'Nessun preferito con questi filtri. Salva un’attività con la stella.':'Nessuna attività trovata. Prova un’altra categoria o una ricerca diversa.','place-empty'));const reset=el('button','Mostra tutte le attività','places-more');reset.onclick=resetExplore;list.append(reset);}
-  for(const p of matches.slice(0,placesShown)){const card=el('article','','place-card'),open=el('button','','place-open');open.type='button';open.append(el('span',p.category,'place-category'),el('strong',p.name),el('p',p.address||'Indirizzo non indicato · posizione sulla mappa'));const available=[p.website?'Sito web':'',p.phone?'Telefono':'',p.openingHours?'Orari indicati':''].filter(Boolean);if(available.length)open.append(el('small',available.join(' · '),'place-services'));open.onclick=()=>openPlace(p);card.append(open,placeStar(p));list.append(card);}
+  if(!matches.length){list.append(el('p',exploreNearbyPoint?'Nessuna attività del catalogo entro 1 km con questi filtri. Il catalogo è parziale: puoi cambiare zona o ripristinare i filtri.':exploreSaved?'Nessun preferito con questi filtri. Salva un’attività con la stella.':'Nessuna attività trovata. Prova un’altra categoria o una ricerca diversa.','place-empty'));const reset=el('button','Mostra tutte le attività','places-more');reset.onclick=resetExplore;list.append(reset);}
+  for(const p of matches.slice(0,placesShown)){const card=el('article','','place-card'),open=el('button','','place-open');open.type='button';open.append(el('span',p.category,'place-category'),el('strong',p.name),el('p',p.address||'Indirizzo non indicato · posizione sulla mappa'));if(exploreNearbyPoint)open.append(el('small','Circa '+Math.round(exploreDistance(exploreNearbyPoint,p)/10)*10+' m in linea d’aria','place-services'));const available=[p.website?'Sito web':'',p.phone?'Telefono':'',p.openingHours?'Orari indicati':''].filter(Boolean);if(available.length)open.append(el('small',available.join(' · '),'place-services'));open.onclick=()=>openPlace(p);card.append(open,placeStar(p));list.append(card);}
   if(matches.length>placesShown){const more=el('button','Mostra altre attività','places-more');more.onclick=()=>{placesShown+=60;renderExplore()};list.append(more);}
   if(exploreMode==='map')renderPlacesMap(matches);
 }
 function renderPlacesMap(matches){
   const message=$('places-map-message');
-  if(typeof L==='undefined'){message.textContent='Mappa non disponibile. Apri Lista per consultare le attività.';return;}
-  if(!placeMap){placeMap=L.map('places-map',{preferCanvas:true}).setView([45.4384,10.9916],13);L.tileLayer(placesData.tileUrl||'https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',updateWhenIdle:true}).on('tileerror',()=>{placeTilesFailed=true;message.textContent='Le strade non si caricano: controlla la connessione oppure usa Lista.';}).addTo(placeMap);placeLayer=L.layerGroup().addTo(placeMap);}
+  if(typeof L==='undefined'){message.textContent='Mappa non disponibile. Apri Elenco per consultare le attività.';return;}
+  if(!placeMap){placeMap=L.map('places-map',{preferCanvas:true}).setView([45.4384,10.9916],13);L.tileLayer(placesData.tileUrl||'https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',updateWhenIdle:true}).on('tileerror',()=>{placeTilesFailed=true;message.textContent='Le strade non si caricano: controlla la connessione oppure usa Elenco.';}).addTo(placeMap);placeLayer=L.layerGroup().addTo(placeMap);}
   installMapLocation(placeMap,'places');$('explore-search-area').disabled=false;placeMap.invalidateSize();
   const signature=matches.map(p=>p.id).join(',')+'|'+placeMapFocus;if(signature===placeMapSignature)return;
-  placeMapSignature=signature;placeLayer.clearLayers();message.textContent=placeTilesFailed?'Le strade non si caricano: controlla la connessione oppure usa Lista.':matches.length?'':'Nessuna attività con questi filtri. Usa Ripristina per tornare a tutte le attività.';
+  placeMapSignature=signature;placeLayer.clearLayers();message.textContent=placeTilesFailed?'Le strade non si caricano: controlla la connessione oppure usa Elenco.':matches.length?'':'Nessuna attività con questi filtri. Usa Ripristina per tornare a tutte le attività.';
   const colors={'Bar e caffè':'#a16c42','Ristoranti':'#ab635b','Negozi':'#536e9b','Artigiani':'#897043','Farmacie':'#4c896c','Sport':'#83719c','Servizi':'#5c7f7d'};
   for(const p of matches){const popup=el('div','','map-popup');popup.append(el('strong',p.name),el('span',p.category));const b=el('button','Apri la scheda →');b.onclick=()=>openPlace(p);popup.append(b);const marker=L.circleMarker([p.lat,p.lon],{radius:p.id===placeMapFocus?11:7,color:p.id===placeMapFocus?'#254f78':'#fff',weight:2,fillColor:colors[p.category]||'#507447',fillOpacity:.95}).bindPopup(popup).addTo(placeLayer);if(p.id===placeMapFocus)marker.openPopup();}
-  const focus=matches.find(p=>p.id===placeMapFocus);if(focus)placeMap.setView([focus.lat,focus.lon],17);else if(matches.length&&!exploreBounds)placeMap.fitBounds(matches.map(p=>[p.lat,p.lon]),{padding:[25,25],maxZoom:16});
+  const focus=matches.find(p=>p.id===placeMapFocus);if(focus)placeMap.setView([focus.lat,focus.lon],17);else if(exploreNearbyPoint)placeMap.fitBounds([[exploreNearbyPoint.lat,exploreNearbyPoint.lon],...matches.map(p=>[p.lat,p.lon])],{padding:[25,25],maxZoom:16});else if(matches.length&&!exploreBounds)placeMap.fitBounds(matches.map(p=>[p.lat,p.lon]),{padding:[25,25],maxZoom:16});
 }
 function openPlace(p){
   placeReturnFocus=document.activeElement;const content=$('place-detail-content');content.replaceChildren();const title=el('h2',p.name);title.id='place-detail-title';
@@ -349,6 +352,7 @@ function openService(service){
 }
 function renderHome(){
   renderWasteEntry();
+  if(typeof renderWeatherHeader==='function'){renderWeatherHeader();if(weatherReady&&typeof fetch==='function')loadWeather();}
   $('home-date').textContent=formatDay(today,{weekday:'long',day:'numeric',month:'long'});
   const todayCount=new Set(events.filter(e=>occursOn(e,today)).map(e=>e.sourceUrl)).size;
   $('home-today').textContent=`${todayCount} eventi oggi →`;
@@ -360,12 +364,14 @@ function renderHome(){
     if(!service.ready)tile.append(el('span','PRESTO','service-badge'));
     tile.onclick=()=>openService(service);$('services').append(tile);
   }
-  const featured=events.filter(e=>e.localVerified&&(e.endsAt.length===10?eventDay(e.endsAt)>=today:Date.parse(e.endsAt)>=Date.now())).sort((a,b)=>a.startsAt.localeCompare(b.startsAt))[0];
+  const useful=e=>eventDay(e.endsAt)>=today&&(e.endsAt.length===10||Date.parse(e.endsAt)<=Date.parse(e.startsAt)||Date.parse(e.endsAt)>Date.now());
+  const nextSaved=savedEvents().filter(useful).sort((a,b)=>Date.parse(a.startsAt)-Date.parse(b.startsAt))[0];
+  const featured=nextSaved||events.filter(e=>e.localVerified&&useful(e)).sort((a,b)=>a.startsAt.localeCompare(b.startsAt))[0];
   $('home-featured').replaceChildren();
-  if(featured){const button=el('button','','home-event');button.type='button';button.append(el('span',eventWhen(featured),'home-event-date'),el('strong',featured.title),el('span',featured.location||'Verona','home-event-place'));button.onclick=()=>openDetails(featured);$('home-featured').append(button);}
+  if(featured){const button=el('button','','home-event');button.type='button';button.append(el('span',nextSaved?'Il tuo prossimo evento':'Un’idea per uscire','home-row-label'),el('strong',featured.title),el('span',eventWhen(featured),'home-event-date'));button.onclick=()=>openDetails(featured);$('home-featured').append(button);}
   else{const button=el('button','Trova un evento nel calendario →','home-event');button.onclick=()=>setView('calendar');$('home-featured').append(button);}
-  const total=events.filter(e=>['interested','going'].includes(preferences[e.id])&&eventDay(e.endsAt)>=today).length+savedNewsDeadlines().filter(item=>newsValidity(item).state==='open').length;
-  $('home-programs').textContent=total?`I tuoi programmi (${total}) →`:'I tuoi programmi →';
+  const total=savedEvents().filter(e=>!isPastSavedEvent(e)).length+savedNewsDeadlines().filter(item=>newsValidity(item).state==='open').length;
+  $('home-programs').textContent=total?`Salvati (${total}) →`:'Salvati →';
   const latest=homeNewsSelection();$('home-news-title').textContent=latest?`${currentDistrict()&&districtMatch(latest)?'Nella tua zona':newsValidity(latest).state==='open'?'Da ricordare':'Dal Comune'} · ${latest.title}`:'Le ultime dal Comune →';
 }
 function filteredNews(){
@@ -587,7 +593,8 @@ function appendEventDetailPreview(content,e){
   eventDetailPreview={box,status,point,map:null};
   const mapButton=el('button','⌖ Vedi sulla mappa','dialog-save event-map-detail-button');mapButton.onclick=()=>{closeDetails();openEventMap(e)};
   const directions=el('a','Indicazioni per arrivare ↗','bus-secondary-link');directions.href=`https://www.google.com/maps/dir/?api=1&destination=${point.lat},${point.lon}`;directions.target='_blank';directions.rel='noopener noreferrer';
-  content.append(mapButton,directions,el('p','Punto indicato dalla fonte. Per manifestazioni diffuse e percorsi, verifica il luogo esatto nel programma.','detail-note'));
+  if(typeof appendEventTravel!=='function')content.append(mapButton,directions);
+  content.append(el('p','Punto indicato dalla fonte. Per manifestazioni diffuse e percorsi, verifica il luogo esatto nel programma.','detail-note'));
 }
 function mountEventDetailPreview(){
   const state=eventDetailPreview;if(!state)return;
@@ -603,14 +610,16 @@ function mountEventDetailPreview(){
 }
 function openDetails(e) {
   clearEventDetailPreview();
+  if(typeof clearEventWeatherPreview==='function')clearEventWeatherPreview();
   detailReturnFocus=document.activeElement;
   const content=$('detail-content');content.replaceChildren();
   const title=el('h2',e.title);title.id='detail-title';
   content.append(el('span',e.source,'source'),title,el('p',eventWhen(e)),el('p',e.location||'Sede da verificare sulla fonte ufficiale.'));
   appendEventDetailPreview(content,e);
   content.append(el('p',e.summary||'I dettagli e il programma completo sono disponibili sulla pagina ufficiale dell’evento.'),el('p',e.priceLabel||'Prezzo e condizioni di accesso da verificare.'));
-  if(typeof appendEventBus==='function')appendEventBus(content,e);
-  if(typeof appendEventParking==='function')appendEventParking(content,e);
+  if(typeof appendEventWeather==='function')appendEventWeather(content,e);
+  if(typeof appendEventTravel==='function')appendEventTravel(content,e);
+  else{if(typeof appendEventBus==='function')appendEventBus(content,e);if(typeof appendEventParking==='function')appendEventParking(content,e);}
   appendEventPoster(content,e);
   if(e.localVerified)content.append(el('p',`Luogo controllato sulla fonte il ${formatDay(e.reviewedOn,{day:'numeric',month:'long',year:'numeric'})}.`,'detail-note'));
   content.append(el('p','Eventuali altre date sono nel calendario. Verifica aggiornamenti e disponibilità prima di partire.','detail-note'));
@@ -661,7 +670,7 @@ $('saved-past').onclick=()=>{savedMode='past';render();$('events').scrollTop=0};
 $('home').onclick=()=>setView('home');$('discover').onclick=()=>setView('discover');$('all').onclick=()=>setView('calendar');$('saved').onclick=()=>setView('saved');$('search').oninput=()=>{if(!filterSnapshot)render()};$('source').onchange=()=>{if(!filterSnapshot)render()};
 $('period').onchange=()=>{if(!filterSnapshot)render()};$('collection').onchange=()=>{if(!filterSnapshot)render()};$('like').onclick=()=>chooseDiscovery('interested');$('skip').onclick=()=>chooseDiscovery('skip');$('undo').onclick=undoDiscovery;
 $('close-detail').onclick=closeDetails;
-$('detail-dialog').addEventListener('close',()=>{clearEventDetailPreview();if(detailReturnFocus?.isConnected)detailReturnFocus.focus();else $(view==='home'?'home':view==='district'?'district-zone':view==='eventmap'?'event-map-back':view==='discover'?'like':['calendar','saved'].includes(view)?'events':'all').focus()});
+$('detail-dialog').addEventListener('close',()=>{clearEventDetailPreview();if(typeof clearEventWeatherPreview==='function')clearEventWeatherPreview();if(detailReturnFocus?.isConnected)detailReturnFocus.focus();else $(view==='home'?'home':view==='district'?'district-zone':view==='eventmap'?'event-map-back':view==='discover'?'like':['calendar','saved'].includes(view)?'events':'all').focus()});
 $('home-today').onclick=()=>{$('search').value='';$('source').value='';selected=today;month=today.slice(0,7);setView('calendar')};
 $('home-programs').onclick=()=>setView('saved');
 $('close-ztl').onclick=()=>$('ztl-dialog').close();
@@ -698,7 +707,7 @@ $('bus-updates').onclick=()=>{$('bus-more-dialog').close();renderBusUpdates();$(
 $('close-bus-detail').onclick=()=>$('bus-detail-dialog').close();$('bus-detail-dialog').addEventListener('close',()=>{if(busReturnFocus?.isConnected)busReturnFocus.focus();else $('bus-list').focus()});
 $('discover-event-map').onclick=()=>{eventMapSaved=false;openEventMap()};
 $('calendar-event-map').onclick=()=>{eventMapSaved=onlySaved;openEventMap()};
-$('event-map-back').onclick=()=>{if(eventMapReturn){selected=eventMapReturn.selected;month=selected.slice(0,7);$('search').value=eventMapReturn.search;$('source').value=eventMapReturn.source;if(agendaReady)restoreAgendaState(eventMapReturn.agenda);}setView(eventMapReturn?.view||'calendar');$('events').scrollTop=eventMapReturn?.scroll||0;$(eventMapReturn?.view==='explore'?'explore-events':'calendar-event-map').focus()};
+$('event-map-back').onclick=()=>{if(eventMapReturn){selected=eventMapReturn.selected;month=selected.slice(0,7);$('search').value=eventMapReturn.search;$('source').value=eventMapReturn.source;if(agendaReady)restoreAgendaState(eventMapReturn.agenda);}setView(eventMapReturn?.view||'calendar');$('events').scrollTop=eventMapReturn?.scroll||0;$(eventMapReturn?.view==='explore'?'explore-needs-open':'calendar-event-map').focus()};
 $('event-map-unlocated').onclick=()=>{const day=selected;setView(eventMapReturn?.view||'calendar');selectAgendaDay(day)};
 $('event-map-date').onchange=()=>{const value=$('event-map-date').value;if(!/^\d{4}-\d{2}-\d{2}$/.test(value)||!Number.isFinite(Date.parse(value+'T12:00:00Z'))||new Date(value+'T12:00:00Z').toISOString().slice(0,10)!==value){$('event-map-date').value=selected;return;}selected=value;month=value.slice(0,7);eventMapFocus=null;render()};
 $('event-map-period').onchange=()=>{eventMapFocus=null;render()};
@@ -798,7 +807,7 @@ function appendNewsImageCredit(card,item){const image=eventImage(item);if(image)
 $('explore-reset').onclick=resetExplore;
 $('explore-search-area').onclick=()=>{
   if(!placeMap?.getBounds)return;const b=placeMap.getBounds(),bounds={south:b.getSouth(),north:b.getNorth(),west:b.getWest(),east:b.getEast()};if(!Object.values(bounds).every(Number.isFinite))return;
-  exploreBounds=bounds;placeMapFocus=null;placesShown=60;renderExplore();
+  $('explore-feedback').textContent='';exploreNearbyPoint=null;exploreBounds=bounds;placeMapFocus=null;placesShown=60;renderExplore();
 };
 
 $('explore-events').onclick=()=>{
@@ -823,19 +832,22 @@ function installMapLocation(map,key){
   const control=L.control({position:'bottomright'});control.onAdd=()=>box;control.addTo(map);
   const state={map,key,button,status,layer:L.layerGroup().addTo(map)};mapLocationStates.set(key,state);button.onclick=()=>requestMapLocation(key);drawMapLocation(state);
 }
-function requestMapLocation(key){
-  const state=mapLocationStates.get(key);if(!state||state.button.disabled)return;
+function requestMapLocation(key,options={}){
+  const state=mapLocationStates.get(key);if(!state||state.button.disabled){options.onError?.('La mappa o la ricerca della posizione non è disponibile. Puoi scegliere una zona manualmente.');return;}
   const show=(message,duration=8000)=>{clearTimeout(state.statusTimer);state.status.hidden=false;state.status.textContent=message;const note=key==='network'?$('network-location-note'):null;if(note){note.hidden=false;note.textContent=message;}if(duration)state.statusTimer=setTimeout(()=>{state.status.hidden=true;state.status.textContent='';if(note){note.hidden=true;note.textContent='';}},duration);};
-  if(typeof isSecureContext!=='undefined'&&!isSecureContext){show('Per usare la posizione dal telefono serve la versione HTTPS. L’anteprima Wi-Fi HTTP non la supporta.');return;}
-  if(typeof navigator==='undefined'||!navigator.geolocation){show('Posizione non disponibile in questo browser. Puoi spostare la mappa manualmente.');return;}
+  const notifyError=message=>{show(message);options.onError?.(message);};
+  if(typeof isSecureContext!=='undefined'&&!isSecureContext){notifyError('Per usare la posizione dal telefono serve la versione HTTPS. L’anteprima Wi-Fi HTTP non la supporta.');return;}
+  if(typeof navigator==='undefined'||!navigator.geolocation){notifyError('Posizione non disponibile in questo browser. Puoi spostare la mappa manualmente.');return;}
   state.button.disabled=true;state.button.textContent='…';state.button.setAttribute('aria-busy','true');show('Ricerca della posizione…',0);
   const finish=()=>{state.button.disabled=false;state.button.textContent='◎';state.button.setAttribute('aria-busy','false');};
-  const fail=error=>{finish();if(error.code===1){currentUserLocation=null;for(const item of mapLocationStates.values())item.layer.clearLayers();}show(error.code===1?'Permesso negato. Puoi abilitare la posizione nelle impostazioni del browser.':error.code===3?'La ricerca ha impiegato troppo tempo. Tocca di nuovo per riprovare.':'Posizione non disponibile. Controlla la localizzazione del dispositivo e riprova.');};
+  const fail=error=>{finish();if(options.isActive&&!options.isActive()){show('',1);return;}if(error.code===1){currentUserLocation=null;for(const item of mapLocationStates.values())item.layer.clearLayers();}notifyError(error.code===1?'Permesso negato. Puoi abilitare la posizione nelle impostazioni del browser.':error.code===3?'La ricerca ha impiegato troppo tempo. Tocca di nuovo per riprovare.':'Posizione non disponibile. Controlla la localizzazione del dispositivo e riprova.');};
   try{navigator.geolocation.getCurrentPosition(position=>{
     finish();const {latitude:lat,longitude:lon,accuracy}=position.coords||{};
-    if(!Number.isFinite(lat)||!Number.isFinite(lon)||!Number.isFinite(accuracy)||lat< -90||lat>90||lon< -180||lon>180||accuracy<0){show('Il dispositivo ha restituito una posizione non valida. Riprova.');return;}
+    if(options.isActive&&!options.isActive()){show('',1);return;}
+    if(!Number.isFinite(lat)||!Number.isFinite(lon)||!Number.isFinite(accuracy)||lat< -90||lat>90||lon< -180||lon>180||accuracy<0){notifyError('Il dispositivo ha restituito una posizione non valida. Riprova.');return;}
     currentUserLocation={lat,lon,accuracy};for(const item of mapLocationStates.values())drawMapLocation(item,item===state&&locationMapVisible(key));
     const bounds=placesData.bounds,outside=key==='places'&&bounds&&(lat<bounds[0]||lon<bounds[1]||lat>bounds[2]||lon>bounds[3]);
     show('Posizione rilevata · precisione circa '+Math.round(accuracy)+' m.'+(outside?' Sei fuori dall’area del catalogo delle attività.':''),outside?8000:3000);
+    options.onSuccess?.(currentUserLocation);
   },fail,{enableHighAccuracy:true,timeout:12000,maximumAge:0});}catch{fail({code:2});}
 }
