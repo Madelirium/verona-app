@@ -24,6 +24,28 @@ async function database(t){
   return{db,repository};
 }
 async function friendly(service,action,body={},token=''){return(await service.forRequest()).execute(action,body,token);}
+
+test('Briscola in 3 e 4: checkpoint SQL, ultimo posto concorrente e rientro dopo una presa',async t=>{
+  const {repository}=await database(t);
+  const fresh=()=>createPersistentGameService({repository,game:'briscola',trickPauseMs:0});
+  for(const count of [3,4]){
+    const first=await friendly(fresh(),'create',{name:'Alice',playerCount:count}),code=first.state.code,tokens=[first.token];
+    for(let seat=1;seat<count-1;seat++){const joined=await friendly(fresh(),'join',{code,name:'Player '+seat,clientVersion:2});tokens.push(joined.token);assert.equal(joined.state.status,'waiting');}
+    const attempts=await Promise.allSettled(['Ultimo','Extra'].map(name=>friendly(fresh(),'join',{code,name,clientVersion:2})));
+    assert.equal(attempts.filter(x=>x.status==='fulfilled').length,1);assert.equal(attempts.filter(x=>x.status==='rejected'&&x.reason.status===409).length,1);
+    tokens.push(attempts.find(x=>x.status==='fulfilled').value.token);
+    let state=(await friendly(fresh(),'state',{code},tokens[0])).state;
+    for(let move=0;move<count;move++){
+      state=(await friendly(fresh(),'state',{code},tokens[state.turn])).state;
+      state=(await friendly(fresh(),'play',{code,version:state.version,matchId:state.matchId,card:state.players[state.turn].hand[0].id},tokens[state.turn])).state;
+    }
+    for(let seat=0;seat<count;seat++){
+      const resumed=(await friendly(fresh(),'state',{code},tokens[seat])).state;
+      assert.equal(resumed.playerCount,count);assert.equal(resumed.lastTrick.cards.length,count);assert.equal(resumed.version,state.version);assert.equal(resumed.turn,state.turn);
+      assert.equal(resumed.players[seat].hand.length,3);assert.ok(resumed.players.every((p,i)=>i===seat||p.hand===undefined));
+    }
+  }
+});
 async function match(service,game='forza4'){
   const queue=await service.execute('queue',{game,name:'Alice'},alice);assert.equal(queue.phase,'searching');
   const found=await service.execute('queue',{game,name:'Bob'},bob);assert.equal(found.phase,'ready');

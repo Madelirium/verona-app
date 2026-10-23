@@ -6,10 +6,9 @@ const points = {1:11,3:10,10:4,9:3,8:2};
 const strength = [2,4,5,6,7,8,9,10,3,1];
 export const cardPoints = card => points[card.rank] || 0;
 export function winningPlayer(cards, trump) {
-  const [a,b] = cards;
-  return b.card.suit === a.card.suit
-    ? (strength.indexOf(b.card.rank) > strength.indexOf(a.card.rank) ? b.player : a.player)
-    : (b.card.suit === trump ? b.player : a.player);
+  return cards.reduce((a,b)=>b.card.suit===a.card.suit
+    ? (strength.indexOf(b.card.rank)>strength.indexOf(a.card.rank)?b:a)
+    : (b.card.suit===trump?b:a)).player;
 }
 function fail(message, status=400) { throw Object.assign(new Error(message), {status}); }
 export function createGameService({game='briscola',now=Date.now, ttl=30*60*1000, maxRooms=1000,trickPauseMs=1200,initialState}={}) {
@@ -20,26 +19,32 @@ export function createGameService({game='briscola',now=Date.now, ttl=30*60*1000,
   function cleanup(){for(const [code,room] of rooms)if(now()-room.updatedAt>ttl)rooms.delete(code);}
   function player(n){return {name:name(n),token:randomBytes(32).toString('hex'),hand:[],score:0,seen:now()};}
   function snapshot(room, seat){
-    const common={game,matchId:room.matchId,rematch:room.rematch||[false,false],visibility:room.visibility,code:room.code,seat,status:room.status,version:room.version};
+    const count=room.playerCount||2;
+    const common={game,playerCount:count,matchId:room.matchId,rematch:room.rematch||Array(count).fill(false),visibility:room.visibility,code:room.code,seat,status:room.status,version:room.version};
     if(game==='forza4')return {...common,players:room.players.map(p=>({name:p.name,online:now()-p.seen<12000})),turn:room.turn,board:room.board,lastMove:room.lastMove,winningCells:room.winningCells||[],winner:room.winner};
-    return {...common,players:room.players.map((p,i)=>({name:p.name,score:p.score,count:p.hand.length,online:now()-p.seen<12000,hand:i===seat?p.hand:undefined})),turn:room.turn,trump:room.trump,remaining:room.deck.length,table:room.table,lastTrick:room.lastTrick,trickWaitMs:Math.max(0,(room.nextPlayAt||0)-now()),winner:room.winner,expiresInMinutes:30};
+    return {...common,teams:count===4?[0,1,0,1]:null,teamScores:count===4?[0,1].map(team=>room.players.reduce((sum,p,i)=>sum+(i%2===team?p.score:0),0)):null,winnerTeam:room.winnerTeam,winners:room.winners,players:room.players.map((p,i)=>({name:p.name,score:p.score,count:p.hand.length,online:now()-p.seen<12000,hand:i===seat?p.hand:undefined})),turn:room.turn,trump:room.trump,remaining:room.deck.length,table:room.table,lastTrick:room.lastTrick,trickWaitMs:Math.max(0,(room.nextPlayAt||0)-now()),winner:room.winner,expiresInMinutes:30};
   }
   function start(room){
-    room.matchId=randomBytes(16).toString('hex');room.rematch=[false,false];room.winner=undefined;room.table=[];room.lastTrick=null;room.trickCount=0;room.nextPlayAt=0;
+    const count=room.playerCount||2;
+    room.matchId=randomBytes(16).toString('hex');room.rematch=Array(count).fill(false);room.winner=undefined;room.winnerTeam=undefined;room.winners=undefined;room.table=[];room.lastTrick=null;room.trickCount=0;room.nextPlayAt=0;
     for(const p of room.players){p.hand=[];p.score=0;}
     if(game==='forza4'){room.board=Array.from({length:6},()=>Array(7).fill(null));room.lastMove=null;room.winningCells=[];room.status='playing';room.turn=randomInt(2);return;}
-    const deck=suits.flatMap(suit=>Array.from({length:10},(_,i)=>({id:suit+'-'+(i+1),suit,rank:i+1})));
+    const deck=suits.flatMap(suit=>Array.from({length:10},(_,i)=>({id:suit+'-'+(i+1),suit,rank:i+1}))).filter(card=>count!==3||card.id!=='denari-2');
     for(let i=deck.length-1;i>0;i--){const j=randomInt(i+1);[deck[i],deck[j]]=[deck[j],deck[i]];}
-    room.deck=deck;room.trump=deck[0];room.status='playing';room.turn=randomInt(2);
+    room.deck=deck;room.trump=deck[0];room.status='playing';room.turn=randomInt(count);
     for(let i=0;i<3;i++)for(const p of room.players)p.hand.push(deck.pop());
   }
   function collect(room){
     const winner=winningPlayer(room.table,room.trump.suit);
     room.players[winner].score+=room.table.reduce((n,c)=>n+cardPoints(c.card),0);
     room.lastTrick={id:++room.trickCount,cards:room.table,winner,points:room.table.reduce((sum,c)=>sum+cardPoints(c.card),0)};room.table=[];room.nextPlayAt=now()+trickPauseMs;
-    for(const i of [winner,1-winner])if(room.deck.length)room.players[i].hand.push(room.deck.pop());
+    for(let offset=0;offset<room.players.length;offset++)if(room.deck.length)room.players[(winner+offset)%room.players.length].hand.push(room.deck.pop());
     room.turn=winner;
-    if(room.players.every(p=>!p.hand.length)){room.status='finished';const [a,b]=room.players;room.winner=a.score===b.score?null:a.score>b.score?0:1;}
+    if(room.players.every(p=>!p.hand.length)){
+      room.status='finished';
+      if(room.players.length===4){const scores=[0,1].map(team=>room.players.reduce((sum,p,i)=>sum+(i%2===team?p.score:0),0));room.winnerTeam=scores[0]===scores[1]?null:scores[0]>scores[1]?0:1;room.winner=room.winnerTeam;room.winners=room.winnerTeam===null?[]:[room.winnerTeam,room.winnerTeam+2];}
+      else{const best=Math.max(...room.players.map(p=>p.score));room.winners=room.players.map((p,i)=>p.score===best?i:null).filter(i=>i!==null);room.winner=room.winners.length===1?room.winners[0]:null;}
+    }
   }
   return {
     exportState(){return structuredClone([...rooms]);},
@@ -48,20 +53,23 @@ export function createGameService({game='briscola',now=Date.now, ttl=30*60*1000,
       cleanup();
       if(action==='list'){
         const available=[...rooms.values()].filter(room=>room.visibility==='public'&&room.status==='waiting'&&now()-room.players[0].seen<12000).sort((a,b)=>b.createdAt-a.createdAt);
-        return {game,total:available.length,rooms:available.slice(0,100).map(room=>({code:room.code,hostName:room.players[0].name,game,createdAt:room.createdAt}))};
+        return {game,total:available.length,rooms:available.slice(0,100).map(room=>({code:room.code,hostName:room.players[0].name,game,createdAt:room.createdAt,playerCount:room.playerCount||2,occupied:room.players.length,available:(room.playerCount||2)-room.players.length}))};
       }
       if(action==='create'){
         const visibility=body.visibility??'private';
         if(!['private','public'].includes(visibility))fail('Scegli una stanza privata o pubblica.');
+        const playerCount=body.playerCount??2;
+        if(!Number.isInteger(playerCount)||!(game==='briscola'?[2,3,4]:[2]).includes(playerCount))fail(game==='briscola'?'Scegli 2, 3 o 4 giocatori.':'Forza 4 richiede due giocatori.');
         if(rooms.size>=maxRooms)fail('Troppe stanze attive. Riprova più tardi.',503);
         let code;do{code=Array.from({length:6},()=> 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[randomInt(32)]).join('');}while(rooms.has(code));
-        const p=player(body.name),room={code,visibility,createdAt:now(),players:[p],status:'waiting',deck:[],table:[],board:Array.from({length:6},()=>Array(7).fill(null)),lastTrick:null,version:0,updatedAt:now()};rooms.set(code,room);
+        const p=player(body.name),room={code,visibility,playerCount,createdAt:now(),players:[p],status:'waiting',deck:[],table:[],board:Array.from({length:6},()=>Array(7).fill(null)),lastTrick:null,version:0,updatedAt:now()};rooms.set(code,room);
         return {token:p.token,state:snapshot(room,0)};
       }
       const room=rooms.get(String(body.code||'').toUpperCase());if(!room)fail('Stanza inesistente o scaduta.',404);
       if(action==='join'){
-        if(room.status!=='waiting')fail('La stanza è già occupata.',409);
-        const p=player(body.name);room.players.push(p);start(room);room.version++;room.updatedAt=now();return {token:p.token,state:snapshot(room,1)};
+        if(room.status!=='waiting'||room.players.length>=(room.playerCount||2))fail('La stanza è già occupata.',409);
+        if((room.playerCount||2)>2&&body.clientVersion!==2)fail('Aggiorna l’app per entrare in un tavolo a tre o quattro giocatori.',409);
+        const p=player(body.name);room.players.push(p);if(room.players.length===(room.playerCount||2))start(room);room.version++;room.updatedAt=now();return {token:p.token,state:snapshot(room,room.players.length-1)};
       }
       const seat=room.players.findIndex(p=>p.token===token);if(seat<0)fail('Accesso alla partita non valido.',401);
       if(action==='leave'){rooms.delete(room.code);return {left:true};}
@@ -80,7 +88,7 @@ export function createGameService({game='briscola',now=Date.now, ttl=30*60*1000,
         else {
         const index=room.players[seat].hand.findIndex(c=>c.id===body.card);if(index<0)fail('Carta non disponibile.');
         room.table.push({player:seat,card:room.players[seat].hand.splice(index,1)[0]});
-        if(room.table.length===2)collect(room);else room.turn=1-seat;
+        if(room.table.length===room.players.length)collect(room);else room.turn=(seat+1)%room.players.length;
         }
         room.version++;
       }else if(action!=='state')fail('Azione sconosciuta.',404);

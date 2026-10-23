@@ -14,7 +14,7 @@ for(const game of ['briscola','forza4']){
     const list=service.execute('list');
     assert.equal(list.total,2);assert.deepEqual(list.rooms.map(r=>r.hostName),['Luca','Anna']);
     assert.equal(list.rooms[0].game,game);
-    assert.deepEqual(Object.keys(list.rooms[0]).sort(),['code','createdAt','game','hostName']);
+    assert.deepEqual(Object.keys(list.rooms[0]).sort(),['available','code','createdAt','game','hostName','occupied','playerCount']);
     const json=JSON.stringify(list);assert.ok(!json.includes(a.token));assert.ok(!json.includes(privateRoom.state.code));assert.ok(!json.includes('hand'));
     time=12002;assert.equal(service.execute('list').total,0);
     service.execute('state',{code:a.state.code},a.token);assert.equal(service.execute('list').total,1);

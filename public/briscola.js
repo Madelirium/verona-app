@@ -28,7 +28,7 @@
       const ranked=session?.mode==='ranked';
       const token=ranked?await globalThis.veronaAccount?.accessToken():session?.token;
       if(ranked&&!token)throw new Error('Accedi al tuo account per riprendere la partita ranked. Il tempo della mossa continua sul server.');
-      const response=await fetch(base+'/api/'+(ranked?'ranked':selectedGame)+'/'+action,{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:JSON.stringify({...body,game:selectedGame,code:body.code||session?.code}),signal:controller.signal});
+      const response=await fetch(base+'/api/'+(ranked?'ranked':selectedGame)+'/'+action,{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:JSON.stringify({...body,clientVersion:2,game:selectedGame,code:body.code||session?.code}),signal:controller.signal});
       let result;try{result=await response.json();}catch{throw new Error('Il servizio di gioco non è disponibile su questo indirizzo.');}
       if(!response.ok)throw Object.assign(new Error(result.error||'Servizio non disponibile.'),{status:response.status});
       return result;
@@ -106,10 +106,14 @@
   }
   function draw(){
     const four=selectedGame==='forza4',hasRoom=Boolean(session),waiting=state?.status==='waiting',finished=state?.status==='finished';
+    const count=state?.playerCount||2,multi=!four&&count>2;
     globalThis.veronaGameSession=hasRoom;
     $('app-shell').classList.toggle('game-session-layout',view==='games'&&hasRoom);
     $('game-type').value=selectedGame;$('game-type').disabled=busy;
     $('games-view').classList.toggle('forza4-screen',four);
+    $('games-view').classList.toggle('multiplayer-screen',multi);
+    $('game-player-count-field').hidden=four;$('game-player-count').disabled=busy;
+    $('game-lobby-eyebrow').textContent=four?'DUE GIOCATORI · AMICHEVOLI E RANKED':'IN 2, 3 O 4 · RANKED A DUE';
     $('game-lobby-title').textContent=four?'Quattro in fila. Una sfida tra voi.':'Una partita tra amici';
     $('game-lobby-description').textContent=four?'Scegli la tua colonna. Fai la prossima mossa.':'Quaranta carte, una buona compagnia.';
     $('game-lobby').hidden=hasRoom;$('game-room').hidden=!hasRoom||!state;$('game-room-info').hidden=!hasRoom;
@@ -120,8 +124,20 @@
     const seconds=state.ranked?Math.max(0,Math.ceil((state.ranked.deadline-Date.now())/1000)):null;
     const next=JSON.stringify([state,busy,phase,retryCount,seconds]);if(signature===next)return;signature=next;
     $('game-code').textContent=$('game-waiting-code').textContent=state.code;$('game-leave').disabled=busy;
-    const me=state.players[state.seat],opponent=state.players[1-state.seat];
-    $('game-players').hidden=waiting;$('game-score').textContent='Tu · '+me.name;$('game-score').title=me.name;
+    const me=state.players[state.seat],opponent=state.players[(state.seat+1)%count];
+    $('game-players').hidden=waiting||multi;$('game-score').textContent='Tu · '+me.name;$('game-score').title=me.name;
+    $('game-multiplayer-players').hidden=!multi;$('game-team-score').hidden=!multi||count!==4||waiting;
+    if(multi){
+      const roster=$('game-multiplayer-players');roster.replaceChildren();
+      for(let offset=0;offset<count;offset++){
+        const seat=(state.seat+offset)%count,p=state.players[seat],row=el('div','','game-player'+(p&&seat===state.turn&&!waiting?' is-turn':'')+(count===4&&seat%2===state.seat%2?' same-team':''));
+        const avatar=el('span',p?p.name.slice(0,1).toUpperCase():'?','game-avatar'),info=el('div','');avatar.setAttribute('aria-hidden','true');
+        const relation=seat===state.seat?'Tu':count===4?(seat%2===state.seat%2?'Compagno':'Avversario'):'Giocatore '+(seat+1);
+        info.append(el('strong',p?p.name:'Posto libero'),el('small',relation+(count===4?' · Coppia '+(seat%2===0?'A':'B'):'')),el('small',p?(waiting?'Al tavolo':p.score+' punti · '+p.count+' carte'+(!p.online?' · Si riconnette…':'')):'In attesa'));
+        row.append(avatar,info);roster.append(row);
+      }
+      if(count===4)$('game-team-score').textContent='La tua coppia '+state.teamScores[state.seat%2]+' · Avversari '+state.teamScores[1-state.seat%2];
+    }
     $('game-opponent').textContent=opponent?.name||'In attesa';$('game-opponent').title=opponent?.name||'';
     $('game-me-meta').textContent=four?(state.seat===0?'Rosso ●':'Giallo ○'):me.score+' punti · '+me.count+' carte';
     $('game-opponent-meta').textContent=opponent?(opponent.online?(four?(state.seat===0?'Giallo ○':'Rosso ●'):opponent.score+' punti · '+opponent.count+' carte'):'Si riconnette…'):'';
@@ -131,10 +147,12 @@
     const ranked=Boolean(state.ranked);
     $('game-copy-info').hidden=ranked;$('game-code').parentElement.hidden=ranked;
     if(ranked)$('game-room-visibility').textContent='Classificata · Elo '+state.ranked.elo[state.seat]+' contro '+state.ranked.elo[1-state.seat]+'. 90 secondi per mossa. Abbandonare comporta una sconfitta.';
-    $('game-waiting-description').textContent=state.visibility==='public'?'Il tuo tavolo è visibile nelle stanze in attesa. Puoi anche invitare un amico.':'Invita un amico: bastano un link e il suo soprannome.';
+    $('game-waiting-seats').hidden=multi;
+    $('game-waiting-title').textContent=multi?state.players.length+' su '+count+' al tavolo':'Il posto di fronte è libero.';
+    $('game-waiting-description').textContent=multi?'Mancano '+(count-state.players.length)+' '+(count-state.players.length===1?'giocatore':'giocatori')+'. Si parte quando tutti i posti sono occupati.'+(count===4?' Posti 1 e 3 contro 2 e 4.':' Ognuno per sé · senza il due di denari.'):state.visibility==='public'?'Il tuo tavolo è visibile nelle stanze in attesa. Puoi anche invitare un amico.':'Invita un amico: bastano un link e il suo soprannome.';
     $('game-turn').hidden=waiting||finished;
     $('game-turn').classList.toggle('my-turn',state.turn===state.seat&&!retryCount);
-    $('game-turn').textContent=retryCount?'Connessione interrotta · recupero la partita…':!four&&phase&&state.lastTrick?'Presa di '+state.players[state.lastTrick.winner].name+' · +'+state.lastTrick.points+' punti':state.turn===state.seat?(four?'Scegli la colonna, poi lascia cadere.':'Tocca a te · scegli una carta'):'Tocca a '+(opponent?.name||'…');
+    $('game-turn').textContent=retryCount?'Connessione interrotta · recupero la partita…':!four&&phase&&state.lastTrick?'Presa di '+state.players[state.lastTrick.winner].name+' · +'+state.lastTrick.points+' punti':state.turn===state.seat?(four?'Scegli la colonna, poi lascia cadere.':'Tocca a te · scegli una carta'):'Tocca a '+(state.players[state.turn]?.name||'…');
     if(state.ranked&&state.status==='playing'&&!retryCount)$('game-turn').textContent+=' · '+seconds+' s';
     $('game-result').hidden=!finished;$('game-new').hidden=!finished;
     if(finished){$('game-result-title').textContent=state.winner===null?'Pari e patta.':state.winner===state.seat?'Questa è tua!':'La spunta '+opponent.name;
@@ -143,13 +161,18 @@
       if(ranked){const change=state.ranked.changes?.[state.seat];$('game-result-summary').textContent=(state.ranked.reason==='timeout'?'Tempo per la mossa scaduto. ':state.ranked.reason==='abandon'?'Partita conclusa per abbandono. ':'')+(change?'Elo '+change.before+' → '+change.after+' ('+(change.delta>=0?'+':'')+change.delta+').':'Registrazione risultato in corso…');}
       const vote=state.rematch?.[state.seat];$('game-new').textContent=vote?'Annulla richiesta':'Rivincita';$('game-new').disabled=busy;
       $('game-rematch-status').textContent=vote?'In attesa di '+opponent.name+'…':state.rematch?.[1-state.seat]?opponent.name+' ha chiesto la rivincita.':'';
+      if(multi){
+        if(count===4){$('game-result-title').textContent=state.winnerTeam===null?'Pari e patta.':state.winnerTeam===state.seat%2?'Vince la tua coppia!':'Vince la coppia avversaria';$('game-result-summary').textContent='Coppia A '+state.teamScores[0]+' · Coppia B '+state.teamScores[1]+' punti.';}
+        else{$('game-result-title').textContent=state.winner===null?'Parità al primo posto':state.winner===state.seat?'Questa è tua!':'Vince '+state.players[state.winner].name;$('game-result-summary').textContent=state.players.map(p=>p.name+' '+p.score).join(' · ')+' punti.';}
+        const votes=state.rematch.filter(Boolean).length;$('game-rematch-status').textContent=votes?votes+' su '+count+' pronti per la rivincita. Occorre la conferma di tutti.':'';
+      }
       if(ranked)$('game-rematch-status').textContent='Torna alla sala giochi per cercare un nuovo avversario.';
     }
     $('game-last-trick').hidden=four||!state.lastTrick;
     if(four){drawFour();return;}
     const trump=$('game-trump');trump.replaceChildren();
     if(state.trump)trump.append(el('span','BRISCOLA'),card(state.trump),el('small',state.remaining+' nel mazzo'));
-    const backs=$('game-opponent-backs');backs.replaceChildren();for(let i=0;i<(opponent?.count||0);i++)backs.append(el('i',''));
+    const backs=$('game-opponent-backs');backs.hidden=multi;backs.replaceChildren();for(let i=0;i<(opponent?.count||0);i++)backs.append(el('i',''));
     const table=$('game-table');table.replaceChildren();
     const showLast=phase&&state.lastTrick||!state.table.length&&state.lastTrick;
     const cards=showLast?state.lastTrick.cards:state.table;
@@ -228,7 +251,8 @@
     const list=$('game-rooms-list'),focused=document.activeElement?.getAttribute?.('data-room');list.replaceChildren();roomButtons=[];
     for(const room of result.rooms){
       const row=el('article','','public-game-room'),info=el('div','');
-      info.append(el('strong',room.hostName),el('small',(room.game==='forza4'?'Forza 4':'Briscola')+' · 1 posto libero'));
+      const places=room.available??1,count=room.playerCount||2;
+      info.append(el('strong',room.hostName),el('small',(room.game==='forza4'?'Forza 4':'Briscola in '+count+(count===4?' · coppie':''))+' · '+places+' '+(places===1?'posto libero':'posti liberi')));
       const button=el('button','Entra');button.type='button';button.setAttribute('aria-label','Entra nella stanza di '+room.hostName);button.setAttribute('data-room',room.code);button.onclick=()=>joinPublicRoom(room.code);
       roomButtons.push(button);row.append(info,button);list.append(row);
     }
@@ -270,7 +294,7 @@
   const params=typeof location!=='undefined'?new URL(location.href).searchParams:null;
   const invitation=params?.get('forza4')||params?.get('briscola');
   if(invitation){selectedGame=params.has('forza4')?'forza4':'briscola';$('game-room-code').value=invitation.toUpperCase().slice(0,6);setView('games');}
-  $('game-create').onclick=()=>{if($('game-name').reportValidity())act('create',{name:$('game-name').value,visibility:$('game-visibility').value});};
+  $('game-create').onclick=()=>{if($('game-name').reportValidity())act('create',{name:$('game-name').value,visibility:$('game-visibility').value,playerCount:selectedGame==='forza4'?2:Number($('game-player-count').value)});};
   $('game-join-form').onsubmit=event=>{event.preventDefault();if($('game-name').reportValidity())act('join',{name:$('game-name').value,code:$('game-room-code').value.trim().toUpperCase()});};
   async function copyInvitation(){
     const url=new URL(location.href);url.searchParams.delete('briscola');url.searchParams.delete('forza4');url.searchParams.set(selectedGame,session.code);
@@ -280,7 +304,7 @@
   $('game-room-info').onclick=()=>$('game-info-dialog').showModal();
   $('game-info-close').onclick=()=>$('game-info-dialog').close();
   $('game-info-dialog').addEventListener('close',()=>$('game-room-info').focus());
-  $('game-leave').onclick=$('game-end-back').onclick=()=>{if($('game-info-dialog').open)$('game-info-dialog').close();if(state?.ranked&&state.status==='finished'){act('leave');return;}$('game-leave-dialog').querySelector('p').textContent=state?.ranked?'Abbandonando perderai la partita e il relativo punteggio Elo.':'La partita verrà chiusa anche per l’altra persona.';$('game-leave-dialog').showModal();};
+  $('game-leave').onclick=$('game-end-back').onclick=()=>{if($('game-info-dialog').open)$('game-info-dialog').close();if(state?.ranked&&state.status==='finished'){act('leave');return;}$('game-leave-dialog').querySelector('p').textContent=state?.ranked?'Abbandonando perderai la partita e il relativo punteggio Elo.':(state?.playerCount||2)>2?'Il tavolo verrà chiuso per tutti i partecipanti.':'La partita verrà chiusa anche per l’altra persona.';$('game-leave-dialog').showModal();};
   $('game-cancel-leave').onclick=()=>$('game-leave-dialog').close();
   $('game-confirm-leave').onclick=()=>{$('game-leave-dialog').close();act('leave');};
   $('game-leave-dialog').addEventListener('close',()=>$('game-room-info').focus());

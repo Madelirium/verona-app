@@ -36,3 +36,18 @@ Aggiornamento ogni 2,5 secondi. Una breve interruzione di rete mantiene il posto
 Le stanze restano **in memoria in un singolo processo**, massimo 1.000, ed expirono dopo 30 minuti senza richieste valide dei giocatori. Il riavvio del server interrompe tutte le partite. Non usare più repliche senza introdurre una memoria condivisa. Queste regole descrivono le amichevoli. La modalità separata [Classificate · Elo](ranked.md) introduce account verificati, matchmaking e classifica; resta da attivare dopo il completamento del login Google. Non sono presenti chat, scommesse o posta in gioco. Per un lancio con traffico elevato serviranno gestione della capacità e limiti per client dietro il proxy: le richieste senza identità valida hanno un limite di 240 al minuto per indirizzo di connessione; i giocatori autenticati hanno una quota di 300 richieste per posto, separata dagli altri utenti sullo stesso indirizzo. La configurazione dei proxy per il traffico anonimo resta da definire sull’hosting scelto.
 
 Verifica automatica: regole delle prese, 30 partite complete, 40 carte uniche e 120 punti per partita, mani nascoste, autenticazione, mosse fuori turno e duplicate, stanza occupata, scadenza, chiusura, CORS e limiti dei payload. Verifica browser con due sessioni distinte: invito, mosse, ricaricamento, annullamento dell'uscita e chiusura; layout a 320, 375, 430 e 1.024 px.
+
+## Briscola in tre e quattro
+
+Nelle stanze amichevoli si sceglie la capienza prima di creare il tavolo: 2, 3 o 4.
+La distribuzione parte soltanto a capienza raggiunta. In tre si gioca individualmente
+con 39 carte, togliendo il due di denari; vince il punteggio più alto, con eventuale
+parità. In quattro si gioca a coppie: posti 1 e 3 contro 2 e 4. I posti seguono
+l’ordine d’ingresso; il turno prosegue in senso antiorario da un posto al successivo.
+Le carte degli altri, compreso il compagno, restano nascoste. Chi prende pesca per
+primo, seguito dagli altri nell’ordine di gioco. La rivincita richiede tutti i voti;
+uscire chiude il tavolo per tutti, previa conferma. Le ranked restano a due.
+
+La capienza, i posti e le prese sono nel checkpoint già salvato su Supabase: non
+sono necessarie nuove tabelle o migrazioni. I checkpoint preesistenti senza capienza
+sono interpretati come partite a due. Gli avvisi WebSocket restano per stanza.
