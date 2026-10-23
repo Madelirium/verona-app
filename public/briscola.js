@@ -145,6 +145,13 @@
     $('game-invite').hidden=!waiting;
     $('game-room-visibility').textContent=state.visibility==='public'?'Stanza pubblica · compare tra i tavoli disponibili.':'Stanza privata · si entra solo con codice o link.';
     const ranked=Boolean(state.ranked);
+    for(const id of ['game-whatsapp','game-whatsapp-info']){
+      const link=$(id),available=waiting&&!ranked&&state.players.length<count;link.hidden=!available;
+      if(available){const places=count-state.players.length,title=four?'Forza 4':'Briscola a '+count+(count===4?' a coppie':'');
+        const text='Giochiamo a '+title+'? Mancano '+places+' '+(places===1?'giocatore':'giocatori')+'.\nEntra con il tuo soprannome, senza registrazione.\nCodice stanza: '+session.code+'\n'+invitationUrl();
+        link.href='https://wa.me/?text='+encodeURIComponent(text);
+      }else link.removeAttribute('href');
+    }
     $('game-copy-info').hidden=ranked;$('game-code').parentElement.hidden=ranked;
     if(ranked)$('game-room-visibility').textContent='Classificata · Elo '+state.ranked.elo[state.seat]+' contro '+state.ranked.elo[1-state.seat]+'. 90 secondi per mossa. Abbandonare comporta una sconfitta.';
     $('game-waiting-seats').hidden=multi;
@@ -296,9 +303,12 @@
   if(invitation){selectedGame=params.has('forza4')?'forza4':'briscola';$('game-room-code').value=invitation.toUpperCase().slice(0,6);setView('games');}
   $('game-create').onclick=()=>{if($('game-name').reportValidity())act('create',{name:$('game-name').value,visibility:$('game-visibility').value,playerCount:selectedGame==='forza4'?2:Number($('game-player-count').value)});};
   $('game-join-form').onsubmit=event=>{event.preventDefault();if($('game-name').reportValidity())act('join',{name:$('game-name').value,code:$('game-room-code').value.trim().toUpperCase()});};
+  function invitationUrl(){
+    const url=new URL(location.pathname,location.origin);url.searchParams.set(selectedGame,session.code);return url.href;
+  }
   async function copyInvitation(){
-    const url=new URL(location.href);url.searchParams.delete('briscola');url.searchParams.delete('forza4');url.searchParams.set(selectedGame,session.code);
-    try{if(navigator.share&&document.activeElement===$('game-copy'))await navigator.share({title:'Una partita a '+(selectedGame==='forza4'?'Forza 4':'Briscola'),url:url.href});else{await navigator.clipboard.writeText(url.href);message('Link d’invito copiato.');}}catch(error){if(error.name!=='AbortError')message('Condividi questo codice: '+session.code);}
+    try{await navigator.clipboard.writeText(invitationUrl());message('Link d’invito copiato.');}
+    catch{message('Condividi questo codice: '+session.code);}
   }
   $('game-copy').onclick=$('game-copy-info').onclick=copyInvitation;
   $('game-room-info').onclick=()=>$('game-info-dialog').showModal();
