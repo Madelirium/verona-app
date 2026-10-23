@@ -1,5 +1,11 @@
 # Giochi su Render, dati su Supabase
 
+## Dominio pubblico — 23 ottobre 2026
+
+Il frontend ora usa `https://veronaintasca.it`. Su Render, `BRISCOLA_ALLOWED_ORIGIN` deve essere impostata a questa origine esatta, senza slash finale o percorso. Il precedente valore `https://madelirium.github.io` causava risposte 403 ai preflight del nuovo dominio e l’errore generico di connessione nella creazione delle partite. La stessa impostazione protegge Briscola, Forza 4, ranked e WebSocket. Dopo ogni modifica occorre distribuire nuovamente il servizio. Le note successive del 20 ottobre documentano la configurazione precedente.
+
+Configurazione applicata su Render e distribuita con deploy `dep-dbdqvuhsrm7s73cmkn10`. Verifica reale: creazione di una stanza privata Briscola dal browser su veronaintasca.it riuscita; il tavolo tecnico è stato poi chiuso. Preflight Briscola, Forza 4 e ranked: 204 con origine corretta. Connessione WebSocket accettata. Un’origine esterna di controllo riceve ancora 403. Nessuna modifica alle chiavi o ai dati di altre partite.
+
 ## Stato del 20 ottobre 2026
 
 Le migrazioni `20261020125426` e `20261020130120` sono applicate e registrate nel
@@ -87,7 +93,7 @@ Configurare nell'ambiente del servizio:
 | `SUPABASE_URL` | URL del progetto Verona |
 | `SUPABASE_PUBLISHABLE_KEY` | Chiave pubblica del progetto |
 | `SUPABASE_SECRET_KEY` | Chiave segreta, soltanto su Render |
-| `BRISCOLA_ALLOWED_ORIGIN` | `https://madelirium.github.io` |
+| `BRISCOLA_ALLOWED_ORIGIN` | `https://veronaintasca.it` |
 
 Il server si ferma all'avvio se la modalità Supabase è scelta ma chiave, migrazione
 o accesso al database mancano. Non ripiega silenziosamente su memoria o SQLite.
