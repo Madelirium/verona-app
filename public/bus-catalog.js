@@ -26,6 +26,7 @@ function busCatalogStar(line){
   button.setAttribute('aria-label',(chosen?'Rimuovi dalle tue linee: ':'Aggiungi alle tue linee: ')+line.number);button.setAttribute('aria-pressed',String(chosen));
   button.onclick=()=>{for(const sheet of line.sheets)delete busFavorites[sheet.id];delete busFavorites['official-'+line.number];if(!chosen)busFavorites[line.sheets[0]?.id||'official-'+line.number]=true;
     try{localStorage.setItem('verona-bus-v1',JSON.stringify(busFavorites));$('bus-feedback').textContent=chosen?'Linea rimossa dalle tue linee.':'Linea aggiunta alle tue linee.';}catch{$('bus-feedback').textContent='Scelta valida per questa visita: il browser non consente il salvataggio.';}
+    if(view==='saved'){render();$('saved-feedback').textContent=$('bus-feedback').textContent;return;}
     renderBus();const replacement=$('bus-list').querySelector?.('[data-bus-star="'+line.number+'"]');if(replacement)replacement.focus();else $('bus-list').focus();
   };button.setAttribute('data-bus-star',line.number);return button;
 }
@@ -74,8 +75,8 @@ function openCatalogStop(stop,preset={}){
   $('bus-stop-title').textContent=busDisplayName(stop.name);$('bus-stop-code').textContent='Fermata '+stop.code;
   const numbers=stop.services.map(([number])=>number),line=preset.line||(numbers.length===1?numbers[0]:'');
   if(!$('bus-stop-dialog').open)$('bus-stop-dialog').showModal();
-  return renderBusStopExperience($('bus-stop-shared'),stop,{line,onChoose:number=>openCatalogStop(stop,{line:number,returning:true}),isOpen:()=>$('bus-stop-dialog').open,onDay:(number)=>{
-    $('bus-stop-dialog').close();openOfficialBus(number,{stopCode:stop.code,mode:'day',onReturn:()=>{openCatalogStop(stop,{line:number,returning:true});$('bus-stop-shared').stopUi.day.focus();}});
+  return renderBusStopExperience($('bus-stop-shared'),stop,{line,onChoose:number=>openCatalogStop(stop,{line:number,returning:true}),isOpen:()=>$('bus-stop-dialog').open,onDay:(number,filters)=>{
+    $('bus-stop-dialog').close();openOfficialBus(number,{stopCode:stop.code,mode:'day',...filters,onReturn:()=>{openCatalogStop(stop,{line:number,returning:true});$('bus-stop-shared').stopUi.day.focus();}});
   }});
 }
 $('close-bus-stop').onclick=()=>$('bus-stop-dialog').close();
@@ -98,32 +99,34 @@ function renderBusStopExperience(box,stop,options={}){
   let ui=box.stopUi;
   if(!ui||ui.key!==key){
     cancelBusStopExperience(box);box.replaceChildren();box.classList.toggle('stop-experience',true);
-    ui={key,version:0,buttons:new Map(),selected:'',loadedLine:'',loading:false};box.stopUi=ui;
-    if(options.compact){const head=el('div','','stop-experience-head'),title=el('div'),close=el('button','×');title.append(el('strong',busDisplayName(stop.name)),el('small','Fermata '+stop.code+(options.mapHome?' · orari previsti':'')));close.setAttribute('aria-label','Chiudi fermata selezionata');close.onclick=()=>ui.options.onClose?.();head.append(title,close);box.append(head);}
+    ui={key,version:0,buttons:new Map(),selected:'',loadedLine:'',loading:false,dayFilter:'',direction:''};box.stopUi=ui;
+    ui.filter=el('button','Giorno e direzione','stop-time-filter');ui.filter.disabled=true;ui.filter.onclick=()=>openBusStopFilters(box,stop);
+    if(options.compact){const head=el('div','','stop-experience-head'),title=el('div'),close=el('button','×');title.append(el('strong',busDisplayName(stop.name)),el('small','Fermata '+stop.code+(options.mapHome?' · orari previsti':'')));close.setAttribute('aria-label','Chiudi fermata selezionata');close.onclick=()=>ui.options.onClose?.();head.append(title,ui.filter,close);box.append(head);}
     const label=el('p','Scegli la linea','stop-experience-label'),lines=el('div','','stop-experience-lines');lines.setAttribute('role','group');lines.setAttribute('aria-label','Linee della fermata '+stop.code);
     const dateIndex=eventBusStops?.days.indexOf(dayInRome(new Date()))??-1;
     for(const number of numbers){const service=stop.services?.find(([n])=>n===number),otherDay=service&&dateIndex>=0&&service[1][dateIndex]!=='1',button=el('button',(options.mapHome?'':'Linea ')+number+(otherDay?' · altri giorni':''));button.setAttribute('aria-label','Mostra partenze linea '+number+' dalla fermata '+stop.code);button.onclick=()=>ui.options.onChoose(number);ui.buttons.set(number,button);lines.append(button);}
     ui.caption=el('p','','stop-experience-caption');ui.caption.setAttribute('role','status');
     ui.results=el('div','','stop-experience-results');ui.results.setAttribute('aria-label','Prossime partenze della fermata');ui.results.setAttribute('tabindex','0');
-    ui.day=el('button','Orari del giorno','stop-experience-day');ui.day.onclick=()=>ui.options.onDay?ui.options.onDay(ui.selected):openOfficialBus(ui.selected,{stopCode:stop.code,mode:'day'});
-    ui.note=el('p','','stop-experience-note');box.append(label,lines,ui.caption,ui.results,ui.day,ui.note);
+    ui.day=el('button','Orari del giorno','stop-experience-day');ui.day.onclick=()=>{const filters={date:ui.dayFilter||dayInRome(new Date()),destination:ui.direction};return ui.options.onDay?ui.options.onDay(ui.selected,filters):openOfficialBus(ui.selected,{stopCode:stop.code,mode:'day',...filters});};
+    ui.note=el('p','','stop-experience-note');box.append(label,lines);if(!options.compact)box.append(ui.filter);box.append(ui.caption,ui.results,ui.day,ui.note);
   }
-  ui.options=options;const number=options.line||'';ui.selected=number;
+  ui.options=options;const number=options.line||'';if(ui.selected!==number)ui.direction='';ui.selected=number;
   for(const [value,button]of ui.buttons){button.setAttribute('aria-pressed',String(value===number));const bits=stop.services?.find(([n])=>n===value)?.[1],dateIndex=eventBusStops?.days.indexOf(dayInRome(new Date()))??-1;button.textContent=(options.mapHome?'':'Linea ')+value+(bits&&dateIndex>=0&&bits[dateIndex]!=='1'?' · altri giorni':'');}
-  ui.day.hidden=!number;ui.note.textContent=options.routeState==='missing'?'Tracciato non disponibile. Fermate e orari restano consultabili.':options.routeState==='error'?'Percorso non caricato. Tocca di nuovo la linea per riprovare.':options.routeState==='ready'?'Percorso indicativo · fonte OSM.':'Orari programmati, senza ritardi in tempo reale.';
+  ui.day.hidden=!number;ui.filter.hidden=!number;ui.filter.disabled=ui.loadedLine!==number;ui.note.textContent=options.routeState==='missing'?'Tracciato non disponibile. Fermate e orari restano consultabili.':options.routeState==='error'?'Percorso non caricato. Tocca di nuovo la linea per riprovare.':options.routeState==='ready'?'Percorso indicativo · fonte OSM.':'Orari programmati, senza ritardi in tempo reale.';
   if(!number){clearTimeout(ui.timer);ui.version++;ui.loadedLine='';ui.loading=false;ui.caption.textContent='Quale autobus vuoi prendere?';ui.results.replaceChildren(el('p','Scegli una linea per vedere direzioni e prossime partenze.','stop-experience-empty'));return Promise.resolve();}
+  if(ui.data&&ui.loadedLine===number)ui.note.textContent+=' Archivio ATV: '+formatDay(ui.data.validFrom,{day:'numeric',month:'short'})+' – '+formatDay(ui.data.validTo,{day:'numeric',month:'short',year:'numeric'})+'.';
   if(ui.loadedLine===number||ui.loading&&ui.loadingLine===number)return ui.pending||Promise.resolve();
   const previousScroll=ui.lastRenderedLine===number?(ui.results.scrollTop||0):0;
   clearTimeout(ui.timer);const version=++ui.version;ui.loading=true;ui.loadingLine=number;ui.caption.textContent='Caricamento linea '+number+'…';ui.results.replaceChildren();
   ui.pending=(async()=>{
     try{
       const data=await getOfficialBusLine(number);if(box.stopUi!==ui||ui.version!==version||options.isOpen&&!options.isOpen())return;
-      ui.loadedLine=number;const now=new Date(),rows=nextBusStopDepartures(data,stop.code,now,options.mapHome?30:3);ui.results.replaceChildren();
+      ui.loadedLine=number;ui.data=data;ui.filter.disabled=false;const now=new Date(),day=ui.dayFilter||dayInRome(now),rows=day===dayInRome(now)?nextBusStopDepartures(data,stop.code,now,options.mapHome?30:3,ui.direction):busStopCalendarDay(data,stop.code,day,ui.direction);ui.results.replaceChildren();
       if(rows===null){ui.caption.textContent='Orari fuori validità per oggi.';ui.results.append(el('p','Scegli una data coperta negli orari del giorno o verifica ATV.','stop-experience-empty'));return;}
       if(!data.stops[stop.code]){ui.caption.textContent='Fermata non presente negli orari di questa linea.';ui.results.append(el('p',ui.caption.textContent,'stop-experience-empty'));return;}
-      ui.caption.textContent=rows[0]?.offset>0?'Oggi non ci sono altre partenze.':'Oggi · prossime partenze';
-      if(!rows.length)ui.results.append(el('p','Nessun’altra partenza nei prossimi 7 giorni coperti dall’archivio.','stop-experience-empty'));
-      for(const row of rows){const card=el(options.mapHome?'button':'div','','stop-experience-departure'),clock=el('div'),destination=el('div','','stop-experience-destination');clock.append(el('strong',row.time.slice(0,5)));if(row.offset)clock.append(el('small',(row.offset===1?'Domani · ':'')+formatDay(shiftDay(dayInRome(now),row.offset),{day:'numeric',month:'short'})));destination.append(el('span','Verso'),el('strong',busDisplayName(row.destination)));card.append(clock,destination);if(options.mapHome){card.setAttribute('aria-label','Vedi fermate della corsa delle '+row.time.slice(0,5)+' verso '+busDisplayName(row.destination));card.append(el('span','Fermate e orari ›','bus-trip-link'));card.onclick=()=>openBusTrip(data,row,card);}ui.results.append(card);}
+      ui.caption.textContent=(day===dayInRome(now)?'Oggi · '+formatDay(day,{day:'numeric',month:'short'}):formatDay(day,{weekday:'short',day:'numeric',month:'short',year:'numeric'}))+(ui.direction?' · verso '+busDisplayName(ui.direction):' · tutte le direzioni')+(rows[0]?.offset>0?' · prime partenze nei giorni successivi':' · orari programmati');ui.note.textContent+=' Archivio ATV: '+formatDay(data.validFrom,{day:'numeric',month:'short'})+' – '+formatDay(data.validTo,{day:'numeric',month:'short',year:'numeric'})+'.';
+      if(!rows.length)ui.results.append(el('p',day===dayInRome(now)?'Nessun’altra partenza nei prossimi 7 giorni coperti dall’archivio con questi filtri.':'Nessuna partenza in questa data e direzione. Cambia giorno o direzione.','stop-experience-empty'));
+      for(const row of rows){const card=el('button','','stop-experience-departure'),clock=el('div'),destination=el('div','','stop-experience-destination');clock.append(el('strong',row.time.slice(0,5)));if(row.offset)clock.append(el('small',(row.offset===1?'Domani · ':'')+formatDay(shiftDay(dayInRome(now),row.offset),{day:'numeric',month:'short'})));destination.append(el('span','Verso'),el('strong',busDisplayName(row.destination)));card.append(clock,destination);{card.setAttribute('aria-label','Vedi fermate della corsa delle '+row.time.slice(0,5)+' verso '+busDisplayName(row.destination));card.append(el('span','Fermate e orari ›','bus-trip-link'));card.onclick=()=>openBusTrip(data,row,card);}ui.results.append(card);}
       ui.lastRenderedLine=number;ui.results.scrollTop=previousScroll;
       ui.timer=setTimeout(()=>{if(box.stopUi!==ui||ui.version!==version||ui.options.isOpen&&!ui.options.isOpen())return;ui.loadedLine='';renderBusStopExperience(box,stop,ui.options);},60000);
     }catch{
@@ -131,3 +134,20 @@ function renderBusStopExperience(box,stop,options={}){
     }finally{if(ui.version===version)ui.loading=false;}
   })();return ui.pending;
 }
+
+let busStopFilterContext=null;
+function openBusStopFilters(box,stop){
+ const ui=box.stopUi;if(!ui?.data||!ui.selected)return;busStopFilterContext={box,stop,ui};
+ $('stop-filter-date').min=ui.data.validFrom;$('stop-filter-date').max=ui.data.validTo;$('stop-filter-date').value=ui.dayFilter||dayInRome(new Date());
+ const destinations=[...new Set(ui.data.trips.filter(trip=>trip.calls.some(call=>call[0]===stop.code&&call[3])).map(trip=>trip.destination))].sort();
+ officialOptions('stop-filter-direction',destinations.map(value=>({value,label:busDisplayName(value)})),ui.direction,'Tutte le direzioni');
+ $('stop-filter-status').textContent='Linea '+ui.selected+' · '+busDisplayName(stop.name)+' · Archivio dal '+formatDay(ui.data.validFrom,{day:'numeric',month:'long'})+' al '+formatDay(ui.data.validTo,{day:'numeric',month:'long',year:'numeric'});
+ $('stop-time-filters').showModal();$('stop-filter-close').focus();
+}
+$('stop-filter-close').onclick=()=>$('stop-time-filters').close();
+$('stop-filter-apply').onclick=()=>{
+ const context=busStopFilterContext;if(!context)return;const {box,stop,ui}=context,day=$('stop-filter-date').value;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(day)||!Number.isFinite(Date.parse(day))||new Date(day).toISOString().slice(0,10)!==day||day<ui.data.validFrom||day>ui.data.validTo){$('stop-filter-status').textContent='Scegli una data compresa nella validità dell’archivio.';return;}
+ $('stop-time-filters').close();if(box.stopUi!==ui||ui.options.isOpen&&!ui.options.isOpen())return;
+ ui.dayFilter=day;ui.direction=$('stop-filter-direction').value;ui.loadedLine='';ui.results.scrollTop=0;renderBusStopExperience(box,stop,ui.options);
+};

@@ -1,0 +1,180 @@
+{
+  "errors": [],
+  "screens": [
+    {
+      "width": 320,
+      "height": 568,
+      "scrollWidth": 320,
+      "create": {
+        "top": 484.59375,
+        "bottom": 528.59375,
+        "width": 262,
+        "height": 44
+      },
+      "browse": {
+        "top": 277.59375,
+        "bottom": 321.59375,
+        "width": 262,
+        "height": 44
+      },
+      "join": {
+        "top": 644.59375,
+        "bottom": 688.59375,
+        "width": 262,
+        "height": 44
+      },
+      "navTop": 507,
+      "internalScroll": 622
+    },
+    {
+      "width": 375,
+      "height": 667,
+      "scrollWidth": 375,
+      "create": {
+        "top": 484.59375,
+        "bottom": 528.59375,
+        "width": 317,
+        "height": 44
+      },
+      "browse": {
+        "top": 277.59375,
+        "bottom": 321.59375,
+        "width": 317,
+        "height": 44
+      },
+      "join": {
+        "top": 644.59375,
+        "bottom": 688.59375,
+        "width": 317,
+        "height": 44
+      },
+      "navTop": 606,
+      "internalScroll": 622
+    },
+    {
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "create": {
+        "top": 524.1875,
+        "bottom": 568.1875,
+        "width": 364,
+        "height": 44
+      },
+      "browse": {
+        "top": 317.1875,
+        "bottom": 361.1875,
+        "width": 364,
+        "height": 44
+      },
+      "join": {
+        "top": 684.1875,
+        "bottom": 728.1875,
+        "width": 364,
+        "height": 44
+      },
+      "navTop": 776,
+      "internalScroll": 658
+    }
+  ],
+  "notes": [],
+  "forza4": {
+    "buttons": [
+      {
+        "x": 6,
+        "w": 44,
+        "h": 44,
+        "center": 28
+      },
+      {
+        "x": 50,
+        "w": 44,
+        "h": 44,
+        "center": 72
+      },
+      {
+        "x": 94,
+        "w": 44,
+        "h": 44,
+        "center": 116
+      },
+      {
+        "x": 138,
+        "w": 44,
+        "h": 44,
+        "center": 160
+      },
+      {
+        "x": 182,
+        "w": 44,
+        "h": 44,
+        "center": 204
+      },
+      {
+        "x": 226,
+        "w": 44,
+        "h": 44,
+        "center": 248
+      },
+      {
+        "x": 270,
+        "w": 44,
+        "h": 44,
+        "center": 292
+      }
+    ],
+    "cells": [
+      {
+        "x": 58.265625,
+        "w": 25.625,
+        "center": 71.078125
+      },
+      {
+        "x": 87.890625,
+        "w": 25.640625,
+        "center": 100.7109375
+      },
+      {
+        "x": 117.53125,
+        "w": 25.640625,
+        "center": 130.3515625
+      },
+      {
+        "x": 147.171875,
+        "w": 25.640625,
+        "center": 159.9921875
+      },
+      {
+        "x": 176.8125,
+        "w": 25.640625,
+        "center": 189.6328125
+      },
+      {
+        "x": 206.453125,
+        "w": 25.640625,
+        "center": 219.2734375
+      },
+      {
+        "x": 236.09375,
+        "w": 25.640625,
+        "center": 248.9140625
+      }
+    ],
+    "offsets": [
+      -43.078125,
+      -28.7109375,
+      -14.3515625,
+      0.0078125,
+      14.3671875,
+      28.7265625,
+      43.0859375
+    ]
+  },
+  "resultText": "Chiudi e crea un’altra partita",
+  "offline": {
+    "opponent": "Luca · 3 carte · riconnessione…",
+    "turn": "Tocca a Luca.",
+    "guestError": "Connessione interrotta. Riprova: il tuo posto resta riservato. Riconnessione automatica in corso…"
+  },
+  "first429InBurst": 214
+}

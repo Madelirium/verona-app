@@ -1,7 +1,7 @@
 function newsStateLabel(state){return {open:'Scadenze aperte',expired:'Scadenze / pubblicazioni concluse',unknown:'Validità da verificare',informative:'Notizie informative',withdrawn:'Revoche e annullamenti'}[state]||state;}
 function deadlineLabel(deadline){return formatDay(deadline.day,{day:'numeric',month:'long',year:'numeric'})+(deadline.time?' · ore '+deadline.time:' · orario non indicato');}
 function homeNewsSelection(){
-  const now=new Date(),candidates=newsItems.map(item=>{const state=newsValidity(item,now),local=Boolean(currentDistrict()&&districtMatch(item)),soon=state.deadline&&state.deadline.day<=shiftDay(today,7);return {item,state,rank:(local?30:0)+(state.state==='open'?(soon?80:40):0)+(['Mobilità','Servizi'].includes(item.category)?10:0)};}).filter(({item,state})=>!['expired','withdrawn'].includes(state.state)&&!newsPastSeason(item,today)&&(state.state==='open'||item.publishedOn>=shiftDay(today,-14)));
+  const now=new Date(),candidates=newsItems.map(item=>{const state=newsValidity(item,now),local=Boolean(currentDistrict()&&districtMatch(item)),soon=state.deadline&&state.deadline.day<=shiftDay(today,7);return {item,state,rank:(local?100:0)+(state.state==='open'?(soon?80:40):0)+(['Mobilità','Servizi'].includes(item.category)?10:0)};}).filter(({item,state})=>!['expired','withdrawn'].includes(state.state)&&!newsPastSeason(item,today)&&(state.state==='open'||item.publishedOn>=shiftDay(today,-14)));
   return candidates.sort((a,b)=>b.rank-a.rank||(a.state.deadline?.day||'9999').localeCompare(b.state.deadline?.day||'9999')||b.item.publishedOn.localeCompare(a.item.publishedOn))[0]?.item||null;
 }
 function validSavedDeadline(item){

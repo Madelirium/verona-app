@@ -1,0 +1,34 @@
+.stop-time-filter{min-height:44px;min-width:44px;padding:8px 10px;border:1px solid var(--control-border);border-radius:10px;font-size:14px;line-height:1.25;color:var(--primary);background:var(--surface);flex:none;max-width:100px}
+.stop-experience-head>div{flex:1;min-width:0}.stop-experience-head{gap:7px}
+.stop-experience-head button.stop-time-filter{font-size:13px;line-height:1.2;height:44px;max-width:100px;min-width:80px;white-space:normal;padding:5px 8px;border:1px solid var(--control-border);border-radius:10px;background:var(--surface)}
+.stop-experience-results button.stop-experience-departure{width:100%;text-align:left;min-height:64px;color:var(--text);font:inherit;cursor:pointer}
+.network-inline .network-sheet[data-size="compact"] .stop-experience-caption{display:block;font-size:12px;line-height:1.4;margin:0}
+.network-inline .network-sheet[data-size="compact"].network-sheet-has-line{height:min(48dvh,248px)}
+.stop-experience-note{font-size:12px;line-height:1.4}
+#stop-time-filters input,#stop-time-filters select{min-height:46px;font-size:16px}
+#stop-filter-status{font-size:14px;line-height:1.5}
+#bus-trip-arrival{flex:none;font-size:15px;line-height:1.4;padding:10px 12px;background:var(--selected-surface);border-left:4px solid var(--primary);border-radius:10px;margin:0;font-weight:700;color:var(--primary)}
+.bus-trip-choose{grid-column:2;justify-self:start;min-height:44px;min-width:44px;padding:8px 13px;border-radius:10px;border:1px solid var(--control-border);color:var(--primary);background:var(--surface);font-size:15px}
+.bus-trip-choose[aria-pressed=true]{background:var(--primary);color:var(--on-primary)}
+#bus-journey-dialog{height:90dvh;max-height:90dvh;overflow:hidden}
+.bus-journey-shell{height:100%;display:flex;flex-direction:column;min-height:0}
+#bus-journey-dialog .detail-bar{flex:none;position:static;padding:10px 16px;margin:0;border-bottom:1px solid var(--border);gap:8px}
+#bus-journey-title{font-size:22px;line-height:1.25;margin:4px 0;flex:1;min-width:0}
+#bus-journey-content{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:14px 16px 20px}
+.bus-journey-point{border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:13px;padding:12px;margin-bottom:10px;background:var(--surface)}
+.bus-journey-point.end{background:var(--selected-surface)}
+#bus-journey-dialog .bus-journey-label{font-size:14px;line-height:1.4;margin:0 0 5px;color:var(--text-secondary)}
+.bus-journey-time{display:block;font-size:27px;line-height:1.2;color:var(--primary);font-variant-numeric:tabular-nums}
+.bus-journey-point h3{font-size:18px;line-height:1.35;margin:5px 0;overflow-wrap:anywhere}
+#bus-journey-dialog .bus-journey-code{font-size:13px;margin:0;color:var(--text-secondary)}
+#bus-journey-dialog .bus-journey-duration{font-size:16px;font-weight:700;line-height:1.4;color:var(--primary);margin:14px 0}
+.bus-journey-stops-title{font-size:18px;margin:18px 0 10px}
+.bus-journey-timeline{list-style:none;padding:0;margin:0}
+.bus-journey-call{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;padding:12px 10px;border-left:3px solid var(--control-border);border-bottom:1px solid var(--border)}
+.bus-journey-call.start,.bus-journey-call.end{border-left-color:var(--primary);background:var(--selected-surface)}
+.bus-journey-call>span{font-size:17px;font-weight:700;color:var(--primary);font-variant-numeric:tabular-nums}
+.bus-journey-call strong{font-size:16px;line-height:1.35}.bus-journey-call small{display:block;font-size:14px;line-height:1.4;color:var(--text-secondary);margin-top:4px}
+#bus-journey-dialog .bus-journey-note{flex:none;font-size:12px;line-height:1.4;padding:8px 16px;margin:0}
+.bus-journey-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:none;padding:10px 16px max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--border)}
+.bus-journey-actions button{min-height:48px;min-width:0;font-size:15px;padding:9px 7px;border:1px solid var(--primary);border-radius:12px;background:var(--surface);color:var(--primary);font-weight:700}
+#bus-journey-departures{background:var(--primary);color:var(--on-primary)}

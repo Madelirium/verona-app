@@ -35,13 +35,24 @@ function weatherState(now=new Date(),area=weatherArea){
   const rows=(weatherData.zones.find(zone=>zone.id===area)?.days||[]).filter(row=>row.day>=day&&!(row.day===day&&row.period==='am'&&hour>=12));
   return {usable:!stale&&rows.length>0,rows,stale};
 }
+function weatherEmoji(row){
+  if(!row)return '🌡️';const sky=row.sky.toLowerCase(),rain=row.rain.toLowerCase(),precipitation=row.probability!==0&&!/assent|nessun|non previst/.test(rain);
+  if(/nev|nevos/.test(sky)||precipitation&&/nev/.test(rain))return '❄️';
+  if(/temporal/.test(sky)||precipitation&&/temporal/.test(rain))return '⛈️';
+  if(/piogg|piov|rovesc/.test(sky)||precipitation&&/piogg|rovesc/.test(rain))return '🌧️';
+  if(/nebb|foschi/.test(sky))return '🌫️';
+  if(/parzial|poco nuvol|variabil|schiarit/.test(sky))return '🌤️';
+  if(/nuvol|copert/.test(sky))return '☁️';
+  if(/seren|solegg/.test(sky))return '☀️';return '🌡️';
+}
 function renderWeatherHeader(){
   if(!weatherReady)return;
   const state=weatherState(),row=state.rows[0],place=weatherArea==='15'?'Garda':'Verona';
   $('home-weather-label').textContent='Meteo '+place;
   const maximum=row&&weatherTemperature(row.max);
   const nextDay=row&&row.day!==dayInRome(new Date())?formatDay(row.day,{weekday:'short'})+' · ':'';
-  $('home-weather-value').textContent=state.usable?(weatherFailed?'Dati salvati →':maximum?nextDay+'Max '+maximum+' →':'Previsioni →'):weatherLoading?'Caricamento…':weatherData?'Da aggiornare →':'Apri previsioni →';
+  $('home-weather-icon').textContent=weatherEmoji(state.usable?row:null);
+  $('home-weather-value').textContent=state.usable?(weatherFailed?'Dati salvati':maximum?nextDay+'Max '+maximum:'Previsioni'):weatherLoading?'Caricamento…':weatherData?'Da aggiornare':'Apri meteo';
   $('home-weather').setAttribute('aria-label','Previsioni per '+weatherAreas[weatherArea]+(state.usable?' · '+row.sky+(maximum?' · massima '+maximum:''):'')+' · Apri meteo');
 }
 function renderWeather(){

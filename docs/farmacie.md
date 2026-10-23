@@ -1,5 +1,17 @@
 # Farmacie di turno
 
+## Revisione dell’esperienza di consultazione
+
+Accesso diretto anche da Home → Servizi utili → Farmacie di turno. L’intestazione separa numero di farmacie, termine preciso del turno e data di raccolta del catalogo. Il periodo completo resta in Fonti e aggiornamento. Chiama e Indicazioni sono le azioni principali, con nomi accessibili riferiti alla singola farmacia. Il turno non dimostra apertura dello sportello: resta visibile l’invito a telefonare.
+
+Il selettore comprende Verona, tutta la provincia e i nomi di comuni/località presenti nei PDF del catalogo. La ricerca testuale continua a cercare nome, indirizzo e località. Non è un elenco di tutte le farmacie ordinarie della provincia: vengono mostrati soltanto i turni attivi.
+
+Vicino a me richiede il permesso soltanto premendo il pulsante. Su HTTPS usa la posizione per ordinare tutte le farmacie del turno in provincia; mantiene la ricerca testuale eventualmente attiva. Le distanze sono in linea d’aria, senza minuti di percorrenza stimati. Le farmacie prive di coordinate restano in fondo, con indirizzo e telefono e distanza non disponibile. Distanza × rimuove l’ordinamento. Le coordinate non sono salvate e vengono rimosse chiudendo il pannello. Errori, rifiuti, timeout e risposte tardive dopo cambio ricerca o chiusura sono gestiti. Nell’anteprima Wi-Fi HTTP si propone la ricerca manuale, senza chiedere una posizione che il browser non può fornire.
+
+I punti mappa hanno un’area di attivazione di 44 px e accesso da tastiera. La mappa segnala sempre la copertura parziale. Gli aggiornamenti periodici con gli stessi risultati conservano scorrimento e focus delle azioni; il passaggio al turno successivo aggiorna i risultati. La chiusura rimuove la mappa e annulla richieste pendenti.
+
+Verifica della revisione: build rigenerata, 411 test superati (sei sui flussi UI farmacie). Controlli nel browser a 320 × 740 e 390 × 844, scelta di Legnago, alternativa manuale in HTTP, selezione del punto da tastiera e popup. Geolocalizzazione provata con coordinate simulate nei test, senza acquisire la posizione reale dell’utente. Nessun nuovo import di dati, API o dipendenza. Modifica locale, non ancora pubblicata.
+
 Accesso: **Esplora → categoria Farmacie → Farmacie di turno**. Le schede delle farmacie del catalogo OpenStreetMap contengono anche il collegamento ai turni. Catalogo delle attività e calendario ufficiale restano distinti: la presenza su OSM e gli orari ordinari non dimostrano che una farmacia sia di turno.
 
 ## Fonti e significato
@@ -18,7 +30,7 @@ La prima estrazione è stata confrontata visivamente nelle due impaginazioni dei
 
 ## Funzionamento
 
-Elenco iniziale su Verona città, selettore per tutta la provincia, ricerca testuale, mappa parziale e collegamenti `tel:`/indicazioni. Intestazione e controlli restano visibili; scorre soltanto l'area centrale. Nessuna posizione dell'utente viene acquisita o trasmessa.
+Elenco iniziale su Verona città, selettore per tutta la provincia e località del catalogo, ricerca testuale, mappa parziale e collegamenti `tel:`/indicazioni. Intestazione e controlli restano visibili; scorre soltanto l'area centrale. La posizione dell’utente è facoltativa, richiesta solo dal pulsante Vicino a me e non salvata.
 
 Il pannello si rinnova al confine del turno, almeno ogni minuto e tornando in primo piano. La mappa conserva lo spostamento dell'utente durante gli aggiornamenti senza cambi di risultati. Alla fine della copertura non ripete i vecchi turni: mostra il percorso verso Farmamia e l'Ordine. Un PDF non riconosciuto o incompleto interrompe l'importazione conservando il catalogo precedente; se falliscono soltanto le coordinate, i turni possono essere importati senza punti mappa.
 

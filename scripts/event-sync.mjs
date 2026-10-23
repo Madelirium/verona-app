@@ -1,5 +1,6 @@
 import { sources, parseComune, parseFiere, romeDay, dedupe } from './parsers.mjs';
 import {attachComuneImages} from './event-images.mjs';
+import {attachComuneVenues} from './event-venues.mjs';
 
 export function validateFrom(from) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(from) || !Number.isFinite(Date.parse(from)) || new Date(from).toISOString().slice(0,10) !== from) throw new Error('EVENTS_FROM non valida');
@@ -32,13 +33,14 @@ export async function loadComune({from,checkedAt}) {
     if(!url&&hits.length!==total)throw new Error('Importazione Comune incompleta');
     if(url)await new Promise(resolve=>setTimeout(resolve,1000));
   }
-  const events=parseComune(hits,{from,checkedAt});
-  return attachComuneImages(events,async id=>{
+  const readResource=async id=>{
     await new Promise(resolve=>setTimeout(resolve,150));
     const response=await get('https://www.comune.verona.it/api/opendata/v2/content/read/'+id);
     if(!response.ok)throw Error('HTTP '+response.status);
     return response.json();
-  },{onError:(id,error)=>console.warn('Immagine Comune '+id+' non disponibile: '+error.message)});
+  };
+  const events=await attachComuneVenues(parseComune(hits,{from,checkedAt}),readResource,{checkedAt,onError:(id,error)=>console.warn('Sede Comune '+id+' non disponibile: '+error.message)});
+  return attachComuneImages(events,readResource,{onError:(id,error)=>console.warn('Immagine Comune '+id+' non disponibile: '+error.message)});
 }
 
 export async function loadFiere({from,checkedAt}) {

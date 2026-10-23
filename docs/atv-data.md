@@ -1,5 +1,7 @@
 # Verifica delle fonti ATV — 17 ottobre 2026
 
+**Aggiornamento del 19 ottobre 2026:** trovato e scaricato dal NAP/CCISS un archivio ufficiale ATV in NeTEx livello 2, con linee, fermate, corse e calendari. La sezione storica “Cosa non è stato confermato” qui sotto descrive la ricerca del 17 ottobre e non include questa scoperta. Vedere [feed-atv.md](feed-atv.md) per link, verifica del file e limiti. Un endpoint pubblico documentato per dati live resta da confermare.
+
 Verifica in sola lettura. Nessuna modifica alla sezione Autobus dell'app e nessun contatto inviato ad ATV.
 
 ## Fonti verificate

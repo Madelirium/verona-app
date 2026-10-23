@@ -8,15 +8,17 @@
     "import:bus": "node scripts/import-bus.mjs",
     "snapshot:bus-pdfs": "node scripts/snapshot-bus-pdfs.mjs",
     "import:bus-routes": "node scripts/import-bus-routes.mjs",
+    "prepare:bus-line": "node scripts/prepare-bus-line.mjs",
+    "collect:bus-line": "node scripts/collect-bus-line.mjs",
     "import:places": "node scripts/import-places.mjs",
+    "import:parking": "node scripts/import-parking.mjs",
+    "import:pharmacies": "node scripts/import-pharmacies.mjs",
     "build": "node scripts/build-calendar.mjs",
     "test": "node --test",
-    "start": "node scripts/serve.mjs",
-    "start:lan": "node scripts/serve.mjs --lan",
+    "check:data": "node scripts/check-data-status.mjs",
     "games:check-cloud": "node scripts/check-games-cloud.mjs",
-    "import:pharmacies": "node scripts/import-pharmacies.mjs",
-    "import:parking": "node scripts/import-parking.mjs",
-    "check:data": "node scripts/check-data-status.mjs"
+    "start": "node scripts/serve.mjs",
+    "start:lan": "node scripts/serve.mjs --lan"
   },
   "engines": {
     "node": ">=22.13"

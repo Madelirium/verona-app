@@ -3,6 +3,19 @@ import assert from 'node:assert/strict';
 import { parseComune, parseFiere, dedupe, romeDay } from './parsers.mjs';
 const options = { from: '2026-10-17', checkedAt: '2026-10-17T10:00:00Z', year: 2026 };
 
+test('Comune: gratuità esplicita e condizioni di accesso, senza dedurre il prezzo dal testo',()=>{
+  const hit=fields=>({metadata:{id:42},data:{'ita-IT':{event_title:'Ingresso',time_interval:{events:[{start:'2026-10-23T15:30:00+02:00',end:'2026-10-23T17:30:00+02:00'}]},...fields}}});
+  for(const flag of [1,'1',true]){
+    const [event]=parseComune([hit({is_accessible_for_free:flag,cost_notes:'<p>Gratuito con <strong>prenotazione</strong>.</p>'})],options);
+    assert.equal(event.price,0);assert.equal(event.priceLabel,'Ingresso gratuito');assert.match(event.accessNotes,/^Gratuito con prenotazione\s*\.$/);assert.doesNotMatch(event.accessNotes,/<[^>]+>/);
+    assert.equal(event.endsAt,'2026-10-23T17:30:00+02:00');
+  }
+  const [unknown]=parseComune([hit({is_accessible_for_free:0,description:'Ingresso gratuito'})],options);
+  assert.equal(unknown.price,null);assert.equal(unknown.priceLabel,undefined);
+  const [conditions]=parseComune([hit({is_accessible_for_free:0,cost_notes:'Riduzioni e biglietti sul sito ufficiale'})],options);
+  assert.equal(conditions.price,null);assert.match(conditions.priceLabel,/fonte/);assert.match(conditions.accessNotes,/Riduzioni/);
+});
+
 test('Comune: importa coordinate dirette valide senza dedurle dalla sede',()=>{
   const hit=geo=>({metadata:{id:1},data:{'ita-IT':{event_title:'Prova',geo,time_interval:{events:[{start:'2026-10-18T10:00:00+02:00',end:'2026-10-18T12:00:00+02:00'}]}}}});
   const [valid]=parseComune([hit({latitude:'45.44',longitude:'10.99',address:'Via Roma'})],options);

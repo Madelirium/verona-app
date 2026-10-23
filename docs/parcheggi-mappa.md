@@ -1,5 +1,15 @@
 # Parcheggi: mappa e destinazione
 
+## Revisione del flusso: scheda compatta e informazioni
+
+Sulla mappa la selezione mostra nome, tipologia, eventuale distanza e il pulsante Informazioni e servizi. Il comando Portami qui resta separato e visibile. Indirizzo e azioni secondarie sono nel dettaglio, evitando che la scheda copra inutilmente la mappa. In Elenco restano anche indirizzo e metadati completi.
+
+Il nuovo pannello Informazioni e servizi mostra indirizzo, tipologia comunale, contatto telefonico se interpretabile senza ambiguità e sito del catalogo. Tariffe, orari e posti liberi non sono presenti nel dataset: questo viene dichiarato esplicitamente e si rinvia al sito indicato. Un contatto assente non produce un numero fittizio; testi ambigui rimangono testo consultabile.
+
+Con una destinazione o un evento, il pannello aggiunge il riepilogo Dal parcheggio alla destinazione, distanza in linea d’aria e collegamento al percorso a piedi. Non ricava minuti di cammino dalla distanza. Il collegamento Fermate e linee vicine riusa il pannello ATV esistente. Chiuderlo riporta al dettaglio; chiudere il dettaglio ripristina il pulsante sulla scheda selezionata. L’azione per raggiungere il parcheggio resta fissa sotto il contenuto scorrevole.
+
+Verifica: build rigenerata; 402 test superati (13 relativi ai parcheggi), con controllo di telefoni, dati mancanti, origini/destinazioni distinte, passaggio mappa/elenco e ritorno senza alterare preferenze. Controllo browser a 320 × 740 e 390 × 844, apertura della scheda da tastiera e ritorno dal pannello autobus. Nessuna nuova API o dipendenza, nessun cambiamento al catalogo dati. Pubblicazione non inclusa.
+
 La sezione riusa il catalogo del Comune già incluso nell'app: nessuna disponibilità di posti in tempo reale, né tariffe ricavate per deduzione. Gratuiti significa tipologia indicata dal Comune, non posti attualmente disponibili.
 
 Mappa iniziale con tutti i parcheggi del catalogo e selezione diretta. I punti hanno un'area interattiva di 44 px e possono essere attivati da tastiera. La scheda scorre internamente e il pulsante di navigazione resta visibile. La vista Elenco mantiene accessibili tutti i risultati anche senza mappa o sfondo.

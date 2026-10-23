@@ -31,6 +31,11 @@ $('explore-needs-open').onclick=()=>{exploreNeedFocus=document.activeElement;$('
 $('explore-needs-close').onclick=()=>$('explore-needs-dialog').close();
 $('explore-needs-dialog').addEventListener('close',()=>{if(exploreNeedFocus?.isConnected)exploreNeedFocus.focus();});
 for(const [id,need]of [['explore-need-parking','parking'],['explore-need-pharmacies','pharmacies'],['explore-need-waste','waste'],['explore-need-nearby','nearby']])$(id).onclick=()=>openExploreNeed(need);
+$('explore-nearby-open').onclick=()=>{openExploreNeed('nearby');exploreNearbyFocus=$('explore-nearby-open');};
+$('explore-filters-done').onclick=()=>$('explore-needs-dialog').close();
+const previousExploreBack=$('explore-back').onclick;
+$('explore-back').onclick=()=>{$('explore-needs-dialog').close();previousExploreBack();};
+for(const [id,category]of [['explore-quick-all',''],['explore-quick-food','food'],['explore-quick-shops','shops'],['explore-quick-services','services']])$(id).onclick=()=>{$('explore-category').value=category;placeMapFocus=null;placesShown=60;render();$('places-list').scrollTop=0;};
 $('explore-need-places').onclick=()=>{$('explore-needs-dialog').close();$('explore-search').focus();};
 const previousExploreEvents=$('explore-events').onclick;
 $('explore-events').onclick=()=>{$('explore-needs-dialog').close();previousExploreEvents();};

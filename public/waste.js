@@ -8,6 +8,12 @@ function renderWasteEntry(){
   home.append(el('span','Raccolta porta a porta','home-row-label'),el('strong',zone?button.textContent:'Scegli la tua zona →'));
   if(next&&zone.dates)home.append(el('span',zone.exposureTime,'home-row-note'));
   home.onclick=()=>openWaste();
+  const compact=$('home-collection'),upcoming=zone?wasteUpcoming(wasteData,zone.id,today,20):[],first=upcoming[0],covered=today>=wasteData.validFrom&&today<=wasteData.validTo;
+  const tomorrow=new Date(Date.parse(today+'T12:00:00Z')+86400000).toISOString().slice(0,10);
+  const when=first?(first.day===today?'oggi':first.day===tomorrow?'domani':formatDay(first.day,{weekday:'short',day:'numeric',month:'short'})):'';
+  $('home-collection-label').textContent=first?(zone.dates?'Esponi ':'Raccolta ')+when:'Raccolta';
+  $('home-collection-value').textContent=!zone?'Scegli zona':!covered?'Da aggiornare':first?[...new Set(upcoming.filter(item=>item.day===first.day).map(item=>item.material))].join(' · '):'Nessun ritiro previsto';
+  compact.setAttribute('aria-label','Raccolta porta a porta: '+$('home-collection-value').textContent+(first?' · '+$('home-collection-label').textContent+(zone.dates?' · '+zone.exposureTime:''):'')+' · Apri calendario');compact.onclick=()=>openWaste();
   $('district-waste').textContent=zone?'♻ Rifiuti · '+zone.name:'♻ Rifiuti e raccolta';
 }
 function openWaste(tab='collection'){

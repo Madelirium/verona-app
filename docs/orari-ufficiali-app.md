@@ -1,6 +1,6 @@
 # Orari ATV ufficiali nell’app
 
-Archivio acquisito il 19 ottobre 2026 e incluso nel rilascio Eventi e Autobus per GitHub Pages.
+Integrazione locale del 19 ottobre 2026, senza pubblicazione su GitHub.
 
 ## Consultazione
 
@@ -36,4 +36,4 @@ Il build verifica ogni asset (versione, riferimenti, date, coordinate e ordine d
 
 Test automatici sui 141 file, su tutti i conteggi, sui campioni e su dati alterati; test UI per accesso dalle schede e dalla mappa, data scaduta, assenza di servizio, recupero degli errori e annullamento durante il caricamento. Parser con test su cambio d’ora e riferimenti. Layout verificato a 320 px con scorrimento interno e controlli accessibili.
 
-Fonte: [risorsa ATV nel NAP](https://www.cciss.it/nap/mmtis/public/catalog/Asset/204401), distribuita da RAP Veneto. L’accesso tecnico pubblico è verificato; una licenza esplicita di riutilizzo non è stata confermata. Questa integrazione non costituisce una certificazione operativa dell’intera rete. Le geometrie delle mappe restano OSM e possono differire dalle fermate dell’archivio; non vengono create associazioni tramite somiglianza dei nomi.
+Fonte: [risorsa ATV nel NAP](https://www.cciss.it/nap/mmtis/public/catalog/Asset/204401), distribuita da RAP Veneto. L’accesso tecnico pubblico è verificato; una licenza esplicita di riutilizzo non è stata confermata. Questa integrazione è una prova locale, non una pubblicazione o una certificazione operativa dell’intera rete. Le geometrie delle mappe restano OSM e possono differire dalle fermate dell’archivio; non vengono create associazioni tramite somiglianza dei nomi.

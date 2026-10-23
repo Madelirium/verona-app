@@ -1,0 +1,17 @@
+.saved-hub{display:flex;flex-direction:column;min-height:0;gap:10px;height:100%;overflow:hidden;padding:0 18px;box-sizing:border-box}
+.saved-hub[hidden]{display:none}
+.saved-hub-controls{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;flex:none}
+.saved-hub-controls label{display:flex;flex-direction:column;gap:5px;font-size:14px;font-weight:700;color:var(--ink,#172d4a)}
+.saved-hub-controls select,.saved-hub-controls input{width:100%;min-width:0;min-height:46px;font:inherit;font-size:16px;border:1px solid #a7a39a;border-radius:12px;background:#fff;color:#172d4a;padding:10px 12px}
+.saved-hub-tabs{display:flex;gap:8px}.saved-hub-tabs[hidden]{display:none}
+.saved-hub-tabs button{flex:1;min-height:44px;border:1px solid #a7a39a;border-radius:12px;background:#fff;color:#172d4a;font:inherit;font-weight:700}
+.saved-hub-tabs button[aria-pressed=true]{background:#183b63;color:#fff;border-color:#183b63}
+#saved-count{margin:0;font-size:14px;color:#4e5964}#saved-list{min-height:0;flex:1;overflow-y:auto;overscroll-behavior:contain;padding:0 3px 18px;scrollbar-gutter:stable}
+.saved-hub-day{font-size:16px;margin:18px 0 9px;text-transform:capitalize}.saved-hub-day:first-child{margin-top:3px}
+.saved-hub-card{background:#fff;border:1px solid #d8d5ce;border-left:4px solid #294f76;border-radius:14px;padding:13px;margin:0 0 10px;display:flex;flex-direction:column;align-items:stretch;gap:7px;overflow-wrap:anywhere}
+.saved-hub-open{font:inherit;font-size:18px;font-weight:750;line-height:1.35;text-align:left;background:transparent;color:#173c66;border:0;padding:3px 0;min-height:44px;cursor:pointer}
+.saved-hub-meta,.saved-hub-status{margin:0;font-size:14px;line-height:1.45;color:#4e5964}.saved-hub-status{font-weight:700;color:#254b72}
+.saved-hub-card .bus-favorite,.saved-hub-card .news-bookmark,.saved-hub-remove{align-self:flex-end;position:static;min-width:44px;min-height:44px;font:inherit;border:1px solid #c9c5bd;border-radius:10px;background:#faf9f6;color:#173c66;padding:8px 12px}
+.saved-hub-note,.saved-hub-empty{padding:16px;background:#fff;border-radius:14px;line-height:1.5}.saved-hub-empty h2{font-size:20px;margin-top:0}.saved-hub-empty button{min-height:46px;padding:10px 15px;background:#183b63;color:white;border:0;border-radius:12px;font:inherit;font-weight:700}
+#saved-feedback{margin:0;font-size:14px}#saved-feedback:empty{display:none}
+@media(min-width:600px){.saved-hub-controls{grid-template-columns:1fr 1fr}}

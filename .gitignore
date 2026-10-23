@@ -1,21 +1,14 @@
 research/
 node_modules/
+supabase/.temp/
 data/*.tmp
 _site/
+public/bus-routes/
 .local/
 __pycache__/
 *.pyc
 .env
 .env.*
 !.env.example
-
-.local/
-.env
-.env.*
-!.env.example
-
-supabase/.temp/
-
-public/bus-routes/
 
 public/bus-official/

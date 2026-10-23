@@ -1,0 +1,37 @@
+.explore-screen{padding:0 12px 4px;gap:7px}
+.explore-search-row{display:flex;gap:8px;align-items:center;flex:none;min-width:0}
+.explore-search-row .bus-search{flex:1;min-width:0;width:0;min-height:46px;font-size:16px;margin:0}
+.explore-search-row button{flex:none;min-height:46px;padding:9px 12px;border:1px solid var(--control-border);border-radius:12px;background:var(--surface);color:var(--primary);font-weight:700;font-size:15px}
+.explore-quick{display:grid;grid-template-columns:.7fr 1.2fr 1fr 1fr;gap:5px;flex:none}
+.explore-quick button{min-height:44px;min-width:0;padding:7px 3px;border:1px solid var(--control-border);border-radius:11px;font-size:14px;background:var(--surface);color:var(--primary)}
+.explore-quick button[aria-pressed=true]{background:var(--primary);color:var(--on-primary);border-color:var(--primary);font-weight:700}
+.explore-results-bar{min-width:0;flex:none;gap:5px}.explore-results-bar p{font-size:12px;min-width:0;overflow-wrap:anywhere}
+.explore-results-bar .explore-tabs{gap:3px;flex:none}.explore-results-bar .explore-tabs button{padding:7px;font-size:13px;min-height:44px;min-width:44px;border:1px solid var(--control-border)}
+.explore-results-bar #explore-reset{padding:6px;font-size:12px}
+.explore-content{border-radius:14px;isolation:isolate}
+.explore-nearby-open{position:absolute;z-index:450;right:10px;top:10px;min-height:44px;padding:9px 13px;border:1px solid var(--control-border);border-radius:22px;background:var(--surface);color:var(--primary);box-shadow:0 3px 15px #12233a24;font-size:14px;font-weight:700}
+.explore-search-area{top:auto;bottom:27px;max-width:70%;font-size:14px}
+#places-map:has(.leaflet-popup)~.explore-nearby-open,#places-map:has(.leaflet-popup)~.explore-search-area{visibility:hidden;pointer-events:none}
+#places-map:has(.leaflet-popup) .leaflet-control-zoom{visibility:hidden;pointer-events:none}
+#places-map .leaflet-popup-close-button{min-width:44px;min-height:44px;padding:8px}#places-map .leaflet-popup-content{margin-right:40px}
+.explore-screen .map-message{top:63px;font-size:14px;line-height:1.4;z-index:440}
+.map-popup strong{font-size:17px;line-height:1.35}.map-popup span{display:block;font-size:14px}.map-popup button,.map-popup a{min-height:44px;display:flex;align-items:center;font-size:15px;color:var(--primary)}
+.place-popup-distance{font-size:13px!important;margin:8px 0!important}
+.explore-filter-fields{display:grid;gap:9px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.explore-filter-fields label{display:flex;flex-direction:column;gap:6px;font-size:16px;font-weight:700}
+.explore-filter-fields select{width:100%;min-width:0;min-height:46px;font-size:16px;padding:10px;border:1px solid var(--control-border);border-radius:12px;background:var(--surface);color:var(--text)}
+.explore-needs-list .explore-filter-fields button{min-height:46px;text-align:center;display:block;font-size:16px;padding:10px}
+.explore-filter-fields #explore-filters-done{background:var(--primary);color:var(--on-primary);font-weight:700}
+.explore-screen .bus-feedback:empty{display:none}.explore-screen .bus-feedback{font-size:13px;line-height:1.4;margin:0}
+.explore-screen .map-location-control>button{display:none}
+.explore-screen .place-open p,.explore-screen .place-services{font-size:14px}
+.place-detail-sheet .detail-inner{display:flex;flex-direction:column;height:88dvh;max-height:88dvh;min-height:0;padding:0;overflow:hidden}
+#place-detail-dialog .detail-bar{flex:none;padding:8px 16px;border-bottom:1px solid var(--border);margin:0;position:static}
+#place-detail-content{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:16px 18px}
+#place-detail-content h2{font-size:24px;line-height:1.25;overflow-wrap:anywhere;margin:8px 0 12px}
+#place-detail-content p{font-size:16px;line-height:1.5}#place-detail-content .detail-note{font-size:14px}
+.place-distance{color:var(--primary);font-weight:700}
+.place-detail-actions{flex:none;display:grid;grid-template-columns:1fr 1.15fr;gap:8px;padding:12px 16px max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--border);background:var(--surface)}
+.place-detail-actions button,.place-detail-actions a{min-height:48px;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 8px;font:inherit;font-size:15px;font-weight:700;border:1px solid var(--primary);border-radius:12px;background:var(--surface);color:var(--primary);text-decoration:none}
+.place-detail-actions a{background:var(--primary);color:var(--on-primary)}
+#place-feedback{grid-column:1/-1;font-size:13px;line-height:1.4;margin:0}#place-feedback:empty{display:none}

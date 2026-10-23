@@ -1,8 +1,26 @@
-> Giochi online: Briscola e Forza 4, tavoli amichevoli e ranked con Elo. Il motore gira su Node/Render e i dati dei giochi su Supabase. [Configurazione](docs/giochi-render-supabase.md). Eseguire `npm ci` prima dei test.
+> Aggiornamento 23 ottobre 2026: sito pubblico [Verona in Tasca](https://veronaintasca.it/), in versione alfa. L’aggiornamento comprende interfaccia semplificata, zona facoltativa, salvati unificati, dettagli delle corse, condizioni e orari degli eventi e [sedi ufficiali recuperate automaticamente](docs/sedi-eventi-automatiche.md). Build e 427 test verificati. Le note datate 19 ottobre descrivono lo stato storico.
 
-# Verona — prime fonti eventi
+# Verona — app locale
 
-Prototipo locale dell'importazione da Comune di Verona e Veronafiere. Richiede Node.js 22 o successivo, senza dipendenze esterne.
+**Account facoltativo con Google:** integrazione pubblicata e verificata sul sito HTTPS.
+Nessun dominio o servizio email da acquistare per questo accesso. Configurazione e limiti in
+[docs/login.md](docs/login.md). I preferiti restano locali: la sincronizzazione non è ancora attiva.
+
+La sezione **Giochi** include briscola e Forza 4 a due con stanze amichevoli private e codici d'invito, senza account. Ogni gioco mantiene la propria sessione. Il server locale gestisce già le partite; per giocare da reti diverse occorre pubblicare il servizio Node. Configurazione, prove e limiti: [Briscola online](docs/briscola.md) e [Forza 4 online](docs/forza4.md).
+
+La prima versione **Classificate · Elo** aggiunge matchmaking, conferma della sfida e classifica per gioco, riservati agli account verificati dal server. Il backend va attivato dopo la configurazione. È predisposta la modalità **Render + Supabase**, che conserva anche lo stato delle partite ai riavvii: [pubblicazione](docs/giochi-render-supabase.md), [regole e limiti ranked](docs/ranked.md).
+
+Le partite possono anche essere **pubbliche**: da **Stanze in attesa** si vedono gli ospiti collegati del gioco scelto e si entra senza codice. La scelta iniziale resta privata. [Elenco delle stanze](docs/stanze-giochi.md).
+
+App mobile first per residenti e visitatori, con eventi, notizie comunali, autobus, luoghi e servizi locali. Richiede Node.js ≥22.13 (consigliato 24). Il server non ha dipendenze npm di produzione; eseguire `npm ci` per installare gli strumenti di test PostgreSQL.
+
+**Stato aggiornato, risultati delle prove e prossimi passi:** [docs/stato-progetto.md](docs/stato-progetto.md).
+
+**Nuova fonte ATV verificata:** [archivio ufficiale NeTEx del NAP/CCISS e feed RSS](docs/feed-atv.md). La valutazione di questa fonte ha priorità sull'estensione della raccolta fermata per fermata.
+
+La [verifica dei calendari NeTEx e della linea 24](docs/verifica-netex-atv.md) riproduce tutti i 106 passaggi dei campioni e ricostruisce la settimana 19–25 ottobre. L'integrazione di questi dati nel frontend resta da completare.
+
+Il bot sperimentale ATV supporta salvataggio, ripresa dei lavori e riuso dei dettagli delle corse: [istruzioni](docs/bot-atv-ripresa.md). È predisposto il [piano della linea 24 e il primo lotto controllato](docs/raccolta-linea-24.md); la settimana completa non è ancora stata raccolta.
 
 ```powershell
 npm run import:events
@@ -93,14 +111,7 @@ In locale si aggiorna con `npm run import:events`. È predisposta anche una racc
 
 Revisione delle sedi e dei diritti di riutilizzo; gestione delle cancellazioni e degli aggiornamenti; archivio delle schede approvate; costruzione della sezione Eventi con swipe e calendario personale.
 
-La prima prova della mappa autobus riguarda la linea 11: varianti OpenStreetMap, fermate e collegamenti prudenti alle tabelle ATV. Dettagli in [docs/mappa-autobus.md](docs/mappa-autobus.md).
+Le mappe autobus coprono 30 schede ATV con 121 varianti OpenStreetMap, fermate, confronto con i PDF e collegamenti Google Maps per verifica manuale. I percorsi vengono caricati per linea. Dettagli in [docs/mappa-autobus.md](docs/mappa-autobus.md).
 
 
 Le immagini degli eventi del Comune sono importate con autore e licenza, con anteprime e locandine complete nei dettagli: [docs/immagini-eventi.md](docs/immagini-eventi.md).
-
-## Aggiornamento Eventi e Autobus
-
-- [Mappa generale delle linee e fermate](docs/mappa-generale-autobus.md).
-- [Autobus vicini agli eventi e percorsi colorati](docs/eventi-autobus.md).
-- [Orari programmati ufficiali ATV](docs/orari-ufficiali-app.md).
-- [Prossimi eventi salvati e storico locale](docs/salvati-storico.md).

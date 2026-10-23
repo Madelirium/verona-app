@@ -18,7 +18,7 @@ Mappa ed elenco Fermate usano la stessa funzione per i contenuti. Rimossi il col
 
 Verifica browser: Social Run del 26 ottobre, fermate Via Piccoli 1525/1526 a circa 50/80 m, linea 62; da 1525 si aprono 25 partenze programmate del 26 ottobre. Linea 24, popup Santini 1974: accesso diretto a 40 partenze del 20 ottobre, senza il vecchio messaggio. Test automatici su distanze, limite di ricerca, calendari 24/96, data preselezionata, assenza di coordinate, errori e annullamento durante il caricamento.
 
-Incluso nel rilascio Eventi e Autobus per GitHub Pages.
+Prova locale: nessuna pubblicazione GitHub di questo intervento.
 
 ## Anteprima automatica sulla mappa delle linee
 

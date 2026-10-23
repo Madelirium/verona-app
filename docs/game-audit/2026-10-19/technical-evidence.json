@@ -1,0 +1,19 @@
+{
+  "rateLimit": {
+    "clients": 12,
+    "sameProxyAddress": true,
+    "firstRejectedRequest": 241
+  },
+  "briscola": {
+    "afterTrick": {
+      "tableCount": 0,
+      "lastTrickCards": 2,
+      "status": "playing"
+    },
+    "afterNextPlay": {
+      "tableCount": 1,
+      "lastTrickCards": 2
+    },
+    "renderedCardsAfterNextPlay": 1
+  }
+}

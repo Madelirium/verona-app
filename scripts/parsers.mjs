@@ -20,6 +20,10 @@ function base(source, key, title, url, checkedAt) {
   if (parsed.protocol !== 'https:') throw new Error('La fonte deve usare HTTPS');
   return { id: `${source}-${createHash('sha256').update(String(key)).digest('hex').slice(0, 20)}`, title: text(title), source: sources[source].name, sourceUrl: url, checkedAt, timezone: 'Europe/Rome', price: null, image: null, publicationStatus: 'draft', reviewReasons: [], license: sources[source].license, licenseUrl: sources[source].licenseUrl };
 }
+export function comuneAccess(data){
+  const free=data.is_accessible_for_free===1||data.is_accessible_for_free==='1'||data.is_accessible_for_free===true,notes=text(data.cost_notes||'');
+  return {price:free?0:null,...free?{priceLabel:'Ingresso gratuito'}:notes?{priceLabel:'Costi e condizioni indicati dalla fonte'}:{},...notes?{accessNotes:notes}:{} };
+}
 export function parseComune(hits, { from, checkedAt }) {
   const result = [];
   for (const hit of hits) {
@@ -35,11 +39,14 @@ export function parseComune(hits, { from, checkedAt }) {
       if (!validDate(o.start) || !validDate(o.end) || Date.parse(o.end) < Date.parse(o.start)) continue;
       if (romeDay(new Date(o.end)) < from) continue;
       const e = base('comune', `${hit.metadata.id}:${o.start}`, d.event_title, url, checkedAt);
+      Object.assign(e,comuneAccess(d));
       const imageId=d.image?.[0]?.classIdentifier==='image'?d.image[0].id:null;
       if(Number.isSafeInteger(imageId)&&imageId>0)e.imageId=imageId;
       e.startsAt = o.start; e.endsAt = o.end; e.datePrecision = 'datetime';
       e.category = d.has_public_event_typology ?? [];
-      e.location = (d.takes_place_in ?? []).map(p => p.name?.['ita-IT']).filter(Boolean).join(' · ') || null;
+      const venues=Array.isArray(d.takes_place_in)?d.takes_place_in:[];
+      e.location = venues.map(p => p?.name?.['ita-IT']).filter(Boolean).join(' · ') || null;
+      if(venues.length&&venues.every(p=>p?.classIdentifier==='place'&&Number.isSafeInteger(p.id)&&p.id>0))e.venueIds=[...new Set(venues.map(p=>p.id))];
       const lat=Number(d.geo?.latitude),lon=Number(d.geo?.longitude);
       if(Number.isFinite(lat)&&Number.isFinite(lon)&&lat>=44.5&&lat<=46.3&&lon>=10&&lon<=12){
         e.coordinates={lat,lon,source:'Comune di Verona',precision:'source'};

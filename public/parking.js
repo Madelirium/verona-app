@@ -46,7 +46,7 @@ function parkingLayout(){
   parkingMap?.invalidateSize();
   $('parking-results').hidden=mapMode&&!parkingSelected&&parkingRows().length>0;
   const chosen=parkingData.items.find(item=>item.id===parkingSelected);$('parking-go').hidden=!mapMode||!chosen;if(chosen)$('parking-go').href='https://www.google.com/maps/dir/?api=1&travelmode=driving&destination='+chosen.lat+','+chosen.lon;
-  for(const card of $('parking-results').children)card.hidden=mapMode&&Boolean(parkingSelected)&&card.getAttribute('data-parking-id')!==parkingSelected;
+  for(const card of $('parking-results').children){card.hidden=mapMode&&Boolean(parkingSelected)&&card.getAttribute('data-parking-id')!==parkingSelected;const meta=card.children[1];if(meta?.getAttribute('data-parking-meta-full'))meta.textContent=meta.getAttribute(mapMode?'data-parking-meta-short':'data-parking-meta-full');}
 }
 function renderEventParking(){
   const point=parkingPoint(),rows=parkingRows(),list=$('parking-results');list.replaceChildren();if(!rows.some(row=>row.id===parkingSelected))parkingSelected='';
@@ -55,15 +55,38 @@ function renderEventParking(){
   for(const item of rows){const card=el('article','','parking-card');card.setAttribute('data-parking-id',item.id);card.tabIndex=-1;card.classList.toggle('parking-selected',parkingSelected===item.id);
     const title=el('button',item.name,'parking-card-title');title.setAttribute('aria-label','Evidenzia sulla mappa: '+item.name);title.onclick=()=>selectParking(item.id,false);
     const type=item.typeKey==='free'?'Gratuito secondo il Comune':item.typeKey==='paid'?'A pagamento':'Tipologia da verificare';card.append(title,el('p',(point?parkingDistance(item.distance)+(parkingEvent?' dall’evento':' dal punto scelto')+' · ':'')+type,'parking-meta'),el('p',item.address||'Indirizzo non indicato'));
-    const actions=el('div','','parking-actions'),destination=item.lat+','+item.lon,drive=parkingLink('Portami qui ↗','https://www.google.com/maps/dir/?api=1&travelmode=driving&destination='+destination);drive.className+=' parking-primary';actions.append(drive);if(point)actions.append(parkingLink(parkingEvent?'Da qui a piedi all’evento ↗':'Da qui a piedi alla destinazione ↗','https://www.google.com/maps/dir/?api=1&travelmode=walking&origin='+destination+'&destination='+point.lat+','+point.lon));
-    const buses=el('button','Autobus nelle vicinanze','parking-link');buses.type='button';buses.onclick=()=>openParkingBus(item);actions.append(buses);
-    if(item.website)actions.append(parkingLink('Sito indicato dal Comune ↗',item.website));card.append(actions);list.append(card);
+    card.children[1].setAttribute('data-parking-meta-full',card.children[1].textContent);card.children[1].setAttribute('data-parking-meta-short',(point?parkingDistance(item.distance)+' · ':'')+type);
+    const actions=el('div','','parking-actions'),destination=item.lat+','+item.lon,drive=parkingLink('Portami qui ↗','https://www.google.com/maps/dir/?api=1&travelmode=driving&destination='+destination);drive.className+=' parking-primary';
+    const info=el('button','Informazioni e servizi','parking-link');info.type='button';info.setAttribute('aria-label','Informazioni e servizi: '+item.name);info.onclick=()=>openParkingDetails(item);actions.append(drive,info);card.append(actions);list.append(card);
   }
   const details=el('details','','parking-source'),summary=el('summary','Fonte e aggiornamento');details.append(summary,el('p','Comune di Verona · CC BY 4.0. Dati raccolti il '+(parkingData.updatedAt?formatDay(dayInRome(parkingData.updatedAt),{day:'numeric',month:'long',year:'numeric'}):'giorno non disponibile')+'.'));
   if(parkingData.status==='error')details.append(el('p','Ultima raccolta non riuscita: sono conservati i dati precedenti.'));
   details.append(parkingLink('Apri il dataset del Comune ↗',parkingData.sourceUrl||'https://www.comune.verona.it/Amministrazione/Documenti-e-dati/Dataset/Parcheggi-a-Verona'));list.append(details);
   parkingLayout();drawParkingMap(point,rows);
 }
+function parkingPhone(contact){
+  const text=String(contact||'').trim(),match=text.match(/^(?:tel\.?\s*|N\.\s*Verde\s*)?(\+?\d[\d\s().-]+)$/i);
+  if(!match)return null;const number=match[1].replace(/[^\d+]/g,'');return /^\+?\d{6,15}$/.test(number)?number:null;
+}
+let parkingDetailFocus=null;
+function openParkingDetails(item){
+  parkingDetailFocus=document.activeElement;const content=$('parking-detail-content'),point=parkingPoint();content.replaceChildren();
+  $('parking-detail-title').textContent=item.name;
+  const badge=el('p',item.typeKey==='free'?'Gratuito secondo il Comune':item.typeKey==='paid'?'A pagamento':'Tipologia da verificare','parking-detail-type');
+  content.append(badge,el('p',item.address||'Indirizzo non indicato','parking-detail-address'));
+  if(point){const journey=el('section','','parking-journey');journey.append(el('h3','Dal parcheggio alla destinazione'),el('strong',parkingEvent?.title||parkingTarget.name),el('p',parkingDistance(busDistance(point,item))+' in linea d’aria · il percorso a piedi può essere più lungo.'));journey.append(parkingLink('Percorso a piedi ↗','https://www.google.com/maps/dir/?api=1&travelmode=walking&origin='+item.lat+','+item.lon+'&destination='+point.lat+','+point.lon));content.append(journey);}
+  const facts=el('section','','parking-detail-facts');facts.append(el('h3','Prima di partire'),el('p','Tariffe e orari di apertura non presenti nel catalogo. Posti liberi in tempo reale non disponibili.'));
+  if(item.website)facts.append(parkingLink('Verifica tariffe, orari e accessi sul sito ↗',item.website));
+  const phone=parkingPhone(item.contact);if(phone)facts.append(parkingLink('Chiama '+phone,'tel:'+phone));else if(item.contact)facts.append(el('p','Contatti: '+item.contact));
+  if(!item.website&&!item.contact)facts.append(el('p','Sito e contatti non indicati dal Comune.'));
+  facts.append(el('p','Controlla eventuali limitazioni ZTL lungo il percorso.','parking-detail-note'));content.append(facts);
+  const onward=el('section','','parking-detail-onward');onward.append(el('h3','Prosegui in autobus'));const bus=el('button','Fermate e linee vicine','parking-link');bus.type='button';bus.onclick=()=>openParkingBus(item);onward.append(bus);content.append(onward);
+  const source=el('details','','parking-source');source.append(el('summary','Fonte e aggiornamento'),el('p','Comune di Verona · CC BY 4.0 · raccolta del '+(parkingData.updatedAt?formatDay(dayInRome(parkingData.updatedAt),{day:'numeric',month:'long',year:'numeric'}):'giorno non disponibile')+'. La raccolta non conferma modifiche successive a tariffe e accessi.'));if(parkingData.status==='error')source.append(el('p','Ultima raccolta non riuscita: dati precedenti conservati.'));source.append(parkingLink('Dataset del Comune ↗',parkingData.sourceUrl));content.append(source);
+  $('parking-detail-go').href='https://www.google.com/maps/dir/?api=1&travelmode=driving&destination='+item.lat+','+item.lon;
+  $('parking-detail-dialog').showModal();content.scrollTop=0;$('parking-detail-close').focus();
+}
+$('parking-detail-close').onclick=()=>$('parking-detail-dialog').close();
+$('parking-detail-dialog').addEventListener('close',()=>{if(parkingDetailFocus?.isConnected)parkingDetailFocus.focus({preventScroll:true});});
 function drawParkingMap(point,rows){
   const center=point||{lat:45.4384,lon:10.9916};
   const note=$('parking-map-note');note.textContent='';

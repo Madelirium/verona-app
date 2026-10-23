@@ -12,4 +12,4 @@ Geometrie caricate solo per le linee selezionate e condivise con la cache delle 
 
 Le varianti OSM sono indicative e non certificano deviazioni o servizio effettivo in una data. Per gli orari si usa l’archivio ufficiale e la sua validità. Non ci sono posizioni o ritardi live.
 
-Verifiche: selezione iniziale/preferite, aggiunta e rimozione, limite sei linee, selezione vuota persistente, ricerca fermata, annullamento del caricamento e cambio rapido di linea negli orari. Prova browser: tre linee iniziali, aggiunta della 24, ricerca 1104 (Stradone Maffei), accesso al punto e cambio tra 11 e 12; controlli e mappa verificati a 320 px. Incluso nel rilascio Eventi e Autobus per GitHub Pages.
+Verifiche: selezione iniziale/preferite, aggiunta e rimozione, limite sei linee, selezione vuota persistente, ricerca fermata, annullamento del caricamento e cambio rapido di linea negli orari. Prova browser: tre linee iniziali, aggiunta della 24, ricerca 1104 (Stradone Maffei), accesso al punto e cambio tra 11 e 12; controlli e mappa verificati a 320 px. Implementazione locale, non ancora pubblicata su GitHub.

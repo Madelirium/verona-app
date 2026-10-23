@@ -1,0 +1,81 @@
+{
+  "updatedAt": "2026-10-19T07:40:20.311Z",
+  "line": "24",
+  "complete": false,
+  "dates": [
+    "2026-10-19",
+    "2026-10-20",
+    "2026-10-21",
+    "2026-10-22",
+    "2026-10-23",
+    "2026-10-24",
+    "2026-10-25"
+  ],
+  "inventory": {
+    "routeVariants": 4,
+    "osmStops": 92,
+    "officialStops": 94,
+    "candidateStops": 96,
+    "knownTrips": 78,
+    "stopDays": 672,
+    "osmOnly": [
+      "374",
+      "2019"
+    ],
+    "officialOnly": [
+      "1993",
+      "2020",
+      "2491",
+      "2502"
+    ],
+    "review": []
+  },
+  "run": {
+    "checkedAt": "2026-10-19T07:40:20.311Z",
+    "runId": "2026-10-19T07-37-32.366Z",
+    "line": "24",
+    "dates": [
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21",
+      "2026-10-22",
+      "2026-10-23",
+      "2026-10-24",
+      "2026-10-25"
+    ],
+    "complete": false,
+    "plannedStopDays": 672,
+    "finishedObservations": 2,
+    "remainingStopDays": 670,
+    "statuses": {
+      "observed-and-checked": 2
+    },
+    "networkRequests": 60,
+    "networkBudget": 60,
+    "cacheHits": 95,
+    "last": {
+      "stopCode": "1973",
+      "date": "2026-10-20",
+      "status": "interrupted",
+      "halt": true
+    },
+    "status": "paused-with-checkpoint",
+    "reportDirectory": "C:\\Users\\samsh\\Documents\\ChatGPT\\Verona\\research\\line-batch\\24\\2026-10-19T07-37-32.366Z\\"
+  },
+  "finished": [
+    {
+      "stopCode": "1973",
+      "date": "2026-10-19",
+      "status": "observed-and-checked",
+      "departures": 38,
+      "checksMatched": 38
+    },
+    {
+      "stopCode": "1974",
+      "date": "2026-10-19",
+      "status": "observed-and-checked",
+      "departures": 40,
+      "checksMatched": 40
+    }
+  ]
+}
