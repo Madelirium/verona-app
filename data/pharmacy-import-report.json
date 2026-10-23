@@ -1,14 +1,8 @@
 {
   "sourceUrl": "https://www.ordinefarmacisti.vr.it/turni-farmacie/",
-  "attemptedAt": "2026-10-22T07:38:08.090Z",
+  "attemptedAt": "2026-10-23T09:30:10.164Z",
   "status": "ok",
   "items": [
-    {
-      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/10_Dalle-ore-9.00-del-20.10.2026-alle-ore-9.00-del-22.10.2026.pdf",
-      "sha256": "b41c3de892efab75d725fde2e47a855100f5498d447d8efcd365a66798e1584d",
-      "count": 12,
-      "extraction": "unchanged"
-    },
     {
       "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/11_Dalle-ore-9.00-del-22.10.2026-alle-ore-9.00-del-24.10.2026.pdf",
       "sha256": "f6d46e833eee2571970a5fd79f7762aef6c678c9f99f7012f9f1195eda399235",
@@ -47,7 +41,7 @@
     "currentPeriodId": "turno-2026-10-22T07:00:00.000Z",
     "startsAt": "2026-10-22T07:00:00.000Z",
     "endsAt": "2026-11-01T08:00:00.000Z",
-    "remainingHours": 240
+    "remainingHours": 214
   },
   "positionStatus": "cached"
 }
