@@ -1,0 +1,26 @@
+{
+  "id": "./",
+  "name": "Verona in Tasca",
+  "short_name": "Verona in Tasca",
+  "description": "La città sempre con te. Eventi, mobilità e servizi a Verona.",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eeeae2",
+  "theme_color": "#eeeae2",
+  "icons": [
+    {
+      "src": "assets/brand/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/brand/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,4 +1,7 @@
+import {analyticsConfig} from './analytics-config.mjs';
+import {buildPwa} from './build-pwa.mjs';
 import {eventBusIndex} from './event-bus-index.mjs';
+import {buildBrandPages} from './brand-pages.mjs';
 import {validateOfficialLine} from './official-bus.mjs';
 import {datasetStatus} from './data-status.mjs';
 import {extractNewsTiming,newsDeadlineInstant,newsValidity,newsPastSeason} from './news-timing.mjs';
@@ -13,11 +16,13 @@ import {validateTimetables} from './timetables.mjs';
 import {validateBusRoutes} from './bus-routes.mjs';
 const root = new URL('../',import.meta.url);
 export async function buildCalendar() {
+  await buildBrandPages();
   try { loadEnvFile(new URL('../.env',import.meta.url)); }
   catch(error) { if(error.code!=='ENOENT')throw error; }
   const [template,logic,json,editorialJson] = await Promise.all(['public/calendar.template.html','public/calendar.js','data/events.json','data/editorial.json'].map(p=>readFile(new URL(p,root),'utf8')));
   const data=JSON.parse(json);
   data.auth=authConfig();
+  data.analytics=analyticsConfig();
   data.busOfficial=JSON.parse(await readFile(new URL('data/bus-official.json',root),'utf8'));
   data.busCategories=JSON.parse(await readFile(new URL('data/bus-categories.json',root),'utf8'));
   await mkdir(new URL('public/bus-official/',root),{recursive:true});
@@ -92,8 +97,11 @@ export async function buildCalendar() {
   const areaPreferencesLogic=await readFile(new URL('public/area-preferences.js',root),'utf8');
   const navigationLogic=await readFile(new URL('public/navigation.js',root),'utf8');
   const rankedLogic=await readFile(new URL('public/ranked.js',root),'utf8');
-  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>[datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+logic+'\n'+newsLogic+'\n'+wasteLogic+'\n'+pharmacyLogic+'\n'+districtLogic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+parkingLogic+'\n'+travelLogic+'\n'+weatherLogic+'\n'+exploreNeedsLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic+'\n'+savedLogic+'\n'+homePersonalLogic+'\n'+navigationLogic+'\n'+areaPreferencesLogic);
+  const analyticsLogic=await readFile(new URL('public/analytics.js',root),'utf8');
+  const pwaLogic=await readFile(new URL('public/pwa.js',root),'utf8');
+  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>[datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+logic+'\n'+newsLogic+'\n'+wasteLogic+'\n'+pharmacyLogic+'\n'+districtLogic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+parkingLogic+'\n'+travelLogic+'\n'+weatherLogic+'\n'+exploreNeedsLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic+'\n'+savedLogic+'\n'+homePersonalLogic+'\n'+navigationLogic+'\n'+areaPreferencesLogic+'\n'+pwaLogic+'\n'+analyticsLogic);
   await writeFile(new URL('public/index.html',root),html);
+  await buildPwa();
   return data.events.length;
 }
 if(process.argv[1] && new URL('file:///'+process.argv[1].replaceAll('\\','/')).pathname.endsWith('/scripts/build-calendar.mjs'))console.log(`Calendario pronto: ${await buildCalendar()} appuntamenti incorporati.`);

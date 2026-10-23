@@ -40,6 +40,9 @@ jobs:
       SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
       SUPABASE_AUTH_ENABLED: ${{ vars.SUPABASE_AUTH_ENABLED }}
       SUPABASE_AUTH_METHOD: google
+      ANALYTICS_ENABLED: ${{ vars.ANALYTICS_ENABLED }}
+      ANALYTICS_UMAMI_WEBSITE_ID: ${{ vars.ANALYTICS_UMAMI_WEBSITE_ID }}
+      ANALYTICS_UMAMI_SCRIPT_URL: ${{ vars.ANALYTICS_UMAMI_SCRIPT_URL }}
     timeout-minutes: 25
     permissions:
       contents: write
@@ -132,6 +135,10 @@ jobs:
         run: |
           mkdir -p _site
           cp public/index.html _site/index.html
+          cp public/sw.js _site/sw.js
+          cp public/manifest.webmanifest _site/manifest.webmanifest
+          cp -r public/assets _site/assets
+          cp -r public/inviti _site/inviti
           cp -r public/bus-routes _site/bus-routes
           cp -r public/bus-official _site/bus-official
           cp public/vendor/leaflet.LICENSE _site/leaflet.LICENSE

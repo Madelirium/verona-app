@@ -34,14 +34,15 @@ const lan = process.argv.includes('--lan');
 const wifi = Object.entries(networkInterfaces()).filter(([name]) => /wi-?fi|wireless|wlan/i.test(name)).flatMap(([,values]) => values).find(i => i.family === 'IPv4' && !i.internal);
 if (lan && !wifi) throw new Error('Nessuna interfaccia Wi-Fi IPv4 disponibile. Collegare il computer al Wi-Fi e riprovare.');
 const host = process.env.HOST || (process.env.RENDER==='true'?'0.0.0.0':lan?wifi.address:'127.0.0.1');
-const routes = { '/': ['public/index.html', 'text/html; charset=utf-8'], '/data/events.json': ['data/events.json', 'application/json'], '/data/import-report.json': ['data/import-report.json', 'application/json'] };
+const routes = { '/sw.js':['public/sw.js','text/javascript; charset=utf-8'], '/': ['public/index.html', 'text/html; charset=utf-8'], '/data/events.json': ['data/events.json', 'application/json'], '/data/import-report.json': ['data/import-report.json', 'application/json'] };
 const server=createServer(async (req,res) => {
   if(req.url==='/healthz'&&req.method==='GET'){res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(JSON.stringify({ok:true,storage}));return;}
   if(await ranked(req,res))return;
   if(await briscola(req,res))return;
   if(await forza4(req,res))return;
   const pathname=new URL(req.url,'http://localhost').pathname;
-  const route = routes[pathname]||(/^\/bus-official\/[A-Za-z0-9]+\.json$/.test(pathname)?['public'+pathname,'application/json']:null)||(/^\/bus-routes\/atv-(urban|holiday|evening)-[0-9]+\.json$/.test(pathname)?['public'+pathname,'application/json']:null);
+  const brandAsset=/^\/assets\/brand\/[a-z0-9-]+\.(png|webp|jpg)$/.exec(pathname);
+  const route = routes[pathname]||(brandAsset?['public'+pathname,brandAsset[1]==='jpg'?'image/jpeg':'image/'+brandAsset[1]]:null)||(pathname==='/manifest.webmanifest'?['public/manifest.webmanifest','application/manifest+json']:null)||(/^\/inviti\/(briscola|forza4)\/(index.html)?$/.test(pathname)?['public'+pathname.replace(/index.html$/,'')+'index.html','text/html; charset=utf-8']:null)||(/^\/bus-official\/[A-Za-z0-9]+\.json$/.test(pathname)?['public'+pathname,'application/json']:null)||(/^\/bus-routes\/atv-(urban|holiday|evening)-[0-9]+\.json$/.test(pathname)?['public'+pathname,'application/json']:null);
   if (!route || req.method !== 'GET') { res.writeHead(404).end(); return; }
   try { const body = await readFile(new URL('../'+route[0],import.meta.url)); res.writeHead(200, { 'Content-Type': route[1], 'Cache-Control': 'no-store' }).end(body); }
   catch { res.writeHead(503).end('Calendario temporaneamente non disponibile. Riprova tra poco.'); }

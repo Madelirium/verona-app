@@ -1880,6 +1880,13 @@ test('Riepilogo viaggio: Indietro torna alla scelta senza perdere ricerca o cors
 });
 
 const homePersonalLogic=await readFile(new URL('../public/home-personal.js',import.meta.url),'utf8');
+test('Statistiche: azioni effettive senza duplicare salvataggi o inviare dati degli eventi',()=>{
+ const app=runHomePersonal(),calls=[];app.context.veronaAnalytics={track:name=>calls.push(name),page:()=>{}};
+ new Script('save(events[0].id,"interested");save(events[0].id,"interested");save(events[0].id,"going")').runInContext(app.context);
+ assert.deepEqual(calls,['event_saved','event_participation']);
+ new Script('delete preferences[events[0].id];currentDiscovery=events[0];chooseDiscovery("interested")').runInContext(app.context);
+ assert.deepEqual(calls,['event_saved','event_participation','event_saved']);
+});
 function runHomePersonal(storage=new Map()){const app=runSaved(storage);new Script(homePersonalLogic).runInContext(app.context);return app;}
 function personalKinds(app){return Array.from(new Script('homePersonalItems().map(row=>row.kind)').runInContext(app.context));}
 function personalSetup(app){deadlineFixture(app);useRomeInstant(app,'2026-10-22T09:00:00Z');new Script('preferences={"home-next":"interested"};savedSnapshots={"home-next":{...events[0],id:"home-next",title:"Il mio prossimo evento",startsAt:"2026-10-23T18:00:00+02:00",endsAt:"2026-10-23T20:00:00+02:00"}};newsDeadlineSaves[deadlineFixture.id]=deadlineFixture;busFavorites={"official-24":true};wasteSelection={zoneId:"c7-brown",version:wasteData.version,confirmedAt:"2026-10-22"};renderHome()').runInContext(app.context);}

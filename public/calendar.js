@@ -73,11 +73,13 @@ function visibleEvents() { const q = $('search').value.toLocaleLowerCase('it'); 
 function el(tag, value, cls) { const n=document.createElement(tag); n.textContent=value; if(cls)n.className=cls; return n; }
 function formatDay(value, options) { return new Intl.DateTimeFormat('it-IT', {timeZone:'Europe/Rome', ...options}).format(new Date(value+'T12:00:00Z')); }
 function save(id, state) {
+  const previousAnalyticsState=preferences[id];
   lastChoice=null;
   if(state) preferences[id]=state; else delete preferences[id];
   storeSavedSnapshots();
   try { localStorage.setItem('verona-events-v1',JSON.stringify(preferences)); $('feedback').textContent=state==='going'?'Presenza confermata nel tuo calendario.':state?'Evento aggiunto al tuo calendario.':'Evento rimosso dal tuo calendario.'; }
   catch { $('feedback').textContent='Scelta valida per questa visita. Il browser non consente il salvataggio permanente.'; }
+  if(state!==previousAnalyticsState&&['interested','going'].includes(state))globalThis.veronaAnalytics?.track(state==='going'?'event_participation':'event_saved');
   if(view==='district')$('district-feedback').textContent=$('feedback').textContent;
   render();
 }
@@ -374,7 +376,8 @@ function renderHome(){
   for(const service of services){
     const tile=el('button','','service-tile'+(service.ready?' ready':''));tile.type='button';tile.setAttribute('aria-label',service.name+(service.ready?'':' · in preparazione'));tile.setAttribute('data-service',service.id);tile.setAttribute('data-focus-key','service-'+service.id);
     const icon=el('span',service.icon,'service-icon');icon.setAttribute('aria-hidden','true');
-    tile.append(icon,el('span',service.name,'service-name'),el('span',service.id==='district'&&currentDistrict()?(currentDistrict().quarter||currentDistrict().district.name):service.description,'service-description'));
+    const compactDescription={events:'Scopri e salva',bus:'Fermate e orari',news:'Avvisi della città',utilities:'Farmacie e altro',explore:'Luoghi e attività'};
+    tile.append(icon,el('span',service.name,'service-name'),el('span',service.id==='district'&&currentDistrict()?(currentDistrict().quarter||currentDistrict().district.name):(compactDescription[service.id]||service.description),'service-description'));
     if(!service.ready)tile.append(el('span','PRESTO','service-badge'));
     tile.onclick=()=>openService(service);$('services').append(tile);
   }
@@ -550,6 +553,7 @@ function setView(next) {
   if(view==='bus'&&next!=='bus'&&typeof leaveBusMapHome==='function')leaveBusMapHome();
   if(next==='bus'&&!busVisited){busVisited=true;busMode=busFavoriteNumbers().size?'favorites':'lines';}
   if(next!=='discover')showDiscoveryFeedback('');
+  globalThis.veronaAnalytics?.page(next);
   view=next;onlySaved=next==='saved';
   // Aprendo i salvati, mostra il prossimo appuntamento anziché un giorno vuoto.
   if(onlySaved&&!savedVisited){savedVisited=true;const future=[...savedEvents().filter(e=>!isPastSavedEvent(e)).map(e=>eventDay(e.startsAt)<today?today:eventDay(e.startsAt)),...savedNewsDeadlines().filter(item=>newsValidity(item).state==='open').map(item=>item.timing.deadline.day)].sort();if(future.length){selected=future[0];month=selected.slice(0,7);}}
@@ -585,6 +589,7 @@ function chooseDiscovery(action) {
   lastChoice={id:e.id,url:e.sourceUrl,previous:preferences[e.id],dismissed:dismissed[e.sourceUrl]};
   if(action==='interested')preferences[e.id]='interested';else dismissed[e.sourceUrl]=true;
   const stored=persistChoices();
+  if(action==='interested'&&lastChoice.previous!=='interested'&&lastChoice.previous!=='going')globalThis.veronaAnalytics?.track('event_saved');
   showDiscoveryFeedback((action==='interested'?'Evento aggiunto al tuo calendario.':'Evento passato. Puoi annullare la scelta.')+(stored?'':' Salvataggio disponibile solo per questa visita.'));
   render();
 }

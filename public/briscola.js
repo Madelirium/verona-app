@@ -304,7 +304,7 @@
   $('game-create').onclick=()=>{if($('game-name').reportValidity())act('create',{name:$('game-name').value,visibility:$('game-visibility').value,playerCount:selectedGame==='forza4'?2:Number($('game-player-count').value)});};
   $('game-join-form').onsubmit=event=>{event.preventDefault();if($('game-name').reportValidity())act('join',{name:$('game-name').value,code:$('game-room-code').value.trim().toUpperCase()});};
   function invitationUrl(){
-    const url=new URL(location.pathname,location.origin);url.searchParams.set(selectedGame,session.code);return url.href;
+    const url=new URL('inviti/'+selectedGame+'/',new URL('./',location.href));url.searchParams.set('stanza',session.code);return url.href;
   }
   async function copyInvitation(){
     try{await navigator.clipboard.writeText(invitationUrl());message('Link d’invito copiato.');}
