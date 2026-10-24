@@ -1,7 +1,7 @@
 {
   "source": "Ordine dei Farmacisti della Provincia di Verona",
   "sourceUrl": "https://www.ordinefarmacisti.vr.it/turni-farmacie/",
-  "checkedAt": "2026-10-23T09:30:10.164Z",
+  "checkedAt": "2026-10-24T09:02:34.194Z",
   "status": "ok",
   "parserVersion": 1,
   "positionStatus": "cached",
@@ -17,7 +17,7 @@
       "startsAt": "2026-10-22T07:00:00.000Z",
       "endsAt": "2026-10-24T07:00:00.000Z",
       "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/11_Dalle-ore-9.00-del-22.10.2026-alle-ore-9.00-del-24.10.2026.pdf",
-      "checkedAt": "2026-10-23T09:30:10.164Z",
+      "checkedAt": "2026-10-24T09:02:34.194Z",
       "items": [
         {
           "id": "pharmacy-1bd47ed17079304b",
@@ -29,7 +29,7 @@
           "scope": "city",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-3ae3706df085f59e",
@@ -41,7 +41,7 @@
           "scope": "city",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-53544dfddfbdf8b5",
@@ -60,7 +60,7 @@
             "match": "unique-phone",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-1afb51c7b56d2d2c",
@@ -79,7 +79,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-8156ebf41da05b56",
@@ -91,7 +91,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-d6c2e70f9b1eaa9d",
@@ -103,7 +103,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-248e95e9eac3669d",
@@ -115,7 +115,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-8c3d527f806f2a1b",
@@ -127,7 +127,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-1f9a8c6966400c36",
@@ -146,7 +146,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-49e1327e38c79a41",
@@ -158,7 +158,7 @@
           "scope": "city",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-cde0b14a82469133",
@@ -170,7 +170,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-46dbb2a4c8539574",
@@ -182,7 +182,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-ccdf89d08405cea5",
@@ -194,7 +194,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         }
       ],
       "sha256": "f6d46e833eee2571970a5fd79f7762aef6c678c9f99f7012f9f1195eda399235"
@@ -204,7 +204,7 @@
       "startsAt": "2026-10-24T07:00:00.000Z",
       "endsAt": "2026-10-26T08:00:00.000Z",
       "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/12_Dalle-ore-9.00-del-24.10.2026-alle-ore-9.00-del-26.10.2026.pdf",
-      "checkedAt": "2026-10-23T09:30:10.164Z",
+      "checkedAt": "2026-10-24T09:02:34.194Z",
       "items": [
         {
           "id": "pharmacy-45ca3bd481a5ebc2",
@@ -223,7 +223,7 @@
             "match": "unique-phone",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-8b61b80c0c7e0b86",
@@ -242,7 +242,7 @@
             "match": "unique-phone",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-232daf11542f2127",
@@ -254,7 +254,7 @@
           "scope": "city",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-cbb43dde9fe27857",
@@ -273,7 +273,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-fdd3a59a2011e93c",
@@ -285,7 +285,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-7974ca2fcf00d676",
@@ -297,7 +297,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-0b6e57817d895edf",
@@ -316,7 +316,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-2c8a7f9332c37d4a",
@@ -328,7 +328,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-548c03a85e8123c2",
@@ -347,7 +347,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-78c3391692bf887b",
@@ -366,7 +366,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-0edf8fade16c5c53",
@@ -385,7 +385,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-f0a1b024e0f3d28e",
@@ -397,7 +397,7 @@
           "scope": "city",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         }
       ],
       "sha256": "8b30edcfc78f0f743fa63c241b3cd4cca7ffcc798d38d8e9f6013fc06fd8544a"
@@ -407,7 +407,7 @@
       "startsAt": "2026-10-26T08:00:00.000Z",
       "endsAt": "2026-10-28T08:00:00.000Z",
       "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/13_Dalle-ore-9.00-del-26.10.2026-alle-ore-9.00-del-28.10.2026.pdf",
-      "checkedAt": "2026-10-23T09:30:10.164Z",
+      "checkedAt": "2026-10-24T09:02:34.194Z",
       "items": [
         {
           "id": "pharmacy-aadec9963d702e07",
@@ -419,7 +419,7 @@
           "scope": "city",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-1e4b469ec64c9ee8",
@@ -431,7 +431,7 @@
           "scope": "city",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-69d0a00ce5c168fc",
@@ -443,7 +443,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-9039579975c8bcd6",
@@ -462,7 +462,7 @@
             "match": "unique-phone",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-ab5950db0f1308cd",
@@ -474,7 +474,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-e1e30cbb36f4def1",
@@ -486,7 +486,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-45023dc2528391e3",
@@ -505,7 +505,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-87b148bea1fc0430",
@@ -517,7 +517,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-6b2938e167a5a618",
@@ -529,7 +529,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-88776f5c52de8f1b",
@@ -541,7 +541,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-066af712a145ab50",
@@ -560,7 +560,7 @@
             "match": "unique-phone",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-d579f1d8d1287b1d",
@@ -572,7 +572,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         }
       ],
       "sha256": "9fb05bdb88a94c7409c448e4a94459b3d370f147794354abbfd6c2f1228675be"
@@ -582,7 +582,7 @@
       "startsAt": "2026-10-28T08:00:00.000Z",
       "endsAt": "2026-10-30T08:00:00.000Z",
       "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/14_Dalle-ore-9.00-del-28.10.2026-alle-ore-9.00-del-30.10.2026.pdf",
-      "checkedAt": "2026-10-23T09:30:10.164Z",
+      "checkedAt": "2026-10-24T09:02:34.194Z",
       "items": [
         {
           "id": "pharmacy-9cd3dcc46a54889d",
@@ -601,7 +601,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-30f3741d72b1c4cf",
@@ -613,7 +613,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-dfc4ff45ebf1aa3f",
@@ -625,7 +625,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-e44fe7d29b6a5070",
@@ -637,7 +637,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-0fbc67c11938c388",
@@ -649,7 +649,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-da7f6fb712d80bc8",
@@ -661,7 +661,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-938dbf06d0ab118a",
@@ -673,7 +673,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-befa61eb42335b58",
@@ -685,7 +685,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-d8bb216cfb6eee45",
@@ -697,7 +697,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-29a507790c198edd",
@@ -716,7 +716,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-5c80b475a72106de",
@@ -728,7 +728,7 @@
           "scope": "city",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-9dc4474a44a2a45a",
@@ -747,7 +747,7 @@
             "match": "unique-phone",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-1d9fda038940d88f",
@@ -759,7 +759,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         }
       ],
       "sha256": "488539d01c9efce32cbb1058fd45d9ef22332b92a9ed2622cd170bd495a62822"
@@ -769,7 +769,7 @@
       "startsAt": "2026-10-30T08:00:00.000Z",
       "endsAt": "2026-11-01T08:00:00.000Z",
       "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/15_Dalle-ore-9.00-del-30.10.2026-alle-ore-9.00-del-01.11.2026.pdf",
-      "checkedAt": "2026-10-23T09:30:10.164Z",
+      "checkedAt": "2026-10-24T09:02:34.194Z",
       "items": [
         {
           "id": "pharmacy-003894df7453f810",
@@ -781,7 +781,7 @@
           "scope": "city",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-ec7a9a8f9324d680",
@@ -793,7 +793,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-31866ac5245a9cf2",
@@ -805,7 +805,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-f03c54a63300f6b7",
@@ -824,7 +824,7 @@
             "match": "unique-phone",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-57268387c392493f",
@@ -836,7 +836,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-5abebb0c2cc1a6e4",
@@ -855,7 +855,7 @@
             "match": "unique-phone",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-e848ca29f3c0f145",
@@ -874,7 +874,7 @@
             "match": "unique-phone",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-d3c14bb56ceb982c",
@@ -893,7 +893,7 @@
             "match": "unique-address-city",
             "checkedAt": "2026-10-22T06:27:39.493Z"
           },
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-49ca8719a1524b00",
@@ -905,7 +905,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-1accf3472a373c26",
@@ -917,7 +917,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-af48cce51d98fc19",
@@ -929,7 +929,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         },
         {
           "id": "pharmacy-d82431fa16a40b6f",
@@ -941,7 +941,7 @@
           "scope": "province",
           "serviceMode": "unspecified",
           "position": null,
-          "checkedAt": "2026-10-23T09:30:10.164Z"
+          "checkedAt": "2026-10-24T09:02:34.194Z"
         }
       ],
       "sha256": "e1a5d12321e77fca8d518bc6967130478762594e4ccec6c6a543d4360d475a27"

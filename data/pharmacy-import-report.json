@@ -1,6 +1,6 @@
 {
   "sourceUrl": "https://www.ordinefarmacisti.vr.it/turni-farmacie/",
-  "attemptedAt": "2026-10-23T09:30:10.164Z",
+  "attemptedAt": "2026-10-24T09:02:34.194Z",
   "status": "ok",
   "items": [
     {
@@ -38,10 +38,10 @@
   "error": null,
   "preservedPrevious": false,
   "coverage": {
-    "currentPeriodId": "turno-2026-10-22T07:00:00.000Z",
-    "startsAt": "2026-10-22T07:00:00.000Z",
+    "currentPeriodId": "turno-2026-10-24T07:00:00.000Z",
+    "startsAt": "2026-10-24T07:00:00.000Z",
     "endsAt": "2026-11-01T08:00:00.000Z",
-    "remainingHours": 214
+    "remainingHours": 190
   },
   "positionStatus": "cached"
 }
