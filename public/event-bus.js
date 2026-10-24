@@ -2,13 +2,13 @@ let eventBusStops=null,eventBusStopsLoad=null,eventBusEvent=null,eventBusRequest
 let eventBusRouteGroups=[],eventBusSelectedLine='',eventBusFitFull=false,eventBusCurrent=null;
 const eventBusPalette=['#245f9e','#b13c45','#397348','#7950a0','#a96711','#007d80','#b23c77','#5c6684'];
 function busDistance(a,b){const rad=Math.PI/180,dlat=(b.lat-a.lat)*rad,dlon=(b.lon-a.lon)*rad,h=Math.sin(dlat/2)**2+Math.cos(a.lat*rad)*Math.cos(b.lat*rad)*Math.sin(dlon/2)**2;return 6371000*2*Math.atan2(Math.sqrt(h),Math.sqrt(Math.max(0,1-h)));}
-function nearbyBusStops(index,point,day,{radius=800,limit=3}={}){
+function nearbyBusStops(index,point,day,{radius=800,limit=3,withService=false}={}){
   const dateIndex=index.days.indexOf(day);
-  return index.stops.map(stop=>({...stop,distance:busDistance(point,stop),knownDate:dateIndex>=0,lines:stop.services.filter(([,bits])=>dateIndex<0||bits[dateIndex]==='1').map(([number])=>number)})).filter(stop=>stop.distance<=radius).sort((a,b)=>a.distance-b.distance||a.code.localeCompare(b.code)).slice(0,limit);
+  return index.stops.map(stop=>({...stop,distance:busDistance(point,stop),knownDate:dateIndex>=0,lines:stop.services.filter(([,bits])=>dateIndex<0||bits[dateIndex]==='1').map(([number])=>number)})).filter(stop=>stop.distance<=radius&&(!withService||dateIndex<0||stop.lines.length)).sort((a,b)=>a.distance-b.distance||a.code.localeCompare(b.code)).slice(0,limit);
 }
 async function loadEventBusStops(){
   if(eventBusStops)return eventBusStops;
-  if(!eventBusStopsLoad)eventBusStopsLoad=(async()=>{const response=await fetch(officialBus.stopIndexAsset);if(!response.ok)throw Error('HTTP '+response.status);const index=await response.json();if(index.sha256!==officialBus.sha256||!Array.isArray(index.stops)||!Array.isArray(index.days))throw Error('Indice non coerente');eventBusStops=index;return index;})().catch(error=>{eventBusStopsLoad=null;throw error;});
+  if(!eventBusStopsLoad)eventBusStopsLoad=(async()=>{const response=await fetch(officialBus.stopIndexAsset,typeof AbortSignal!=='undefined'&&typeof AbortSignal.timeout==='function'?{signal:AbortSignal.timeout(15000)}:{});if(!response.ok)throw Error('HTTP '+response.status);const index=await response.json();if(index.sha256!==officialBus.sha256||!Array.isArray(index.stops)||!Array.isArray(index.days))throw Error('Indice non coerente');eventBusStops=index;return index;})().catch(error=>{eventBusStopsLoad=null;throw error;});
   return eventBusStopsLoad;
 }
 function appendEventBus(content,event){
@@ -36,7 +36,7 @@ async function loadEventRouteLine(number){
     if(busRouteData.routes.filter(route=>route.lineId===id).every(route=>Array.isArray(route.stops)&&Array.isArray(route.segments)))continue;
     if(!/^atv-(urban|holiday|evening)-[0-9]+$/.test(id))throw Error('Linea inattesa');
     if(!busRouteLoads.has(id))busRouteLoads.set(id,(async()=>{
-      const response=await fetch((busRouteData.assetBase||'bus-routes/')+id+'.json');if(!response.ok)throw Error('HTTP '+response.status);
+      const response=await fetch((busRouteData.assetBase||'bus-routes/')+id+'.json',typeof AbortSignal!=='undefined'&&typeof AbortSignal.timeout==='function'?{signal:AbortSignal.timeout(15000)}:{});if(!response.ok)throw Error('HTTP '+response.status);
       const data=await response.json();if(!Array.isArray(data.routes)||!data.routes.length||data.routes.some(route=>route.lineId!==id||route.number!==number||!Array.isArray(route.stops)||!Array.isArray(route.segments)))throw Error('Tracciato non valido');
       busRouteData.routes=busRouteData.routes.filter(route=>route.lineId!==id).concat(data.routes);
     })().catch(error=>{busRouteLoads.delete(id);throw error;}));
@@ -61,9 +61,12 @@ function renderEventBusLegend(){
   if(missing.some(group=>group.status==='error')){const retry=el('button','Riprova i percorsi');retry.onclick=()=>renderEventBus();legend.append(retry);}
   $('event-bus-full-routes').disabled=!eventBusRouteGroups.some(group=>group.routes.length);$('event-bus-full-routes').textContent=eventBusFitFull?'Vicino all’evento':'Percorsi completi';
 }
+function openEventStopTimes(number,stopCode,day,event=eventBusEvent){
+  return openOfficialBus(number,{stopCode:String(stopCode),date:day,eventContext:event?{event:{id:event.id,title:event.title,startsAt:event.startsAt,endsAt:event.endsAt},day}:null});
+}
 function eventStopPopup(stop,numbers){
   const popup=el('div','','bus-map-stop');popup.append(el('strong',stop.name),el('small','Fermata '+(stop.code||stop.ref||'senza codice')));
-  const day=$('event-bus-date').value;for(const number of numbers){const button=el('button','Orari linea '+number);button.onclick=()=>openOfficialBus(number,{stopCode:String(stop.code||stop.ref||''),date:day});popup.append(button);}return popup;
+  const day=$('event-bus-date').value,event=eventBusEvent;for(const number of numbers){const button=el('button','Orari linea '+number);button.onclick=()=>openEventStopTimes(number,stop.code||stop.ref||'',day,event);popup.append(button);}return popup;
 }
 function drawEventBusMap(point,stops){
   const box=$('event-bus-map');if(typeof L==='undefined'){box.hidden=true;return;}
@@ -87,14 +90,16 @@ async function renderEventBus(){
   eventBusRouteGroups=[];eventBusSelectedLine='';eventBusFitFull=false;$('event-bus-line-legend').replaceChildren();$('event-bus-route-status').textContent='';$('event-bus-full-routes').disabled=true;
   const request=++eventBusRequest,event=eventBusEvent,day=$('event-bus-date').value,point=eventPosition(event),list=$('event-bus-stops');list.replaceChildren();$('event-bus-map').hidden=true;$('event-bus-map-note').textContent='';$('event-bus-status').textContent='Cerco le fermate vicine…';
   if(!day||day<eventDay(event.startsAt)||day>eventDay(event.endsAt)){$('event-bus-status').textContent='Scegli una data compresa nella durata dell’evento.';return;}
+  if(typeof eventTravelWhen==='function'){if(travelEvent?.id===event.id)travelDay=day;$('event-bus-when').textContent=eventTravelWhen(event,day);}
+  else $('event-bus-when').textContent='Evento: '+eventWhen(event);
   try{
     const index=await loadEventBusStops();if(request!==eventBusRequest||!$('event-bus-dialog').open)return;
-    const stops=nearbyBusStops(index,point,day),mapStops=nearbyBusStops(index,point,day,{limit:Infinity}),valid=index.days.includes(day);
-    $('event-bus-status').textContent=stops.length?stops.length+' fermate entro 800 m · '+formatDay(day,{day:'numeric',month:'long'}):'Nessuna fermata nell’archivio entro 800 m. Verifica altre soluzioni per raggiungere l’evento.';
+    const stops=nearbyBusStops(index,point,day,{withService:true}),mapStops=nearbyBusStops(index,point,day,{limit:Infinity,withService:true}),valid=index.days.includes(day);
+    $('event-bus-status').textContent=stops.length?stops.length+' fermate '+(valid?'con partenze programmate ':'nell’archivio ')+'entro 800 m · '+formatDay(day,{day:'numeric',month:'long'}):valid?'Nessuna fermata con partenze programmate entro 800 m nella data scelta. Prova Auto o A piedi.':'Nessuna fermata nell’archivio entro 800 m. Verifica altre soluzioni per raggiungere l’evento.';
     $('event-bus-validity').textContent=(valid?'Linee con partenze programmate nella data scelta.':'La data è fuori dalla validità dell’archivio: le linee elencate non confermano il servizio per quel giorno.')+' Archivio ATV valido dal '+formatDay(index.validFrom,{day:'numeric',month:'short'})+' al '+formatDay(index.validTo,{day:'numeric',month:'short',year:'numeric'})+'. Orari senza ritardi in tempo reale.';
     for(const stop of stops){const card=el('article','','nearby-bus-stop');card.append(el('h3',stop.name),el('p','Fermata '+stop.code+' · circa '+Math.round(stop.distance/10)*10+' m in linea d’aria'));
       if(!stop.lines.length)card.append(el('p','Nessuna partenza programmata da questa fermata nella data scelta.'));
-      const actions=el('div','','nearby-bus-lines');for(const number of stop.lines.sort((a,b)=>a.localeCompare(b,'it',{numeric:true}))){const button=el('button','Linea '+number+' · Orari');button.onclick=()=>openOfficialBus(number,{stopCode:stop.code,date:day});actions.append(button);}card.append(actions);
+      const actions=el('div','','nearby-bus-lines');for(const number of stop.lines.sort((a,b)=>a.localeCompare(b,'it',{numeric:true}))){const button=el('button','Linea '+number+' · Orari');button.onclick=()=>openEventStopTimes(number,stop.code,day,event);actions.append(button);}card.append(actions);
       const walk=el('a','A piedi dalla fermata all’evento ↗','bus-secondary-link');walk.href='https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(stop.lat+','+stop.lon)+'&destination='+encodeURIComponent(point.lat+','+point.lon)+'&travelmode=walking';walk.target='_blank';walk.rel='noopener noreferrer';card.append(walk);list.append(card);
     }
     eventBusCurrent={point,stops:mapStops};drawEventBusMap(point,mapStops);
@@ -104,6 +109,6 @@ async function renderEventBus(){
 }
 $('close-event-bus').onclick=()=>$('event-bus-dialog').close();
 $('event-bus-date').onchange=renderEventBus;
-$('event-bus-dialog').addEventListener('close',()=>{eventBusRequest++;if(eventBusFocus?.isConnected)eventBusFocus.focus();});
+$('event-bus-dialog').addEventListener('close',()=>{if($('event-bus-dialog').open)return;eventBusRequest++;if(eventBusFocus?.isConnected)eventBusFocus.focus();});
 
 $('event-bus-full-routes').onclick=()=>{if(!eventBusCurrent)return;eventBusFitFull=!eventBusFitFull;renderEventBusLegend();drawEventBusMap(eventBusCurrent.point,eventBusCurrent.stops);};

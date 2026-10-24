@@ -1,5 +1,12 @@
 // I tre mezzi condividono evento e punto di ritorno, riutilizzando le mappe esistenti.
-let travelEvent=null,travelFocus=null,travelMap=null,travelDay='';
+let travelEvent=null,travelFocus=null,travelMap=null,travelDay='',travelWalkId=null;
+function eventTravelDay(event){
+  const first=eventDay(event.startsAt),last=eventDay(event.endsAt);
+  return travelEvent?.id===event.id&&travelDay>=first&&travelDay<=last?travelDay:today>=first&&today<=last?today:first;
+}
+function eventTravelWhen(event,day=eventTravelDay(event)){
+  return eventDay(event.startsAt)===eventDay(event.endsAt)?'Evento: '+eventWhen(event):'Giorno scelto: '+formatDay(day,{weekday:'short',day:'numeric',month:'short',year:'numeric'})+' · Verifica gli orari nel programma.';
+}
 function appendEventTravel(content,event){
   const section=el('section','','event-bus-entry');
   if(!eventPosition(event)){section.append(el('h3','Come arrivare'),el('p','Il luogo non è abbastanza preciso per suggerire fermate o parcheggi. Verifica la sede nel programma ufficiale.','detail-note'));}
@@ -14,19 +21,22 @@ function travelModeButtons(container,mode){
 }
 function openEventTravel(event){
   if(!eventPosition(event))return;
-  travelEvent=event;travelFocus=document.activeElement;travelDay='';return switchEventTravel('walk');
+  if(travelEvent?.id!==event.id)travelDay='';
+  travelEvent=event;travelFocus=document.activeElement;return switchEventTravel('walk');
 }
 function switchEventTravel(mode){
   const event=travelEvent,point=event&&eventPosition(event);if(!point||!['bus','car','walk'].includes(mode))return;
-  if($('event-bus-dialog').open){travelDay=$('event-bus-date').value;$('event-bus-dialog').close();}
+  const activeId={bus:'event-bus-dialog',car:'parking-dialog',walk:'event-travel-dialog'}[mode];
+  if($(activeId).open&&(mode==='bus'?eventBusEvent?.id===event.id:mode==='car'?parkingEvent?.id===event.id:travelWalkId===event.id))return;
+  if($('event-bus-dialog').open){if(eventBusEvent?.id===event.id)travelDay=$('event-bus-date').value;$('event-bus-dialog').close();}
   if($('parking-dialog').open)$('parking-dialog').close();
-  if($('event-travel-dialog').open)$('event-travel-dialog').close();
+  if($('event-travel-dialog').open){travelMap?.remove();travelMap=null;$('event-travel-dialog').close();}
   for(const [id,key]of [['event-travel-modes','walk'],['event-bus-travel-modes','bus'],['parking-travel-modes','car']]){travelModeButtons($(id),key);$(id).hidden=false;}
   if(mode==='bus'){
     const pending=openEventBus(event,{date:travelDay});eventBusFocus=travelFocus;$('event-bus-scroll').scrollTop=0;$('close-event-bus').focus();return pending;
   }
   if(mode==='car'){openEventParking(event);parkingFocus=travelFocus;return;}
-  $('event-travel-name').textContent=event.title;$('event-travel-place').textContent=event.location||'Luogo indicato dall’evento';
+  travelWalkId=event.id;$('event-travel-name').textContent=event.title;$('event-travel-when').textContent=eventTravelWhen(event);$('event-travel-place').textContent=event.location||'Luogo indicato dall’evento';
   const link=$('event-travel-walk');link.href='https://www.google.com/maps/dir/?api=1&travelmode=walking&destination='+point.lat+','+point.lon;
   $('event-travel-dialog').showModal();$('event-travel-close').focus();drawTravelMap(point,event);
 }
@@ -41,4 +51,4 @@ function drawTravelMap(point,event){
   }catch{travelMap?.remove();travelMap=null;$('event-travel-map').hidden=true;note.textContent='Mappa non disponibile. Puoi comunque aprire le indicazioni a piedi.';}
 }
 $('event-travel-close').onclick=()=>$('event-travel-dialog').close();
-$('event-travel-dialog').addEventListener('close',()=>{travelMap?.remove();travelMap=null;if(travelFocus?.isConnected)travelFocus.focus();});
+$('event-travel-dialog').addEventListener('close',()=>{if($('event-travel-dialog').open)return;travelMap?.remove();travelMap=null;if(travelFocus?.isConnected)travelFocus.focus();});

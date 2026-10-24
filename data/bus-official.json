@@ -8,6 +8,7 @@
   "sha256": "d80318b671f4741244370aba4d024a7a61431e0b77a8777d49ba6addaab661a9",
   "realtime": false,
   "assetBase": "bus-official/",
+  "alightingAvailable": true,
   "lines": [
     {
       "number": "A",

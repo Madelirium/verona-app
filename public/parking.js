@@ -24,6 +24,8 @@ function openEventParking(event){
 }
 function configureParkingView(eventMode){
   $('parking-travel-modes').hidden=!eventMode;
+  $('parking-event-when').hidden=!eventMode;
+  $('parking-event-when').textContent=eventMode?(typeof eventTravelWhen==='function'?eventTravelWhen(parkingEvent):'Evento: '+eventWhen(parkingEvent)):'';
   if(eventMode&&typeof travelModeButtons==='function'){travelEvent=parkingEvent;travelModeButtons($('parking-travel-modes'),'car');}
   $('parking-eyebrow').textContent=eventMode?'Arrivare all’evento':'Muoversi a Verona';
   $('parking-title').textContent=eventMode?'Dove parcheggiare':'Parcheggi a Verona';
@@ -112,7 +114,7 @@ function selectParking(id,fromMap){
   if(!parkingMap){parkingView='list';parkingLayout();}
 }
 $('parking-close').onclick=()=>$('parking-dialog').close();
-$('parking-dialog').addEventListener('close',()=>{parkingRequest++;parkingPicking=false;parkingMap?.remove();parkingMap=null;parkingLayer=null;parkingEvent=null;parkingTarget=null;if(parkingFocus?.isConnected)parkingFocus.focus();});
+$('parking-dialog').addEventListener('close',()=>{if($('parking-dialog').open)return;parkingRequest++;parkingPicking=false;parkingMap?.remove();parkingMap=null;parkingLayer=null;parkingEvent=null;parkingTarget=null;if(parkingFocus?.isConnected)parkingFocus.focus();});
 for(const id of ['parking-radius','parking-type'])$(id).onchange=()=>{parkingSelected='';renderEventParking();$('parking-results').scrollTop=0;};
 function setParkingTarget(target){
   parkingRequest++;$('parking-nearby').disabled=false;

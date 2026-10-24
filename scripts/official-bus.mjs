@@ -9,6 +9,7 @@ export function validateOfficialLine(data,manifest,number){
     if(new Set(trip.dates).size!==trip.dates.length||trip.dates.some(day=>!/^\d{4}-\d{2}-\d{2}$/.test(day)||day<data.validFrom||day>data.validTo))fail();
     let previous=-1;
     for(const call of trip.calls){
+      if(manifest.alightingAvailable&&typeof call[6]!=='boolean')fail();
       if(!data.stops[call[0]]||!/^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/.test(call[1])||!Number.isInteger(call[2])||call[2]<0||call[2]>2||typeof call[3]!=='boolean')fail();
       const [h,m,s]=call[1].split(':').map(Number),seconds=call[2]*86400+h*3600+m*60+s;
       if(seconds<previous)fail();previous=seconds;

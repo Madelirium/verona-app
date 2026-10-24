@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {directBusTrips} from './direct-bus.mjs';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { Script, createContext } from 'node:vm';
@@ -1502,6 +1503,61 @@ test('Home personale: zona confermata, cambio giorno e rimozione aggiornano il r
 
 const travelLogic=await readFile(new URL('../public/event-travel.js',import.meta.url),'utf8');
 function runTravel(){const app=runParking();new Script(travelLogic).runInContext(app.context);useRomeInstant(app,'2026-10-22T10:00:00Z');new Script('parkingFixture.startsAt="2026-10-22T10:00:00+02:00";parkingFixture.endsAt="2026-10-24T18:00:00+02:00"').runInContext(app.context);return app;}
+test('Evento e orari: titolo, orario, partenza e rientro conservati da elenco e popup',async()=>{
+ const app=runEventBus(),stop=eventBusIndexData.stops.find(s=>s.code==='1974');
+ app.context.eventForTimes={...structuredClone(catalog.events[0]),id:'event-for-times',title:'Incontro a Verona',startsAt:'2026-10-21T18:00:00+02:00',endsAt:'2026-10-21T20:00:00+02:00',coordinates:{lat:stop.lat,lon:stop.lon},mapDisabled:false};
+ await new Script('openEventBus(eventForTimes)').runInContext(app.context);
+ const button=app.get('event-bus-stops').children[0].children.find(c=>c.className==='nearby-bus-lines').children.find(c=>c.textContent==='Linea 24 · Orari');await button.onclick();
+ assert.equal(app.get('official-event-context').hidden,false);assert.match(app.get('official-event-title').textContent,/Incontro a Verona/);assert.match(app.get('official-event-when').textContent,/18:00–20:00/);assert.match(app.get('official-context-label').textContent,/Partenze da/);assert.equal(app.get('official-date').value,'2026-10-21');assert.equal(app.get('official-stop').value,'1974');assert.equal(app.get('close-official-bus').attributes['aria-label'],'Torna alle fermate dell’evento');
+ app.get('close-official-bus').onclick();assert.equal(app.get('event-bus-dialog').open,true);assert.equal(app.get('event-bus-date').value,'2026-10-21');
+ app.context.popupStop=stop;await new Script('eventStopPopup(popupStop,["24"]).children[2].onclick()').runInContext(app.context);assert.match(app.get('official-event-title').textContent,/Incontro a Verona/);assert.equal(app.get('official-stop').value,'1974');
+});
+test('Orari evento: cambio data segnalato senza spostare l’evento; nessun contesto residuo nella consultazione normale',async()=>{
+ const app=runTravel();await new Script('openEventStopTimes("24","1974","2026-10-23",parkingFixture)').runInContext(app.context);
+ assert.match(app.get('official-event-when').textContent,/23/);app.get('official-date').value='2026-10-24';app.get('official-date').onchange();assert.equal(app.get('official-event-warning').hidden,false);assert.match(app.get('official-event-warning').textContent,/23/);assert.match(app.get('official-event-when').textContent,/23/);
+ app.get('official-date').value='2026-10-23';app.get('official-date').onchange();assert.equal(app.get('official-event-warning').hidden,true);
+ app.get('close-official-bus').onclick();await new Script('openOfficialBus("24",{stopCode:"1974",date:"2026-10-23"})').runInContext(app.context);assert.equal(app.get('official-event-context').hidden,true);assert.equal(app.get('official-event-title').textContent,'');assert.equal(app.get('official-bus-title').textContent,'Quando passa?');assert.equal(app.get('close-official-bus').attributes['aria-label'],'Chiudi orari ufficiali');
+});
+test('Orari evento: errore recuperabile conserva il riferimento anche fuori copertura',async()=>{
+ const app=runTravel();app.context.fetch=async()=>{throw Error('offline');};
+ await new Script('openEventStopTimes("24","1974","2026-10-23",parkingFixture)').runInContext(app.context);assert.match(app.get('official-summary').textContent,/Impossibile caricare/);assert.match(app.get('official-event-title').textContent,/Evento in Arena/);
+ app.context.fetch=async()=>({ok:true,json:async()=>structuredClone(official24)});await app.get('official-results').children[0].onclick();assert.equal(app.get('official-stop').value,'1974');assert.equal(app.get('official-event-context').hidden,false);
+ app.get('official-date').value='2027-02-01';app.get('official-date').onchange();assert.match(app.get('official-summary').textContent,/fuori dalla validità/);assert.equal(app.get('official-event-warning').hidden,false);assert.match(app.get('official-event-title').textContent,/Evento in Arena/);
+});
+test('Come arrivare: il mezzo già attivo non riapre il pannello e non perde la selezione',async()=>{
+ const app=runTravel();new Script('openEventTravel(parkingFixture)').runInContext(app.context);
+ let closed=0;const walk=app.get('event-travel-dialog'),closeWalk=walk.close.bind(walk);walk.close=()=>{closed++;closeWalk();};
+ app.get('event-travel-modes').children[2].onclick();assert.equal(closed,0);
+ await app.get('event-travel-modes').children[0].onclick();app.get('event-bus-date').value='2026-10-23';
+ const request=new Script('eventBusRequest').runInContext(app.context);await app.get('event-bus-travel-modes').children[0].onclick();assert.equal(new Script('eventBusRequest').runInContext(app.context),request);assert.equal(app.get('event-bus-date').value,'2026-10-23');
+ app.get('event-bus-travel-modes').children[1].onclick();app.get('parking-radius').value='3000';app.get('parking-travel-modes').children[1].onclick();assert.equal(app.get('parking-radius').value,'3000');
+});
+test('Come arrivare: data leggibile nei tre mezzi, giorno mantenuto al rientro e nuovo evento separato',async()=>{
+ const app=runTravel();new Script('openEventTravel(parkingFixture)').runInContext(app.context);assert.match(app.get('event-travel-when').textContent,/22/);
+ await app.get('event-travel-modes').children[0].onclick();assert.match(app.get('event-bus-when').textContent,/22/);app.get('event-bus-date').value='2026-10-23';await app.get('event-bus-date').onchange();
+ app.get('event-bus-travel-modes').children[1].onclick();assert.match(app.get('parking-event-when').textContent,/23/);app.get('parking-close').onclick();
+ await new Script('openEventTravel(parkingFixture);switchEventTravel("bus")').runInContext(app.context);assert.equal(app.get('event-bus-date').value,'2026-10-23');
+ new Script('openEventTravel({...parkingFixture,id:"different-event",startsAt:"2026-10-22",endsAt:"2026-10-24"})').runInContext(app.context);await app.get('event-travel-modes').children[0].onclick();assert.equal(app.get('event-bus-date').value,'2026-10-22');
+});
+test('Autobus evento: le tre fermate suggerite hanno servizio nel giorno scelto, senza nascondere il fuori copertura',async()=>{
+ const app=runEventBus();app.context.smallIndex={validFrom:'2026-10-22',validTo:'2026-10-22',days:['2026-10-22'],stops:[0,1,2,3].map((i)=>({code:String(i),lat:45.4386+i*.0001,lon:10.9929,services:[['24',i===3?'1':'0']]}))};
+ const rows=new Script('nearbyBusStops(smallIndex,{lat:45.4386,lon:10.9929},"2026-10-22",{withService:true})').runInContext(app.context);assert.equal(rows.length,1);assert.equal(rows[0].code,'3');
+ assert.equal(new Script('nearbyBusStops(smallIndex,{lat:45.4386,lon:10.9929},"2027-01-01",{withService:true}).length').runInContext(app.context),3);
+ new Script('eventBusStops={...smallIndex,stops:smallIndex.stops.slice(0,3)};openEventBus({...events[0],startsAt:"2026-10-22",endsAt:"2026-10-22",coordinates:{lat:45.4386,lon:10.9929},mapDisabled:false})').runInContext(app.context);await new Script('renderEventBus()').runInContext(app.context);assert.match(app.get('event-bus-status').textContent,/Nessuna fermata con partenze programmate/);
+});
+test('Come arrivare: una vecchia chiusura accodata non cancella il nuovo pannello',()=>{
+ const app=runTravel();new Script('openEventTravel(parkingFixture);switchEventTravel("car")').runInContext(app.context);
+ const parking=app.get('parking-dialog');parking.close=()=>{parking.open=false;};parking.close();
+ new Script('openEventParking({...parkingFixture,id:"new-parking-event"})').runInContext(app.context);parking.listeners.close();
+ assert.equal(new Script('parkingEvent.id').runInContext(app.context),'new-parking-event');assert.equal(parking.open,true);
+});
+test('Autobus evento: richiesta con tempo limite, errore recuperabile e nuovo tentativo senza cache fallita',async()=>{
+ const app=runEventBus();let calls=0;const timeouts=[];app.context.AbortSignal={timeout:ms=>{timeouts.push(ms);return 'bounded-request';}};
+ app.context.fetch=async(url,options)=>{calls++;assert.equal(options.signal,'bounded-request');if(calls===1)throw Error('Timeout');return {ok:true,json:async()=>structuredClone(eventBusIndexData)};};
+ app.context.busEvent={...structuredClone(catalog.events[0]),startsAt:'2026-10-22',endsAt:'2026-10-22',coordinates:{lat:45.4386,lon:10.9929},mapDisabled:false};
+ await new Script('openEventBus(busEvent)').runInContext(app.context);assert.match(app.get('event-bus-status').textContent,/Puoi riprovare/);
+ await app.get('event-bus-stops').children[0].onclick();assert.ok(calls>=2);assert.ok(timeouts.every(ms=>ms===15000));assert.match(app.get('event-bus-status').textContent,/fermate con partenze programmate/);
+});
 test('Come arrivare: mezzo, evento e giorno conservati, indicazioni a piedi e rientro nei dettagli',async()=>{
  const app=runTravel();new Script('openDetails(parkingFixture)').runInContext(app.context);const sections=app.get('detail-content').children.filter(node=>node.className==='event-bus-entry');assert.equal(sections.length,0);assert.equal(app.get('detail-travel').hidden,false);app.get('detail-travel').onclick();assert.equal(app.get('event-travel-dialog').open,true);assert.match(app.get('event-travel-walk').href,/travelmode=walking/);assert.match(app.get('event-travel-map-note').textContent,/Mappa non disponibile/);
  await app.get('event-travel-modes').children[0].onclick();assert.equal(app.get('event-travel-dialog').open,false);assert.equal(app.get('event-bus-dialog').open,true);assert.equal(app.get('event-bus-name').textContent,'Evento in Arena');app.get('event-bus-date').value='2026-10-23';
@@ -1982,3 +2038,66 @@ test('Farmacie UX: HTTP, rifiuto, coordinate invalide e risposte dopo cambio fil
  app.get('pharmacy-nearby').onclick();done({coords:{latitude:999,longitude:11,accuracy:10}});assert.equal(new Script('pharmacyPoint').runInContext(app.context),null);app.get('pharmacy-nearby').onclick();app.get('pharmacy-scope').value='town:LEGNAGO';app.get('pharmacy-scope').onchange();done({coords:{latitude:45.44,longitude:11,accuracy:10}});assert.equal(new Script('pharmacyPoint').runInContext(app.context),null);assert.equal(app.get('pharmacy-scope').value,'town:LEGNAGO');
  app.get('pharmacy-nearby').onclick();app.get('pharmacy-close').onclick();done({coords:{latitude:45.44,longitude:11,accuracy:10}});assert.equal(new Script('pharmacyPoint').runInContext(app.context),null);useRomeInstant(app,'2030-01-01T10:00:00Z');new Script('openPharmacies()').runInContext(app.context);const before=calls;app.get('pharmacy-nearby').onclick();assert.equal(calls,before);assert.match(app.get('pharmacy-location-feedback').textContent,/aggiornare/);
 });
+
+const directUiLogic=await readFile(new URL('../public/event-direct.js',import.meta.url),'utf8');
+const directRealLine=JSON.parse(await readFile(new URL('../data/bus-official/11.json',import.meta.url),'utf8'));
+function runDirectUi(){
+ const app=runTravel();app.context.busDisplayName=value=>value;new Script(directBusTrips.toString()+'\n'+directUiLogic).runInContext(app.context);
+ const origin=Object.values(directRealLine.stops).find(stop=>stop.name.includes('STAZIONE PORTA NUOVA')&&directBusTrips([directRealLine],{origin:stop.code,point:{lat:45.4386,lon:10.9929},day:'2026-10-22',after:'12:00'}).length);
+ app.context.directOrigin={...origin,services:[['11','1'.repeat(eventBusIndexData.days.length)]]};
+ app.context.directIndex={...structuredClone(eventBusIndexData),stops:[app.context.directOrigin]};
+ app.context.fetch=async()=>({ok:true,json:async()=>structuredClone(directRealLine)});
+ new Script('eventBusStops=directIndex;eventBusEvent=parkingFixture;$("event-bus-date").value="2026-10-22";$("event-bus-dialog").showModal()').runInContext(app.context);
+ return app;
+}
+test('Corse dirette UI: scelta esplicita della partenza, ricerca e riepilogo del viaggio reale',async()=>{
+ const app=runDirectUi();await app.get('event-bus-plan').onclick();assert.equal(app.get('event-direct-dialog').open,true);assert.equal(app.get('event-direct-search').disabled,true);
+ app.get('event-direct-origin').value=app.context.directOrigin.code;app.get('event-direct-origin').oninput();assert.equal(app.get('event-direct-search').disabled,true);app.get('event-direct-origins').children[0].onclick();
+ assert.equal(app.get('event-direct-search').disabled,false);await app.get('event-direct-search').onclick();assert.match(app.get('event-direct-status').textContent,/corse dirette/);assert.ok(app.get('event-direct-results').children.length);
+ const card=app.get('event-direct-results').children[0];card.children.find(node=>node.textContent==='Vedi viaggio').onclick();assert.equal(app.get('bus-journey-dialog').open,true);assert.ok(new Script('busTripSelection.arrival.minutes').runInContext(app.context)>0);assert.match(app.get('bus-journey-content').children.at(-1).textContent,/tempo a piedi non è incluso/);
+});
+test('Corse dirette UI: modifica partenza, fuori copertura e chiusura durante il caricamento',async()=>{
+ const app=runDirectUi();await app.get('event-bus-plan').onclick();app.get('event-direct-origin').value='zzunknown';app.get('event-direct-origin').oninput();assert.match(app.get('event-direct-status').textContent,/Nessuna fermata trovata/);assert.equal(app.get('event-direct-search').disabled,true);
+ app.get('event-direct-close').onclick();assert.equal(app.get('event-bus-dialog').open,true);
+ app.get('event-bus-date').value='2027-02-01';await app.get('event-bus-plan').onclick();assert.match(app.get('event-direct-status').textContent,/non è coperto/);assert.equal(app.get('event-direct-origin').disabled,true);
+ app.get('event-direct-close').onclick();let finish;new Script('eventBusStops=null;eventBusStopsLoad=null').runInContext(app.context);app.context.fetch=()=>new Promise(resolve=>{finish=resolve});const pending=app.get('event-bus-plan').onclick();app.get('event-direct-close').onclick();finish({ok:true,json:async()=>structuredClone(eventBusIndexData)});await pending;assert.equal(app.get('event-direct-dialog').open,false);assert.equal(new Script('eventDirectState').runInContext(app.context),null);
+});
+test('Corse dirette UI: errore di una linea dichiara ricerca incompleta e dati tardivi non sostituiscono la nuova ricerca',async()=>{
+ const app=runDirectUi();new Script('directOrigin.services.push(["24","1".repeat(directIndex.days.length)])').runInContext(app.context);await app.get('event-bus-plan').onclick();app.get('event-direct-origin').value=app.context.directOrigin.code;app.get('event-direct-origin').oninput();app.get('event-direct-origins').children[0].onclick();app.context.fetch=async url=>{if(String(url).includes('/24.json'))throw Error('offline');return {ok:true,json:async()=>structuredClone(directRealLine)};};
+ await app.get('event-direct-search').onclick();assert.match(app.get('event-direct-status').textContent,/Ricerca incompleta/);assert.equal(app.get('event-direct-results').children.at(-1).textContent,'Riprova le linee non caricate');
+ let finish;new Script('officialBusCache.clear()').runInContext(app.context);app.context.fetch=()=>new Promise(resolve=>{finish=resolve});new Script('directOrigin.services=directOrigin.services.slice(0,1)').runInContext(app.context);const pending=app.get('event-direct-search').onclick();app.get('event-direct-origin').value='nuova';app.get('event-direct-origin').oninput();finish({ok:true,json:async()=>structuredClone(directRealLine)});await pending;assert.equal(app.get('event-direct-results').children.length,0);assert.equal(app.get('event-direct-search').disabled,true);
+});
+
+test('Corse dirette: riepilogo non consente di cambiare arrivo verso una fermata con divieto di discesa',()=>{
+ const app=runDirectUi();app.context.permissionTrip={number:'T',stops:{O:{name:'Origine'},B:{name:'Solo salita'},A:{name:'Arrivo'}},trips:[{id:'permission-test',destination:'Arrivo',dates:['2026-10-22'],calls:[['O','12:00:00',0,true,null,0,false],['B','12:05:00',0,true,'12:05:00',0,false],['A','12:10:00',0,false,'12:10:00',0,true]]}]};
+ new Script('openBusTrip(permissionTrip,{trip:"permission-test",serviceDay:"2026-10-22",order:0,time:"12:00:00",destination:"Arrivo"})').runInContext(app.context);
+ const rows=app.get('bus-trip-stops').children;assert.equal(rows[1].children.length,2);assert.match(rows[1].children[1].children.at(-1).textContent,/Non è consentita la discesa/);assert.equal(rows[2].children.at(-1).textContent,'Scegli arrivo');
+});
+
+test('Arriva entro UI: propone l’inizio futuro, ordina gli arrivi e conserva il modo già attivo',async()=>{
+ const app=runDirectUi();new Script('eventBusEvent={...parkingFixture,startsAt:"2026-10-22T18:00:00+02:00",endsAt:"2026-10-22T20:00:00+02:00"}').runInContext(app.context);
+ await app.get('event-bus-plan').onclick();assert.equal(app.get('event-direct-before').value,'18:00');assert.equal(app.get('event-direct-after-field').hidden,true);assert.equal(app.get('event-direct-arrival-mode').attributes['aria-pressed'],'true');
+ app.get('event-direct-origin').value=app.context.directOrigin.code;app.get('event-direct-origin').oninput();app.get('event-direct-origins').children[0].onclick();await app.get('event-direct-search').onclick();assert.match(app.get('event-direct-status').textContent,/entro le 18:00/);
+ const rows=app.get('event-direct-results').children,arrivals=rows.map(card=>card.children[2].textContent.match(/([0-9]{2}:[0-9]{2})/)[1]);assert.ok(rows.length);assert.ok(arrivals.every(time=>time<='18:00'));assert.deepEqual([...arrivals].sort().reverse(),arrivals);
+ app.get('event-direct-arrival-mode').onclick();assert.equal(app.get('event-direct-results').children.length,rows.length);
+ app.get('event-direct-departure-mode').onclick();assert.equal(app.get('event-direct-results').children.length,0);assert.equal(app.get('event-direct-after-field').hidden,false);assert.equal(app.get('event-direct-before-field').hidden,true);
+});
+test('Arriva entro UI: nessun orario inventato per giornate senza inizio; termine passato e input assente spiegati',async()=>{
+ const app=runDirectUi();new Script('eventBusEvent={...parkingFixture,startsAt:"2026-10-22",endsAt:"2026-10-22"}').runInContext(app.context);await app.get('event-bus-plan').onclick();assert.equal(app.get('event-direct-before').value,'');app.get('event-direct-arrival-mode').onclick();assert.match(app.get('event-direct-status').textContent,/non è disponibile/);
+ app.get('event-direct-origin').value=app.context.directOrigin.code;app.get('event-direct-origin').oninput();app.get('event-direct-origins').children[0].onclick();await app.get('event-direct-search').onclick();assert.match(app.get('event-direct-status').textContent,/orario valido di arrivo/);
+ app.get('event-direct-before').value='09:00';await app.get('event-direct-search').onclick();assert.match(app.get('event-direct-status').textContent,/già trascorso/);assert.equal(app.get('event-direct-results').children.length,0);
+ app.get('event-direct-close').onclick();new Script('eventBusEvent=parkingFixture;$("event-bus-date").value="2026-10-23"').runInContext(app.context);await app.get('event-bus-plan').onclick();assert.equal(app.get('event-direct-before').value,'');
+});
+test('Arriva entro UI: cambio modalità durante caricamento non blocca la fermata; stato vuoto consente di cambiare criterio',async()=>{
+ const app=runDirectUi();let finish;new Script('eventBusStops=null;eventBusStopsLoad=null').runInContext(app.context);app.context.fetch=()=>new Promise(resolve=>{finish=resolve});const pending=app.get('event-bus-plan').onclick();app.get('event-direct-arrival-mode').onclick();finish({ok:true,json:async()=>structuredClone(app.context.directIndex)});await pending;assert.equal(app.get('event-direct-origin').disabled,false);
+ app.get('event-direct-origin').value=app.context.directOrigin.code;app.get('event-direct-origin').oninput();app.get('event-direct-origins').children[0].onclick();app.get('event-direct-before').value='18:00';app.context.emptyLine={...structuredClone(directRealLine),trips:[]};new Script('officialBusCache.set("11",emptyLine)').runInContext(app.context);await app.get('event-direct-search').onclick();assert.match(app.get('event-direct-status').textContent,/Prova un altro orario o Parti dalle/);assert.equal(app.get('event-direct-results').children.length,0);
+ app.get('event-direct-departure-mode').onclick();assert.equal(app.get('event-direct-search').disabled,false);
+});
+
+const walkingHelpers=await import('./walking-route.mjs');
+const walkingUiLogic=await readFile(new URL('../public/event-walking.js',import.meta.url),'utf8');
+function runWalkingUi(){const app=runDirectUi();app.context.location={protocol:'http:',hostname:'127.0.0.1'};app.context.AbortController=AbortController;app.context.fetch=(...args)=>app.context.walkFetch(...args);new Script([walkingHelpers.walkingPreviewAvailable,walkingHelpers.createWalkingClient,walkingHelpers.walkingEventArrival].map(fn=>fn.toString()).join('\n')+'\n'+walkingUiLogic).runInContext(app.context);app.context.walkEvent={...app.context.parkingFixture,startsAt:'2026-10-22T18:00:00+02:00'};app.context.walkResult={number:'53',duration:5,origin:{name:'Origine'},row:{time:'16:35:00'},arrival:{name:'Piazza Bra',lat:45.43784036,lon:10.99318612},arrivalTime:'16:40:00'};app.context.walkResponse={code:'Ok',routes:[{distance:136.4,duration:109.1,geometry:{type:'LineString',coordinates:[[10.99318612,45.43784036],[10.991876,45.43831]]}}],waypoints:[{distance:0},{distance:0}]};new Script('walkEvent={...walkEvent,coordinates:{lat:45.43831,lon:10.991876},location:"Gran Guardia"};walkResponse.routes[0].geometry.coordinates[1]=[10.991876,45.43831]').runInContext(app.context);return app;}
+test('Walking UI: production does not expose preview or make a request',()=>{const app=runWalkingUi();app.context.location.hostname='veronaintasca.it';new Script('appendWalkingPreview($("event-direct-results"),walkEvent,walkResult,{day:"2026-10-22"})').runInContext(app.context);assert.equal(app.get('event-direct-results').children.length,0);});
+test('Walking UI: route failure retains external directions and allows retry',async()=>{const app=runWalkingUi();app.context.walkFetch=async()=>{throw Error('offline')};await new Script('openEventWalking(walkEvent,walkResult,{day:"2026-10-22"})').runInContext(app.context);assert.match(app.get('event-walking-status').textContent,/non disponibile/);assert.equal(app.get('event-walking-retry').hidden,false);assert.match(app.get('event-walking-external').href,/travelmode=walking/);app.get('event-walking-close').onclick();assert.equal(app.get('event-walking-dialog').open,false);});
+test('Walking UI: closed dialog ignores late results',async()=>{const app=runWalkingUi();let finish;app.context.walkFetch=()=>new Promise(resolve=>finish=resolve);const pending=new Script('openEventWalking(walkEvent,walkResult,{day:"2026-10-22"})').runInContext(app.context);await Promise.resolve();app.get('event-walking-close').onclick();finish({ok:true,json:async()=>app.context.walkResponse});await pending;assert.equal(app.get('event-walking-summary').children.length,0);assert.equal(app.get('event-walking-dialog').open,false);});
+test('Walking UI: successful route combines bus and walk even without map library',async()=>{const app=runWalkingUi();app.context.walkFetch=async()=>({ok:true,json:async()=>app.context.walkResponse});await new Script('openEventWalking(walkEvent,walkResult,{day:"2026-10-22",before:"17:00"})').runInContext(app.context);const text=app.get('event-walking-summary').children.map(node=>node.textContent).join(' ');assert.match(text,/136 m/);assert.match(text,/totale stimato 7 min/);assert.match(text,/16:42/);assert.equal(app.get('event-walking-retry').hidden,true);assert.match(app.get('event-walking-status').textContent,/Mappa non disponibile/);});

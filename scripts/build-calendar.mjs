@@ -1,3 +1,5 @@
+import {directBusTrips} from './direct-bus.mjs';
+import {walkingPreviewAvailable,createWalkingClient,walkingEventArrival} from './walking-route.mjs';
 import {analyticsConfig} from './analytics-config.mjs';
 import {buildPwa} from './build-pwa.mjs';
 import {eventBusIndex} from './event-bus-index.mjs';
@@ -77,7 +79,7 @@ export async function buildCalendar() {
   const [mapCss,mapJs]=await Promise.all(['public/vendor/leaflet.css','public/vendor/leaflet.js'].map(p=>readFile(new URL(p,root),'utf8').catch(e=>{if(e.code!=='ENOENT')throw e;return '';})));
   const assets=mapJs?`<style>${mapCss}</style><script>${mapJs.replaceAll('</script','<\\/script')}</script>`:'';
   const officialLogic=await readFile(new URL('public/bus-official.js',root),'utf8');
-  const eventBusLogic=await readFile(new URL('public/event-bus.js',root),'utf8');
+  const eventBusLogic=(await readFile(new URL('public/event-bus.js',root),'utf8'))+'\n'+directBusTrips.toString()+'\n'+await readFile(new URL('public/event-direct.js',root),'utf8')+'\n'+[walkingPreviewAvailable,createWalkingClient,walkingEventArrival].map(fn=>fn.toString()).join('\n')+'\n'+await readFile(new URL('public/event-walking.js',root),'utf8');
   const parkingLogic=await readFile(new URL('public/parking.js',root),'utf8');
   const travelLogic=await readFile(new URL('public/event-travel.js',root),'utf8');
   const weatherLogic=await readFile(new URL('public/weather.js',root),'utf8');

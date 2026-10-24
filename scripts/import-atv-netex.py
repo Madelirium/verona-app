@@ -13,7 +13,7 @@ netex = importlib.import_module('check-atv-netex')
 
 def export_catalog(catalog, source_hash):
     meta = {**catalog['meta'], 'source': 'https://www.cciss.it/nap/mmtis/public/catalog/Asset/204401',
-            'sha256': source_hash, 'realtime': False, 'assetBase': 'bus-official/'}
+            'sha256': source_hash, 'realtime': False, 'assetBase': 'bus-official/', 'alightingAvailable': True}
     days = []
     day, end = date.fromisoformat(meta['validFrom']), date.fromisoformat(meta['validTo'])
     while day <= end:
@@ -37,7 +37,7 @@ def export_catalog(catalog, source_hash):
                 stops[stop['code']] = stop
                 # Preserve terminal arrivals in the dataset; boarding gates the UI departures.
                 calls.append([stop['code'], passing['departure'], passing['departureOffset'],
-                              point['boarding'] == 'true', passing['arrival'], passing['arrivalOffset']])
+                              point['boarding'] == 'true', passing['arrival'], passing['arrivalOffset'], point['alighting'] == 'true'])
             trips.append({'id': journey['id'].split(':')[-1].removesuffix('_ATV'),
                           'name': journey['name'], 'destination': stops[calls[-1][0]]['name'],
                           'dates': dates, 'calls': calls})

@@ -81,6 +81,12 @@
 .official-context p{font-size:16px;line-height:1.35;margin:0;font-weight:650}
 .official-context button{min-height:44px;min-width:80px;font-size:14px;padding:7px;border:1px solid var(--control-border);border-radius:10px;background:var(--surface);color:var(--primary)}
 .official-context-known .timetable-controls label:has(#official-line),.official-context-known .timetable-controls label:has(#official-stop){display:none}
+.official-event-context{flex:none;max-height:24dvh;overflow:auto;overscroll-behavior:contain;border-left:3px solid var(--primary);border-radius:8px;background:var(--page-bg);padding:0 10px}
+.official-event-context summary{min-height:44px;padding:7px 0;cursor:pointer;font-size:14px;line-height:1.4;color:var(--text)}
+#official-event-title{font-size:15px;font-weight:700;overflow-wrap:anywhere}
+#official-event-when{display:block;font-size:14px;font-weight:400;line-height:1.4;margin-top:3px}
+.official-event-context p{font-size:14px;line-height:1.45;margin:4px 0 10px}
+#official-event-warning{flex:none;font-size:14px;line-height:1.4;margin:0;color:var(--text)}
 
 /* Map-first entry, inside the app shell; only details scroll. */
 .bus-entry-tabs{display:flex;gap:7px;flex:none}
