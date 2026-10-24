@@ -1,5 +1,5 @@
 let eventWalkingState=null,eventWalkingFocus=null,eventWalkingMap=null,eventWalkingVersion=0,eventWalkingController=null;
-const eventWalkingClient=createWalkingClient();
+const eventWalkingClient=createWalkingClient({endpoint:payload.walking?.endpoint||''});
 function appendWalkingPreview(container,event,result,{day,before=''}={}){
   if(!walkingPreviewAvailable(typeof location==='undefined'?null:location))return;
   const button=el('button','Percorso a piedi','dialog-save');button.type='button';button.onclick=()=>openEventWalking(event,result,{day,before});container.append(button);

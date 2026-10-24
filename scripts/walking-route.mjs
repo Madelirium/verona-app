@@ -8,7 +8,7 @@ export function walkingPreviewAvailable(location){
   const [a,b]=parts.map(Number);return location.protocol==='http:'&&(a===10||a===192&&b===168||a===172&&b>=16&&b<=31);
 }
 
-export function createWalkingClient({fetchRoute=globalThis.fetch,now=()=>Date.now(),wait=ms=>new Promise(resolve=>setTimeout(resolve,ms))}={}){
+export function createWalkingClient({fetchRoute=globalThis.fetch,now=()=>Date.now(),wait=ms=>new Promise(resolve=>setTimeout(resolve,ms)),endpoint=''}={}){
   const cache=new Map();let queue=Promise.resolve(),lastRequest=-Infinity;
   const point=p=>p&&Number.isFinite(p.lat)&&Number.isFinite(p.lon)&&p.lat>=44.5&&p.lat<=46.3&&p.lon>=10&&p.lon<=12;
   const distance=(a,b)=>{const r=Math.PI/180,x=(b.lat-a.lat)*r,y=(b.lon-a.lon)*r,h=Math.sin(x/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(y/2)**2;return 6371000*2*Math.atan2(Math.sqrt(h),Math.sqrt(Math.max(0,1-h)));};
@@ -19,18 +19,18 @@ export function createWalkingClient({fetchRoute=globalThis.fetch,now=()=>Date.no
     const key=[start.lon,start.lat,end.lon,end.lat].join(',');
     const run=async()=>{
       abort(signal);const existing=cache.get(key);if(existing&&now()-existing.fetchedAt<15*60000)return existing;
-      const delay=1100-(now()-lastRequest);if(delay>0)await wait(delay);abort(signal);
+      const delay=(endpoint?1600:1100)-(now()-lastRequest);if(delay>0)await wait(delay);abort(signal);
       const controller=new AbortController(),cancel=()=>controller.abort();signal?.addEventListener('abort',cancel,{once:true});
       const timer=setTimeout(cancel,15000);lastRequest=now();
       try{
         const url='https://routing.openstreetmap.de/routed-foot/route/v1/foot/'+start.lon+','+start.lat+';'+end.lon+','+end.lat+'?overview=full&geometries=geojson&steps=false&alternatives=false&generate_hints=false&radiuses=40;40';
-        const response=await fetchRoute(url,{signal:controller.signal,credentials:'omit',referrerPolicy:'strict-origin-when-cross-origin'});
+        const response=await fetchRoute(endpoint||url,{signal:controller.signal,credentials:'omit',referrerPolicy:'strict-origin-when-cross-origin',...(endpoint?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({start,end})}:{})});
         if(!response.ok)throw new Error(response.status===429?'Servizio occupato: riprova tra poco.':'Servizio pedonale non disponibile.');
         const data=await response.json(),route=data.routes?.[0],coordinates=route?.geometry?.coordinates;
         if(data.code!=='Ok'||route?.geometry?.type!=='LineString'||!Array.isArray(coordinates)||coordinates.length<2||coordinates.length>5000||!Number.isFinite(route.distance)||route.distance<0||route.distance>10000||!Number.isFinite(route.duration)||route.duration<0||route.duration>7200||data.waypoints?.length!==2)throw new Error('Percorso pedonale non disponibile o non verificabile.');
         if(coordinates.some(p=>!Array.isArray(p)||p.length<2||!point({lat:p[1],lon:p[0]}))||data.waypoints.some(p=>!Number.isFinite(p.distance)||p.distance<0||p.distance>40)||distance(start,{lon:coordinates[0][0],lat:coordinates[0][1]})>60||distance(end,{lon:coordinates.at(-1)[0],lat:coordinates.at(-1)[1]})>60)throw new Error('Il percorso non è abbastanza vicino alla fermata o alla sede.');
         abort(signal);
-        const result={distance:route.distance,duration:route.duration,coordinates,fetchedAt:now(),source:'FOSSGIS · OSRM foot / OpenStreetMap'};
+        const result={distance:route.distance,duration:route.duration,coordinates,fetchedAt:now(),source:endpoint?'openrouteservice / HeiGIT · OpenStreetMap':'FOSSGIS · OSRM foot / OpenStreetMap'};
         if(cache.size>=30)cache.delete(cache.keys().next().value);cache.set(key,result);return result;
       }finally{clearTimeout(timer);signal?.removeEventListener('abort',cancel);}
     };

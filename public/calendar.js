@@ -278,7 +278,7 @@ function renderDistrict(){
     list.append(card);
   }
 }
-function eventPosition(e){const p=e.coordinates;if(e.mapDisabled||!p||!Number.isFinite(p.lat)||!Number.isFinite(p.lon)||p.lat<44.5||p.lat>46.3||p.lon<10||p.lon>12)return null;return p;}
+function eventPosition(e,day){if(!day&&e.occurrences){const first=e.startsAt.slice(0,10),last=e.endsAt.slice(0,10);day=typeof selected!=='undefined'&&selected>=first&&selected<=last?selected:typeof today!=='undefined'&&today>=first&&today<=last?today:first;}if(day&&typeof eventVenueForDay==='function'&&(e.occurrences||e.locationsByDay)){const venue=eventVenueForDay(e,day);return venue.usable?venue.coordinates:null;}const p=e.coordinates;if(e.mapDisabled||!p||!Number.isFinite(p.lat)||!Number.isFinite(p.lon)||p.lat<44.5||p.lat>46.3||p.lon<10||p.lon>12)return null;return p;}
 function eventMapEvents(){const days=Number($('event-map-period').value||1);const end=new Date(Date.parse(selected+'T12:00:00Z')+(days-1)*86400000).toISOString().slice(0,10);return visibleEvents().filter(e=>eventDay(e.startsAt)<=end&&eventDay(e.endsAt)>=selected&&(!eventMapSaved||['interested','going'].includes(preferences[e.id])));}
 function openEventMap(event=null){if(view!=='eventmap')eventMapReturn={view:['calendar','saved','explore'].includes(view)?view:'calendar',selected,search:$('search').value,source:$('source').value,scroll:$('events').scrollTop||0,agenda:agendaReady?captureAgendaState():null};if(event){if(agendaReady){agendaRange='day';for(const id of agendaFilterIds)$(id).value='';}selected=eventDay(event.startsAt);month=selected.slice(0,7);eventMapFocus=event.id;eventMapSaved=false;$('search').value='';$('source').value='';$('event-map-period').value='1';}else eventMapFocus=null;setView('eventmap');}
 function renderEventMap(){
@@ -659,6 +659,7 @@ function openDetails(e) {
   if(typeof appendEventWeather==='function')appendEventWeather(content,e);
   if(typeof appendEventTravel==='function'){if(!eventPosition(e))appendEventTravel(content,e);}
   else{if(typeof appendEventBus==='function')appendEventBus(content,e);if(typeof appendEventParking==='function')appendEventParking(content,e);}
+  if(eventPosition(e)&&typeof openEventBusPlanner==='function'&&typeof openEventTravel==='function'){const other=el('button','Auto, mappa e indicazioni a piedi','event-direct-edit');other.type='button';other.onclick=()=>openEventTravel(e);content.append(other);}
   try{const url=new URL(e.sourceUrl);if(url.protocol==='https:'){const link=el('a','Apri il programma ufficiale ↗','detail-link');link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';content.append(link)}}catch{}
   if(eventImage(e)){
     const toggle=el('button','Immagine e crediti ▾','event-poster-toggle');toggle.type='button';toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls','event-detail-poster');content.append(toggle);
@@ -671,7 +672,7 @@ function openDetails(e) {
   content.append(el('p','Salvare l’evento o confermare la presenza non acquista biglietti e non effettua prenotazioni.','detail-note'));
   const button=$('detail-save');button.textContent=state?(state==='going'?'✓ Partecipi · gestisci':'✓ Salvato · gestisci'):'♡ Salva evento';button.setAttribute('aria-label',state?'Gestisci evento salvato: '+e.title:'Salva evento: '+e.title);
   button.onclick=()=>{if(manageTarget){content.scrollTop=0;manageTarget.focus();return;}closeDetails();if(currentDiscovery?.id===e.id)chooseDiscovery('interested');else save(e.id,'interested');};
-  const travel=$('detail-travel');travel.hidden=!eventPosition(e);travel.textContent=typeof openEventTravel==='function'?'Come arrivare':'Vedi mappa';travel.onclick=()=>{if(typeof openEventTravel==='function')openEventTravel(e);else{closeDetails();openEventMap(e);}};
+  const travel=$('detail-travel');travel.hidden=!eventPosition(e);const direct=typeof openEventBusPlanner==='function';$('detail-dialog').classList.toggle('event-bus-ready',direct);travel.textContent=direct?'Vai in autobus':typeof openEventTravel==='function'?'Come arrivare':'Vedi mappa';travel.onclick=()=>{if(direct)openEventBusPlanner(e);else if(typeof openEventTravel==='function')openEventTravel(e);else{closeDetails();openEventMap(e);}};
   $('detail-dialog').showModal();$('close-detail').focus();mountEventDetailPreview();
 }
 function closeDetails() {$('detail-dialog').close();}

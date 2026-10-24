@@ -19,7 +19,7 @@ function appendEventBus(content,event){
   content.append(section);
 }
 function openEventBus(event,{date:chosenDay}={}){
-  if(!eventPosition(event))return;eventBusFocus=document.activeElement;eventBusEvent=event;
+  const initialDay=chosenDay||(typeof eventTravelDay==='function'?eventTravelDay(event):today>=eventDay(event.startsAt)&&today<=eventDay(event.endsAt)?today:eventDay(event.startsAt));if(!eventPosition(event,initialDay))return;eventBusFocus=document.activeElement;eventBusEvent=event;
   $('event-bus-title').textContent='Autobus per l’evento';$('event-bus-name').textContent=event.title;
   const date=$('event-bus-date');date.min=eventDay(event.startsAt);date.max=eventDay(event.endsAt);date.value=chosenDay>=date.min&&chosenDay<=date.max?chosenDay:today>=date.min&&today<=date.max?today:date.min;
   if(typeof travelModeButtons==='function'){$('event-bus-travel-modes').hidden=false;travelModeButtons($('event-bus-travel-modes'),'bus');travelEvent=event;}
@@ -88,7 +88,7 @@ function drawEventBusMap(point,stops){
 }
 async function renderEventBus(){
   eventBusRouteGroups=[];eventBusSelectedLine='';eventBusFitFull=false;$('event-bus-line-legend').replaceChildren();$('event-bus-route-status').textContent='';$('event-bus-full-routes').disabled=true;
-  const request=++eventBusRequest,event=eventBusEvent,day=$('event-bus-date').value,point=eventPosition(event),list=$('event-bus-stops');list.replaceChildren();$('event-bus-map').hidden=true;$('event-bus-map-note').textContent='';$('event-bus-status').textContent='Cerco le fermate vicine…';
+  const request=++eventBusRequest,event=eventBusEvent,day=$('event-bus-date').value,point=eventPosition(event,day),list=$('event-bus-stops');list.replaceChildren();$('event-bus-map').hidden=true;$('event-bus-map-note').textContent='';$('event-bus-status').textContent='Cerco le fermate vicine…';
   if(!day||day<eventDay(event.startsAt)||day>eventDay(event.endsAt)){$('event-bus-status').textContent='Scegli una data compresa nella durata dell’evento.';return;}
   if(typeof eventTravelWhen==='function'){if(travelEvent?.id===event.id)travelDay=day;$('event-bus-when').textContent=eventTravelWhen(event,day);}
   else $('event-bus-when').textContent='Evento: '+eventWhen(event);

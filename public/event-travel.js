@@ -2,14 +2,15 @@
 let travelEvent=null,travelFocus=null,travelMap=null,travelDay='',travelWalkId=null;
 function eventTravelDay(event){
   const first=eventDay(event.startsAt),last=eventDay(event.endsAt);
-  return travelEvent?.id===event.id&&travelDay>=first&&travelDay<=last?travelDay:today>=first&&today<=last?today:first;
+  return travelEvent?.id===event.id&&travelDay>=first&&travelDay<=last?travelDay:typeof selected!=='undefined'&&['calendar','eventmap'].includes(view)&&selected>=first&&selected<=last?selected:today>=first&&today<=last?today:first;
 }
 function eventTravelWhen(event,day=eventTravelDay(event)){
+  if(typeof eventVenueForDay==='function'){const occurrence=eventVenueForDay(event,day);if(occurrence.startsAt?.length>10&&occurrence.endsAt?.length>10&&eventDay(occurrence.startsAt)===day&&eventDay(occurrence.endsAt)===day)return 'Evento: '+eventWhen({...event,startsAt:occurrence.startsAt,endsAt:occurrence.endsAt});}
   return eventDay(event.startsAt)===eventDay(event.endsAt)?'Evento: '+eventWhen(event):'Giorno scelto: '+formatDay(day,{weekday:'short',day:'numeric',month:'short',year:'numeric'})+' · Verifica gli orari nel programma.';
 }
 function appendEventTravel(content,event){
   const section=el('section','','event-bus-entry');
-  if(!eventPosition(event)){section.append(el('h3','Come arrivare'),el('p','Il luogo non è abbastanza preciso per suggerire fermate o parcheggi. Verifica la sede nel programma ufficiale.','detail-note'));}
+  if(!eventPosition(event,eventTravelDay(event))){section.append(el('h3','Come arrivare'),el('p',event.location?'Indirizzo disponibile; punto sulla mappa ancora da confermare per questo giorno. Verifica la sede nel programma ufficiale.':'Il luogo non è abbastanza preciso per suggerire fermate o parcheggi. Verifica la sede nel programma ufficiale.','detail-note'));}
   else{const button=el('button','Come arrivare','dialog-save');button.onclick=()=>openEventTravel(event);section.append(button,el('p','Autobus, parcheggi e indicazioni a piedi','detail-note'));}
   content.append(section);
 }
@@ -20,12 +21,12 @@ function travelModeButtons(container,mode){
   }
 }
 function openEventTravel(event){
-  if(!eventPosition(event))return;
-  if(travelEvent?.id!==event.id)travelDay='';
+  if(!eventPosition(event,eventTravelDay(event)))return;
+  if(travelEvent?.id!==event.id)travelDay=eventTravelDay(event);
   travelEvent=event;travelFocus=document.activeElement;return switchEventTravel('walk');
 }
 function switchEventTravel(mode){
-  const event=travelEvent,point=event&&eventPosition(event);if(!point||!['bus','car','walk'].includes(mode))return;
+  const event=travelEvent,point=event&&eventPosition(event,eventTravelDay(event));if(!point||!['bus','car','walk'].includes(mode))return;
   const activeId={bus:'event-bus-dialog',car:'parking-dialog',walk:'event-travel-dialog'}[mode];
   if($(activeId).open&&(mode==='bus'?eventBusEvent?.id===event.id:mode==='car'?parkingEvent?.id===event.id:travelWalkId===event.id))return;
   if($('event-bus-dialog').open){if(eventBusEvent?.id===event.id)travelDay=$('event-bus-date').value;$('event-bus-dialog').close();}
@@ -36,7 +37,7 @@ function switchEventTravel(mode){
     const pending=openEventBus(event,{date:travelDay});eventBusFocus=travelFocus;$('event-bus-scroll').scrollTop=0;$('close-event-bus').focus();return pending;
   }
   if(mode==='car'){openEventParking(event);parkingFocus=travelFocus;return;}
-  travelWalkId=event.id;$('event-travel-name').textContent=event.title;$('event-travel-when').textContent=eventTravelWhen(event);$('event-travel-place').textContent=event.location||'Luogo indicato dall’evento';
+  travelWalkId=event.id;$('event-travel-name').textContent=event.title;$('event-travel-when').textContent=eventTravelWhen(event);$('event-travel-place').textContent=(typeof eventVenueForDay==='function'?eventVenueForDay(event,eventTravelDay(event)).location:event.location)||'Luogo indicato dall’evento';
   const link=$('event-travel-walk');link.href='https://www.google.com/maps/dir/?api=1&travelmode=walking&destination='+point.lat+','+point.lon;
   $('event-travel-dialog').showModal();$('event-travel-close').focus();drawTravelMap(point,event);
 }

@@ -1,6 +1,6 @@
 // Same official trip, ordered calls and explicit boarding/alighting permissions.
 // The day is a CIVIL day in Europe/Rome; service dates can be the previous day.
-export function directBusTrips(assets,{origin,point,day,after='00:00',before='',radius=800,limit=12,notBeforeSeconds=0}){
+export function directBusTrips(assets,{origin,point,day,after='00:00',before='',radius=800,limit=12,notBeforeSeconds=0,allowOvernight=false,allTargets=false}){
   const validDay=d=>/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isFinite(Date.parse(d))&&new Date(d).toISOString().slice(0,10)===d;
   const validClock=clock=>/^([01]\d|2[0-3]):[0-5]\d$/.test(clock);
   if(!validDay(day)||!validClock(after)||before&&!validClock(before)||!point||!Number.isFinite(point.lat)||!Number.isFinite(point.lon))return [];
@@ -12,11 +12,11 @@ export function directBusTrips(assets,{origin,point,day,after='00:00',before='',
   const offsets=[0,12].map(hour=>{const name=offsetFormat.formatToParts(new Date(day+'T'+String(hour).padStart(2,'0')+':00:00Z')).find(part=>part.type==='timeZoneName').value,match=name.match(/GMT([+-])(\d+)(?::(\d+))?/);return match?(Number(match[2])*60+Number(match[3]||0))*(match[1]==='-'?-1:1):0;});
   const transition=offsets[0]!==offsets[1],instantCache=new Map();
   const localFormat=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Rome',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
-  const instant=clock=>{
-    if(instantCache.has(clock))return instantCache.get(clock);
-    const wanted=day+'T'+clock,local=Date.parse(wanted+'Z');
-    const matches=[...new Set(offsets)].map(offset=>local-offset*60000).filter(value=>{const parts=Object.fromEntries(localFormat.formatToParts(new Date(value)).map(part=>[part.type,part.value]));return parts.year+'-'+parts.month+'-'+parts.day+'T'+parts.hour+':'+parts.minute+':'+parts.second===wanted;});
-    const value=matches.length===1?matches[0]:NaN;instantCache.set(clock,value);return value;
+  const instant=(clock,onDay=day)=>{
+    const key=onDay+'T'+clock;if(instantCache.has(key))return instantCache.get(key);
+    const wanted=key,local=Date.parse(wanted+'Z');
+    const matches=[60,120].map(offset=>local-offset*60000).filter(value=>{const parts=Object.fromEntries(localFormat.formatToParts(new Date(value)).map(part=>[part.type,part.value]));return parts.year+'-'+parts.month+'-'+parts.day+'T'+parts.hour+':'+parts.minute+':'+parts.second===wanted;});
+    const value=matches.length===1?matches[0]:NaN;instantCache.set(key,value);return value;
   };
   const distance=stop=>{const r=Math.PI/180,a=(stop.lat-point.lat)*r,b=(stop.lon-point.lon)*r,h=Math.sin(a/2)**2+Math.cos(point.lat*r)*Math.cos(stop.lat*r)*Math.sin(b/2)**2;return 6371000*2*Math.atan2(Math.sqrt(h),Math.sqrt(Math.max(0,1-h)));};
   const minimum=Math.max(Number(after.slice(0,2))*3600+Number(after.slice(3,5))*60,notBeforeSeconds),results=[];
@@ -31,21 +31,23 @@ export function directBusTrips(assets,{origin,point,day,after='00:00',before='',
       for(let order=0;order<trip.calls.length;order++){
         const start=trip.calls[order],departure=seconds(start[1],start[2]);
         if(start[0]!==origin||start[3]!==true||!Number.isFinite(departure)||shift(serviceDay,start[2])!==day||departure%86400<minimum)continue;
-        const departureInstant=transition?instant(start[1]):0;if(transition&&!Number.isFinite(departureInstant))continue;
-        let best=null;
+        const useInstants=transition||allowOvernight,departureInstant=useInstants?instant(start[1]):0;if(useInstants&&!Number.isFinite(departureInstant))continue;
+        let best=null;const candidates=[];
         for(let i=order+1;i<trip.calls.length;i++){
           const call=trip.calls[i];if(call[6]!==true||!targets.has(call[0]))continue;
           const arrivalKnown=Boolean(call[4]),clock=arrivalKnown?call[4]:call[1],offset=arrivalKnown?call[5]:call[2],arrival=seconds(clock,offset);
-          if(!Number.isFinite(arrival)||arrival<departure||shift(serviceDay,offset)!==day)continue;
-          if(arrival%86400>maximum)continue;
-          const elapsed=transition?(instant(clock)-departureInstant)/1000:arrival-departure;if(!Number.isFinite(elapsed)||elapsed<0)continue;
-          const candidate={code:call[0],order:i,time:clock,arrivalKnown,seconds:arrival,elapsed,distance:targets.get(call[0])};
+          const arrivalDay=shift(serviceDay,offset);
+          if(!Number.isFinite(arrival)||arrival<departure||arrivalDay!==day&&(!allowOvernight||arrivalDay!==shift(day,1))||arrivalDay>data.validTo)continue;
+          if(arrival%86400+(arrivalDay===day?0:86400)>maximum)continue;
+          const elapsed=useInstants?(instant(clock,arrivalDay)-departureInstant)/1000:arrival-departure;if(!Number.isFinite(elapsed)||elapsed<0)continue;
+          const candidate={code:call[0],order:i,time:clock,arrivalKnown,arrivalDay,seconds:arrival,elapsed,distance:targets.get(call[0])};candidates.push(candidate);
           if(!best||candidate.distance<best.distance||candidate.distance===best.distance&&candidate.seconds<best.seconds)best=candidate;
         }
-        if(best){
-          const timelineMinutes=transition?trip.calls.slice(order,best.order+1).map((call,index)=>index===0?0:Math.ceil((instant(call[4]||call[1])-departureInstant)/60000)):null;
+        const chosenTargets=allTargets?candidates:best?[best]:[];
+        for(const best of chosenTargets){
+          const timelineMinutes=transition||best.arrivalDay!==day?trip.calls.slice(order,best.order+1).map((call,index)=>index===0?0:Math.ceil((instant(call[4]||call[1],shift(serviceDay,call[4]?call[5]:call[2]))-departureInstant)/60000)):null;
           if(timelineMinutes?.some(value=>!Number.isFinite(value)||value<0))continue;
-          results.push({number:data.number,row:{trip:trip.id,serviceDay,order,time:start[1],offset:start[2],minutes:departure/60,destination:trip.destination},origin:data.stops[origin],arrival:data.stops[best.code],arrivalOrder:best.order,arrivalTime:best.time,arrivalSeconds:best.seconds%86400,arrivalKnown:best.arrivalKnown,duration:Math.ceil(best.elapsed/60),distance:best.distance,departureSeconds:departure%86400,timelineMinutes});
+          results.push({number:data.number,row:{trip:trip.id,serviceDay,order,time:start[1],offset:start[2],minutes:departure/60,destination:trip.destination},origin:data.stops[origin],arrival:data.stops[best.code],arrivalOrder:best.order,arrivalTime:best.time,arrivalDay:best.arrivalDay,arrivalSeconds:best.seconds%86400+(best.arrivalDay===day?0:86400),arrivalKnown:best.arrivalKnown,duration:Math.ceil(best.elapsed/60),distance:best.distance,departureSeconds:departure%86400,timelineMinutes});
         }
       }
     }

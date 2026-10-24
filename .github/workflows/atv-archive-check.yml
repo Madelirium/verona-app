@@ -1,0 +1,28 @@
+name: Controlla archivio ufficiale ATV
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '35 5 * * 1'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Verifica un nuovo candidato senza cambiare i dati pubblicati
+        run: python scripts/refresh-atv-netex.py
+      - name: Conserva rapporto e manifest del candidato
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verifica-archivio-atv
+          path: |
+            .local/atv-renewal/report.json
+            .local/atv-renewal/manifest.json
+          if-no-files-found: warn
+          retention-days: 30

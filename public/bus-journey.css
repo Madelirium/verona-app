@@ -32,3 +32,19 @@
 .bus-journey-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:none;padding:10px 16px max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--border)}
 .bus-journey-actions button{min-height:48px;min-width:0;font-size:15px;padding:9px 7px;border:1px solid var(--primary);border-radius:12px;background:var(--surface);color:var(--primary);font-weight:700}
 #bus-journey-departures{background:var(--primary);color:var(--on-primary)}
+#bus-journey-close{width:auto;min-width:76px;font-size:16px;padding:8px}
+#bus-journey-return{background:var(--primary);color:var(--on-primary)}
+.event-journey-simple #bus-journey-departures{background:var(--surface);color:var(--primary)}
+.event-journey-simple #bus-journey-content{font-size:18px;line-height:1.5}
+.event-journey-simple #bus-journey-content>.event-direct-note{font-size:16px;margin:4px 0 8px}
+.journey-answer{padding:14px;margin:12px 0 18px;background:var(--selected-surface);border:1px solid var(--primary);border-radius:14px}
+.journey-answer strong{font-size:32px;display:block;color:var(--primary);line-height:1.25;font-variant-numeric:tabular-nums}
+.journey-answer p{margin:4px 0;font-size:17px;line-height:1.45}
+.journey-walk-step{padding:4px 0 14px}.journey-walk-step h3{font-size:19px;margin:0 0 6px}.journey-walk-step p{font-size:17px;line-height:1.5;margin:4px 0;overflow-wrap:anywhere}
+.event-journey-simple .bus-journey-label{font-weight:700;color:var(--text)!important;font-size:17px!important}
+.journey-more{border-top:1px solid var(--border);margin-top:14px;padding-top:6px}
+.journey-more summary{min-height:48px;display:list-item;padding:12px 4px;font-size:17px;font-weight:700;cursor:pointer;overflow-wrap:anywhere}
+.journey-more button,.journey-more a{min-height:48px;font-size:16px}
+.event-journey-simple .bus-journey-actions button{font-size:16px}
+.event-journey-simple .bus-journey-note{font-size:14px!important}
+.event-journey-simple .bus-journey-actions:has(#bus-journey-return[hidden]){grid-template-columns:1fr}

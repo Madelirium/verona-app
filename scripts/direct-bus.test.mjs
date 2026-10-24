@@ -51,3 +51,5 @@ test('Arrive by: farther eligible stop is kept when the closest stop arrives too
  assert.equal(directBusTrips([data],{...options,after:'00:00',before:'00:35'}).length,1);assert.equal(directBusTrips([data],{...options,after:'00:00',before:'00:34'}).length,0);
  data.trips[0].dates=['2026-10-25'];assert.equal(directBusTrips([data],{...options,day:'2026-10-25',after:'00:00',before:'02:30'}).length,0);
 });
+
+test('Ritorno: arrivo oltre mezzanotte solo su richiesta e con validità del giorno successivo',()=>{const data=asset();data.trips[0].calls=[['O','23:50:00',0,true,null,0,false],['A','00:20:00',1,false,'00:20:00',1,true]];assert.equal(directBusTrips([data],{...options,after:'23:00'}).length,0);const row=directBusTrips([data],{...options,after:'23:00',allowOvernight:true})[0];assert.equal(row.arrivalDay,'2026-10-25');assert.equal(row.duration,30);assert.equal(row.arrivalSeconds,87600);assert.deepEqual(row.timelineMinutes,[0,30]);data.validTo='2026-10-24';assert.equal(directBusTrips([data],{...options,after:'23:00',allowOvernight:true}).length,0);});

@@ -1,4 +1,5 @@
 import { createServer } from 'node:http';
+import {createWalkingHandler} from './walking-proxy.mjs';
 import { readFile,mkdir } from 'node:fs/promises';
 import {loadEnvFile} from 'node:process';
 import {resolve,dirname} from 'node:path';
@@ -30,12 +31,14 @@ const ranked=createRankedHandler(rankedOptions);
 const options=game=>({game,allowedOrigin:process.env.BRISCOLA_ALLOWED_ORIGIN,onChange:updates.publish,...(repository?{service:createPersistentGameService({repository,game})}:{})});
 const briscola = createBriscolaHandler(options('briscola'));
 const forza4 = createGameHandler(options('forza4'));
+const walking=createWalkingHandler({key:process.env.WALKING_API_KEY||'',allowedOrigins:(process.env.WALKING_ALLOWED_ORIGINS||'https://veronaintasca.it').split(',').map(value=>value.trim()).filter(Boolean)});
 const lan = process.argv.includes('--lan');
 const wifi = Object.entries(networkInterfaces()).filter(([name]) => /wi-?fi|wireless|wlan/i.test(name)).flatMap(([,values]) => values).find(i => i.family === 'IPv4' && !i.internal);
 if (lan && !wifi) throw new Error('Nessuna interfaccia Wi-Fi IPv4 disponibile. Collegare il computer al Wi-Fi e riprovare.');
 const host = process.env.HOST || (process.env.RENDER==='true'?'0.0.0.0':lan?wifi.address:'127.0.0.1');
 const routes = { '/sw.js':['public/sw.js','text/javascript; charset=utf-8'], '/': ['public/index.html', 'text/html; charset=utf-8'], '/data/events.json': ['data/events.json', 'application/json'], '/data/import-report.json': ['data/import-report.json', 'application/json'] };
 const server=createServer(async (req,res) => {
+  if(await walking(req,res))return;
   if(req.url==='/healthz'&&req.method==='GET'){res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(JSON.stringify({ok:true,storage}));return;}
   if(await ranked(req,res))return;
   if(await briscola(req,res))return;

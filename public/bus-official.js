@@ -62,8 +62,9 @@ function busTripTimeline(data,row){
   const seconds=(time,offset)=>Number(time.slice(0,2))*3600+Number(time.slice(3,5))*60+Number(time.slice(6,8)||0)+(offset||0)*86400,start=seconds(origin[1],origin[2]);
   return trip.calls.slice(row.order).map((call,index)=>{const arrival=index>0&&Boolean(call[4]),time=arrival?call[4]:call[1],offset=arrival?call[5]:call[2];return {code:call[0],name:data.stops[call[0]]?.name||'Fermata '+call[0],time,day:shiftDay(row.serviceDay,offset||0),minutes:Math.max(0,Math.ceil((seconds(time,offset)-start)/60)),origin:index===0,arrival,alighting:call[6]};});
 }
-function openBusTrip(data,row,focus=null){
-  busTripFocus=focus||document.activeElement;busTripSelection={data,row,calls:busTripTimeline(data,row)};
+function openBusTrip(data,row,focus=null,eventContext=null){
+  if($('bus-trip-dialog').open)$('bus-trip-dialog').close();
+  busTripFocus=focus||document.activeElement;busTripSelection={data,row,calls:busTripTimeline(data,row),eventContext};
   $('bus-trip-title').textContent='Linea '+data.number+' · '+row.time.slice(0,5);
   const first=busTripSelection.calls[0];$('bus-trip-summary').textContent=first?formatDay(first.day,{weekday:'long',day:'numeric',month:'long'})+' · Da '+busDisplayName(first.name)+' verso '+busDisplayName(row.destination):'Corsa non disponibile in questo archivio.';
   $('bus-trip-arrival').hidden=true;$('bus-trip-arrival').textContent='';$('bus-trip-search').value='';renderBusTrip();$('bus-trip-dialog').showModal();$('bus-trip-close').focus();
@@ -82,7 +83,7 @@ function renderBusTrip(){
 }
 $('bus-trip-search').oninput=renderBusTrip;
 $('bus-trip-close').onclick=()=>$('bus-trip-dialog').close();
-$('bus-trip-dialog').addEventListener('close',()=>{if($('bus-journey-dialog').open)$('bus-journey-dialog').close();if(busTripFocus?.isConnected)busTripFocus.focus();else $('network-sheet-more').focus();busTripSelection=null;});
+$('bus-trip-dialog').addEventListener('close',()=>{if($('bus-trip-dialog').open)return;if($('bus-journey-dialog').open)$('bus-journey-dialog').close();if(busTripFocus?.isConnected)busTripFocus.focus();else $('network-sheet-more').focus();busTripSelection=null;});
 async function renderBusStopPreview(box,number,stopCode,now=null){
   const version=(busPreviewVersions.get(box)||0)+1;busPreviewVersions.set(box,version);
   box.replaceChildren(el('p','Caricamento delle prossime partenze…','bus-stop-preview-note'));
@@ -163,15 +164,20 @@ $('bus-official-all').onclick=()=>openOfficialBus();
 function openBusJourneySummary(){
  const selection=busTripSelection,arrival=selection?.arrival,index=selection?.calls.indexOf(arrival);if(!arrival||index<1)return;
  const calls=selection.calls.slice(0,index+1),origin=calls[0],content=$('bus-journey-content');content.replaceChildren();
- $('bus-journey-title').textContent='Il tuo viaggio · linea '+selection.data.number;
+ $('bus-journey-title').textContent=(selection.eventContext?.direction==='return'?'Il tuo ritorno':'Il tuo viaggio')+' · linea '+selection.data.number;
+ const eventJourney=Boolean(selection.eventContext);$('bus-journey-return').hidden=!eventJourney||selection.eventContext.direction==='return';$('bus-journey-change').hidden=eventJourney;$('bus-journey-departures').textContent=eventJourney?(selection.eventContext.direction==='return'?'Altri ritorni':'Altri autobus'):'Altre partenze';$('bus-journey-dialog').classList.toggle('event-journey-simple',eventJourney);
+ if(selection.eventContext){content.append(el('p',(selection.eventContext.direction==='return'?'Ritorno dall’evento: ':'Per l’evento: ')+selection.eventContext.event.title,'event-journey-heading'));content.append(el('p',formatDay(selection.eventContext.day,{weekday:'short',day:'numeric',month:'short',year:'numeric'}),'event-direct-note'));}
+ content.append(el('p','Direzione: '+busDisplayName(selection.row.destination),'event-direct-note'));
+ if(typeof eventJourneyWarnings==='function')for(const message of eventJourneyWarnings(selection))content.append(el('p',message,'event-journey-warning'));
+ if(eventJourney&&typeof appendEventJourneyOverview==='function')appendEventJourneyOverview(content,selection,'start');
  for(const [call,label,kind]of [[origin,'Partenza','start'],[arrival,arrival.arrival?'Arrivo programmato':'Passaggio programmato','end']]){
-  const card=el('section','','bus-journey-point '+kind),head=el('p',label+' · '+formatDay(call.day,{weekday:'short',day:'numeric',month:'short',year:'numeric'}),'bus-journey-label');
+  const card=el('section','','bus-journey-point '+kind),head=el('p',(eventJourney?(kind==='start'?'2. Sali sul bus':'3. Scendi dal bus'):label)+' · '+formatDay(call.day,{weekday:'short',day:'numeric',month:'short',year:'numeric'}),'bus-journey-label');
   card.append(head,el('strong',call.time.slice(0,5),'bus-journey-time'),el('h3',busDisplayName(call.name)),el('p','Fermata '+call.code,'bus-journey-code'));content.append(card);
  }
- const between=Math.max(0,calls.length-2);content.append(el('p',arrival.minutes+' min di viaggio · '+between+(between===1?' fermata intermedia':' fermate intermedie'),'bus-journey-duration'),el('h3','Fermate del tuo viaggio','bus-journey-stops-title'));
+ const between=Math.max(0,calls.length-2);content.append(el('p',arrival.minutes+' min di viaggio · '+between+(between===1?' fermata intermedia':' fermate intermedie'),'bus-journey-duration'));if(eventJourney&&typeof appendEventJourneyOverview==='function')appendEventJourneyOverview(content,selection,'end');if(typeof appendEventJourneyContext==='function')appendEventJourneyContext(content,selection);
  const list=el('ol','','bus-journey-timeline');list.setAttribute('aria-label','Fermate dalla salita alla destinazione');
  calls.forEach((call,i)=>{const item=el('li','','bus-journey-call'+(i===0?' start':i===calls.length-1?' end':'')),info=el('div');info.append(el('strong',busDisplayName(call.name)),el('small',i===0?'Sali qui':i===calls.length-1?'Destinazione':call.minutes+' min dalla partenza'));item.append(el('span',call.time.slice(0,5)),info);if(call.day!==origin.day)info.append(el('small',formatDay(call.day,{day:'numeric',month:'short'})));list.append(item);});
- content.append(list);content.scrollTop=0;$('bus-journey-dialog').showModal();$('bus-journey-title').focus({preventScroll:true});
+ if(eventJourney){const details=el('details','','journey-more');details.append(el('summary','Fermate intermedie e modifiche'),list);const change=el('button','Cambia la fermata di discesa','event-direct-edit');change.type='button';change.onclick=()=>$('bus-journey-dialog').close();details.append(change);content.append(details);}else{content.append(el('h3','Fermate del tuo viaggio','bus-journey-stops-title'),list);}content.scrollTop=0;if($('bus-journey-dialog').open)$('bus-journey-dialog').close();$('bus-journey-dialog').showModal();$('bus-journey-title').focus({preventScroll:true});
 }
 $('bus-journey-close').onclick=()=>$('bus-journey-dialog').close();
 $('bus-journey-change').onclick=()=>$('bus-journey-dialog').close();
