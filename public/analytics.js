@@ -4,6 +4,37 @@
   const labels={home:'Home',discover:'Scopri',calendar:'Calendario',saved:'Salvati',news:'Notizie',bus:'Autobus',explore:'Esplora',eventmap:'Mappa eventi',district:'Zona',games:'Giochi'};
   const allowed=new Set(['event_open','event_saved','event_participation','news_open','bus_timetable_open','bus_journey_open','travel_open','pharmacies_open','waste_open','parking_open','weather_open']);
   const dialogs={'detail-dialog':'event_open','news-detail-dialog':'news_open','official-bus-dialog':'bus_timetable_open','bus-journey-dialog':'bus_journey_open','event-travel-dialog':'travel_open','pharmacy-dialog':'pharmacies_open','waste-dialog':'waste_open','parking-dialog':'parking_open','weather-dialog':'weather_open'};
+  if(config?.provider==='supabase'){
+    let consent=false,current=Object.hasOwn(labels,view)?view:'home',last=null;
+    try{consent=localStorage.getItem('verona-analytics-consent-v1')==='yes';}catch{}
+    const excluded=()=>navigator.doNotTrack==='1'||navigator.globalPrivacyControl===true;
+    const eligible=()=>location.protocol==='https:'&&['veronaintasca.it','www.veronaintasca.it'].includes(location.hostname)&&!excluded();
+    const enabled=()=>eligible()&&consent&&navigator.onLine!==false;
+    function render(){
+      choice.checked=consent;choice.disabled=!eligible()&&!consent;
+      status.textContent=excluded()?'Conteggi disattivati: rispettiamo la preferenza di privacy del browser.':!eligible()?'Conteggi disattivati in questa anteprima.':consent?'Conteggi aggregati attivi. Puoi disattivarli qui.':'Conteggi aggregati disattivati. Tutti i servizi restano disponibili.';
+    }
+    const intro=document.getElementById('analytics-intro'),details=document.getElementById('analytics-details'),link=document.getElementById('analytics-provider-link');
+    if(intro)intro.textContent='Con il tuo permesso contiamo le aperture dei servizi e le azioni principali. Supabase conserva soltanto totali giornalieri, senza profili dei visitatori.';
+    if(details)details.textContent='Non inviamo nomi, account, ricerche, posizione, codici delle partite o identificatori del visitatore. Nessun conteggio delle persone uniche. I totali sono conservati per 90 giorni, con pulizia al successivo utilizzo. Supabase riceve i dati tecnici della connessione e può conservarli nei propri log operativi. La scelta resta su questo dispositivo.';
+    if(link){link.href='https://supabase.com/privacy';link.textContent='Privacy del fornitore Supabase ↗';}
+    function send(action){
+      if(!enabled())return;
+      try{Promise.resolve(fetch(config.endpoint,{method:'POST',headers:{'Content-Type':'application/json',apikey:config.key},body:JSON.stringify({section:current,action}),credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store',signal:AbortSignal.timeout(5000)})).catch(()=>{});}catch{}
+    }
+    function page(section){if(!Object.hasOwn(labels,section))return;current=section;if(!enabled()||last===section)return;last=section;send('view');}
+    window.veronaAnalytics={page,track:name=>{if(allowed.has(name))send(name);}};
+    choice.onchange=()=>{
+      consent=choice.checked;
+      try{localStorage.setItem('verona-analytics-consent-v1',consent?'yes':'no');}catch{consent=false;render();status.textContent='Il browser non salva la scelta: conteggi lasciati disattivati.';return;}
+      last=null;render();if(consent)page(current);
+    };
+    if(typeof MutationObserver==='function')for(const[id,name]of Object.entries(dialogs)){
+      const dialog=document.getElementById(id);if(!dialog)continue;let open=dialog.open;
+      new MutationObserver(()=>{const now=dialog.open;if(now&&!open)window.veronaAnalytics.track(name);open=now;}).observe(dialog,{attributes:true,attributeFilter:['open']});
+    }
+    addEventListener('online',()=>page(current));render();page(current);return;
+  }
   let consent=false,script=null,loaded=false,failed=false,current=Object.hasOwn(labels,view)?view:'home',lastPage=null;
   try{consent=localStorage.getItem('verona-analytics-consent-v1')==='yes';}catch{}
   const excluded=()=>navigator.doNotTrack==='1'||navigator.globalPrivacyControl===true;

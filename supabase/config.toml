@@ -1,0 +1,3 @@
+# The handler validates the public project API key itself (modern keys are not JWTs).
+[functions.usage-count]
+verify_jwt = false
