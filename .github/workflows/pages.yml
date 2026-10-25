@@ -22,7 +22,9 @@ on:
         type: boolean
         default: true
   schedule:
+    # UTC: eventi e notizie ogni 6 ore; farmacie solo nel giro delle 04:17.
     - cron: '17 4 * * *'
+    - cron: '17 10,16,22 * * *'
 
 permissions:
   contents: read
@@ -77,7 +79,7 @@ jobs:
       - name: Prepara Python per i turni delle farmacie
         id: pharmacy_python
         continue-on-error: true
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_pharmacies)
+        if: (github.event_name == 'schedule' && github.event.schedule == '17 4 * * *') || (github.event_name == 'workflow_dispatch' && inputs.refresh_pharmacies)
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
@@ -87,7 +89,7 @@ jobs:
         id: refresh_pharmacies
         continue-on-error: true
         timeout-minutes: 8
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_pharmacies)
+        if: (github.event_name == 'schedule' && github.event.schedule == '17 4 * * *') || (github.event_name == 'workflow_dispatch' && inputs.refresh_pharmacies)
         env:
           PHARMACY_PYTHON: python
           PYTHON_SETUP_OUTCOME: ${{ steps.pharmacy_python.outcome }}

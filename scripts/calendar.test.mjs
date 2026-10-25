@@ -2188,3 +2188,11 @@ test('Mappa proposta: esclude tracciati opposti o privi di entrambe le fermate',
 test('Mappa proposta: una risposta tardiva non disegna il percorso dopo la chiusura',async()=>{
  const app=runJourneyUi();await chooseDirectUi(app);let finish,paths=0;const layer={clearLayers(){},addTo(){return this}};const marker=()=>({bindPopup(){return this},addTo(){return this}});app.context.L={map:()=>({zoomControl:{setPosition(){}},invalidateSize(){},fitBounds(){},remove(){}}),tileLayer:()=>({on(){return this},addTo(){}}),layerGroup:()=>layer,circleMarker:marker,polyline:()=>{paths++;return marker();}};new Script(connectionMapLogic).runInContext(app.context);app.context.loadEventRouteLine=()=>new Promise(resolve=>finish=resolve);const pending=new Script('selectEventConnection(busTripSelection.eventContext.result,eventDirectState,[busTripSelection.data])').runInContext(app.context);assert.equal(app.get('event-connection-panel').hidden,false);app.get('event-direct-close').onclick();finish([{stops:[{ref:app.context.directOrigin.code},{ref:"B"}],segments:[]}]);await pending;assert.equal(paths,0);assert.equal(app.get('event-connection-panel').hidden,true);
 });
+
+
+test('Data raccolta: giorno e ora italiani, distinti dal tentativo e dalla pubblicazione',()=>{
+ const app=run();useRomeInstant(app,'2026-10-25T10:00:00Z');app.context.stampFixture={updatedAt:'2026-10-25T08:00:00Z',checkedAt:'2026-10-25T09:00:00Z',sources:[{status:'error',lastSuccessAt:'2026-10-23T14:15:00Z'}]};const text=new Script('collectionUpdateLabel(stampFixture)').runInContext(app.context);assert.match(text,/23 ott 2026.*16:15/);assert.match(text,/incompleto/);assert.ok(!text.includes('25 ott'));
+});
+test('Data raccolta: date mancanti, invalide e future non diventano aggiornamenti recenti',()=>{
+ const app=run();useRomeInstant(app,'2026-10-25T10:00:00Z');for(const value of [undefined,'non valida','2027-01-01T00:00:00Z']){app.context.stampFixture={updatedAt:value};assert.match(new Script('collectionUpdateLabel(stampFixture)').runInContext(app.context),/non disponibile/);}app.context.stampFixture={updatedAt:'2026-10-25T09:00:00Z'};assert.match(new Script('collectionUpdateLabel(stampFixture)').runInContext(app.context),/10:00/);
+});

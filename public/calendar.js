@@ -137,11 +137,21 @@ function refreshDataHealth(){
   if(typeof officialBusData!=='undefined'&&officialBusData&&$('official-bus-dialog').open)renderOfficialTimes();
   if(typeof networkChosenStop!=='undefined'&&networkChosenStop&&typeof networkIsOpen==='function'&&networkIsOpen())renderNetworkStopPanel();
 }
+function collectionUpdateLabel(data={},sources=data.sources||[]){
+  const now=Date.now(),valid=value=>typeof value==='string'&&Number.isFinite(Date.parse(value))&&Date.parse(value)<=now,sourceDates=sources.map(s=>s.lastSuccessAt).filter(valid),dates=sourceDates.length?sourceDates:[data.updatedAt].filter(valid);
+  const last=dates.sort((a,b)=>Date.parse(b)-Date.parse(a))[0];
+  if(!last)return 'Ultima raccolta: data non disponibile';
+  const date=new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(last));
+  const incomplete=data.status==='error'||data.status==='partial'||sources.some(s=>s.status==='error');
+  return 'Dati raccolti: '+date+(incomplete?' · aggiornamento incompleto':'');
+}
 function renderEventFreshness(){
   const report=payload.importReport,box=$('event-source-status');box.replaceChildren();
   const sources=report?.sources||[...new Set(events.map(e=>e.source))].map(source=>({source,status:'ok',lastSuccessAt:events.filter(e=>e.source===source).map(e=>e.checkedAt).filter(Boolean).sort().at(-1)}));
   for(const source of sources){const date=source.lastSuccessAt?new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(source.lastSuccessAt)):'mai riuscito';box.append(el('p',source.source+' · Ultimo aggiornamento riuscito: '+date+(source.status==='error'?'. Ultimo tentativo non riuscito: dati precedenti conservati.':'.')));}
   const health=datasetStatus({...payload,sources},{maxAgeHours:48});
+  const label=collectionUpdateLabel(payload,sources);
+  for(const id of ['events-updated','discover-updated','event-map-updated']){$(id).textContent=label;$(id).title='Ultima raccolta dei dati dalle fonti, in ora italiana. Non è la data di modifica dei singoli eventi. Dettagli nelle informazioni dell’app.';}
   const warning=$('event-update-warning');warning.hidden=health.state==='current';warning.textContent=warning.hidden?'':health.message+' Dettagli in ⓘ.';
   if(report?.checkedAt)box.append(el('p','Ultimo tentativo: '+new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(report.checkedAt))+'. La raccolta non rileva automaticamente tutte le cancellazioni o variazioni.','detail-note'));
 }
@@ -510,7 +520,8 @@ function renderNews(){
   const filters=$('news-active-filters');filters.replaceChildren();
   for(const [key,label]of [['category',newsTopic(newsFilters.category)],['type',newsFilters.type==='avvisi'?'Avvisi':'Notizie'],['status',newsStateLabel(newsFilters.status)]]){if(!newsFilters[key])continue;const b=el('button',label+' ×');b.setAttribute('aria-label','Rimuovi filtro: '+label);b.onclick=()=>{newsFilters[key]='';render()};filters.append(b);}
   filters.hidden=!filters.children.length;$('news-open-filters').textContent=filters.children.length?`Filtri (${filters.children.length})`:'Filtri';
-  $('news-summary').textContent=`${items.length} pubblicazioni${newsMode==='zone'&&chosen?' · '+(chosen.quarter||chosen.district.name):newsMode==='saved'?' salvate':''} · Raccolta ${newsData.updatedAt?formatDay(dayInRome(newsData.updatedAt),{day:'numeric',month:'short'}):'non disponibile'}`;
+  $('news-summary').textContent=`${items.length} pubblicazioni${newsMode==='zone'&&chosen?' · '+(chosen.quarter||chosen.district.name):newsMode==='saved'?' salvate':''}`;
+  $('news-updated').textContent=collectionUpdateLabel(newsData);$('news-updated').title='Ultima raccolta dalle fonti, in ora italiana. La data sulle schede indica invece la pubblicazione della notizia.';
   const health=datasetStatus(newsData,{maxAgeHours:48});$('news-refresh-note').textContent=health.state==='current'?'':health.message;
   const list=$('news-list');list.replaceChildren();
   if(!newsItems.length){$('news-summary').textContent='Raccolta non disponibile';const box=el('div','','news-empty'),link=el('a','Leggi sul sito del Comune ↗','detail-link');link.href='https://www.comune.verona.it/Novita/Notizie';link.target='_blank';link.rel='noopener noreferrer';box.append(el('h3','Nessuna comunicazione disponibile.'),el('p','Puoi consultare le pubblicazioni direttamente sulla fonte ufficiale.'),link);list.append(box);return;}
