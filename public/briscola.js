@@ -109,13 +109,15 @@
     const count=state?.playerCount||2,multi=!four&&count>2;
     globalThis.veronaGameSession=hasRoom;
     $('app-shell').classList.toggle('game-session-layout',view==='games'&&hasRoom);
-    $('game-type').value=selectedGame;$('game-type').disabled=busy;
+    $('game-type').value=selectedGame;$('game-type').disabled=busy;$('game-type').hidden=!hasRoom;$('game-hub-label').hidden=hasRoom;
+    $('app-shell').classList.toggle('game-lobby-layout',view==='games'&&!hasRoom);
+    for(const button of document.querySelectorAll('.game-choice')){button.setAttribute('aria-pressed',String(button.dataset.game===selectedGame));button.disabled=busy;}
+    $('game-rules').setAttribute('aria-label','Regole di '+(four?'Forza 4':'Briscola'));
     $('games-view').classList.toggle('forza4-screen',four);
     $('games-view').classList.toggle('multiplayer-screen',multi);
     $('game-player-count-field').hidden=four;$('game-player-count').disabled=busy;
-    $('game-lobby-eyebrow').textContent=four?'DUE GIOCATORI · AMICHEVOLI E RANKED':'IN 2, 3 O 4 · RANKED A DUE';
-    $('game-lobby-title').textContent=four?'Quattro in fila. Una sfida tra voi.':'Una partita tra amici';
-    $('game-lobby-description').textContent=four?'Scegli la tua colonna. Fai la prossima mossa.':'Quaranta carte, una buona compagnia.';
+    $('game-lobby-title').textContent='Giochiamo a '+(four?'Forza 4':'Briscola');
+    $('game-lobby-description').textContent=four?'Una sfida a due: allinea quattro pedine per vincere.':'In 2, in 3 o a coppie: invita chi vuoi al tavolo.';
     $('game-lobby').hidden=hasRoom;$('game-room').hidden=!hasRoom||!state;$('game-room-info').hidden=!hasRoom;
     $('game-felt').hidden=four||waiting;$('game-hand').hidden=four||waiting||finished;$('forza4-area').hidden=!four||!state||waiting;
     $('game-create').disabled=$('game-join').disabled=busy;$('game-visibility').disabled=busy;updateRoomControls();
@@ -297,6 +299,7 @@
     else $('game-browse').focus();
   });
   $('game-type').onchange=()=>chooseGame($('game-type').value);
+  for(const button of document.querySelectorAll('.game-choice'))button.onclick=()=>{if(button.dataset.game!==selectedGame)chooseGame(button.dataset.game);};
   $('games').onclick=()=>{setView('games');draw();};
   const params=typeof location!=='undefined'?new URL(location.href).searchParams:null;
   const invitation=params?.get('forza4')||params?.get('briscola');

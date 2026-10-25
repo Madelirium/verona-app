@@ -87,6 +87,7 @@ function render() {
   $('page-heading').hidden=view==='home'||view==='bus';
   $('app-shell').classList.toggle('home-layout',view==='home'||view==='bus');
   $('app-shell').classList.toggle('game-session-layout',view==='games'&&Boolean(globalThis.veronaGameSession));
+  $('app-shell').classList.toggle('game-lobby-layout',view==='games'&&!globalThis.veronaGameSession);
   const filtered=visibleEvents();
   $('month').textContent=formatDay(month+'-01',{month:'long',year:'numeric'});
   $('selected').textContent=formatDay(selected,{weekday:'long',day:'numeric',month:'long'});
