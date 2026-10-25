@@ -45,3 +45,7 @@ test('Active travel: reject a long detour to board even if the bus is faster',()
 test('Active travel: missing provider does not fabricate a comparison or lose a verified route',()=>{
  assert.equal(chooseActiveTravel(walkOption(),{error:'No bus'}).kind,'walk');assert.equal(chooseActiveTravel({error:'No walking'},busOption()).kind,'bus');assert.ok(chooseActiveTravel({error:'No walking'},{error:'No bus'}).error);assert.equal(chooseActiveTravel(undefined,undefined),undefined);
 });
+
+test('Travel: preserve NoRoute so a missing drive is not treated as missing parking',async()=>{
+ const client=createTravelRouteClient({fetchRoute:async()=>({ok:false,status:400,json:async()=>({code:'NoRoute'})})});await assert.rejects(client.load(start,end,{mode:'car'}),error=>error.code==='NoRoute');
+});

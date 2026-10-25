@@ -61,7 +61,7 @@ function renderTravelChoices(){
   state.results.active=chooseActiveTravel(state.results.walk,state.results.bus);
   for(const [mode,label,icon]of [['active','A piedi e mezzi','🚶'],['car','Auto','🚗']]){
     const result=state.results[mode],button=el('button','','travel-option');button.type='button';button.dataset.mode=mode;button.setAttribute('aria-pressed',String(mode===travelMode));
-    const heading=el('span','','travel-option-heading');heading.append(el('span',icon+' '+label),el('strong',result?.duration!==undefined?travelMinutes(result.duration):result?.error?'Non disponibile':state.inputError?'Da ricalcolare':state.start?'Calcolo…':'Da calcolare'));button.append(heading);
+    const heading=el('span','','travel-option-heading');heading.append(el('span',icon+' '+label),el('strong',result?.parkingCandidates?.length?result.parkingCandidates.length+' parcheggi trovati':result?.duration!==undefined?travelMinutes(result.duration):result?.error?'Non disponibile':state.inputError?'Da ricalcolare':state.start?'Calcolo…':'Da calcolare'));button.append(heading);
     const description=result?.error||(!state.start?'Scegli il punto di partenza.':!result?(state.inputError?'Correggi giorno e ora di partenza.':'Sto cercando il percorso.'):result.kind==='bus'?'Autobus '+result.row.number+' + camminate · parti alle '+travelClock(result.row.assessment.leaveAt)+' · arrivo '+travelArrivalClock(result.row.assessment.venueAt):(mode==='active'?'Vai a piedi · ':'')+parkingDistance(result.route.distance)+(result.parking?' fino a '+result.parking.name+' + '+travelMinutes(result.finalWalk.duration)+' a piedi':'')+' · arrivo '+travelArrivalClock(state.departureAt+result.duration*1000));
     button.append(el('span',description,'travel-option-summary'));
     if(result&&!result.error){const note=result.kind==='bus'?(result.savedSeconds?'Risparmi '+travelMinutes(result.savedSeconds)+' rispetto a piedi. ':'')+'Attesa inclusa · senza cambi'+(result.incomplete?' · ricerca parziale':''):mode==='car'?(result.parking?result.checkedParking+' parcheggi confrontati entro 5 km · traffico e ricerca posto esclusi':'Stima senza traffico · nessun parcheggio del catalogo entro 5 km'):result.reason==='nearby'?'La meta è vicina: il bus non serve.':result.reason==='no-gain'?'Il bus non offre un vantaggio sufficiente.':result.reason==='checking-bus'?'Percorso a piedi pronto; verifico se conviene il bus.':'Percorso pedonale verificato. Altre soluzioni in autobus restano ricercabili.';button.append(el('small',note));}
@@ -74,6 +74,10 @@ function renderTravelChoices(){
   $('event-travel-parking').hidden=travelMode!=='car';$('event-travel-bus-start').hidden=travelMode!=='active'||!current?.row;$('event-travel-bus-start').textContent=current?.row?'Vedi viaggio in autobus':'Ricerca autobus e altri orari';
   $('event-travel-other-bus').hidden=travelMode!=='active'||!state.start;
   $('event-travel-bus-details').replaceChildren();
+  if(travelMode==='car'&&current?.parkingCandidates){
+    const details=$('event-travel-bus-details');details.append(el('p','Parcheggi trovati nel catalogo; posti liberi non verificati.','detail-note'));
+    for(const option of current.parkingCandidates){const button=el('button',option.parking.name+' · '+(option.finalWalk?travelMinutes(option.finalWalk.duration)+' a piedi alla sede':'camminata non calcolata'),'parking-partial-option');button.type='button';button.dataset.parking=option.parking.id;button.setAttribute('aria-pressed',String(option.parking.id===current.parking.id));button.onclick=()=>{state.results.car={...current,...option};renderTravelChoices();drawTravelMap(state.end,state.event);Array.from(details.children).find(n=>n.dataset?.parking===option.parking.id)?.focus();};details.append(button);}
+  }
   if(travelMode==='active'&&current?.row){const row=current.row;$('event-travel-bus-details').append(el('p','Sali alle '+row.row.time.slice(0,5)+' a '+busDisplayName(row.origin.name)+'. Scendi alle '+row.arrivalTime.slice(0,5)+' a '+busDisplayName(row.arrival.name)+'.'),el('p','A piedi: '+travelMinutes(row.startWalk.duration)+' fino alla fermata e '+travelMinutes(row.endWalk.duration)+' fino alla sede.','detail-note'));}
 }
 function locateEventTravel(){
@@ -108,11 +112,22 @@ async function calculateEventTravel(){
 async function calculateTravelCar(state,{signal}){
   const parking=nearbyParking(state.event,{radius:5000}).sort((a,b)=>(busDistance(state.start,a)/8+busDistance(a,state.end)/1.25)-(busDistance(state.start,b)/8+busDistance(b,state.end)/1.25)).slice(0,3);
   if(!parking.length){const route=await travelRouteClient.load(state.start,state.end,{mode:'car',signal});return {route,duration:route.duration};}
-  const results=[];
-  for(const place of parking){if(signal.aborted)throw Error('Calcolo annullato.');try{const route=await travelRouteClient.load(state.start,place,{mode:'car',signal}),finalWalk=await travelRouteClient.load(place,state.end,{signal});results.push({route,finalWalk,parking:place,duration:route.duration+finalWalk.duration});}catch(error){if(signal.aborted)throw error;}}
+  const results=[],candidates=[];
+  for(const place of parking){
+    if(signal.aborted)throw Error('Calcolo annullato.');
+    // A failed drive must not hide the parking or prevent the independent walk check.
+    const [drive,walk]=await Promise.allSettled([travelRouteClient.load(state.start,place,{mode:'car',signal}),travelRouteClient.load(place,state.end,{signal})]);
+    if(signal.aborted)throw Error('Calcolo annullato.');
+    const route=drive.status==='fulfilled'?drive.value:null,finalWalk=walk.status==='fulfilled'?walk.value:null;
+    candidates.push({parking:place,route,finalWalk,driveError:drive.status==='rejected'?drive.reason?.code:null});
+    if(route&&finalWalk)results.push({route,finalWalk,parking:place,duration:route.duration+finalWalk.duration});
+  }
   results.sort((a,b)=>a.duration-b.duration||a.finalWalk.duration-b.finalWalk.duration);
   if(results.length)return {...results[0],checkedParking:results.length};
-  throw Error('Percorsi ai parcheggi entro 5 km non disponibili. Apri i parcheggi o riprova.');
+  candidates.sort((a,b)=>(a.finalWalk?.duration??Infinity)-(b.finalWalk?.duration??Infinity));
+  const noDrive=candidates.every(c=>!c.route),noRoute=candidates.every(c=>['NoRoute','NoSegment'].includes(c.driveError));
+  const error=noDrive?(noRoute?'Il servizio non trova il percorso auto da questa partenza. I parcheggi ci sono: indica dove si trova l’auto oppure apri le indicazioni.':'Percorso auto temporaneamente non calcolabile. Puoi comunque scegliere un parcheggio e aprire le indicazioni.'):'Parcheggi trovati, ma il viaggio completo non è verificato: manca il calcolo di una tratta.';
+  return {...candidates[0],parkingCandidates:candidates,error};
 }
 async function calculateTravelBus(state,{signal,active}){
   const index=await loadEventBusStops();if(!active())throw Error('Calcolo annullato.');
@@ -146,7 +161,7 @@ function drawTravelMap(point,event){
     if(result?.route)line(result.route.coordinates);if(result?.finalWalk){line(result.finalWalk.coordinates,{dashArray:'5 6'});L.circleMarker([result.parking.lat,result.parking.lon],{radius:7,color:'#ad7433',fillOpacity:1}).bindPopup(el('strong','Parcheggio '+result.parking.name)).addTo(map);}
     if(result?.row){line(result.row.startWalk.coordinates,{dashArray:'5 6'});line(result.row.endWalk.coordinates,{dashArray:'5 6'});const row=result.row,data=result.assets.find(a=>a.number===row.number),trip=data?.trips.find(t=>t.id===row.row.trip);if(trip){const points=trip.calls.slice(row.row.order,row.arrivalOrder+1).map(c=>data.stops[c[0]]).filter(p=>Number.isFinite(p?.lat)&&Number.isFinite(p?.lon));if(points.length>1)line(points.map(p=>[p.lon,p.lat]),{color:'#ad7433',weight:4});}}
     if(bounds.length>1)map.fitBounds(bounds,{padding:[18,18],maxZoom:16});
-    note.textContent=state?.picking?'Tocca la mappa per impostare la partenza.':result?.row?'Blu: tratti a piedi · ocra: collegamento indicativo tra le fermate ATV.':result?.parking?'Blu: auto · tratteggiato: camminata dal parcheggio · rosso: evento.':result?.route?'Blu: percorso calcolato · rosso: evento.':'Blu: partenza · rosso: evento.';
+    note.textContent=state?.picking?'Tocca la mappa per impostare la partenza.':result?.parkingCandidates?'Sono mostrate solo le tratte calcolate; il viaggio completo non è verificato.':result?.row?'Blu: tratti a piedi · ocra: collegamento indicativo tra le fermate ATV.':result?.parking?'Blu: auto · tratteggiato: camminata dal parcheggio · rosso: evento.':result?.route?'Blu: percorso calcolato · rosso: evento.':'Blu: partenza · rosso: evento.';
     map.on('click',e=>{if(travelState?.picking)setTravelOrigin({lat:e.latlng.lat,lon:e.latlng.lng},'Punto scelto sulla mappa');});setTimeout(()=>{if(travelMap===map)map.invalidateSize();},0);
   }catch{travelMap?.remove();travelMap=null;$('event-travel-map').hidden=true;note.textContent='Mappa non disponibile; puoi comunque aprire le indicazioni.';}
 }
