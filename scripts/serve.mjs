@@ -45,6 +45,10 @@ const server=createServer(async (req,res) => {
   if(await forza4(req,res))return;
   const pathname=new URL(req.url,'http://localhost').pathname;
   const brandAsset=/^\/assets\/brand\/[a-z0-9-]+\.(png|webp|jpg)$/.exec(pathname);
+  if(req.method==='GET'&&/^\/assets\/cards\/venete\/(denari|coppe|spade|bastoni)-(10|[1-9])\.webp$/.test(pathname)){
+    try{const body=await readFile(new URL('../public'+pathname,import.meta.url));res.writeHead(200,{'Content-Type':'image/webp','Cache-Control':'no-cache'}).end(body);}
+    catch{res.writeHead(404).end();}return;
+  }
   const route = routes[pathname]||(brandAsset?['public'+pathname,brandAsset[1]==='jpg'?'image/jpeg':'image/'+brandAsset[1]]:null)||(pathname==='/manifest.webmanifest'?['public/manifest.webmanifest','application/manifest+json']:null)||(/^\/inviti\/(briscola|forza4)\/(index.html)?$/.test(pathname)?['public'+pathname.replace(/index.html$/,'')+'index.html','text/html; charset=utf-8']:null)||(/^\/bus-official\/[A-Za-z0-9]+\.json$/.test(pathname)?['public'+pathname,'application/json']:null)||(/^\/bus-routes\/atv-(urban|holiday|evening)-[0-9]+\.json$/.test(pathname)?['public'+pathname,'application/json']:null);
   if (!route || req.method !== 'GET') { res.writeHead(404).end(); return; }
   try { const body = await readFile(new URL('../'+route[0],import.meta.url)); res.writeHead(200, { 'Content-Type': route[1], 'Cache-Control': 'no-store' }).end(body); }

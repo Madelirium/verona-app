@@ -25,6 +25,13 @@ test('PWA: errori server non sostituiscono la copia valida e query non vengono m
 test('PWA: aggiornamento esplicito e pulizia solo delle cache proprietarie',async()=>{
   const h=await harness();let work;h.events.activate({waitUntil:p=>work=p});await work;assert.deepEqual(h.deleted,['verona-pwa-old']);assert.equal(h.skipped(),0);h.events.message({data:{type:'ACTIVATE_UPDATE'}});assert.equal(h.skipped(),1);
 });
+
+test('PWA: le carte pubbliche viste restano disponibili offline anche sotto un percorso GitHub Pages',async()=>{
+  const h=await harness('https://example.org/verona-app/');const path='assets/cards/venete/spade-9.webp';
+  assert.equal(await(await h.fetch(path)).text(),'fresh');h.setNetwork(async()=>{throw Error('offline')});
+  assert.equal(await(await h.fetch(path)).text(),'fresh');assert.equal(await h.fetch('assets/cards/venete/denari-11.webp'),null);
+  assert.equal(await h.fetch(path+'?token=secret'),null);
+});
 test('PWA: build distribuisce worker, interfaccia installazione e metadati coerenti',async()=>{
   const root=new URL('../',import.meta.url),read=path=>readFile(new URL(path,root),'utf8');
   assert.match(await read('public/sw.js'),/VERSION='[a-f0-9]{20}'/);

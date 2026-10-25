@@ -1,4 +1,4 @@
-const VERSION='826981c08ef3905391a6';
+const VERSION='47aea3929993f731822b';
 const PREFIX='verona-pwa-';
 const CACHE=PREFIX+VERSION;
 const BASE=new URL('./',self.location.href);
@@ -24,7 +24,8 @@ self.addEventListener('fetch',event=>{
   if(home&&(url.searchParams.has('code')||url.searchParams.has('error')||url.hash))return;
   const asset=!url.search&&(/^(assets\/brand\/[a-z0-9-]+\.(png|jpg|webp)|manifest\.webmanifest)$/.test(path));
   const bus=!url.search&&/^bus-(official\/[A-Za-z0-9]+|routes\/atv-(urban|holiday|evening)-[0-9]+)\.json$/.test(path);
-  if(!home&&!asset&&!bus)return;
+  const card=!url.search&&/^assets\/cards\/venete\/(denari|coppe|spade|bastoni)-(10|[1-9])\.webp$/.test(path);
+  if(!home&&!asset&&!bus&&!card)return;
   event.respondWith((async()=>{
     const cache=await caches.open(CACHE),key=home?HOME:request;
     const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),6000);

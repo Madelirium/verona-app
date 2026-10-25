@@ -4,11 +4,14 @@
   let session=null,state=null,busy=false,timer=null,signature='',epoch=0;
   let roomsTimer=null,roomsEpoch=0,roomsLoading=false,roomsSignature='',roomButtons=[];
   let selectedColumn=3,lastDiscEvent='';
-  let trickUntil=0,trickTimer=null,lastReadTrick='',retryCount=0,entryReturn=null;
+  let trickUntil=0,trickStarted=0,trickDuration=0,trickTimer=null,lastReadTrick='',retryCount=0,entryReturn=null;
   let updatesSocket=null,updatesScope='',updatesReady=false,nextUpdatesAttempt=0,polling=false,refreshRequested=false;
   const base=(payload.briscolaApi||'').replace(/\/$/,'');
   const ranks={1:'Asso',8:'Fante',9:'Cavallo',10:'Re'};
   const label=c=>(ranks[c.rank]||c.rank)+' di '+c.suit;
+  const deckKey='verona-briscola-deck-v1',deckIds=['essential','venete'];
+  let selectedDeck='essential',draftDeck='essential';
+  try{const saved=localStorage.getItem(deckKey);if(deckIds.includes(saved))selectedDeck=saved;}catch{}
   function message(text){$('game-feedback').textContent=text;if($('game-entry-dialog').open)$('game-entry-feedback').textContent=text;}
   function remember(){if(session)sessions.set(selectedGame,session);else sessions.delete(selectedGame);try{if(session)localStorage.setItem(key(),JSON.stringify(session));else localStorage.removeItem(key());}catch{message('Il browser non salva la sessione: mantieni aperta questa scheda per conservare il tuo posto.');}}
   function restore(){session=sessions.get(selectedGame)||null;if(session)return;try{const saved=JSON.parse(localStorage.getItem(key())||'null');if(/^[A-Z2-9]{6}$/.test(saved?.code)&&/^[a-f0-9]{64}$/.test(saved?.token)){session=saved;sessions.set(selectedGame,saved);}}catch{}}
@@ -19,7 +22,7 @@
     state=next;
     if(selectedGame==='briscola'&&next.lastTrick){
       const id=next.matchId+':'+next.lastTrick.id;
-      if(id!==lastReadTrick){lastReadTrick=id;const wait=Math.max(0,next.trickWaitMs||0);trickUntil=Date.now()+wait;clearTimeout(trickTimer);const generation=epoch;trickTimer=setTimeout(()=>{if(generation===epoch){signature='';draw();}},wait+30);}
+      if(id!==lastReadTrick){lastReadTrick=id;const wait=Math.max(0,next.trickWaitMs||0);trickStarted=Date.now();trickDuration=wait;trickUntil=trickStarted+wait;clearTimeout(trickTimer);const generation=epoch;trickTimer=setTimeout(()=>{if(generation===epoch){signature='';draw();}},wait+30);}
     }
   }
   async function request(action,body={}){
@@ -94,18 +97,26 @@
     const shapes={denari:[['circle',{cx:30,cy:36,r:23}],['circle',{cx:30,cy:36,r:15}],['path',{d:'M30 21v30M15 36h30M19 25l22 22M19 47l22-22'}]],coppe:[['path',{d:'M14 12h32v16c0 22-32 22-32 0ZM14 17H6v8c0 10 8 12 14 12M46 17h8v8c0 10-8 12-14 12M30 44v15M17 62h26'}]],spade:[['path',{d:'M30 4 19 35l11 10 11-10ZM13 44h34M30 44v18M24 65h12'}]],bastoni:[['path',{d:'M21 65 37 8M27 42 12 28M33 25l17-9M30 51l17-9M20 59l-8-7'}],['path',{d:'M12 28C5 25 5 18 12 17c8 1 10 8 0 11M50 16c8-1 9-9 2-11-8-1-11 6-2 11'}]]};
     for(const [tag,attrs] of shapes[suit]){const shape=document.createElementNS(ns,tag);for(const [key,value] of Object.entries(attrs))shape.setAttribute(key,String(value));shape.setAttribute('fill','none');shape.setAttribute('stroke','currentColor');shape.setAttribute('stroke-width','3.5');shape.setAttribute('stroke-linecap','round');shape.setAttribute('stroke-linejoin','round');svg.append(shape);}return svg;
   }
-  function card(c,playable=false){
+  function card(c,playable=false,deck=selectedDeck){
     const node=el(playable?'button':'div','','game-card game-'+c.suit);
     const corner=el('span',c.rank===1?'A':c.rank>=8?{8:'F',9:'C',10:'R'}[c.rank]:String(c.rank),'card-corner');corner.append(suitIcon(c.suit));node.append(corner);
     if(c.rank>=8){const figure=el('div',c.rank===10?'♛':'✦','card-crown'),mark=el('div',{8:'F',9:'C',10:'R'}[c.rank],'card-figure');mark.append(el('span',ranks[c.rank]));node.append(figure,mark);}
     else{const pips=el('div','','card-pips'+(c.rank===1?' single':''));for(let i=0;i<c.rank;i++)pips.append(suitIcon(c.suit));node.append(pips);}
     node.append(el('small',c.suit));
     node.setAttribute('aria-label',label(c));
+    if(deck==='venete'){
+      const art=el('img','','card-art'),caption=el('span',(ranks[c.rank]||c.rank)+' · '+c.suit,'card-art-label');
+      art.alt='';art.setAttribute('aria-hidden','true');caption.setAttribute('aria-hidden','true');
+      art.onload=()=>node.classList.add('card-art-ready');
+      art.onerror=()=>{node.classList.remove('card-art-ready');art.hidden=true;caption.hidden=true;};
+      art.src='assets/cards/venete/'+c.suit+'-'+c.rank+'.webp';
+      node.append(art,caption);
+    }
     if(playable){node.type='button';node.disabled=busy||retryCount>0||Date.now()<trickUntil||state.turn!==state.seat||state.status!=='playing';node.onclick=()=>act('play',{card:c.id,version:state.version,matchId:state.matchId});}
     return node;
   }
   function draw(){
-    const four=selectedGame==='forza4',hasRoom=Boolean(session),waiting=state?.status==='waiting',finished=state?.status==='finished';
+    const four=selectedGame==='forza4',hasRoom=Boolean(session),waiting=state?.status==='waiting',finished=state?.status==='finished'&&(four||Date.now()>=trickUntil);
     const count=state?.playerCount||2,multi=!four&&count>2;
     globalThis.veronaGameSession=hasRoom;
     $('app-shell').classList.toggle('game-session-layout',view==='games'&&hasRoom);
@@ -113,6 +124,8 @@
     $('app-shell').classList.toggle('game-lobby-layout',view==='games'&&!hasRoom);
     for(const button of document.querySelectorAll('.game-choice')){button.setAttribute('aria-pressed',String(button.dataset.game===selectedGame));button.disabled=busy;}
     $('game-rules').setAttribute('aria-label','Regole di '+(four?'Forza 4':'Briscola'));
+    $('game-deck-open').hidden=four;
+    $('game-deck-open').setAttribute('aria-label','Scegli mazzo · '+(selectedDeck==='venete'?'Veneto illustrato':'Essenziale'));
     $('games-view').classList.toggle('forza4-screen',four);
     $('games-view').classList.toggle('multiplayer-screen',multi);
     $('game-player-count-field').hidden=four;$('game-player-count').disabled=busy;
@@ -128,21 +141,22 @@
     $('game-code').textContent=$('game-waiting-code').textContent=state.code;$('game-leave').disabled=busy;
     const me=state.players[state.seat],opponent=state.players[(state.seat+1)%count];
     $('game-players').hidden=waiting||multi;$('game-score').textContent='Tu · '+me.name;$('game-score').title=me.name;
-    $('game-multiplayer-players').hidden=!multi;$('game-team-score').hidden=!multi||count!==4||waiting;
+    $('game-multiplayer-players').hidden=!multi;$('game-team-score').hidden=!multi||count!==4||!finished;
     if(multi){
       const roster=$('game-multiplayer-players');roster.replaceChildren();
       for(let offset=0;offset<count;offset++){
-        const seat=(state.seat+offset)%count,p=state.players[seat],row=el('div','','game-player'+(p&&seat===state.turn&&!waiting?' is-turn':'')+(count===4&&seat%2===state.seat%2?' same-team':''));
+        const seat=(state.seat+offset)%count,p=state.players[seat],row=el('div','','game-player'+(p&&seat===state.turn&&!waiting&&!phase&&!finished?' is-turn':'')+(count===4&&seat%2===state.seat%2?' same-team':''));
+        row.dataset.seat=String(seat);
         const avatar=el('span',p?p.name.slice(0,1).toUpperCase():'?','game-avatar'),info=el('div','');avatar.setAttribute('aria-hidden','true');
         const relation=seat===state.seat?'Tu':count===4?(seat%2===state.seat%2?'Compagno':'Avversario'):'Giocatore '+(seat+1);
-        info.append(el('strong',p?p.name:'Posto libero'),el('small',relation+(count===4?' · Coppia '+(seat%2===0?'A':'B'):'')),el('small',p?(waiting?'Al tavolo':p.score+' punti · '+p.count+' carte'+(!p.online?' · Si riconnette…':'')):'In attesa'));
+        info.append(el('strong',p?p.name:'Posto libero'),el('small',relation+(count===4?' · Coppia '+(seat%2===0?'A':'B'):'')),el('small',p?(waiting?'Al tavolo':(finished?p.score+' punti · ':'')+p.count+' carte'+(!p.online?' · Si riconnette…':'')):'In attesa'));
         row.append(avatar,info);roster.append(row);
       }
       if(count===4)$('game-team-score').textContent='La tua coppia '+state.teamScores[state.seat%2]+' · Avversari '+state.teamScores[1-state.seat%2];
     }
     $('game-opponent').textContent=opponent?.name||'In attesa';$('game-opponent').title=opponent?.name||'';
-    $('game-me-meta').textContent=four?(state.seat===0?'Rosso ●':'Giallo ○'):me.score+' punti · '+me.count+' carte';
-    $('game-opponent-meta').textContent=opponent?(opponent.online?(four?(state.seat===0?'Giallo ○':'Rosso ●'):opponent.score+' punti · '+opponent.count+' carte'):'Si riconnette…'):'';
+    $('game-me-meta').textContent=four?(state.seat===0?'Rosso ●':'Giallo ○'):(finished?me.score+' punti · ':'')+me.count+' carte';
+    $('game-opponent-meta').textContent=opponent?(opponent.online?(four?(state.seat===0?'Giallo ○':'Rosso ●'):(finished?opponent.score+' punti · ':'')+opponent.count+' carte'):'Si riconnette…'):'';
     for(const [id,name,seat] of [['game-me-avatar',me.name,state.seat],['game-opponent-avatar',opponent?.name||'?',1-state.seat]]){const avatar=$(id);avatar.textContent=four?(seat===0?'●':'○'):name.slice(0,1).toUpperCase();avatar.classList.toggle('disc-red',four&&seat===0);avatar.classList.toggle('disc-yellow',four&&seat===1);}
     $('game-invite').hidden=!waiting;
     $('game-room-visibility').textContent=state.visibility==='public'?'Stanza pubblica · compare tra i tavoli disponibili.':'Stanza privata · si entra solo con codice o link.';
@@ -160,8 +174,12 @@
     $('game-waiting-title').textContent=multi?state.players.length+' su '+count+' al tavolo':'Il posto di fronte è libero.';
     $('game-waiting-description').textContent=multi?'Mancano '+(count-state.players.length)+' '+(count-state.players.length===1?'giocatore':'giocatori')+'. Si parte quando tutti i posti sono occupati.'+(count===4?' Posti 1 e 3 contro 2 e 4.':' Ognuno per sé · senza il due di denari.'):state.visibility==='public'?'Il tuo tavolo è visibile nelle stanze in attesa. Puoi anche invitare un amico.':'Invita un amico: bastano un link e il suo soprannome.';
     $('game-turn').hidden=waiting||finished;
-    $('game-turn').classList.toggle('my-turn',state.turn===state.seat&&!retryCount);
-    $('game-turn').textContent=retryCount?'Connessione interrotta · recupero la partita…':!four&&phase&&state.lastTrick?'Presa di '+state.players[state.lastTrick.winner].name+' · +'+state.lastTrick.points+' punti':state.turn===state.seat?(four?'Scegli la colonna, poi lascia cadere.':'Tocca a te · scegli una carta'):'Tocca a '+(state.players[state.turn]?.name||'…');
+    const myTurn=state.status==='playing'&&state.turn===state.seat&&!retryCount&&!phase;
+    $('game-turn').classList.toggle('my-turn',myTurn);
+    $('game-hand').classList.toggle('hand-ready',!four&&myTurn);
+    const collected=state.lastTrick?.winner===state.seat?'Prendi tu':'Prende '+state.players[state.lastTrick?.winner]?.name;
+    const played=state.table.some(move=>move.player===state.seat);
+    $('game-turn').textContent=retryCount?'Connessione interrotta · recupero la partita…':!four&&phase&&state.lastTrick?collected:state.turn===state.seat?(four?'Scegli la colonna, poi lascia cadere.':'Tocca a te · scegli una carta'):(played&&!four?'Carta giocata · ':'')+'Tocca a '+(state.players[state.turn]?.name||'…');
     if(state.ranked&&state.status==='playing'&&!retryCount)$('game-turn').textContent+=' · '+seconds+' s';
     $('game-result').hidden=!finished;$('game-new').hidden=!finished;
     if(finished){$('game-result-title').textContent=state.winner===null?'Pari e patta.':state.winner===state.seat?'Questa è tua!':'La spunta '+opponent.name;
@@ -183,11 +201,24 @@
     if(state.trump)trump.append(el('span','BRISCOLA'),card(state.trump),el('small',state.remaining+' nel mazzo'));
     const backs=$('game-opponent-backs');backs.hidden=multi;backs.replaceChildren();for(let i=0;i<(opponent?.count||0);i++)backs.append(el('i',''));
     const table=$('game-table');table.replaceChildren();
-    const showLast=phase&&state.lastTrick||!state.table.length&&state.lastTrick;
+    const showLast=phase&&state.lastTrick;
     const cards=showLast?state.lastTrick.cards:state.table;
-    $('game-trick-label').textContent=showLast?'Presa di '+state.players[state.lastTrick.winner].name+' · '+state.lastTrick.points+' punti':state.table.length?'La presa è aperta':'La prima carta va qui';
+    $('game-trick-label').textContent=showLast?collected:state.table.length?'La presa è aperta':state.lastTrick?'Nuova mano':'La prima carta va qui';
     for(const played of cards){const slot=el('div','','game-played');slot.append(el('small',state.players[played.player].name),card(played.card));table.append(slot);}
-    $('game-last-trick').textContent=state.lastTrick?'↺ Ultima presa · '+state.lastTrick.points+' punti':'Ultima presa';
+    if(showLast){
+      for(const [index,played] of cards.entries()){
+        const slot=table.children[index];
+        slot.classList.add('trick-collect');
+        if(played.player===state.lastTrick.winner){slot.classList.add('trick-winner');slot.firstChild.textContent+=' · Vince la mano';}
+        const target=multi?$('game-multiplayer-players').querySelector('[data-seat="'+state.lastTrick.winner+'"]'):$(state.lastTrick.winner===state.seat?'game-hand':'game-opponent-avatar');
+        const from=slot.getBoundingClientRect(),to=target.getBoundingClientRect();
+        slot.style.setProperty('--collect-x',(to.x+to.width/2-from.x-from.width/2)+'px');
+        slot.style.setProperty('--collect-y',(to.y+to.height/2-from.y-from.height/2)+'px');
+        slot.style.setProperty('--collect-duration',trickDuration+'ms');
+        slot.style.setProperty('--collect-delay',-Math.max(0,Date.now()-trickStarted)+'ms');
+      }
+    }
+    $('game-last-trick').textContent='↺ Ultima presa';
     const hand=$('game-hand'),focused=document.activeElement?.getAttribute?.('aria-label');hand.replaceChildren();
     for(const c of me.hand||[]){const button=card(c,true);hand.append(button);if(focused===label(c))button.focus();}
   }
@@ -333,12 +364,30 @@
   $('game-entry-dialog').addEventListener('close',()=>{if(session)$('game-room-info').focus();else if(entryReturn?.isConnected)entryReturn.focus();else $('game-create-open').focus();});
   $('game-last-trick').onclick=()=>{
     if(!state?.lastTrick)return;
-    const last=state.lastTrick;$('game-trick-summary').textContent='Presa '+last.id+' · '+state.players[last.winner].name+' ha raccolto '+last.points+' punti.';
+    const last=state.lastTrick;$('game-trick-summary').textContent='Presa '+last.id+' · raccoglie '+state.players[last.winner].name+'.';
     const content=$('game-trick-cards');content.replaceChildren();for(const move of last.cards){const slot=el('div','','game-played');slot.append(el('small',state.players[move.player].name),card(move.card));content.append(slot);}
     $('game-trick-dialog').showModal();
   };
   $('game-trick-close').onclick=()=>$('game-trick-dialog').close();$('game-trick-dialog').addEventListener('close',()=>$('game-last-trick').focus());
   $('game-rules').onclick=()=>$(selectedGame==='forza4'?'forza4-rules-dialog':'game-rules-dialog').showModal();
+  $('game-deck-open').onclick=()=>{
+    draftDeck=selectedDeck;
+    for(const id of deckIds){
+      $('game-deck-'+id).checked=id===draftDeck;
+      const preview=$('game-deck-preview-'+id);preview.replaceChildren();
+      for(const [rank,suit] of [[1,'denari'],[9,'spade'],[10,'coppe']])preview.append(card({rank,suit},false,id));
+    }
+    $('game-deck-dialog').showModal();$('game-deck-'+draftDeck).focus();
+  };
+  for(const id of deckIds)$('game-deck-'+id).onchange=()=>{if($('game-deck-'+id).checked)draftDeck=id;};
+  $('game-deck-save').onclick=()=>{
+    selectedDeck=draftDeck;let saved=true;
+    try{localStorage.setItem(deckKey,selectedDeck);}catch{saved=false;}
+    signature='';draw();$('game-deck-dialog').close();
+    message(saved?'Mazzo aggiornato.': 'Mazzo aggiornato per questa visita. Il browser non consente di salvare la preferenza.');
+  };
+  $('game-deck-close').onclick=$('game-deck-cancel').onclick=()=>$('game-deck-dialog').close();
+  $('game-deck-dialog').addEventListener('close',()=>$('game-deck-open').focus());
   $('forza4-close-rules').onclick=()=>$('forza4-rules-dialog').close();
   $('forza4-rules-dialog').addEventListener('close',()=>$('game-rules').focus());
   $('game-close-rules').onclick=()=>$('game-rules-dialog').close();

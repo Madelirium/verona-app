@@ -1,5 +1,33 @@
 .view-nav{grid-template-columns:repeat(6,minmax(0,1fr));gap:0;padding-left:4px;padding-right:4px}.view-nav button{min-width:0;font-size:10px}
 .game-session-layout{grid-template-rows:auto minmax(0,1fr) auto}.game-session-layout .page-heading{display:none}
+.game-card>.card-art,.game-card>.card-art-label{display:none}
+.game-card.card-art-ready>:not(.card-art):not(.card-art-label){visibility:hidden}
+.game-card.card-art-ready>.card-art{display:block;position:absolute;inset:1px 0 19px;width:100%;height:calc(100% - 20px);object-fit:contain;pointer-events:none;border-radius:7px}
+.game-card.card-art-ready>.card-art-label{display:flex;align-items:center;justify-content:center;position:absolute;bottom:1px;left:2px;right:2px;min-height:18px;padding:1px;background:#fffaf0;color:#243c32;border-radius:3px;font-size:9px;font-weight:750;line-height:1.05;text-align:center;pointer-events:none}
+.games-screen:not(.forza4-screen) .game-toolbar>div{gap:3px}
+.games-screen:not(.forza4-screen) .game-toolbar button{padding:8px;font-size:12px}
+.games-screen:not(.forza4-screen) #game-type{max-width:100px;padding:8px;font-size:14px}
+#game-deck-dialog .detail-inner{max-height:85dvh;overflow:auto}
+.game-deck-options{border:0;padding:0;margin:18px 0;min-width:0;display:grid;gap:12px}
+.game-deck-options legend{font-size:13px;font-weight:700;margin-bottom:9px}
+.game-deck-option{display:grid!important;grid-template-columns:24px minmax(0,1fr);gap:8px!important;align-items:center;min-height:44px;padding:12px;border:2px solid var(--border);border-radius:16px;cursor:pointer}
+.game-deck-option:has(input:checked){border-color:#39785c;background:#e8f0e9}
+.game-deck-option:focus-within{outline:3px solid #b78431;outline-offset:2px}
+.game-deck-option input{width:20px!important;height:20px;min-height:0!important;margin:0;accent-color:#39785c}
+.game-deck-option strong{display:block;font-size:16px}.game-deck-option small{display:block;font-size:12px;line-height:1.4;color:var(--text-secondary);margin-top:3px}
+.game-deck-preview{grid-column:1/-1;display:flex;justify-content:center;gap:12px;padding:5px 0;pointer-events:none}
+.game-deck-preview .game-card{width:58px}.game-deck-preview .card-pips.single svg{width:25px;height:30px}.game-deck-preview .card-figure{font-size:24px}
+.game-deck-actions{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;padding:3px 0 8px}.game-deck-actions button{min-height:44px;white-space:nowrap}
+/* Turn feedback stays next to the hand; each trick uses the server's pause. */
+.games-screen:not(.forza4-screen) #game-turn.my-turn{border:1px solid #39785c;animation:briscola-turn .7s ease-out 1}
+#game-hand.hand-ready .game-card:enabled{transform:translateY(-3px);box-shadow:0 4px 0 #39785c,0 7px 14px #183b2720}
+#game-hand.hand-ready .game-card:enabled:hover,#game-hand.hand-ready .game-card:focus-visible{transform:translateY(-7px);outline:2px solid #39785c;outline-offset:3px}
+#game-table .trick-winner .game-card{outline:3px solid #f1cf70;outline-offset:3px;box-shadow:0 0 16px #f1cf7070}
+#game-table .trick-winner>small{color:#ffe49b;font-weight:750;max-width:100%}
+#game-table .trick-collect{animation:briscola-collect var(--collect-duration,1200ms) ease-in var(--collect-delay,0ms) both}
+@keyframes briscola-turn{0%,100%{box-shadow:0 0 0 0 #39785c00}45%{box-shadow:0 0 0 4px #39785c35}}
+@keyframes briscola-collect{0%,55%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--collect-x,0px),var(--collect-y,-80px)) scale(.25);opacity:0}}
+@media(prefers-reduced-motion:reduce){.games-screen:not(.forza4-screen) #game-turn.my-turn,#game-table .trick-collect{animation:none}#game-hand.hand-ready .game-card:enabled,#game-hand.hand-ready .game-card:enabled:hover,#game-hand.hand-ready .game-card:focus-visible{transform:none}}
 .games-screen{height:100%;min-height:0;overflow:hidden;padding:10px 14px;display:flex;flex-direction:column;gap:10px}
 .games-screen button,.game-dialog button{min-height:44px;border:1px solid var(--border);border-radius:13px;padding:10px 14px;background:var(--surface);color:var(--primary);font:inherit;font-size:14px}
 .games-screen p{line-height:1.45;margin:0}.games-screen .game-primary,.game-dialog .game-primary{background:var(--primary);color:white;border-color:var(--primary)}
