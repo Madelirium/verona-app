@@ -1,3 +1,5 @@
+import {createTravelRouteClient,rankTravelBusTrips} from './travel-routes.mjs';
+import {walkingEventArrival} from './walking-route.mjs';
 function detailNodes(app){const walk=node=>[node,...(node.children||[]).flatMap(walk)];return app.get('detail-content').children.flatMap(walk);}
 import test from 'node:test';
 import {directBusTrips} from './direct-bus.mjs';
@@ -23,7 +25,7 @@ catalog.events=fixture.events;catalog.updatedAt=fixture.updatedAt;
 catalog.bus=JSON.parse(await readFile(new URL('./fixtures/calendar-bus.json',import.meta.url),'utf8'));
 function run(storage = new Map(),initialView='discover',mapApi) {
   class Element {
-    constructor() { this.textContent='';this.value='';this.children=[];this.listeners={};this.attributes={};this.classList={toggle(){}};this.style={}; }
+    constructor() { this.dataset={};this.textContent='';this.value='';this.children=[];this.listeners={};this.attributes={};this.classList={toggle(){}};this.style={}; }
     append(...nodes){this.children.push(...nodes)}
     replaceChildren(...nodes){this.children=nodes}
     setAttribute(key,value){this.attributes[key]=value}
@@ -1502,7 +1504,7 @@ test('Home personale: zona confermata, cambio giorno e rimozione aggiornano il r
 });
 
 
-const travelLogic=await readFile(new URL('../public/event-travel.js',import.meta.url),'utf8');
+const travelLogic=[createTravelRouteClient,rankTravelBusTrips,walkingEventArrival].map(fn=>fn.toString()).join('\n')+'\n'+await readFile(new URL('../public/event-travel.js',import.meta.url),'utf8');
 function runTravel(){const app=runParking();new Script(travelLogic).runInContext(app.context);useRomeInstant(app,'2026-10-22T10:00:00Z');new Script('parkingFixture.startsAt="2026-10-22T10:00:00+02:00";parkingFixture.endsAt="2026-10-24T18:00:00+02:00"').runInContext(app.context);return app;}
 test('Evento e orari: titolo, orario, partenza e rientro conservati da elenco e popup',async()=>{
  const app=runEventBus(),stop=eventBusIndexData.stops.find(s=>s.code==='1974');
@@ -1525,21 +1527,18 @@ test('Orari evento: errore recuperabile conserva il riferimento anche fuori cope
  app.context.fetch=async()=>({ok:true,json:async()=>structuredClone(official24)});await app.get('official-results').children[0].onclick();assert.equal(app.get('official-stop').value,'1974');assert.equal(app.get('official-event-context').hidden,false);
  app.get('official-date').value='2027-02-01';app.get('official-date').onchange();assert.match(app.get('official-summary').textContent,/fuori dalla validità/);assert.equal(app.get('official-event-warning').hidden,false);assert.match(app.get('official-event-title').textContent,/Evento in Arena/);
 });
-test('Come arrivare: il mezzo già attivo non riapre il pannello e non perde la selezione',async()=>{
- const app=runTravel();new Script('openEventTravel(parkingFixture)').runInContext(app.context);
- let closed=0;const walk=app.get('event-travel-dialog'),closeWalk=walk.close.bind(walk);walk.close=()=>{closed++;closeWalk();};
- app.get('event-travel-modes').children[2].onclick();assert.equal(closed,0);
- await app.get('event-travel-modes').children[0].onclick();app.get('event-bus-date').value='2026-10-23';
- const request=new Script('eventBusRequest').runInContext(app.context);await app.get('event-bus-travel-modes').children[0].onclick();assert.equal(new Script('eventBusRequest').runInContext(app.context),request);assert.equal(app.get('event-bus-date').value,'2026-10-23');
- app.get('event-bus-travel-modes').children[1].onclick();app.get('parking-radius').value='3000';app.get('parking-travel-modes').children[1].onclick();assert.equal(app.get('parking-radius').value,'3000');
+test('Come arrivare: cambiare scheda non riapre il pannello né perde la partenza',()=>{
+ const app=runTravel();new Script('openEventTravel(parkingFixture)').runInContext(app.context);let closed=0;const panel=app.get('event-travel-dialog');panel.close=()=>{closed++;};
+ new Script('travelState.label="Piazza Bra"').runInContext(app.context);app.get('event-travel-modes').children[0].onclick();app.get('event-travel-modes').children[1].onclick();app.get('event-travel-modes').children[2].onclick();
+ assert.equal(closed,0);assert.equal(new Script('travelState.label').runInContext(app.context),'Piazza Bra');assert.equal(new Script('travelMode').runInContext(app.context),'walk');assert.equal(panel.open,true);
 });
-test('Come arrivare: data leggibile nei tre mezzi, giorno mantenuto al rientro e nuovo evento separato',async()=>{
+
+test('Come arrivare: giorno scelto mantenuto tra schede e nuovo evento separato',()=>{
  const app=runTravel();new Script('openEventTravel(parkingFixture)').runInContext(app.context);assert.match(app.get('event-travel-when').textContent,/22/);
- await app.get('event-travel-modes').children[0].onclick();assert.match(app.get('event-bus-when').textContent,/22/);app.get('event-bus-date').value='2026-10-23';await app.get('event-bus-date').onchange();
- app.get('event-bus-travel-modes').children[1].onclick();assert.match(app.get('parking-event-when').textContent,/23/);app.get('parking-close').onclick();
- await new Script('openEventTravel(parkingFixture);switchEventTravel("bus")').runInContext(app.context);assert.equal(app.get('event-bus-date').value,'2026-10-23');
- new Script('openEventTravel({...parkingFixture,id:"different-event",startsAt:"2026-10-22",endsAt:"2026-10-24"})').runInContext(app.context);await app.get('event-travel-modes').children[0].onclick();assert.equal(app.get('event-bus-date').value,'2026-10-22');
+ new Script('travelDay="2026-10-23";openEventTravel(parkingFixture);switchEventTravel("car");switchEventTravel("bus")').runInContext(app.context);assert.equal(app.get('event-travel-date').value,'2026-10-23');assert.equal(app.get('event-travel-dialog').open,true);
+ new Script('openEventTravel({...parkingFixture,id:"different-event",startsAt:"2026-10-22",endsAt:"2026-10-24"})').runInContext(app.context);assert.equal(app.get('event-travel-date').value,'2026-10-22');
 });
+
 test('Autobus evento: le tre fermate suggerite hanno servizio nel giorno scelto, senza nascondere il fuori copertura',async()=>{
  const app=runEventBus();app.context.smallIndex={validFrom:'2026-10-22',validTo:'2026-10-22',days:['2026-10-22'],stops:[0,1,2,3].map((i)=>({code:String(i),lat:45.4386+i*.0001,lon:10.9929,services:[['24',i===3?'1':'0']]}))};
  const rows=new Script('nearbyBusStops(smallIndex,{lat:45.4386,lon:10.9929},"2026-10-22",{withService:true})').runInContext(app.context);assert.equal(rows.length,1);assert.equal(rows[0].code,'3');
@@ -1559,18 +1558,16 @@ test('Autobus evento: richiesta con tempo limite, errore recuperabile e nuovo te
  await new Script('openEventBus(busEvent)').runInContext(app.context);assert.match(app.get('event-bus-status').textContent,/Puoi riprovare/);
  await app.get('event-bus-stops').children[0].onclick();assert.ok(calls>=2);assert.ok(timeouts.every(ms=>ms===15000));assert.match(app.get('event-bus-status').textContent,/fermate con partenze programmate/);
 });
-test('Come arrivare: mezzo, evento e giorno conservati, indicazioni a piedi e rientro nei dettagli',async()=>{
- const app=runTravel();new Script('openDetails(parkingFixture)').runInContext(app.context);const sections=app.get('detail-content').children.filter(node=>node.className==='event-bus-entry');assert.equal(sections.length,0);assert.equal(app.get('detail-travel').hidden,false);app.get('detail-travel').onclick();assert.equal(app.get('event-travel-dialog').open,true);assert.match(app.get('event-travel-walk').href,/travelmode=walking/);assert.match(app.get('event-travel-map-note').textContent,/Mappa non disponibile/);
- await app.get('event-travel-modes').children[0].onclick();assert.equal(app.get('event-travel-dialog').open,false);assert.equal(app.get('event-bus-dialog').open,true);assert.equal(app.get('event-bus-name').textContent,'Evento in Arena');app.get('event-bus-date').value='2026-10-23';
- app.get('event-bus-travel-modes').children[1].onclick();assert.equal(app.get('event-bus-dialog').open,false);assert.equal(app.get('parking-dialog').open,true);assert.equal(app.get('parking-event-name').textContent,'Evento in Arena');
- await app.get('parking-travel-modes').children[0].onclick();assert.equal(app.get('parking-dialog').open,false);assert.equal(app.get('event-bus-date').value,'2026-10-23');app.get('event-bus-travel-modes').children[2].onclick();assert.equal(app.get('event-bus-dialog').open,false);assert.equal(app.get('event-travel-dialog').open,true);app.get('event-travel-close').onclick();assert.equal(app.get('detail-dialog').open,true);assert.equal(app.get('event-travel-dialog').open,false);
- new Script('openParkingCatalog()').runInContext(app.context);assert.equal(app.get('parking-travel-modes').hidden,true);
-});
-test('Come arrivare: sede assente senza suggerimenti inventati e risposta autobus tardiva ignorata',async()=>{
- const app=runTravel();new Script('openDetails({...parkingFixture,mapDisabled:true})').runInContext(app.context);const section=detailNodes(app).find(node=>node.className==='event-bus-entry');assert.match(section.children[1].textContent,/non è abbastanza preciso/);assert.equal(app.get('event-travel-dialog').open,undefined);
- let finish;app.context.fetch=()=>new Promise(resolve=>{finish=resolve});new Script('openEventTravel(parkingFixture)').runInContext(app.context);const pending=app.get('event-travel-modes').children[0].onclick();app.get('event-bus-travel-modes').children[1].onclick();finish({ok:true,json:async()=>structuredClone(eventBusIndexData)});await pending;assert.equal(app.get('event-bus-dialog').open,false);assert.equal(app.get('parking-dialog').open,true);assert.equal(app.get('event-bus-stops').children.length,0);
+test('Come arrivare: tre schede, navigazione per mezzo e ritorno ai dettagli',()=>{
+ const app=runTravel();new Script('openDetails(parkingFixture)').runInContext(app.context);assert.equal(app.get('detail-travel').hidden,false);app.get('detail-travel').onclick();assert.equal(app.get('event-travel-modes').children.length,3);assert.equal(app.get('event-travel-dialog').open,true);assert.match(app.get('event-travel-walk').href,/travelmode=walking/);
+ app.get('event-travel-modes').children[1].onclick();assert.match(app.get('event-travel-walk').href,/travelmode=driving/);assert.equal(app.get('event-travel-parking').hidden,false);app.get('event-travel-parking').onclick();assert.equal(app.get('parking-dialog').open,true);assert.equal(app.get('parking-event-name').textContent,'Evento in Arena');app.get('parking-close').onclick();
+ app.get('event-travel-close').onclick();assert.equal(app.get('detail-dialog').open,true);assert.equal(new Script('travelState').runInContext(app.context),null);
 });
 
+test('Come arrivare: sede assente e callback GPS tardiva dopo chiusura',()=>{
+ const app=runTravel();new Script('openDetails({...parkingFixture,mapDisabled:true})').runInContext(app.context);assert.equal(app.get('event-travel-dialog').open,undefined);
+ let finish;app.context.isSecureContext=true;app.context.navigator={geolocation:{getCurrentPosition:fn=>{finish=fn;}}};new Script('openEventTravel(parkingFixture)').runInContext(app.context);app.get('event-travel-close').onclick();finish({coords:{latitude:45.44,longitude:10.99,accuracy:20}});assert.equal(new Script('travelState').runInContext(app.context),null);assert.equal(app.get('event-travel-dialog').open,false);
+});
 
 const weatherLogic=await readFile(new URL('../public/weather.js',import.meta.url),'utf8');
 function runWeather(storage=new Map()){
@@ -2152,7 +2149,7 @@ test('Camminate ricerca UI: filtra anche accesso al bus e anticipo alla sede; gu
 test('Camminate ricerca UI: annullare ignora il completamento tardivo',async()=>{const app=runJourneyUi();await app.get('event-bus-plan').onclick();app.get('event-direct-origin').value=app.context.directOrigin.code;app.get('event-direct-origin').oninput();app.get('event-direct-origins').children[0].onclick();app.get('event-direct-walk-mode').checked=true;app.context.pauseWalk=()=>new Promise(resolve=>{app.context.finishWalk=resolve;});new Script('eventWalkingClient.load=pauseWalk').runInContext(app.context);const pending=app.get('event-direct-search').onclick();await new Promise(resolve=>setImmediate(resolve));assert.equal(typeof app.context.finishWalk,'function');app.get('event-direct-cancel').onclick();app.context.finishWalk({duration:60,distance:80,coordinates:[]});await pending;assert.match(app.get('event-direct-status').textContent,/annullata/);assert.equal(app.get('event-direct-results').children.length,0);assert.equal(app.get('event-direct-search').disabled,false);});
 test('Fermate utili UI: una sola proposta per la stessa corsa fisica',()=>{const app=runJourneyUi();app.context.connectionRows=[{number:'11',row:{trip:'one',serviceDay:'2026-10-22'},origin:{lat:45.44,lon:10.99},distance:100},{number:'11',row:{trip:'one',serviceDay:'2026-10-22'},origin:{lat:45.441,lon:10.99},distance:100}];assert.equal(new Script('bestEventConnections(connectionRows,{lat:45.44,lon:10.99}).length').runInContext(app.context),1);assert.equal(new Script('bestEventConnections(connectionRows,{lat:45.44,lon:10.99})[0].origin.lat').runInContext(app.context),45.44);});
 test('Camminate ritorno UI: verifica l’uscita richiesta e riapre il calcolo dopo una chiusura',async()=>{const app=runJourneyUi();await chooseDirectUi(app);app.context.location.hostname='veronaintasca.it';new Script('openEventComplete({...busTripSelection.eventContext,direction:"return",leaveAfter:"23:00",targetPoint:directOrigin},busTripSelection.eventContext.result)').runInContext(app.context);app.context.location.hostname='veronaintasca.it';app.get('event-complete-start-minutes').value='10';app.get('event-complete-end-minutes').value='0';await app.get('event-complete-calculate').onclick();assert.ok(app.get('event-complete-result').children.some(n=>n.textContent.includes('prima delle 23:00')));app.get('event-complete-close').onclick();new Script('openEventComplete(busTripSelection.eventContext,busTripSelection.eventContext.result)').runInContext(app.context);assert.equal(app.get('event-complete-calculate').disabled,false);});
-test('Giorno dell’evento: il calendario passa il giorno scelto ai mezzi senza ripiegare su oggi',()=>{const app=runTravel();app.context.multiDay={...app.context.parkingFixture,id:'multi-day-check',startsAt:'2026-10-20',endsAt:'2026-10-28'};new Script('view="calendar";selected="2026-10-25";openEventTravel(multiDay);switchEventTravel("bus")').runInContext(app.context);assert.equal(app.get('event-bus-date').value,'2026-10-25');});
+test('Giorno dell’evento: il calendario passa il giorno scelto ai mezzi senza ripiegare su oggi',()=>{const app=runTravel();app.context.multiDay={...app.context.parkingFixture,id:'multi-day-check',startsAt:'2026-10-20',endsAt:'2026-10-28'};new Script('view="calendar";selected="2026-10-25";openEventTravel(multiDay);switchEventTravel("bus")').runInContext(app.context);assert.equal(app.get('event-travel-date').value,'2026-10-25');});
 
 
 test('Ricerca guidata: evento apre direttamente partenza e orario senza la mappa intermedia',async()=>{
@@ -2173,8 +2170,8 @@ test('Ricerca guidata: nessun arrivo disponibile offre una ripartenza e ricerca 
 
 
 const connectionMapLogic=await readFile(new URL('../public/event-connection-map.js',import.meta.url),'utf8');
-test('Planner unico: piedi e auto mantengono la sede, autobus apre la ricerca senza la vecchia mappa',async()=>{
- const app=runJourneyUi();new Script('openDetails(parkingFixture)').runInContext(app.context);assert.equal(app.get('detail-travel').textContent,'Come raggiungerci');app.get('detail-travel').onclick();assert.equal(app.get('event-travel-dialog').open,true);assert.match(app.get('event-travel-walk').href,/travelmode=walking/);new Script('switchEventTravel("car")').runInContext(app.context);assert.match(app.get('event-travel-walk').href,/travelmode=driving/);assert.equal(app.get('parking-dialog').open,undefined);assert.equal(app.get('event-travel-parking').hidden,false);await new Script('switchEventTravel("bus")').runInContext(app.context);assert.equal(app.get('event-direct-dialog').open,true);assert.equal(app.get('event-bus-dialog').open,false);assert.equal(app.get('event-travel-dialog').open,true);app.get('event-direct-close').onclick();assert.equal(app.get('event-travel-bus-start').hidden,false);
+test('Planner unico: confronto senza finestre intermedie, ricerca autobus solo su richiesta',async()=>{
+ const app=runJourneyUi();new Script('openDetails(parkingFixture)').runInContext(app.context);app.get('detail-travel').onclick();assert.equal(app.get('event-travel-dialog').open,true);new Script('switchEventTravel("car")').runInContext(app.context);assert.match(app.get('event-travel-walk').href,/travelmode=driving/);assert.equal(app.get('parking-dialog').open,undefined);new Script('switchEventTravel("bus")').runInContext(app.context);assert.equal(app.get('event-direct-dialog').open,undefined);assert.equal(app.get('event-travel-dialog').open,true);await app.get('event-travel-bus-start').onclick();assert.equal(app.get('event-direct-dialog').open,true);
 });
 
 test('Dettagli sintetici: esportazione secondaria e gestione salvato restano accessibili',()=>{
