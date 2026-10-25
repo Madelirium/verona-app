@@ -625,7 +625,7 @@ function appendEventDetailPreview(content,e){
   const mapButton=el('button','⌖ Vedi sulla mappa','dialog-save event-map-detail-button');mapButton.onclick=()=>{closeDetails();openEventMap(e)};
   const directions=el('a','Indicazioni per arrivare ↗','bus-secondary-link');directions.href=`https://www.google.com/maps/dir/?api=1&destination=${point.lat},${point.lon}`;directions.target='_blank';directions.rel='noopener noreferrer';
   if(typeof appendEventTravel!=='function')content.append(mapButton,directions);
-  content.append(el('p','Punto indicato dalla fonte. Per manifestazioni diffuse e percorsi, verifica il luogo esatto nel programma.','detail-note'));
+
 }
 function mountEventDetailPreview(){
   const state=eventDetailPreview;if(!state)return;
@@ -645,34 +645,37 @@ function openDetails(e) {
   detailReturnFocus=document.activeElement;
   const content=$('detail-content');content.replaceChildren();content.scrollTop=0;
   const title=el('h2',e.title);title.id='detail-title';
-  content.append(el('span',e.source,'source'),title,el('p',eventWhen(e),'event-detail-date'),el('p',e.location||'Sede da verificare sulla fonte ufficiale.','event-detail-place'),el('p',e.priceLabel||'Prezzo e condizioni di accesso da verificare.','event-detail-access'));
+  content.append(el('span',e.source,'source'),title);
+  if(eventImage(e)){const cover=makeEventImage(e,'event-detail-cover');cover.onerror=()=>{cover.hidden=true;};content.append(cover,el('small',eventImageCredit(eventImage(e)),'event-detail-image-credit'));}
+  content.append(el('p','📅 '+eventWhen(e),'event-detail-date'),el('p','📍 '+(e.location||'Sede da verificare sulla fonte ufficiale.'),'event-detail-place'),el('p','🎟️ '+(e.priceLabel||'Prezzo da verificare'),'event-detail-access'));
+  const options=el('details','','event-detail-options');options.append(el('summary','Altre opzioni e calendario'));
   if(e.accessNotes){const access=el('section','','event-access-notes');access.append(el('h3','Condizioni di accesso'),el('p',e.accessNotes));content.append(access);}
-  const state=['interested','going'].includes(preferences[e.id])?preferences[e.id]:null;let manageTarget=null;
+  const state=['interested','going'].includes(preferences[e.id])?preferences[e.id]:null;let manageTarget=null,manageSection=null;
   if(state){
-    content.append(el('h3',state==='going'?'Hai confermato la presenza':'Questo evento è nei tuoi salvati','event-detail-management'));
+    manageSection=el('details','','event-detail-manage');manageSection.append(el('summary',state==='going'?'✓ Parteciperai · gestisci':'♡ Evento salvato · gestisci'));content.append(manageSection);
     const presence=el('button',state==='going'?'✓ Partecipi · annulla conferma':'Conferma: partecipo','dialog-save event-presence');presence.onclick=()=>{closeDetails();save(e.id,state==='going'?'interested':'going')};
     const remove=el('button','Rimuovi dai salvati','dialog-save event-remove');remove.onclick=()=>{closeDetails();save(e.id,null)};
-    if(!isPastSavedEvent(e)){content.append(presence);manageTarget=presence;}content.append(remove);manageTarget||=remove;
+    if(!isPastSavedEvent(e)){manageSection.append(presence);manageTarget=presence;}manageSection.append(remove);manageTarget||=remove;
   }
-  if(e.summary)content.append(el('p',e.summary,'event-detail-summary'));
+  if(e.summary){const description=el('p',e.summary,'event-detail-summary');content.append(description);if(e.summary.length>200){description.classList.toggle('is-short',true);const expand=el('button','Leggi di più','event-description-toggle');expand.type='button';expand.setAttribute('aria-expanded','false');expand.onclick=()=>{const short=description.classList.toggle('is-short');expand.setAttribute('aria-expanded',String(!short));expand.textContent=short?'Leggi di più':'Riduci descrizione';};content.append(expand);}}
   appendEventDetailPreview(content,e);
   if(typeof appendEventWeather==='function')appendEventWeather(content,e);
   if(typeof appendEventTravel==='function'){if(!eventPosition(e))appendEventTravel(content,e);}
   else{if(typeof appendEventBus==='function')appendEventBus(content,e);if(typeof appendEventParking==='function')appendEventParking(content,e);}
-  if(eventPosition(e)&&typeof openEventBusPlanner==='function'&&typeof openEventTravel==='function'){const other=el('button','Auto, mappa e indicazioni a piedi','event-direct-edit');other.type='button';other.onclick=()=>openEventTravel(e);content.append(other);}
+
   try{const url=new URL(e.sourceUrl);if(url.protocol==='https:'){const link=el('a','Apri il programma ufficiale ↗','detail-link');link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';content.append(link)}}catch{}
   if(eventImage(e)){
-    const toggle=el('button','Immagine e crediti ▾','event-poster-toggle');toggle.type='button';toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls','event-detail-poster');content.append(toggle);
-    appendEventPoster(content,e);const poster=content.children[content.children.length-1];poster.id='event-detail-poster';poster.hidden=true;
-    toggle.onclick=()=>{poster.hidden=!poster.hidden;toggle.setAttribute('aria-expanded',String(!poster.hidden));toggle.textContent=poster.hidden?'Immagine e crediti ▾':'Nascondi immagine e crediti ▴';};
+    const toggle=el('button','Locandina e crediti ▾','event-poster-toggle');toggle.type='button';toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-controls','event-detail-poster');options.append(toggle);
+    appendEventPoster(options,e);const poster=options.children[options.children.length-1];poster.id='event-detail-poster';poster.hidden=true;
+    toggle.onclick=()=>{poster.hidden=!poster.hidden;toggle.setAttribute('aria-expanded',String(!poster.hidden));toggle.textContent=poster.hidden?'Locandina e crediti ▾':'Nascondi immagine e crediti ▴';};
   }
-  if(e.localVerified)content.append(el('p',`Luogo controllato sulla fonte il ${formatDay(e.reviewedOn,{day:'numeric',month:'long',year:'numeric'})}.`,'detail-note'));
-  content.append(el('p','Eventuali altre date sono nel calendario. Verifica aggiornamenti e disponibilità prima di partire.','detail-note'));
-  if(agendaReady)appendAgendaExport(content,e);
-  content.append(el('p','Salvare l’evento o confermare la presenza non acquista biglietti e non effettua prenotazioni.','detail-note'));
+  if(e.localVerified)options.append(el('p',`Luogo controllato sulla fonte il ${formatDay(e.reviewedOn,{day:'numeric',month:'long',year:'numeric'})}.`,'detail-note'));
+  options.append(el('p','Eventuali altre date sono nel calendario. Verifica aggiornamenti e disponibilità prima di partire.','detail-note'));
+  if(agendaReady)appendAgendaExport(options,e);
+  options.append(el('p','Il salvataggio non prenota posti o biglietti.','detail-note'));content.append(options);
   const button=$('detail-save');button.textContent=state?(state==='going'?'✓ Partecipi · gestisci':'✓ Salvato · gestisci'):'♡ Salva evento';button.setAttribute('aria-label',state?'Gestisci evento salvato: '+e.title:'Salva evento: '+e.title);
-  button.onclick=()=>{if(manageTarget){content.scrollTop=0;manageTarget.focus();return;}closeDetails();if(currentDiscovery?.id===e.id)chooseDiscovery('interested');else save(e.id,'interested');};
-  const travel=$('detail-travel');travel.hidden=!eventPosition(e);const direct=typeof openEventBusPlanner==='function';$('detail-dialog').classList.toggle('event-bus-ready',direct);travel.textContent=direct?'Vai in autobus':typeof openEventTravel==='function'?'Come arrivare':'Vedi mappa';travel.onclick=()=>{if(direct)openEventBusPlanner(e);else if(typeof openEventTravel==='function')openEventTravel(e);else{closeDetails();openEventMap(e);}};
+  button.onclick=()=>{if(manageTarget){if(manageSection)manageSection.open=true;manageTarget.focus();return;}closeDetails();if(currentDiscovery?.id===e.id)chooseDiscovery('interested');else save(e.id,'interested');};
+  const travel=$('detail-travel');travel.hidden=!eventPosition(e);const direct=typeof openEventTravel==='function';$('detail-dialog').classList.toggle('event-bus-ready',direct);travel.textContent=direct?'Come raggiungerci':typeof openEventTravel==='function'?'Come arrivare':'Vedi mappa';travel.onclick=()=>{if(direct)openEventTravel(e);else if(typeof openEventTravel==='function')openEventTravel(e);else{closeDetails();openEventMap(e);}};
   $('detail-dialog').showModal();$('close-detail').focus();mountEventDetailPreview();
 }
 function closeDetails() {$('detail-dialog').close();}

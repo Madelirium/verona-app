@@ -1,4 +1,4 @@
-const VERSION='3359cfcb35165ccaedaa';
+const VERSION='7478af23438bf52f19f8';
 const PREFIX='verona-pwa-';
 const CACHE=PREFIX+VERSION;
 const BASE=new URL('./',self.location.href);

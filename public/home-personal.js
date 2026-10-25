@@ -19,7 +19,8 @@ function homePersonalItems(){
 function renderHomePersonal(){
   $('home-personal-legacy').hidden=true;
   const feed=$('home-personal-feed');feed.replaceChildren();
-  for(const row of homePersonalItems()){const button=el('button','','home-personal-row home-smart-row');button.setAttribute('data-focus-key','home-smart-'+row.kind);button.setAttribute('aria-label',row.label+': '+row.title+'. '+row.note);button.append(el('span',row.label,'home-row-label'),el('strong',row.title),el('span',row.note,'home-row-note'));button.onclick=row.open;feed.append(button);}
+  const items=homePersonalItems();$('home-personal-section').hidden=!items.length;
+  for(const row of items){const button=el('button','','home-personal-row home-smart-row');button.setAttribute('data-focus-key','home-smart-'+row.kind);button.setAttribute('aria-label',row.label+': '+row.title+'. '+row.note);button.append(el('span',row.label,'home-row-label'),el('strong',row.title),el('span',row.note,'home-row-note'));button.onclick=row.open;feed.append(button);}
 }
 const previousHomeWasteEntry=renderWasteEntry;
 renderWasteEntry=()=>{previousHomeWasteEntry();if(view==='home')renderHomePersonal();};

@@ -66,3 +66,38 @@
 #detail-dialog.event-bus-ready #detail-save{background:var(--surface);color:var(--primary);border:1px solid var(--primary)}
 #detail-dialog.event-bus-ready .event-detail-actions button{font-size:16px}
 .event-direct-step-title{font-size:19px;line-height:1.4;margin:0}
+
+/* Compact event facts, optional detail, one shared destination. */
+#detail-dialog .event-detail-cover{display:block;width:100%;height:120px;object-fit:cover;object-position:center;border-radius:14px;margin:0 0 14px}
+#detail-dialog .event-detail-image-credit{position:static;display:block;font-size:12px;line-height:1.4;color:var(--text-secondary);margin:-8px 0 12px;overflow-wrap:anywhere}
+#detail-dialog .event-detail-date,#detail-dialog .event-detail-place{font-size:17px;line-height:1.45;margin-bottom:10px}
+#detail-dialog .event-detail-access{font-size:16px}
+#detail-dialog .event-detail-summary{font-size:17px;line-height:1.5;margin:12px 0}
+#detail-dialog .event-detail-summary.is-short{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.event-description-toggle{min-height:48px;border:0;background:transparent;color:var(--primary);font-size:16px;font-weight:700;padding:8px 0}
+.event-detail-options,.event-detail-manage{border-top:1px solid var(--border);margin:12px 0;padding-top:4px}
+.event-detail-options>summary,.event-detail-manage>summary{min-height:48px;padding:12px 0;font-size:16px;font-weight:650;cursor:pointer}
+#detail-dialog .event-location-map{height:112px;min-height:112px}
+#detail-dialog .event-location-preview h3{font-size:16px;margin:12px 0 8px}
+#detail-dialog #detail-travel{flex:1.5;background:var(--primary);color:var(--on-primary)}
+#detail-dialog #detail-save{background:var(--surface);color:var(--primary)}
+#event-travel-close{width:auto;min-width:76px;font-size:16px;padding:8px}
+#event-travel-parking,#event-travel-bus-start{flex:none;min-height:48px;margin:0 16px 8px;font-size:17px}
+#event-travel-name{font-size:18px;font-weight:700;line-height:1.4}
+#event-travel-place{font-size:17px;line-height:1.4}
+#event-travel-map-note:empty{display:none}
+.event-connection-panel{flex:none;min-width:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface)}
+.event-connection-head{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 10px;font-size:16px}
+.event-connection-head strong{min-width:0;overflow-wrap:anywhere}
+#event-connection-toggle{flex:none;min-height:44px;border:0;background:transparent;color:var(--primary);font-size:15px;padding:6px}
+#event-connection-map{height:clamp(120px,22dvh,190px);min-height:120px}
+#event-connection-map .leaflet-control-zoom a{width:44px;height:44px;line-height:44px}
+#event-connection-status{font-size:13px;line-height:1.35;margin:0;padding:5px 10px}
+#event-direct-dialog .event-direct-card.connection-selected{border:2px solid var(--primary)}
+#event-direct-dialog .event-direct-card .event-direct-edit{background:var(--surface);color:var(--primary);width:100%}
+@media(max-height:650px){#event-connection-map{height:120px}}
+.connection-more summary{min-height:44px;padding:10px 0;cursor:pointer;font-size:16px}
+#event-direct-dialog .event-direct-card .connection-select{display:block;width:100%;margin:0;padding:0 8px;min-height:48px;text-align:left;font-size:18px;color:var(--primary);background:var(--surface);border:0;border-radius:8px}
+#event-direct-dialog .event-direct-card .connection-select:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
+#event-direct-dialog.has-connections #event-direct-event{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-height:24px}
+#event-direct-dialog.has-connections .event-direct-query{font-size:15px;line-height:1.4}

@@ -39,6 +39,8 @@ function locateEventDirectOrigin(){
   },fail,{enableHighAccuracy:true,timeout:12000,maximumAge:0});}catch{fail({code:2});}
 }
 function resetEventDirectResults(){
+  $('event-direct-dialog').classList.toggle('has-connections',false);
+  if(typeof clearEventConnectionMap==='function')clearEventConnectionMap();
   $('event-direct-search-bar').hidden=false;
   eventDirectState?.controller?.abort();$('event-direct-cancel').hidden=true;
   $('event-direct-results').replaceChildren();$('event-direct-more').hidden=true;
@@ -51,7 +53,9 @@ function showMoreEventDirect(){
 }
 function editEventDirect(){
   const editing=$('event-direct-form').hidden;$('event-direct-form').hidden=!editing;$('event-direct-edit').setAttribute('aria-expanded',String(editing));
+  $('event-direct-dialog').classList.toggle('has-connections',!editing);$('event-direct-query').hidden=editing;
   $('event-direct-search-bar').hidden=!editing;
+  if(typeof connectionMap!=='undefined'){$('event-connection-panel').hidden=editing||!connectionMap;if(!editing)connectionMap?.invalidateSize();}
   $('event-direct-edit').textContent=editing?'Torna ai risultati':'Modifica ricerca';
   if(editing)$('event-direct-body').scrollTop=0;
   $(editing?($('event-direct-day-field').hidden?'event-direct-locate':'event-direct-day'):'event-direct-results').focus();
@@ -146,10 +150,13 @@ async function searchEventDirect(){
   $('event-direct-status').textContent=(rows.length?(arrivalMode?(rows.length===12?'Fino a 12 corse':'Corse')+' con arrivo alla fermata entro le '+before+', ordinate dalle più vicine a quell’orario.':rows.length===12?'Prime 12 corse dirette disponibili.':rows.length+' corse dirette trovate.') :failed.length?'Nessuna corsa trovata nei dati caricati.':arrivalMode?'Nessuna corsa diretta con arrivo alla fermata entro le '+before+'. Prova un altro orario o Parti dalle. Non esclude viaggi con cambi.':'Nessuna corsa diretta trovata con questi criteri nell’archivio: non significa che non esistano viaggi con cambi.')+partial;
   if(complete)$('event-direct-status').textContent=(rows.length?'Risultati con verifica delle camminate e '+margin+' minuti di anticipo'+(before?' sulle '+before:'')+'.':'Nessun viaggio compatibile con i tempi indicati nei limiti della ricerca. Prova un altro orario o un anticipo minore.')+(walkingIncomplete?' Alcuni percorsi a piedi non sono disponibili: le schede non verificate non confermano l’arrivo.':'')+partial;
   for(const result of rows){
-    const card=el('article','','event-direct-card');card.tabIndex=-1;card.hidden=list.children.length>=3;card.append(el('h3','Linea '+result.number+' · senza cambi'),el('p','Sali alle '+result.row.time.slice(0,5)+' a '+busDisplayName(result.origin.name),'event-direct-board'),el('p',(result.arrivalKnown?'Scendi alle ':'Passaggio alle ')+result.arrivalTime.slice(0,5)+' a '+busDisplayName(result.arrival.name),'event-direct-alight'),el('p','Circa '+result.duration+' min in autobus · circa '+parkingDistance(result.distance)+' dall’evento in linea d’aria. Verifica il percorso a piedi.','event-direct-duration'));
-    card.append(el('p','Direzione: '+busDisplayName(result.row.destination),'event-direct-note'));
-    if(state.startPoint)card.append(el('p','Fermata '+result.origin.code+' · circa '+parkingDistance(busDistance(state.startPoint,result.origin))+' dalla tua posizione, in linea d’aria.','event-journey-alternative'));
-    else if(result.origin.code!==state.origin.code)card.append(el('p','Fermata alternativa '+result.origin.code+' · circa '+parkingDistance(busDistance(state.origin,result.origin))+' dalla fermata scelta, in linea d’aria.','event-journey-alternative'));
+    const card=el('article','','event-direct-card');card.tabIndex=-1;card.hidden=list.children.length>=3;card.append(el('h3','Linea '+result.number+' · senza cambi'),el('p','Sali alle '+result.row.time.slice(0,5)+' a '+busDisplayName(result.origin.name),'event-direct-board'),el('p',(result.arrivalKnown?'Scendi alle ':'Passaggio alle ')+result.arrivalTime.slice(0,5)+' a '+busDisplayName(result.arrival.name),'event-direct-alight'),el('p','Circa '+result.duration+' min in bus · '+parkingDistance(result.distance)+' in linea d’aria dall’evento.','event-direct-duration'));
+    const mapped=typeof selectEventConnection==='function',extra=mapped?el('details','','connection-more'):card;
+    if(mapped){extra.append(el('summary','Direzione e dettagli'));card.connectionResult=result;if(typeof L!=='undefined'){const mapButton=el('button','Linea '+result.number+' · '+result.row.time.slice(0,5),'connection-select');mapButton.type='button';mapButton.setAttribute('aria-label','Mostra sulla mappa linea '+result.number+' delle '+result.row.time.slice(0,5));mapButton.setAttribute('aria-pressed','false');mapButton.onclick=()=>selectEventConnection(result,state,assets);card.connectionButton=mapButton;card.children[0].replaceChildren(mapButton);}}
+    extra.append(el('p','Direzione: '+busDisplayName(result.row.destination),'event-direct-note'));
+    if(state.startPoint)extra.append(el('p','Fermata '+result.origin.code+' · circa '+parkingDistance(busDistance(state.startPoint,result.origin))+' dalla tua posizione, in linea d’aria.','event-journey-alternative'));
+    else if(result.origin.code!==state.origin.code)extra.append(el('p','Fermata alternativa '+result.origin.code+' · circa '+parkingDistance(busDistance(state.origin,result.origin))+' dalla fermata scelta, in linea d’aria.','event-journey-alternative'));
+    if(mapped)card.append(extra);
     if(result.arrivalDay&&result.arrivalDay!==state.day)card.append(el('p','Arrivo il '+formatDay(result.arrivalDay,{weekday:'short',day:'numeric',month:'short'}),'event-journey-warning'));
     if(complete)card.append(el('p',result.assessment.state==='compatible'?'Alla sede verso le '+eventJourneyMoment(result.assessment.venueAt,state.day,true)+' · parti a piedi entro '+eventJourneyMoment(result.assessment.leaveAt,state.day)+(before?' · circa '+result.assessment.spareMinutes+' min di anticipo':''):'Camminate non verificate: puntualità da controllare.',result.assessment.state==='compatible'?'event-journey-compatible':'event-journey-warning'));
     const button=el('button','Vedi viaggio','dialog-save');button.type='button';button.onclick=()=>{
@@ -163,10 +170,12 @@ async function searchEventDirect(){
     card.append(button);list.append(card);
   }
   if(rows.length){
+    $('event-direct-dialog').classList.toggle('has-connections',true);
     $('event-direct-search-bar').hidden=true;
-    $('event-direct-form').hidden=true;$('event-direct-query').textContent=(state.startPoint?'Dalla mia posizione':'Da '+busDisplayName(state.origin.name))+' · '+formatDay(state.day,{day:'numeric',month:'short'})+' · '+(arrivalMode?'arrivo '+(complete?'alla sede':'alla fermata')+' entro le '+before:'partenza dalle '+after)+(origins.length>1?(state.startPoint?' · confronto delle fermate vicine':' · incluse fermate entro 300 m'):'');$('event-direct-query').hidden=false;
+    $('event-direct-form').hidden=true;$('event-direct-query').textContent=(state.startPoint?'Dalla mia posizione':'Da '+busDisplayName(state.origin.name))+' · '+formatDay(state.day,{day:'numeric',month:'short'})+' · '+(arrivalMode?'arrivo '+(complete?'alla sede':'alla fermata')+' entro le '+before:'partenza dalle '+after);$('event-direct-query').hidden=false;
     $('event-direct-edit').hidden=false;$('event-direct-edit').textContent='Modifica ricerca';$('event-direct-edit').setAttribute('aria-expanded','false');$('event-direct-more').hidden=rows.length<=3;
     $('event-direct-results').focus();
+    if(typeof selectEventConnection==='function')selectEventConnection(rows[0],state,assets);
   }
   if(!rows.length&&!failed.length){const recover=el('button',arrivalMode?'Cerca partenze successive':'Cambia la partenza','event-direct-edit');recover.type='button';recover.onclick=()=>{if(arrivalMode){eventDirectSetMode('departure');return searchEventDirect();}$('event-direct-origin').focus();};list.append(recover);}
   if(failed.length){const retry=el('button','Riprova le linee non caricate','dialog-save');retry.onclick=searchEventDirect;list.append(retry);}

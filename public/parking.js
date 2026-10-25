@@ -1,10 +1,11 @@
 const parkingData=payload.parking||{items:[]};
 let parkingEvent=null,parkingFocus=null,parkingMap=null,parkingLayer=null,parkingSelected='';
 let parkingTarget=null,parkingView='map',parkingPicking=false,parkingRequest=0;
-function parkingPoint(){return parkingEvent?eventPosition(parkingEvent):parkingTarget;}
+function parkingEventPoint(event){return eventPosition(event,event.id&&typeof eventTravelDay==='function'?eventTravelDay(event):undefined);}
+function parkingPoint(){return parkingEvent?parkingEventPoint(parkingEvent):parkingTarget;}
 function parkingReset(){parkingTarget=null;parkingView='map';parkingPicking=false;parkingSelected='';parkingRequest++;$('parking-feedback').textContent='';$('parking-nearby').disabled=false;$('parking-center').hidden=true;}
 function nearbyParking(event,{radius=1500,type=''}={}){
-  const point=eventPosition(event);if(!point)return [];
+  const point=parkingEventPoint(event);if(!point)return [];
   return parkingData.items.filter(item=>Number.isFinite(item.lat)&&Number.isFinite(item.lon)&&(!type||item.typeKey===type)).map(item=>({...item,distance:busDistance(point,item)})).filter(item=>item.distance<=radius).sort((a,b)=>a.distance-b.distance||a.id.localeCompare(b.id));
 }
 function appendEventParking(content,event){
@@ -17,7 +18,7 @@ function appendEventParking(content,event){
 function parkingLink(label,url){const link=el('a',label,'parking-link');link.href=url;link.target='_blank';link.rel='noopener noreferrer';return link;}
 function parkingDistance(metres){return metres<1000?Math.round(metres/10)*10+' m':(metres/1000).toLocaleString('it-IT',{maximumFractionDigits:1})+' km';}
 function openEventParking(event){
-  if(!eventPosition(event))return;parkingFocus=document.activeElement;parkingEvent=event;parkingSelected='';$('parking-event-name').textContent=event.title;
+  if(!parkingEventPoint(event))return;parkingFocus=document.activeElement;parkingEvent=event;parkingSelected='';$('parking-event-name').textContent=event.title;
   parkingReset();
   configureParkingView(true);
   $('parking-radius').value='1500';$('parking-type').value='';$('parking-dialog').showModal();renderEventParking();$('parking-close').focus();
