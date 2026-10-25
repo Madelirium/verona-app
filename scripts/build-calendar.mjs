@@ -1,4 +1,4 @@
-import {createTravelRouteClient,rankTravelBusTrips} from './travel-routes.mjs';
+import {createTravelRouteClient,rankTravelBusTrips,chooseActiveTravel} from './travel-routes.mjs';
 import {eventVenueForDay} from './event-occurrence.mjs';
 import {directBusTrips} from './direct-bus.mjs';
 import {walkingPreviewAvailable,createWalkingClient,walkingEventArrival} from './walking-route.mjs';
@@ -86,7 +86,7 @@ export async function buildCalendar() {
   const officialLogic=await readFile(new URL('public/bus-official.js',root),'utf8');
   const eventBusLogic=(await readFile(new URL('public/event-bus.js',root),'utf8'))+'\n'+directBusTrips.toString()+'\n'+await readFile(new URL('public/event-direct.js',root),'utf8')+'\n'+[walkingPreviewAvailable,createWalkingClient,walkingEventArrival,eventTripAssessment].map(fn=>fn.toString()).join('\n')+'\n'+await readFile(new URL('public/event-walking.js',root),'utf8')+'\n'+await readFile(new URL('public/event-journey.js',root),'utf8')+'\n'+await readFile(new URL('public/event-connection-map.js',root),'utf8');
   const parkingLogic=await readFile(new URL('public/parking.js',root),'utf8');
-  const travelLogic=[createTravelRouteClient,rankTravelBusTrips].map(fn=>fn.toString()).join('\n')+'\n'+await readFile(new URL('public/event-travel.js',root),'utf8');
+  const travelLogic=[createTravelRouteClient,rankTravelBusTrips,chooseActiveTravel].map(fn=>fn.toString()).join('\n')+'\n'+await readFile(new URL('public/event-travel.js',root),'utf8');
   const weatherLogic=await readFile(new URL('public/weather.js',root),'utf8');
   const exploreNeedsLogic=await readFile(new URL('public/explore-needs.js',root),'utf8');
   const newsLogic=await readFile(new URL('public/news-services.js',root),'utf8');

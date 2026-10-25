@@ -32,3 +32,19 @@ export function createTravelRouteClient({fetchRoute=globalThis.fetch,now=()=>Dat
 export function rankTravelBusTrips(candidates,{day,departureAt,now=Date.now(),assess}){
   return candidates.map(row=>({...row,assessment:assess({day,departure:row.row.time,arrivalDay:row.arrivalDay||day,arrival:row.arrivalTime,startSeconds:row.startWalk?.duration,endSeconds:row.endWalk?.duration,now:Math.max(now,departureAt),margin:0})})).filter(row=>row.assessment.state==='compatible'&&row.assessment.leaveAt>=departureAt).sort((a,b)=>a.assessment.venueAt-b.assessment.venueAt||a.assessment.totalMinutes-b.assessment.totalMinutes);
 }
+
+// Prefer walking nearby. A bus must save meaningful time AND reduce walking.
+export function chooseActiveTravel(walk,bus){
+  const walking=walk?.route&&Number.isFinite(walk.duration)&&walk.duration>=0;
+  const transit=bus?.row&&Number.isFinite(bus.duration)&&bus.duration>=0;
+  if(walking&&walk.duration<=900&&walk.route.distance<=1200)return {...walk,kind:'walk',reason:'nearby'};
+  if(walking&&transit){
+    const saved=walk.duration-bus.duration,start=bus.row.startWalk,end=bus.row.endWalk;
+    const useful=saved>=Math.max(300,walk.duration*.2)&&Number.isFinite(start?.distance)&&Number.isFinite(end?.distance)&&start.distance<=Math.min(1000,walk.route.distance*.5)&&start.distance+end.distance<=walk.route.distance*.7;
+    return useful?{...bus,kind:'bus',reason:'faster',savedSeconds:saved}:{...walk,kind:'walk',reason:'no-gain'};
+  }
+  if(walking)return {...walk,kind:'walk',reason:bus?'walking-only':'checking-bus'};
+  if(transit)return {...bus,kind:'bus',reason:'walking-unavailable'};
+  if(walk&&bus)return {error:'Nessun percorso verificato disponibile. Puoi riprovare o cercare altri autobus.'};
+  return undefined;
+}

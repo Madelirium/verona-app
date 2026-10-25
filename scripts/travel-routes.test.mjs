@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createTravelRouteClient,rankTravelBusTrips} from './travel-routes.mjs';
+import {createTravelRouteClient,rankTravelBusTrips,chooseActiveTravel} from './travel-routes.mjs';
 import {eventTripAssessment} from './event-trip-plan.mjs';
 const start={lat:45.4295,lon:10.9828},end={lat:45.43557,lon:10.99202};
 const payload=()=>({code:'Ok',routes:[{distance:1700,duration:300,geometry:{type:'LineString',coordinates:[[start.lon,start.lat],[end.lon,end.lat]]}}],waypoints:[{distance:2},{distance:3}]});
@@ -28,4 +28,20 @@ test('Travel: bus ranking includes both walks and boarding, rejects missed depar
 test('Travel: bus ranking rejects ambiguous DST and handles next-day arrivals',()=>{
  const day='2026-10-25',start=Date.parse(day+'T00:00:00+02:00');assert.equal(rankTravelBusTrips([trip('02:30:00','03:00:00',60,60)],{day,departureAt:start,now:start,assess:eventTripAssessment}).length,0);
  const next='2026-10-26',departureAt=Date.parse(next+'T23:40:00+01:00'),rows=rankTravelBusTrips([{...trip('23:50:00','00:10:00',60,60),arrivalDay:'2026-10-27'}],{day:next,departureAt,now:departureAt,assess:eventTripAssessment});assert.equal(rows.length,1);assert.equal(rows[0].assessment.venueAt,Date.parse('2026-10-27T00:11:00+01:00'));
+});
+
+const walkOption=(duration=1800,distance=2400)=>({route:{distance},duration});
+const busOption=(duration=1000,start=200,end=300)=>({duration,row:{startWalk:{distance:start},endWalk:{distance:end}}});
+test('Active travel: short walking routes never require an unnecessary bus',()=>{
+ const choice=chooseActiveTravel(walkOption(600,700),busOption(300));assert.equal(choice.kind,'walk');assert.equal(choice.reason,'nearby');
+});
+test('Active travel: bus must save both meaningful time and walking, including its access leg',()=>{
+ assert.equal(chooseActiveTravel(walkOption(),busOption(1900)).kind,'walk');assert.equal(chooseActiveTravel(walkOption(),busOption(1600)).kind,'walk');assert.equal(chooseActiveTravel(walkOption(),busOption(1400,1100,700)).kind,'walk');
+ const useful=chooseActiveTravel(walkOption(),busOption(1000));assert.equal(useful.kind,'bus');assert.equal(useful.savedSeconds,800);
+});
+test('Active travel: reject a long detour to board even if the bus is faster',()=>{
+ assert.equal(chooseActiveTravel(walkOption(3600,5000),busOption(1200,1500,300)).kind,'walk');assert.equal(chooseActiveTravel(walkOption(1800,2400),busOption(1000,200,1700)).kind,'walk');
+});
+test('Active travel: missing provider does not fabricate a comparison or lose a verified route',()=>{
+ assert.equal(chooseActiveTravel(walkOption(),{error:'No bus'}).kind,'walk');assert.equal(chooseActiveTravel({error:'No walking'},busOption()).kind,'bus');assert.ok(chooseActiveTravel({error:'No walking'},{error:'No bus'}).error);assert.equal(chooseActiveTravel(undefined,undefined),undefined);
 });

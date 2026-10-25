@@ -4,7 +4,7 @@ let parkingTarget=null,parkingView='map',parkingPicking=false,parkingRequest=0;
 function parkingEventPoint(event){return eventPosition(event,event.id&&typeof eventTravelDay==='function'?eventTravelDay(event):undefined);}
 function parkingPoint(){return parkingEvent?parkingEventPoint(parkingEvent):parkingTarget;}
 function parkingReset(){parkingTarget=null;parkingView='map';parkingPicking=false;parkingSelected='';parkingRequest++;$('parking-feedback').textContent='';$('parking-nearby').disabled=false;$('parking-center').hidden=true;}
-function nearbyParking(event,{radius=1500,type=''}={}){
+function nearbyParking(event,{radius=5000,type=''}={}){
   const point=parkingEventPoint(event);if(!point)return [];
   return parkingData.items.filter(item=>Number.isFinite(item.lat)&&Number.isFinite(item.lon)&&(!type||item.typeKey===type)).map(item=>({...item,distance:busDistance(point,item)})).filter(item=>item.distance<=radius).sort((a,b)=>a.distance-b.distance||a.id.localeCompare(b.id));
 }
@@ -12,7 +12,7 @@ function appendEventParking(content,event){
   const section=el('section','','event-bus-entry');section.append(el('h3','Dove parcheggiare'));
   if(!eventPosition(event))section.append(el('p','La posizione dell’evento non è abbastanza precisa per cercare parcheggi vicini.','detail-note'));
   else if(!parkingData.items.length)section.append(el('p','Catalogo parcheggi non disponibile in questa raccolta.','detail-note'));
-  else{const count=nearbyParking(event).length,button=el('button','Parcheggi vicini','dialog-save');button.onclick=()=>openEventParking(event);section.append(button,el('p',count?count+' parcheggi nel dataset entro 1,5 km · distanza in linea d’aria.':'Nessun parcheggio nel dataset entro 1,5 km. Puoi ampliare la ricerca.','detail-note'));}
+  else{const count=nearbyParking(event).length,button=el('button','Parcheggi vicini','dialog-save');button.onclick=()=>openEventParking(event);section.append(button,el('p',count?count+' parcheggi nel dataset entro 5 km · distanza in linea d’aria.':'Nessun parcheggio nel dataset entro 5 km. Puoi ampliare la ricerca.','detail-note'));}
   content.append(section);
 }
 function parkingLink(label,url){const link=el('a',label,'parking-link');link.href=url;link.target='_blank';link.rel='noopener noreferrer';return link;}
@@ -21,7 +21,7 @@ function openEventParking(event){
   if(!parkingEventPoint(event))return;parkingFocus=document.activeElement;parkingEvent=event;parkingSelected='';$('parking-event-name').textContent=event.title;
   parkingReset();
   configureParkingView(true);
-  $('parking-radius').value='1500';$('parking-type').value='';$('parking-dialog').showModal();renderEventParking();$('parking-close').focus();
+  $('parking-radius').value='5000';$('parking-type').value='';$('parking-dialog').showModal();renderEventParking();$('parking-close').focus();
 }
 function configureParkingView(eventMode){
   $('parking-travel-modes').hidden=!eventMode;
@@ -54,7 +54,7 @@ function parkingLayout(){
 function renderEventParking(){
   const point=parkingPoint(),rows=parkingRows(),list=$('parking-results');list.replaceChildren();if(!rows.some(row=>row.id===parkingSelected))parkingSelected='';
   $('parking-count').textContent=rows.length+(rows.length===1?' parcheggio nel catalogo':' parcheggi nel catalogo')+(point?' · distanze in linea d’aria':'');
-  if(!rows.length){list.append(el('p','Nessun parcheggio del catalogo corrisponde alla ricerca. Il dataset copre i principali parcheggi di Verona, non tutta la provincia.','parking-empty'));if(parkingData.items.length){const reset=el('button',point?'Amplia a 3 km e mostra tutti':'Mostra tutti i tipi','parking-link');reset.onclick=()=>{$('parking-radius').value='3000';$('parking-type').value='';renderEventParking();$(point?'parking-radius':'parking-type').focus();};list.append(reset);}}
+  if(!rows.length){list.append(el('p','Nessun parcheggio del catalogo corrisponde alla ricerca. Il dataset copre i principali parcheggi di Verona, non tutta la provincia.','parking-empty'));if(parkingData.items.length){const reset=el('button',point?'Amplia a 5 km e mostra tutti':'Mostra tutti i tipi','parking-link');reset.onclick=()=>{$('parking-radius').value='5000';$('parking-type').value='';renderEventParking();$(point?'parking-radius':'parking-type').focus();};list.append(reset);}}
   for(const item of rows){const card=el('article','','parking-card');card.setAttribute('data-parking-id',item.id);card.tabIndex=-1;card.classList.toggle('parking-selected',parkingSelected===item.id);
     const title=el('button',item.name,'parking-card-title');title.setAttribute('aria-label','Evidenzia sulla mappa: '+item.name);title.onclick=()=>selectParking(item.id,false);
     const type=item.typeKey==='free'?'Gratuito secondo il Comune':item.typeKey==='paid'?'A pagamento':'Tipologia da verificare';card.append(title,el('p',(point?parkingDistance(item.distance)+(parkingEvent?' dall’evento':' dal punto scelto')+' · ':'')+type,'parking-meta'),el('p',item.address||'Indirizzo non indicato'));
