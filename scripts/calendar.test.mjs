@@ -2193,3 +2193,21 @@ test('Data raccolta: giorno e ora italiani, distinti dal tentativo e dalla pubbl
 test('Data raccolta: date mancanti, invalide e future non diventano aggiornamenti recenti',()=>{
  const app=run();useRomeInstant(app,'2026-10-25T10:00:00Z');for(const value of [undefined,'non valida','2027-01-01T00:00:00Z']){app.context.stampFixture={updatedAt:value};assert.match(new Script('collectionUpdateLabel(stampFixture)').runInContext(app.context),/non disponibile/);}app.context.stampFixture={updatedAt:'2026-10-25T09:00:00Z'};assert.match(new Script('collectionUpdateLabel(stampFixture)').runInContext(app.context),/10:00/);
 });
+
+
+test('Confronto percorsi: arrivo arrotondato in avanti e camminata nulla senza minuto inventato',()=>{
+ const app=runTravel();new Script('openEventTravel(parkingFixture)').runInContext(app.context);
+ assert.equal(new Script('travelMinutes(0)').runInContext(app.context),'0 min');assert.equal(new Script('travelArrivalClock(Date.parse("2026-10-22T15:20:24+02:00"))').runInContext(app.context),'15:21');
+ assert.match(new Script('travelArrivalClock(Date.parse("2026-10-22T23:59:59+02:00"))').runInContext(app.context),/^00:00 del 23/);
+});
+test('Confronto percorsi: il dettaglio include la stessa attesa iniziale del confronto',()=>{
+ const app=runJourneyUi();app.context.comparisonSelection={eventContext:{day:'2026-10-22',requestedDepartureAt:Date.parse('2026-10-22T15:00:00+02:00'),result:{origin:{code:'A'},arrival:{code:'B'},arrivalTime:'15:10:00',assessment:{state:'compatible',leaveAt:Date.parse('2026-10-22T15:05:00+02:00'),venueAt:Date.parse('2026-10-22T15:20:24+02:00'),totalMinutes:16}}},arrival:{code:'B',time:'15:10:00',day:'2026-10-22'},row:{trip:'test',serviceDay:'2026-10-22'},calls:[{code:'A'}]};
+ new Script('appendEventJourneyOverview($("comparison-test"),comparisonSelection,"start")').runInContext(app.context);const hero=app.get('comparison-test').children[0];assert.equal(hero.children[1].textContent,'15:21');assert.match(hero.children[2].textContent,/21 minuti complessivi.*attesa inclusa/);
+});
+
+
+test('Confronto percorsi: partenza trascorsa non lascia le schede in caricamento',async()=>{
+ const app=runTravel();app.get('event-travel-date').checkValidity=()=>true;
+ new Script('openEventTravel(parkingFixture);travelState.start={lat:45.44,lon:10.99};travelState.timeEdited=true;$("event-travel-date").value="2026-10-22";$("event-travel-time").value="01:00"').runInContext(app.context);
+ await new Script('calculateEventTravel()').runInContext(app.context);assert.match(app.get('event-travel-status').textContent,/già trascorsa/);assert.ok(app.get('event-travel-modes').children.every(b=>b.children[0].children[1].textContent==='Da ricalcolare'));assert.equal(app.get('event-travel-map-note').textContent,'');assert.equal(app.get('event-travel-map').hidden,true);
+});

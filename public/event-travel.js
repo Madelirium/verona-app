@@ -23,7 +23,8 @@ function travelModeButtons(container,mode){
 function travelActive(state){return state===travelState&&$('event-travel-dialog').open;}
 function travelAbort(){++travelVersion;travelState?.controller?.abort();}
 function travelClock(instant){return new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit'}).format(new Date(instant));}
-function travelMinutes(seconds){return Math.max(1,Math.ceil(seconds/60))+' min';}
+function travelMinutes(seconds){return Math.max(0,Math.ceil(seconds/60))+' min';}
+function travelArrivalClock(instant){const value=Math.ceil(instant/60000)*60000,day=dayInRome(new Date(value));return travelClock(value)+(travelState&&day!==travelState.day?' del '+formatDay(day,{day:'numeric',month:'short'}):'');}
 function travelSetStatus(text){$('event-travel-status').textContent=text;}
 function travelInputs(){
   const state=travelState;if(!state)return null;
@@ -59,8 +60,8 @@ function renderTravelChoices(){
   const state=travelState;if(!state)return;const focused=document.activeElement?.closest('.travel-option')?.dataset.mode,list=$('event-travel-modes');list.replaceChildren();
   for(const [mode,label,icon]of [['bus','Autobus','🚌'],['car','Auto','🚗'],['walk','A piedi','🚶']]){
     const result=state.results[mode],button=el('button','','travel-option');button.type='button';button.dataset.mode=mode;button.setAttribute('aria-pressed',String(mode===travelMode));
-    const heading=el('span','','travel-option-heading');heading.append(el('span',icon+' '+label),el('strong',result?.duration!==undefined?travelMinutes(result.duration):result?.error?'Non disponibile':state.start?'Calcolo…':'Da calcolare'));button.append(heading);
-    const description=result?.error||(!state.start?'Scegli il punto di partenza.':!result?'Sto cercando il percorso.':mode==='bus'?'Linea '+result.row.number+' · parti a piedi alle '+travelClock(result.row.assessment.leaveAt)+' · arrivo '+travelClock(result.row.assessment.venueAt):parkingDistance(result.route.distance)+(result.parking?' fino a '+result.parking.name+' + '+travelMinutes(result.finalWalk.duration)+' a piedi':'')+' · arrivo '+travelClock(state.departureAt+result.duration*1000));
+    const heading=el('span','','travel-option-heading');heading.append(el('span',icon+' '+label),el('strong',result?.duration!==undefined?travelMinutes(result.duration):result?.error?'Non disponibile':state.inputError?'Da ricalcolare':state.start?'Calcolo…':'Da calcolare'));button.append(heading);
+    const description=result?.error||(!state.start?'Scegli il punto di partenza.':!result?(state.inputError?'Correggi giorno e ora di partenza.':'Sto cercando il percorso.'):mode==='bus'?'Linea '+result.row.number+' · parti a piedi alle '+travelClock(result.row.assessment.leaveAt)+' · arrivo '+travelArrivalClock(result.row.assessment.venueAt):parkingDistance(result.route.distance)+(result.parking?' fino a '+result.parking.name+' + '+travelMinutes(result.finalWalk.duration)+' a piedi':'')+' · arrivo '+travelArrivalClock(state.departureAt+result.duration*1000));
     button.append(el('span',description,'travel-option-summary'));
     if(result&&!result.error)button.append(el('small',mode==='bus'?'Attesa e tratti a piedi inclusi · senza cambi'+(result.incomplete?' · ricerca parziale':''):mode==='car'?(result.parking?'Auto + camminata · traffico e ricerca posto esclusi':'Stima senza traffico · parcheggio escluso'):'Percorso pedonale calcolato'));
     button.onclick=()=>{travelMode=mode;renderTravelChoices();drawTravelMap(state.end,state.event);};list.append(button);
@@ -92,8 +93,8 @@ function setTravelOrigin(point,label){
 }
 async function calculateEventTravel(){
   const state=travelState;if(!state?.start)return;travelAbort();if(!state.timeEdited&&$('event-travel-date').value===dayInRome(new Date()))$('event-travel-time').value=travelClock(Math.ceil(Date.now()/60000)*60000);let input;
-  try{input=travelInputs();}catch(error){state.results={};renderTravelChoices();travelMap?.remove();travelMap=null;$('event-travel-map').hidden=true;travelSetStatus(error.message);return;}
-  Object.assign(state,input);travelDay=input.day;state.results={};state.controller=new AbortController();const version=travelVersion,signal=state.controller.signal,active=()=>travelActive(state)&&version===travelVersion;
+  try{input=travelInputs();}catch(error){state.results={};state.inputError=error.message;renderTravelChoices();$('event-travel-map-note').textContent='';travelMap?.remove();travelMap=null;$('event-travel-map').hidden=true;travelSetStatus(error.message);return;}
+  Object.assign(state,input);travelDay=input.day;state.results={};state.inputError='';state.controller=new AbortController();const version=travelVersion,signal=state.controller.signal,active=()=>travelActive(state)&&version===travelVersion;
   $('event-travel-when').textContent=eventTravelWhen(state.event,state.day);$('event-travel-place').textContent='Destinazione: '+(typeof eventVenueForDay==='function'?eventVenueForDay(state.event,state.day).location:state.event.location);
   $('event-travel-retry').hidden=true;travelSetStatus('Confronto i tre percorsi…');renderTravelChoices();drawTravelMap(state.end,state.event);
   const road=async mode=>{try{const result=mode==='car'?await calculateTravelCar(state,{signal}):await travelRouteClient.load(state.start,state.end,{mode,signal}).then(route=>({route,duration:route.duration}));if(active())state.results[mode]=result;}catch(error){if(active())state.results[mode]={error:error.message||'Percorso non disponibile.'};}if(active()){renderTravelChoices();if(travelMode===mode)drawTravelMap(state.end,state.event);}};
@@ -156,7 +157,7 @@ function openTravelBusDetail(){
   const state=travelState,result=state?.results.bus;if(!state)return;
   if(!result?.row)return openEventBusPlanner(state.event);
   const row=result.row;if(row.assessment.leaveAt<Date.now()){travelSetStatus('Questa partenza è trascorsa. Aggiorno i percorsi.');return calculateEventTravel();}
-  const context={event:state.event,day:state.day,before:'',deadlineKind:'venue',margin:0,leaveAfter:state.time,direction:'outbound',originReference:row.origin,startPoint:state.start,result:{...row,walking:{startSeconds:row.startWalk.duration,endSeconds:row.endWalk.duration}}};
+  const context={event:state.event,day:state.day,before:'',deadlineKind:'venue',margin:0,leaveAfter:state.time,requestedDepartureAt:state.departureAt,direction:'outbound',originReference:row.origin,startPoint:state.start,result:{...row,walking:{startSeconds:row.startWalk.duration,endSeconds:row.endWalk.duration}}};
   openBusTrip(result.assets.find(a=>a.number===row.number),row.row,$('event-travel-bus-start'),context);
   if(row.timelineMinutes){busTripSelection.calls=busTripSelection.calls.slice(0,row.timelineMinutes.length);busTripSelection.calls.forEach((c,i)=>{c.minutes=row.timelineMinutes[i];});}
   busTripSelection.arrival=busTripSelection.calls[row.arrivalOrder-row.row.order];renderBusTrip();openBusJourneySummary();
