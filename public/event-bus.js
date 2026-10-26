@@ -6,6 +6,12 @@ function nearbyBusStops(index,point,day,{radius=800,limit=3,withService=false}={
   const dateIndex=index.days.indexOf(day);
   return index.stops.map(stop=>({...stop,distance:busDistance(point,stop),knownDate:dateIndex>=0,lines:stop.services.filter(([,bits])=>dateIndex<0||bits[dateIndex]==='1').map(([number])=>number)})).filter(stop=>stop.distance<=radius&&(!withService||dateIndex<0||stop.lines.length)).sort((a,b)=>a.distance-b.distance||a.code.localeCompare(b.code)).slice(0,limit);
 }
+function eventNearbySearch(index,point,day){
+  for(const radius of [800,1500,2000]){
+    const stops=nearbyBusStops(index,point,day,{radius,limit:Infinity,withService:true});
+    if(stops.length||radius===2000)return {radius,stops};
+  }
+}
 async function loadEventBusStops(){
   if(eventBusStops)return eventBusStops;
   if(!eventBusStopsLoad)eventBusStopsLoad=(async()=>{const response=await fetch(officialBus.stopIndexAsset,typeof AbortSignal!=='undefined'&&typeof AbortSignal.timeout==='function'?{signal:AbortSignal.timeout(15000)}:{});if(!response.ok)throw Error('HTTP '+response.status);const index=await response.json();if(index.sha256!==officialBus.sha256||!Array.isArray(index.stops)||!Array.isArray(index.days))throw Error('Indice non coerente');eventBusStops=index;return index;})().catch(error=>{eventBusStopsLoad=null;throw error;});
@@ -15,7 +21,7 @@ function appendEventBus(content,event){
   const section=el('section','','event-bus-entry');section.append(el('h3','Come arrivare in autobus'));
   if(!eventPosition(event)){section.append(el('p','La posizione dell’evento non è abbastanza precisa per suggerire una fermata.','detail-note'));}
   else if(!officialBus.stopIndexAsset){section.append(el('p','Fermate vicine non disponibili in questa raccolta.','detail-note'));}
-  else{const button=el('button','Fermate e autobus vicini','dialog-save');button.onclick=()=>openEventBus(event);section.append(button,el('p','Fino a 3 fermate entro 800 m · distanza in linea d’aria.','detail-note'));}
+  else{const button=el('button','Fermate e autobus vicini','dialog-save');button.onclick=()=>openEventBus(event);section.append(button,el('p','Fino a 3 fermate · ricerca ampliata fino a 2 km se necessario. Distanze in linea d’aria, camminate da verificare.','detail-note'));}
   content.append(section);
 }
 function openEventBus(event,{date:chosenDay}={}){
@@ -94,8 +100,8 @@ async function renderEventBus(){
   else $('event-bus-when').textContent='Evento: '+eventWhen(event);
   try{
     const index=await loadEventBusStops();if(request!==eventBusRequest||!$('event-bus-dialog').open)return;
-    const stops=nearbyBusStops(index,point,day,{withService:true}),mapStops=nearbyBusStops(index,point,day,{limit:Infinity,withService:true}),valid=index.days.includes(day);
-    $('event-bus-status').textContent=stops.length?stops.length+' fermate '+(valid?'con partenze programmate ':'nell’archivio ')+'entro 800 m · '+formatDay(day,{day:'numeric',month:'long'}):valid?'Nessuna fermata con partenze programmate entro 800 m nella data scelta. Prova Auto o A piedi.':'Nessuna fermata nell’archivio entro 800 m. Verifica altre soluzioni per raggiungere l’evento.';
+    const nearby=eventNearbySearch(index,point,day),mapStops=nearby.stops,stops=mapStops.slice(0,3),valid=index.days.includes(day),range=nearby.radius===800?'800 m':nearby.radius===1500?'1,5 km':'2 km';
+    $('event-bus-status').textContent=stops.length?stops.length+' fermate '+(valid?'con partenze programmate ':'nell’archivio ')+'entro '+range+' · '+formatDay(day,{day:'numeric',month:'long'})+(nearby.radius>800?' · Ricerca ampliata: camminata da verificare.':''):valid?'Non ho trovato fermate con partenze programmate entro 2 km nella data scelta. Il limite della ricerca non esclude altri collegamenti.':'Non ho trovato fermate nell’archivio entro 2 km. Il limite della ricerca non esclude altri collegamenti.';
     $('event-bus-validity').textContent=(valid?'Linee con partenze programmate nella data scelta.':'La data è fuori dalla validità dell’archivio: le linee elencate non confermano il servizio per quel giorno.')+' Archivio ATV valido dal '+formatDay(index.validFrom,{day:'numeric',month:'short'})+' al '+formatDay(index.validTo,{day:'numeric',month:'short',year:'numeric'})+'. Orari senza ritardi in tempo reale.';
     for(const stop of stops){const card=el('article','','nearby-bus-stop');card.append(el('h3',stop.name),el('p','Fermata '+stop.code+' · circa '+Math.round(stop.distance/10)*10+' m in linea d’aria'));
       if(!stop.lines.length)card.append(el('p','Nessuna partenza programmata da questa fermata nella data scelta.'));

@@ -1543,7 +1543,7 @@ test('Autobus evento: le tre fermate suggerite hanno servizio nel giorno scelto,
  const app=runEventBus();app.context.smallIndex={validFrom:'2026-10-22',validTo:'2026-10-22',days:['2026-10-22'],stops:[0,1,2,3].map((i)=>({code:String(i),lat:45.4386+i*.0001,lon:10.9929,services:[['24',i===3?'1':'0']]}))};
  const rows=new Script('nearbyBusStops(smallIndex,{lat:45.4386,lon:10.9929},"2026-10-22",{withService:true})').runInContext(app.context);assert.equal(rows.length,1);assert.equal(rows[0].code,'3');
  assert.equal(new Script('nearbyBusStops(smallIndex,{lat:45.4386,lon:10.9929},"2027-01-01",{withService:true}).length').runInContext(app.context),3);
- new Script('eventBusStops={...smallIndex,stops:smallIndex.stops.slice(0,3)};openEventBus({...events[0],startsAt:"2026-10-22",endsAt:"2026-10-22",coordinates:{lat:45.4386,lon:10.9929},mapDisabled:false})').runInContext(app.context);await new Script('renderEventBus()').runInContext(app.context);assert.match(app.get('event-bus-status').textContent,/Nessuna fermata con partenze programmate/);
+ new Script('eventBusStops={...smallIndex,stops:smallIndex.stops.slice(0,3)};openEventBus({...events[0],startsAt:"2026-10-22",endsAt:"2026-10-22",coordinates:{lat:45.4386,lon:10.9929},mapDisabled:false})').runInContext(app.context);await new Script('renderEventBus()').runInContext(app.context);assert.match(app.get('event-bus-status').textContent,/Non ho trovato fermate con partenze programmate/);
 });
 test('Come arrivare: una vecchia chiusura accodata non cancella il nuovo pannello',()=>{
  const app=runTravel();new Script('openEventTravel(parkingFixture);switchEventTravel("car")').runInContext(app.context);
@@ -2239,3 +2239,32 @@ test('Duomo verso Dorothea Lange: NoRoute auto conserva parcheggi e camminate se
 test('Auto: guida valida con camminata non disponibile non conferma l’arrivo completo',async()=>{
  const app=runTravel();app.context.nearbyParking=()=>[{id:'one',name:'Parcheggio',lat:45.44,lon:10.99}];new Script('travelRouteClient.load=async(start,end,options={})=>{if(options.mode!=="car")throw Error("Offline");return {duration:300,distance:1000,coordinates:[]};}').runInContext(app.context);app.context.testSignal={aborted:false};const result=await new Script('calculateTravelCar({event:parkingFixture,start:{lat:45.43,lon:10.98},end:{lat:45.44,lon:10.99}},{signal:testSignal})').runInContext(app.context);assert.equal(result.duration,undefined);assert.equal(result.route.duration,300);assert.equal(result.finalWalk,null);assert.match(result.error,/viaggio completo non è verificato/);
 });
+
+test('Montorio reale: amplia le fermate oltre 800 m senza perdere data e servizio festivo',async()=>{
+ const app=runEventBus();app.context.montorio={...structuredClone(catalog.events[0]),id:'montorio-regression',title:'Ex campo di Montorio',startsAt:'2026-10-25T10:30:00+01:00',endsAt:'2026-10-25T12:00:00+01:00',coordinates:{lat:45.444864,lon:11.053501},mapDisabled:false};
+ await new Script('openEventBus(montorio)').runInContext(app.context);
+ assert.match(app.get('event-bus-status').textContent,/Ricerca ampliata/);
+ assert.match(app.get('event-bus-status').textContent,/1,5 km/);
+ const stops=new Script('eventBusCurrent.stops').runInContext(app.context);
+ assert.ok(stops.some(stop=>stop.code==='505'&&stop.lines.includes('98')&&stop.distance>800));
+ assert.equal(app.get('event-bus-date').value,'2026-10-25');
+ app.context.montorio.coordinates={lat:46.2,lon:11.9};await new Script('openEventBus(montorio)').runInContext(app.context);
+ assert.match(app.get('event-bus-status').textContent,/entro 2 km/);assert.match(app.get('event-bus-status').textContent,/non esclude altri collegamenti/);
+});
+
+test('Duomo–Montorio: GPS conserva anche San Fermo oltre le cinque fermate più vicine e cerca la 98',async()=>{
+ const app=runDirectUi();useRomeInstant(app,'2026-10-25T10:20:00Z');
+ app.context.realIndex=structuredClone(eventBusIndexData);
+ new Script('eventBusStops=realIndex;eventBusEvent={...parkingFixture,id:"montorio-planner",startsAt:"2026-10-25T10:30:00+01:00",endsAt:"2026-10-25T12:00:00+01:00",coordinates:{lat:45.444864,lon:11.053501}};$("event-bus-date").value="2026-10-25"').runInContext(app.context);
+ let done;app.context.isSecureContext=true;app.context.navigator={geolocation:{getCurrentPosition(ok){done=ok;}}};await app.get('event-bus-plan').onclick();app.get('event-direct-locate').onclick();done({coords:{latitude:45.4477,longitude:10.9978,accuracy:20}});
+ const origins=new Script('eventDirectState.gpsOrigins').runInContext(app.context);assert.ok(origins.length>5);assert.ok(origins.some(stop=>stop.code==='1920'));
+ const line98=JSON.parse(await readFile(new URL('../data/bus-official/98.json',import.meta.url),'utf8'));
+ const queried=[];app.context.directBusTrips=(assets,options)=>{queried.push(options);return directBusTrips([line98],options);};
+ app.context.fetch=async url=>({ok:true,json:async()=>JSON.parse(await readFile(new URL('../public/'+url,import.meta.url),'utf8'))});
+ await app.get('event-direct-search').onclick();
+ assert.ok(queried.some(options=>options.origin==='1920'&&options.radius===2000&&options.notBeforeSeconds>11*3600+29*60));
+ assert.ok(app.get('event-direct-results').children.some(card=>card.children[0]?.textContent.includes('98')));
+ assert.match(app.get('event-direct-limit-note').textContent,/verifica come raggiungere/);
+});
+
+
