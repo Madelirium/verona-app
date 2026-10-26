@@ -1,21 +1,21 @@
 {
-  "checkedAt": "2026-10-26T00:25:00.067Z",
+  "checkedAt": "2026-10-26T10:09:31.038Z",
   "from": "2026-10-26",
   "status": "ok",
   "sources": [
     {
       "source": "Comune di Verona",
       "status": "ok",
-      "count": 1284,
-      "lastSuccessAt": "2026-10-26T00:25:00.067Z",
-      "added": 0,
+      "count": 1286,
+      "lastSuccessAt": "2026-10-26T10:09:31.038Z",
+      "added": 2,
       "removed": 0
     },
     {
       "source": "Veronafiere",
       "status": "ok",
       "count": 21,
-      "lastSuccessAt": "2026-10-26T00:25:00.067Z",
+      "lastSuccessAt": "2026-10-26T10:09:31.038Z",
       "added": 0,
       "removed": 0
     }

@@ -1,20 +1,8 @@
 {
   "sourceUrl": "https://www.ordinefarmacisti.vr.it/turni-farmacie/",
-  "attemptedAt": "2026-10-24T09:02:34.194Z",
-  "status": "ok",
+  "attemptedAt": "2026-10-26T10:17:23.549Z",
+  "status": "error",
   "items": [
-    {
-      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/11_Dalle-ore-9.00-del-22.10.2026-alle-ore-9.00-del-24.10.2026.pdf",
-      "sha256": "f6d46e833eee2571970a5fd79f7762aef6c678c9f99f7012f9f1195eda399235",
-      "count": 13,
-      "extraction": "unchanged"
-    },
-    {
-      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/12_Dalle-ore-9.00-del-24.10.2026-alle-ore-9.00-del-26.10.2026.pdf",
-      "sha256": "8b30edcfc78f0f743fa63c241b3cd4cca7ffcc798d38d8e9f6013fc06fd8544a",
-      "count": 12,
-      "extraction": "unchanged"
-    },
     {
       "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/13_Dalle-ore-9.00-del-26.10.2026-alle-ore-9.00-del-28.10.2026.pdf",
       "sha256": "9fb05bdb88a94c7409c448e4a94459b3d370f147794354abbfd6c2f1228675be",
@@ -32,16 +20,81 @@
       "sha256": "e1a5d12321e77fca8d518bc6967130478762594e4ccec6c6a543d4360d475a27",
       "count": 12,
       "extraction": "unchanged"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/01_Dalle-ore-9.00-del-01.11.2026-alle-ore-9.00-del-03.11.2026.pdf",
+      "sha256": "197c63d1398c8f07693ed12bd42b25448122fd03ef80e3c62eb2d2badf1e70d2",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/02_Dalle-ore-9.00-del-03.11.2026-alle-ore-9.00-del-05.11.2026.pdf",
+      "sha256": "920ba999f8e7fac87a6428ab8486ba3ad00d703d88c7868ff6a46cd9480a5134",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/03_Dalle-ore-9.00-del-05.11.2026-alle-ore-9.00-del-07.11.2026.pdf",
+      "sha256": "20898c488a385e674ccc2478d819f0562f5519e8102fcef942cf7ca6045da83e",
+      "count": 14,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/04_Dalle-ore-9.00-del-07.11.2026-alle-ore-9.00-del-09.11.2026.pdf",
+      "sha256": "2af6f4f911dbc1992f2b5f6c89129a7ec21c3d15abfac774e4e39f84061973e9",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/05_Dalle-ore-9.00-del-09.11.2026-alle-ore-9.00-del-11.11.2026.pdf",
+      "sha256": "f4e52023c0fdb0f1e8fa3f4a1189fba90c02a54b8263c45f5dd8a0e2890a8f11",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/06_Dalle-ore-9.00-del-11.11.2026-alle-ore-9.00-del-13.11.2026.pdf",
+      "sha256": "15a282a38f54b22810d8dc7adc3661c62171093de3cc85efafeda45737dea165",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/07_Dalle-ore-9.00-del-13.11.2026-alle-ore-9.00-del-15.11.2026.pdf",
+      "sha256": "93f489fd0955b45b7cbaae780bb6cbb857992c202a9fa4d3569c31fda0be4250",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/08_Dalle-ore-9.00-del-15.11.2026-alle-ore-9.00-del-17.11.2026.pdf",
+      "sha256": "06229e0db860e2342f5f98c9cf13c8cabeb400a4b8fb1d6b09b9952a12e656c7",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/09_Dalle-ore-9.00-del-17.11.2026-alle-ore-9.00-del-19.11.2026.pdf",
+      "sha256": "d93ca495aeb2599f0273bb70696e92ed15e4e1a5f8028a9dd2ae2907a5f6b9b6",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/10_Dalle-ore-9.00-del-19.11.2026-alle-ore-9.00-del-21.11.2026.pdf",
+      "sha256": "06a7e37f110ade6657a98bc7423dbcc470680fbebcee01cf95ab121eead2a480",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/11_Dalle-ore-9.00-del-21.11.2026-alle-ore-9.00-del-23.11.2026.pdf",
+      "sha256": "c4121205a5ec26b95da341b6e4c5f6bec3f5aab5408b556d26ba49454259eeb1",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/12_Dalle-ore-9.00-del-23.11.2026-alle-ore-9.00-del-25.11.2026.pdf",
+      "sha256": "06fb3bd4c15b650cc45e84e00926e71a9247948b0cc5f9e4d9419d687d8e6806",
+      "count": 13,
+      "extraction": "parsed"
     }
   ],
   "warnings": [],
-  "error": null,
-  "preservedPrevious": false,
-  "coverage": {
-    "currentPeriodId": "turno-2026-10-24T07:00:00.000Z",
-    "startsAt": "2026-10-24T07:00:00.000Z",
-    "endsAt": "2026-11-01T08:00:00.000Z",
-    "remainingHours": 190
-  },
-  "positionStatus": "cached"
+  "error": "Righe PDF e tabella non corrispondono",
+  "preservedPrevious": true
 }
