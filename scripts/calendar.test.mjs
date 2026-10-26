@@ -1,3 +1,4 @@
+import {eventVenueForDay} from './event-occurrence.mjs';
 import {createTravelRouteClient,rankTravelBusTrips,chooseActiveTravel} from './travel-routes.mjs';
 import {walkingEventArrival} from './walking-route.mjs';
 function detailNodes(app){const walk=node=>[node,...(node.children||[]).flatMap(walk)];return app.get('detail-content').children.flatMap(walk);}
@@ -2267,4 +2268,31 @@ test('Duomoâ€“Montorio: GPS conserva anche San Fermo oltre le cinque fermate piÃ
  assert.match(app.get('event-direct-limit-note').textContent,/verifica come raggiungere/);
 });
 
-
+
+const localMapsLogic=await readFile(new URL('../public/local-maps.js',import.meta.url),'utf8');
+function runLocalMaps(storage=new Map()){const app=runTravel(storage);new Script(localMapsLogic).runInContext(app.context);return app;}
+test('Mappe esterne: usa le coordinate della data selezionata e blocca una sede non confermata',()=>{
+ const app=runLocalMaps();app.context.eventVenueForDay=eventVenueForDay;
+ new Script('parkingFixture.occurrences={"2026-10-22":{location:"Prima sede",coordinates:{lat:45.44,lon:10.99},verified:true},"2026-10-23":{location:"Seconda sede",coordinates:{lat:45.45,lon:11.01},verified:true},"2026-10-24":{location:"Da verificare",coordinates:{lat:45.46,lon:11.02},verified:false}};view="calendar";selected="2026-10-23";openEventDirections(parkingFixture)').runInContext(app.context);
+ assert.equal(new URL(app.get('directions-google').href).searchParams.get('destination'),'45.45,11.01');assert.equal(app.get('directions-place').textContent,'Seconda sede');
+ app.get('directions-close').onclick();new Script('selected="2026-10-24";openEventDirections(parkingFixture)').runInContext(app.context);assert.equal(app.get('directions-dialog').open,false);
+});
+test('Mappe esterne: pulsante principale apre direttamente il collegamento, senza scelta o GPS',()=>{
+ const app=runLocalMaps();let requests=0,opened='';app.context.fetch=()=>{requests++;throw Error('rete inattesa')};app.context.navigator={geolocation:{getCurrentPosition(){requests++;}}};app.context.window={open:url=>{opened=url}};
+ new Script('openDetails(parkingFixture)').runInContext(app.context);app.get('detail-travel').onclick();assert.match(opened,/google.com\/maps\/dir/);assert.notEqual(app.get('directions-dialog').open,true);assert.notEqual(app.get('event-travel-dialog').open,true);assert.equal(requests,0);
+ const other=detailNodes(app).find(node=>node.textContent==='Altre mappe');assert.ok(other);other.onclick();assert.equal(app.get('directions-dialog').open,true);
+ const google=new URL(app.get('directions-google').href),apple=new URL(app.get('directions-apple').href);assert.equal(google.searchParams.get('destination'),apple.searchParams.get('daddr'));assert.equal(google.searchParams.has('origin'),false);assert.equal(apple.searchParams.has('saddr'),false);
+ app.get('directions-close').onclick();assert.equal(app.get('detail-dialog').open,true);
+});
+test('Mappe dispositivo: Android non forza un pacchetto e offre fallback web; iPhone/iPad usa collegamento sistema',()=>{
+ const app=runLocalMaps();app.context.point={lat:45.44,lon:11.01};
+ const android=new Script('defaultMapsUrl(point,{userAgent:"Mozilla Android Chrome/130"})').runInContext(app.context);assert.match(android,/^intent:0,0/);assert.match(android,/scheme=geo/);assert.equal(android.includes('package='),false);assert.ok(decodeURIComponent(android).includes('S.browser_fallback_url=https://www.google.com/maps/dir/?api=1&destination=45.44%2C11.01'));
+ for(const device of [{userAgent:'iPhone'},{userAgent:'iPad'},{platform:'MacIntel',maxTouchPoints:5}]){app.context.device=device;const url=new URL(new Script('defaultMapsUrl(point,device)').runInContext(app.context));assert.equal(url.hostname,'maps.apple.com');assert.equal(url.searchParams.get('daddr'),'45.44,11.01');}
+});
+test('Mappe esterne: nessuna preferenza app o memoria richiesta per le alternative',()=>{
+ const app=runLocalMaps();app.context.localStorage={getItem(){throw Error()},setItem(){throw Error()}};new Script('openEventDirections(parkingFixture)').runInContext(app.context);assert.ok(app.get('directions-google').href);app.get('directions-close').onclick();new Script('openDetails({...parkingFixture,mapDisabled:true});openEventDirections({...parkingFixture,mapDisabled:true})').runInContext(app.context);assert.equal(app.get('detail-travel').hidden,true);assert.equal(app.get('directions-dialog').open,false);
+});
+
+test('Ciclabili: senza libreria mappa resta disponibile il ritorno e non si chiede la posizione',()=>{
+ const app=runLocalMaps();let gps=0;app.context.navigator={geolocation:{getCurrentPosition(){gps++;}}};app.get('utilities-cycle').onclick();assert.equal(app.get('cycle-dialog').open,true);assert.match(app.get('cycle-status').textContent,/non disponibile/);assert.equal(app.get('cycle-retry').hidden,false);assert.equal(gps,0);app.get('cycle-close').onclick();assert.equal(app.get('cycle-dialog').open,false);
+});

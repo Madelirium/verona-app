@@ -637,6 +637,7 @@ function appendEventDetailPreview(content,e){
   const mapButton=el('button','⌖ Vedi sulla mappa','dialog-save event-map-detail-button');mapButton.onclick=()=>{closeDetails();openEventMap(e)};
   const directions=el('a','Indicazioni per arrivare ↗','bus-secondary-link');directions.href=`https://www.google.com/maps/dir/?api=1&destination=${point.lat},${point.lon}`;directions.target='_blank';directions.rel='noopener noreferrer';
   if(typeof appendEventTravel!=='function')content.append(mapButton,directions);
+  if(typeof configureEventDirections==='function'){const other=el('button','Altre mappe','bus-secondary-link');other.onclick=()=>openEventDirections(e);content.append(other);}
 
 }
 function mountEventDetailPreview(){
@@ -687,7 +688,8 @@ function openDetails(e) {
   options.append(el('p','Il salvataggio non prenota posti o biglietti.','detail-note'));content.append(options);
   const button=$('detail-save');button.textContent=state?(state==='going'?'✓ Partecipi · gestisci':'✓ Salvato · gestisci'):'♡ Salva evento';button.setAttribute('aria-label',state?'Gestisci evento salvato: '+e.title:'Salva evento: '+e.title);
   button.onclick=()=>{if(manageTarget){if(manageSection)manageSection.open=true;manageTarget.focus();return;}closeDetails();if(currentDiscovery?.id===e.id)chooseDiscovery('interested');else save(e.id,'interested');};
-  const travel=$('detail-travel');travel.hidden=!eventPosition(e);const direct=typeof openEventTravel==='function';$('detail-dialog').classList.toggle('event-bus-ready',direct);travel.textContent=direct?'Come raggiungerci':typeof openEventTravel==='function'?'Come arrivare':'Vedi mappa';travel.onclick=()=>{if(direct)openEventTravel(e);else if(typeof openEventTravel==='function')openEventTravel(e);else{closeDetails();openEventMap(e);}};
+  const travel=$('detail-travel');travel.hidden=!eventPosition(e);const direct=typeof openEventDirections==='function'||typeof openEventTravel==='function';$('detail-dialog').classList.toggle('event-bus-ready',direct);travel.textContent=direct?'Come raggiungerci':'Vedi mappa';travel.onclick=()=>{if(typeof openEventDirections==='function')openEventDirections(e);else if(typeof openEventTravel==='function')openEventTravel(e);else{closeDetails();openEventMap(e);}};
+  if(typeof configureEventDirections==='function')configureEventDirections(e);
   $('detail-dialog').showModal();$('close-detail').focus();mountEventDetailPreview();
 }
 function closeDetails() {$('detail-dialog').close();}

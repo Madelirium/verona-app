@@ -1,4 +1,24 @@
 {
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Il-Teatro-nei-Quartieri-2026": {
+    "mapDisabled": true,
+    "coordinates": null,
+    "location": "Sede della giornata da verificare nel programma ufficiale",
+    "summary": "Rassegna in teatri diversi secondo la data. La sede indicata per ogni giornata segue il programma comunale; indirizzi e punti sulla mappa restano da verificare.",
+    "locationsByDay": {
+      "2026-11-08": "Teatro S. Giovanni Evangelista · Circoscrizione 4",
+      "2026-11-13": "Teatro Autrora · Circoscrizione 6 (denominazione riportata dalla fonte; da verificare)",
+      "2026-11-19": "Teatro Camploy · Circoscrizione 1",
+      "2026-12-08": "Teatro David · Circoscrizione 5",
+      "2026-12-12": "Teatro San Benedetto · Circoscrizione 2"
+    },
+    "occurrences": {
+      "2026-11-08": {"location": "Teatro S. Giovanni Evangelista · Circoscrizione 4", "coordinates": null, "verified": false, "reviewedOn": "2026-10-26"},
+      "2026-11-13": {"location": "Teatro Autrora · Circoscrizione 6 (denominazione riportata dalla fonte; da verificare)", "coordinates": null, "verified": false, "reviewedOn": "2026-10-26"},
+      "2026-11-19": {"location": "Teatro Camploy · Circoscrizione 1", "coordinates": null, "verified": false, "reviewedOn": "2026-10-26"},
+      "2026-12-08": {"location": "Teatro David · Circoscrizione 5", "coordinates": null, "verified": false, "reviewedOn": "2026-10-26"},
+      "2026-12-12": {"location": "Teatro San Benedetto · Circoscrizione 2", "coordinates": null, "verified": false, "reviewedOn": "2026-10-26"}
+    }
+  },
   "https://www.comune.verona.it/Vivere-il-comune/Eventi/Hostaria-XII-Festival-del-vino-2026": {
     "localVerified": true,
     "reviewedOn": "2026-10-17",

@@ -1,4 +1,3 @@
-import {createTravelRouteClient,rankTravelBusTrips,chooseActiveTravel} from './travel-routes.mjs';
 import {eventVenueForDay} from './event-occurrence.mjs';
 import {directBusTrips} from './direct-bus.mjs';
 import {walkingPreviewAvailable,createWalkingClient,walkingEventArrival} from './walking-route.mjs';
@@ -74,7 +73,10 @@ export async function buildCalendar() {
     if(!review)return e;
     const {locationsByDay,...fields}=review;
     const day=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Rome',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(e.startsAt));
-    if(locationsByDay&&!locationsByDay[day])return e;
+    if(locationsByDay&&!locationsByDay[day]){
+      if(!fields.occurrences)return e;
+      return {...e,...fields,locationsByDay,location:fields.location||'Sede della giornata da verificare nel programma ufficiale',coordinates:null,mapDisabled:true};
+    }
     return {...e,...fields,...(locationsByDay?{locationsByDay}:{}),...(locationsByDay?{location:locationsByDay[day]}:{}),area:'Verona',areaConfirmed:true};
   });
   data.districts=districtCatalog;
@@ -86,7 +88,7 @@ export async function buildCalendar() {
   const officialLogic=await readFile(new URL('public/bus-official.js',root),'utf8');
   const eventBusLogic=(await readFile(new URL('public/event-bus.js',root),'utf8'))+'\n'+directBusTrips.toString()+'\n'+await readFile(new URL('public/event-direct.js',root),'utf8')+'\n'+[walkingPreviewAvailable,createWalkingClient,walkingEventArrival,eventTripAssessment].map(fn=>fn.toString()).join('\n')+'\n'+await readFile(new URL('public/event-walking.js',root),'utf8')+'\n'+await readFile(new URL('public/event-journey.js',root),'utf8')+'\n'+await readFile(new URL('public/event-connection-map.js',root),'utf8');
   const parkingLogic=await readFile(new URL('public/parking.js',root),'utf8');
-  const travelLogic=[createTravelRouteClient,rankTravelBusTrips,chooseActiveTravel].map(fn=>fn.toString()).join('\n')+'\n'+await readFile(new URL('public/event-travel.js',root),'utf8');
+  const travelLogic=await readFile(new URL('public/local-maps.js',root),'utf8');
   const weatherLogic=await readFile(new URL('public/weather.js',root),'utf8');
   const exploreNeedsLogic=await readFile(new URL('public/explore-needs.js',root),'utf8');
   const newsLogic=await readFile(new URL('public/news-services.js',root),'utf8');
@@ -97,7 +99,7 @@ export async function buildCalendar() {
   const catalogLogic=await readFile(new URL('public/bus-catalog.js',root),'utf8');
   const agendaLogic=await readFile(new URL('public/agenda.js',root),'utf8');
   const gamesLogic=await readFile(new URL('public/briscola.js',root),'utf8');
-  const gamesCss=(await readFile(new URL('public/games.css',root),'utf8'))+'\n'+await readFile(new URL('public/bus-catalog.css',root),'utf8')+'\n'+await readFile(new URL('public/agenda.css',root),'utf8')+'\n'+await readFile(new URL('public/parking.css',root),'utf8')+'\n'+await readFile(new URL('public/waste.css',root),'utf8')+'\n'+await readFile(new URL('public/pharmacies.css',root),'utf8')+'\n'+await readFile(new URL('public/event-detail.css',root),'utf8')+'\n'+await readFile(new URL('public/saved.css',root),'utf8')+'\n'+await readFile(new URL('public/news-ui.css',root),'utf8')+'\n'+await readFile(new URL('public/explore-ui.css',root),'utf8')+'\n'+await readFile(new URL('public/bus-journey.css',root),'utf8')+'\n'+await readFile(new URL('public/home-personal.css',root),'utf8');
+  const gamesCss=(await readFile(new URL('public/games.css',root),'utf8'))+'\n'+await readFile(new URL('public/bus-catalog.css',root),'utf8')+'\n'+await readFile(new URL('public/agenda.css',root),'utf8')+'\n'+await readFile(new URL('public/parking.css',root),'utf8')+'\n'+await readFile(new URL('public/waste.css',root),'utf8')+'\n'+await readFile(new URL('public/pharmacies.css',root),'utf8')+'\n'+await readFile(new URL('public/event-detail.css',root),'utf8')+'\n'+await readFile(new URL('public/saved.css',root),'utf8')+'\n'+await readFile(new URL('public/news-ui.css',root),'utf8')+'\n'+await readFile(new URL('public/explore-ui.css',root),'utf8')+'\n'+await readFile(new URL('public/bus-journey.css',root),'utf8')+'\n'+await readFile(new URL('public/home-personal.css',root),'utf8')+'\n'+await readFile(new URL('public/readability.css',root),'utf8');
   const authLogic=await readFile(new URL('public/auth.js',root),'utf8');
   const savedLogic=await readFile(new URL('public/saved.js',root),'utf8');
   const homePersonalLogic=await readFile(new URL('public/home-personal.js',root),'utf8');

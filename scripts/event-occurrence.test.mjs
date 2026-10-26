@@ -3,3 +3,12 @@ const event={location:'Sede iniziale',coordinates:{lat:45.44,lon:10.99},startsAt
 test('Sede per giornata: non riutilizza coordinate di un’altra sede e richiede verifica esplicita',()=>{const e={...event,locationsByDay:{'2026-10-25':'Sede diversa'}};assert.equal(eventVenueForDay(e,'2026-10-25').coordinates,null);e.occurrences={'2026-10-25':{location:'Sede diversa',coordinates:{lat:45.45,lon:11.01}}};assert.equal(eventVenueForDay(e,'2026-10-25').usable,false);e.occurrences['2026-10-25'].verified=true;assert.equal(eventVenueForDay(e,'2026-10-25').coordinates.lon,11.01);e.occurrences['2026-10-25'].coordinates.lat=999;assert.equal(eventVenueForDay(e,'2026-10-25').usable,false);});
 test('Sede per giornata: supporta il catalogo esistente e rispetta il blocco editoriale',()=>{assert.equal(eventVenueForDay(event,'2026-10-24').usable,true);assert.equal(eventVenueForDay({...event,mapDisabled:true},'2026-10-24').usable,false);});
 test('Sede per giornata: una giornata non verificata non eredita il punto di un’altra',()=>{const e={...event,occurrences:{'2026-10-24':{verified:true,location:'Sede A',coordinates:event.coordinates}}};assert.equal(eventVenueForDay(e,'2026-10-24').usable,true);assert.equal(eventVenueForDay(e,'2026-10-25').usable,false);});
+
+test('Sede per giornata: il blocco editoriale prevale anche sulla ricorrenza verificata',()=>{
+  const occurrence={verified:true,location:'Sede A',coordinates:{lat:45.45,lon:11.01},startsAt:'2026-10-24T18:00:00+02:00',endsAt:'2026-10-24T20:00:00+02:00'};
+  const e={...event,mapDisabled:true,occurrences:{'2026-10-24':occurrence}};
+  const blocked=eventVenueForDay(e,'2026-10-24');
+  assert.equal(blocked.usable,false);assert.equal(blocked.coordinates,null);
+  assert.equal(blocked.location,'Sede A');assert.equal(blocked.startsAt,occurrence.startsAt);
+  assert.equal(eventVenueForDay({...e,mapDisabled:false},'2026-10-24').usable,true);
+});

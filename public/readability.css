@@ -1,0 +1,34 @@
+/* Supporting copy stays readable; essential warnings remain in the main flow. */
+.detail-dialog .detail-note,
+.event-direct-note,.timetable-footnote,.bus-footnote,
+.bus-trip-note,.bus-journey-note,.event-travel-note,
+.waste-note,.parking-detail-note,.parking-bus-route-note,.pharmacy-note,.weather-note{
+  font-size:14px;line-height:1.45;color:var(--text-secondary);
+}
+#bus-trip-dialog .bus-trip-note,#bus-journey-dialog .bus-journey-note,
+.bus-trial .bus-footnote,.event-travel-shell .event-travel-note{
+  font-size:14px;line-height:1.45;
+}
+.news-redesign .news-card-meta,.news-redesign .news-summary,
+.news-redesign .news-refresh-note,.news-redesign .news-feedback,
+#pharmacy-updated,.pharmacy-order-row p,
+.screen .collection-updated,.event-map-note,.stop-experience-note{
+  font-size:14px;line-height:1.45;
+}
+.news-redesign .news-image-credit{font-size:12px;line-height:1.4}
+.timetable-source p,.detail-dialog .news-provenance p,
+.explore-results-bar p{font-size:14px;line-height:1.45}
+.pharmacy-shell .pharmacy-notice,.event-journey-warning,.parking-detail-note{
+  font-size:16px;line-height:1.5;
+}
+.home-screen #home-personal-feed .home-row-note{font-size:14px;line-height:1.4}
+.home-screen #home-personal-feed .home-row-label{font-size:13px;line-height:1.4}
+.home-status-copy>span{font-size:12px;line-height:1.4}
+.home-status-row .home-status-copy>strong{font-size:14px;line-height:1.4}
+.discovery-heading h2{font-size:13px;line-height:1.4}
+#event-direct-location-status:empty,#event-direct-status:empty,
+#event-complete-status:empty,#event-travel-short-note:empty,
+.collection-updated:empty{display:none}
+.service-source-details{flex:none;font-size:14px;line-height:1.45}
+.service-source-details>summary{min-height:44px;padding:10px 0;cursor:pointer;font-weight:650}
+.service-source-details p{font-size:14px;line-height:1.45;margin:6px 0}
