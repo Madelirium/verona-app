@@ -1,5 +1,20 @@
 # Contatori aggregati Supabase
 
+## Valore predefinito aggiornato il 27 ottobre 2026
+
+Su richiesta esplicita dell’utente, i soli contatori aggregati Supabase sono ora
+attivi per i nuovi visitatori. La scelta precedente `no`, DNT e GPC prevalgono;
+memoria inaccessibile o valore non riconosciuto mantengono la raccolta spenta.
+Anteprime e domini non autorizzati restano esclusi. La disattivazione è disponibile
+nelle Impostazioni e viene conservata sul dispositivo. Umami resta opt-in.
+Questa impostazione sostituisce il precedente default facoltativo disattivato
+descritto nelle note storiche sotto. Non vengono misurati visitatori unici né
+recuperate azioni precedenti. Non sono stati cambiati database, permessi o log.
+Le regole relative all’informativa e alla gestione dei dati da parte del titolare
+restano applicabili: il valore predefinito non è una certificazione di conformità.
+
+## Note della prima implementazione
+
 Implementazione del 24 ottobre 2026. Provider alternativo a Umami, mai due tracker contemporaneamente. Nessun nuovo pacchetto dell'app.
 
 Stato verificato: migrazione applicata al progetto Verona (`ryoqmcnuwhbwyforatla`, regione eu-west-1), funzione `usage-count` versione 1 attiva. Richiesta valida HTTP 204 e incremento reale confermato; richieste con campo extra, chiave errata e origine estranea respinte rispettivamente con 400/401/403. Dato di prova rimosso dopo verifica, senza lasciare conteggi simulati. Permessi RPC: anon e authenticated esclusi, service_role autorizzato. Frontend configurato sul nuovo provider; la pubblicazione GitHub Pages usa le quattro variabili pubbliche ANALYTICS_* documentate sotto. La raccolta sul dispositivo resta subordinata alla scelta nelle impostazioni.

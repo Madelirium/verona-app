@@ -42,16 +42,31 @@ test('Private counters: atomic totals, Rome date, retention, quotas and no clien
   assert.equal((await db.query("select public.record_usage_count('bus','view') as accepted")).rows[0].accepted,false);
   assert.equal((await db.query('select total from verona_private.usage_daily')).rows[0].total,12);
 });
-test('Aggregate browser sends only section/action after opt-in, no vendor script, no retries or identity',async()=>{
+test('Aggregate browser defaults on with only section/action, no vendor script, retries or identity',async()=>{
   const source=await readFile(new URL('../public/analytics.js',import.meta.url),'utf8');
   const nodes=new Map(),calls=[],storage=new Map();
   const document={getElementById:id=>{if(!nodes.has(id))nodes.set(id,{open:false});return nodes.get(id);}};
   const ctx={payload:{analytics:{provider:'supabase',endpoint,key}},view:'home',document,location:{protocol:'https:',hostname:'veronaintasca.it'},navigator:{onLine:true},localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)},addEventListener(){},fetch:(...args)=>{calls.push(args);return Promise.resolve({ok:true});},AbortSignal,Promise};ctx.window=ctx;
-  runInNewContext(source,ctx);assert.equal(calls.length,0);
-  const choice=nodes.get('analytics-choice');choice.checked=true;choice.onchange();
+  runInNewContext(source,ctx);assert.equal(calls.length,1);
+  const choice=nodes.get('analytics-choice');assert.equal(choice.checked,true);
   ctx.veronaAnalytics.page('home');ctx.veronaAnalytics.page('bus');ctx.veronaAnalytics.page('bus');ctx.veronaAnalytics.track('bus_journey_open');ctx.veronaAnalytics.track('email');
   assert.deepEqual(calls.map(call=>JSON.parse(call[1].body)),[{section:'home',action:'view'},{section:'bus',action:'view'},{section:'bus',action:'bus_journey_open'}]);
   for(const [,options]of calls){assert.equal(options.credentials,'omit');assert.equal(options.referrerPolicy,'no-referrer');}
   choice.checked=false;choice.onchange();ctx.veronaAnalytics.page('news');assert.equal(calls.length,3);
   choice.checked=true;ctx.navigator.globalPrivacyControl=true;choice.onchange();assert.equal(calls.length,3);
+});
+
+test('Aggregate default respects saved refusals, privacy signals, previews and blocked storage',async()=>{
+ const source=await readFile(new URL('../public/analytics.js',import.meta.url),'utf8');
+ function run({saved=null,dnt=false,gpc=false,hostname='veronaintasca.it',online=true,blocked=false}={}){
+  const nodes=new Map(),calls=[],storage=new Map(saved===null?[]:[['verona-analytics-consent-v1',saved]]);
+  const document={getElementById:id=>{if(!nodes.has(id))nodes.set(id,{});return nodes.get(id)}};
+  const ctx={payload:{analytics:{provider:'supabase',endpoint,key}},view:'home',document,location:{protocol:'https:',hostname},navigator:{onLine:online,doNotTrack:dnt?'1':'0',globalPrivacyControl:gpc},localStorage:{getItem:k=>{if(blocked)throw Error();return storage.get(k)??null},setItem:(k,v)=>storage.set(k,v)},addEventListener(){},fetch:(...args)=>{calls.push(args);return Promise.resolve({ok:true})},AbortSignal,Promise};ctx.window=ctx;runInNewContext(source,ctx);return {nodes,calls,storage,ctx};
+ }
+ const fresh=run();assert.equal(fresh.calls.length,1);assert.equal(fresh.storage.size,0);
+ const previousYes=run({saved:'yes'});assert.equal(previousYes.calls.length,1);
+ for(const options of [{saved:'no'},{saved:'invalid'},{dnt:true},{gpc:true},{hostname:'127.0.0.1'},{hostname:'192.168.1.27'},{online:false},{blocked:true}]){
+  const app=run(options);app.ctx.veronaAnalytics.page('bus');app.ctx.veronaAnalytics.track('event_open');assert.equal(app.calls.length,0,JSON.stringify(options));
+ }
+ const choice=fresh.nodes.get('analytics-choice');choice.checked=false;choice.onchange();assert.equal(fresh.storage.get('verona-analytics-consent-v1'),'no');fresh.ctx.veronaAnalytics.page('bus');assert.equal(fresh.calls.length,1);assert.equal(run({saved:fresh.storage.get('verona-analytics-consent-v1')}).calls.length,0);
 });
