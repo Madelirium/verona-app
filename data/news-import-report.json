@@ -1,20 +1,20 @@
 {
-  "checkedAt": "2026-10-28T16:44:21.467Z",
-  "from": "2026-07-30",
-  "to": "2026-10-28",
+  "checkedAt": "2026-10-29T01:53:47.198Z",
+  "from": "2026-07-31",
+  "to": "2026-10-29",
   "scope": "Prime due pagine per fonte, pubblicazioni negli ultimi 90 giorni. Non è un archivio completo.",
   "sources": [
     {
       "source": "notizie",
       "status": "ok",
       "count": 48,
-      "lastSuccessAt": "2026-10-28T16:44:21.467Z"
+      "lastSuccessAt": "2026-10-29T01:53:47.198Z"
     },
     {
       "source": "avvisi",
       "status": "ok",
       "count": 13,
-      "lastSuccessAt": "2026-10-28T16:44:21.467Z"
+      "lastSuccessAt": "2026-10-29T01:53:47.198Z"
     }
   ],
   "status": "ok"
