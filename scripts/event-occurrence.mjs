@@ -1,5 +1,6 @@
 // A venue may vary by civil day. Unverified per-day coordinates never inherit a pin.
-export function eventVenueForDay(event,day){
+export function eventVenueForDay(event,day,now=new Date()){
+  if(event.editorialStatus?.validUntil&&new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Rome',year:'numeric',month:'2-digit',day:'2-digit'}).format(now)>event.editorialStatus.validUntil)return {location:event.location||'',coordinates:null,usable:false,startsAt:event.startsAt,endsAt:event.endsAt,reason:'editorial-review-expired'};
   const valid=p=>p&&Number.isFinite(p.lat)&&Number.isFinite(p.lon)&&p.lat>=44.5&&p.lat<=46.3&&p.lon>=10&&p.lon<=12;
   const occurrence=event.occurrences?.[day],named=event.locationsByDay?.[day];
   if(occurrence){const usable=!event.mapDisabled&&occurrence.verified===true&&valid(occurrence.coordinates);return {location:occurrence.location||named||event.location||'',coordinates:usable?occurrence.coordinates:null,usable,startsAt:occurrence.startsAt||null,endsAt:occurrence.endsAt||null,reviewedOn:occurrence.reviewedOn||null};}

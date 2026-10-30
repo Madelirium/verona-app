@@ -1,3 +1,5 @@
+import {eventChangeReview} from './event-changes.mjs';
+import {searchDirectTravel} from './travel-search.mjs';
 import {eventVenueForDay} from './event-occurrence.mjs';
 import {createTravelRouteClient,rankTravelBusTrips,chooseActiveTravel} from './travel-routes.mjs';
 import {walkingEventArrival} from './walking-route.mjs';
@@ -13,7 +15,7 @@ import {validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStr
 import {pharmacyPeriods} from './pharmacies.mjs';
 
 const newsServicesLogic=await readFile(new URL('../public/news-services.js',import.meta.url),'utf8');
-const logic = [datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+newsServicesLogic+'\n'+await readFile(new URL('../public/calendar.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/waste.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/pharmacies.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/district-ui.js',import.meta.url),'utf8');
+const logic = [eventChangeReview,datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+newsServicesLogic+'\n'+await readFile(new URL('../public/calendar.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/waste.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/pharmacies.js',import.meta.url),'utf8')+'\n'+await readFile(new URL('../public/district-ui.js',import.meta.url),'utf8');
 const builtHtml = await readFile(new URL('../public/index.html',import.meta.url),'utf8');
 const catalog = JSON.parse(builtHtml.match(/<script id="event-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
 const liveCatalog = structuredClone(catalog);
@@ -308,8 +310,8 @@ test('Le notizie mostrano miniature leggere e foto completa senza alterare i sal
 test('Immagini eventi: copertina, dettaglio completo, miniatura e recupero dopo errore',()=>{
   const app=run();
   new Script(`const imageTestEvent=currentDiscovery;imageTestEvent.imageId=17;imageTestEvent.image={url:'https://www.comune.verona.it/media/prova.png',author:'Autrice',license:'CC BY 4.0',alt:'Locandina di prova'};renderDiscovery();`).runInContext(app.context);
-  const cover=app.get('deck').children[0].children[0],photo=cover.children.find(child=>child.className==='event-cover-image'),credit=cover.children.at(-1);
-  assert.equal(photo.alt,'Locandina di prova');assert.equal(credit.hidden,true);assert.equal(photo.hidden,true);photo.onload();assert.equal(credit.hidden,false);assert.equal(photo.hidden,false);assert.ok(cover.children.slice(0,3).every(node=>node.hidden));photo.onerror();assert.equal(credit.hidden,true);assert.equal(photo.hidden,true);assert.ok(cover.children.slice(0,3).every(node=>node.hidden===false));
+  const cover=app.get('deck').children[0].children.find(node=>node.className==='card-cover'),photo=cover.children.find(child=>child.className==='event-cover-image'),credit=cover.children.at(-1);
+  assert.equal(photo.alt,'Locandina di prova');assert.equal(credit.hidden,true);assert.equal(photo.hidden,true);photo.onload();assert.equal(credit.hidden,false);assert.equal(photo.hidden,false);assert.equal(cover.getAttribute('aria-hidden'),'false');photo.onerror();assert.equal(credit.hidden,true);assert.equal(photo.hidden,true);assert.equal(cover.getAttribute('aria-hidden'),'true');
   new Script('openDetails(imageTestEvent)').runInContext(app.context);
   const poster=detailNodes(app).find(child=>child.className==='event-poster');assert.ok(poster);
   assert.equal(poster.children[0].src,'https://flyimg.opencityitalia.it/upload/rf_1,o_auto,w_1200,h_1200/'+encodeURIComponent('https://www.comune.verona.it/media/prova.png'));assert.ok(poster.children[1].children.some(child=>child.href==='https://www.comune.verona.it/media/prova.png'));assert.equal(photo.fetchPriority,'high');assert.match(photo.src,/w_640,h_640/);assert.ok(poster.children[1].children.some(child=>child.href==='https://creativecommons.org/licenses/by/4.0/'));
@@ -512,14 +514,14 @@ test('Il calendario parte dai dati incorporati, senza richieste di rete',()=>{
   assert.ok(get('status').textContent.includes(catalog.events.length+' nel catalogo'));
   assert.ok(get('month').textContent.length>0);
 });
-test('La Home contiene cinque servizi e Permessi ZTL sostituisce Persone con il portale ufficiale',()=>{
+test('Altro raccoglie i servizi e Permessi ZTL usa il portale ufficiale',()=>{
   const app=run(new Map(),'home');
   assert.equal(app.get('home-view').hidden,false);assert.equal(app.get('discover-view').hidden,true);assert.equal(app.get('calendar-view').hidden,true);
   assert.equal(app.get('open-filters').hidden,true);assert.equal(app.get('home').attributes['aria-pressed'],'true');
-  assert.equal(app.get('services').children.length,5);
+  assert.equal(app.get('services').children.length,0);
   assert.equal(app.get('services').children.find(e=>e.attributes['data-service']==='people'),undefined);
-  const utilities=app.get('services').children.find(e=>e.attributes['data-service']==='utilities');
-  assert.equal(utilities.attributes['aria-label'],'Servizi utili');utilities.onclick();assert.equal(app.get('utilities-dialog').open,true);
+  const utilities=app.get('more-utilities');
+  assert.match(builtHtml,/<button hidden id="more-utilities">/);utilities.onclick();assert.equal(app.get('utilities-dialog').open,true);
   app.get('utilities-ztl').onclick();
   assert.equal(app.get('ztl-dialog').open,true);assert.equal(app.get('home-view').hidden,false);
   app.get('close-ztl').onclick();assert.equal(app.get('ztl-dialog').open,false);
@@ -527,7 +529,7 @@ test('La Home contiene cinque servizi e Permessi ZTL sostituisce Persone con il 
   assert.match(builtHtml,/<a id="ztl-portal"[^>]*href="https:\/\/permessi\.mobilita\.comune\.verona\.it\/"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);
 });
 test('Esplora è attiva dalla Home, filtra luoghi reali e conserva i preferiti',()=>{
-  const app=run(new Map(),'home');app.get('services').children.find(e=>e.attributes['data-service']==='explore').onclick();
+  const app=run(new Map(),'home');app.get('more-explore').onclick();
   assert.equal(app.get('explore-view').hidden,false);assert.match(app.get('places-map-message').textContent,/Elenco/);
   app.get('explore-list-tab').onclick();assert.equal(app.get('places-list').hidden,false);
   const first=catalog.places.items[0];app.get('explore-search').value=first.name;app.get('explore-search').oninput();
@@ -552,7 +554,7 @@ test('Categorie, stato vuoto e caricamento progressivo dei luoghi non alterano l
   app.get('explore-back').onclick();assert.equal(app.get('home-view').hidden,false);assert.equal(app.get('explore-view').hidden,true);
 });
 test('Autobus apre schede reali dalla Home, cerca il percorso e distingue i servizi',()=>{
-  const app=run(new Map(),'home');app.get('services').children.find(e=>e.attributes['data-service']==='bus').onclick();
+  const app=run(new Map(),'home');app.get('more-bus').onclick();
   assert.equal(app.get('bus-view').hidden,false);assert.equal(app.get('home-view').hidden,true);
   assert.equal(app.get('bus-list').children.length,catalog.bus.lines.length);
   app.get('bus-search').value='MONTORIO';app.get('bus-search').oninput();
@@ -699,8 +701,8 @@ test('Orari senza dati e salvataggio bloccato mantengono una consultazione utili
 });
 test('Notizie è attiva dalla Home e filtra le pubblicazioni ufficiali separatamente dagli eventi',()=>{
   const app=run(new Map(),'home');
-  const news=app.get('services').children.find(e=>e.attributes['data-service']==='news');
-  assert.ok(!news.attributes['aria-label'].includes('in preparazione'));news.onclick();
+  const news=app.get('news');assert.ok(!app.get('services').children.some(e=>['news','events'].includes(e.attributes['data-service'])));
+  news.onclick();
   assert.equal(app.get('news-view').hidden,false);assert.equal(app.get('calendar-view').hidden,true);assert.equal(app.get('news-list').children.length,catalog.news.items.length);
   assert.equal(app.get('open-filters').hidden,true);app.get('news-open-filters').onclick();assert.equal(app.get('news-filters-dialog').open,true);
   app.get('news-type').value='avvisi';app.get('apply-news-filters').onclick();assert.equal(new Script('filteredNews().every(i=>i.sourceKey==="avvisi")').runInContext(app.context),true);
@@ -788,7 +790,7 @@ test('Dalla Home si salva un evento reale e si apre il proprio programma',()=>{
   app.get('home-programs').onclick();assert.equal(app.get('calendar-view').hidden,false);
   assert.match(app.get('count').textContent,/nel tuo calendario/);
   app.get('home').onclick();assert.equal(app.get('home-view').hidden,false);
-  app.get('services').children.find(e=>e.attributes['data-service']==='events').onclick();
+  app.get('discover').onclick();
   assert.equal(app.get('discover-view').hidden,false);
 });
 test('Il collegamento agli eventi di oggi rimuove filtri precedenti e seleziona la data corretta',()=>{
@@ -1083,7 +1085,7 @@ const parkingLogic=await readFile(new URL('../public/parking.js',import.meta.url
 function runParking(mapApi){const app=runEventBus();if(mapApi)app.context.L=mapApi;new Script(parkingLogic).runInContext(app.context);app.context.parkingFixture={...structuredClone(catalog.events[0]),title:'Evento in Arena',coordinates:{lat:45.4386,lon:10.9929},mapDisabled:false};return app;}
 
 test('Servizi utili: parcheggi senza evento, filtro e ritorno alla ricerca vicina all’evento',()=>{
-  const app=runParking();app.get('services').children.find(e=>e.attributes['data-service']==='utilities').onclick();app.get('utilities-parking').onclick();
+  const app=runParking();app.get('more-utilities').onclick();app.get('utilities-parking').onclick();
   assert.equal(app.get('parking-dialog').open,true);assert.equal(app.get('parking-distance-control').hidden,true);assert.equal(new Script('parkingEvent').runInContext(app.context),null);
   const cards=app.get('parking-results').children.filter(card=>card.className==='parking-card');assert.equal(cards.length,catalog.parking.items.length);assert.ok(cards.length>0);assert.ok(cards.every(card=>!card.children[1].textContent.includes('evento')));assert.ok(cards.every(card=>!card.children.at(-1).children.some(link=>link.href?.includes('travelmode=walking'))));
   app.get('parking-type').value='free';app.get('parking-type').onchange();assert.ok(app.get('parking-results').children.filter(card=>card.className==='parking-card').every(card=>/Gratuito secondo/.test(card.children[1].textContent)));app.get('parking-close').onclick();assert.equal(app.get('utilities-dialog').open,true);
@@ -1505,7 +1507,7 @@ test('Home personale: zona confermata, cambio giorno e rimozione aggiornano il r
 });
 
 
-const travelLogic=[createTravelRouteClient,rankTravelBusTrips,chooseActiveTravel,walkingEventArrival].map(fn=>fn.toString()).join('\n')+'\n'+await readFile(new URL('../public/event-travel.js',import.meta.url),'utf8');
+const travelLogic=[createTravelRouteClient,rankTravelBusTrips,chooseActiveTravel,searchDirectTravel,walkingEventArrival].map(fn=>fn.toString()).join('\n')+'\n'+await readFile(new URL('../public/event-travel.js',import.meta.url),'utf8');
 function runTravel(){const app=runParking();new Script(travelLogic).runInContext(app.context);useRomeInstant(app,'2026-10-22T10:00:00Z');new Script('parkingFixture.startsAt="2026-10-22T10:00:00+02:00";parkingFixture.endsAt="2026-10-24T18:00:00+02:00"').runInContext(app.context);return app;}
 test('Evento e orari: titolo, orario, partenza e rientro conservati da elenco e popup',async()=>{
  const app=runEventBus(),stop=eventBusIndexData.stops.find(s=>s.code==='1974');
@@ -1531,7 +1533,7 @@ test('Orari evento: errore recuperabile conserva il riferimento anche fuori cope
 test('Come arrivare: cambiare scheda non riapre il pannello né perde la partenza',()=>{
  const app=runTravel();new Script('openEventTravel(parkingFixture)').runInContext(app.context);let closed=0;const panel=app.get('event-travel-dialog');panel.close=()=>{closed++;};
  new Script('travelState.label="Piazza Bra"').runInContext(app.context);app.get('event-travel-modes').children[0].onclick();app.get('event-travel-modes').children[1].onclick();app.get('event-travel-modes').children[0].onclick();
- assert.equal(closed,0);assert.equal(new Script('travelState.label').runInContext(app.context),'Piazza Bra');assert.equal(new Script('travelMode').runInContext(app.context),'active');assert.equal(panel.open,true);
+ assert.equal(closed,0);assert.equal(new Script('travelState.label').runInContext(app.context),'Piazza Bra');assert.equal(new Script('travelMode').runInContext(app.context),'walk');assert.equal(panel.open,true);
 });
 
 test('Come arrivare: giorno scelto mantenuto tra schede e nuovo evento separato',()=>{
@@ -1559,9 +1561,9 @@ test('Autobus evento: richiesta con tempo limite, errore recuperabile e nuovo te
  await new Script('openEventBus(busEvent)').runInContext(app.context);assert.match(app.get('event-bus-status').textContent,/Puoi riprovare/);
  await app.get('event-bus-stops').children[0].onclick();assert.ok(calls>=2);assert.ok(timeouts.every(ms=>ms===15000));assert.match(app.get('event-bus-status').textContent,/fermate con partenze programmate/);
 });
-test('Come arrivare: due schede, navigazione per mezzo e ritorno ai dettagli',()=>{
- const app=runTravel();new Script('openDetails(parkingFixture)').runInContext(app.context);assert.equal(app.get('detail-travel').hidden,false);app.get('detail-travel').onclick();assert.equal(app.get('event-travel-modes').children.length,2);assert.equal(app.get('event-travel-dialog').open,true);assert.match(app.get('event-travel-walk').href,/travelmode=walking/);
- app.get('event-travel-modes').children[1].onclick();assert.match(app.get('event-travel-walk').href,/travelmode=driving/);assert.equal(app.get('event-travel-parking').hidden,false);app.get('event-travel-parking').onclick();assert.equal(app.get('parking-dialog').open,true);assert.equal(app.get('parking-event-name').textContent,'Evento in Arena');app.get('parking-close').onclick();
+test('Come arrivare: tre schede, navigazione per mezzo e ritorno ai dettagli',()=>{
+ const app=runTravel();new Script('openDetails(parkingFixture)').runInContext(app.context);assert.equal(app.get('detail-travel').hidden,false);app.get('detail-travel').onclick();assert.equal(app.get('event-travel-modes').children.length,3);assert.equal(app.get('event-travel-dialog').open,true);assert.match(app.get('event-travel-walk').href,/travelmode=walking/);
+ app.get('event-travel-modes').children[2].onclick();assert.match(app.get('event-travel-walk').href,/travelmode=driving/);assert.equal(app.get('event-travel-parking').hidden,false);app.get('event-travel-parking').onclick();assert.equal(app.get('parking-dialog').open,true);assert.equal(app.get('parking-event-name').textContent,'Evento in Arena');app.get('parking-close').onclick();
  app.get('event-travel-close').onclick();assert.equal(app.get('detail-dialog').open,true);assert.equal(new Script('travelState').runInContext(app.context),null);
 });
 
@@ -1946,7 +1948,7 @@ function runHomePersonal(storage=new Map()){const app=runSaved(storage);new Scri
 function personalKinds(app){return Array.from(new Script('homePersonalItems().map(row=>row.kind)').runInContext(app.context));}
 function personalSetup(app){deadlineFixture(app);useRomeInstant(app,'2026-10-22T09:00:00Z');new Script('preferences={"home-next":"interested"};savedSnapshots={"home-next":{...events[0],id:"home-next",title:"Il mio prossimo evento",startsAt:"2026-10-23T18:00:00+02:00",endsAt:"2026-10-23T20:00:00+02:00"}};newsDeadlineSaves[deadlineFixture.id]=deadlineFixture;busFavorites={"official-24":true};wasteSelection={zoneId:"c7-brown",version:wasteData.version,confirmedAt:"2026-10-22"};renderHome()').runInContext(app.context);}
 test('Home personale: massimo tre informazioni, scadenze vicine prima di evento raccolta e autobus',()=>{
- const app=runHomePersonal();personalSetup(app);assert.deepEqual(personalKinds(app),['news','event','bus']);assert.equal(app.get('home-personal-feed').children.length,3);assert.equal(app.get('home-personal-legacy').hidden,true);assert.equal(app.get('services').children.length,5);
+ const app=runHomePersonal();personalSetup(app);assert.deepEqual(personalKinds(app),['news','event','bus']);assert.equal(app.get('home-personal-feed').children.length,3);assert.equal(app.get('home-personal-legacy').hidden,true);assert.equal(app.get('services').children.length,0);
  useRomeInstant(app,'2026-10-22T10:01:00Z');new Script('renderHome()').runInContext(app.context);assert.deepEqual(personalKinds(app),['event','bus','news']);assert.ok(!app.get('home-personal-feed').children.some(row=>row.children[1].textContent==='Domanda per contributo'));
 });
 test('Home personale: collegamenti reali a evento, scadenza, raccolta e linea preferita',async()=>{
@@ -2005,7 +2007,7 @@ test('Avviso alfa: il blocco della memoria non impedisce di continuare',()=>{
  const app=runAreaPreferences(new Map(),false);app.context.localStorage.setItem=()=>{throw Error('blocked')};app.get('alpha-notice-continue').onclick();assert.equal(app.get('alpha-notice-dialog').open,false);assert.equal(app.get('area-welcome-dialog').open,true);
 });
 test('Zona facoltativa: primo accesso, Salta persistente e nessun servizio quartiere in Home',()=>{
- const app=runAreaPreferences();assert.equal(app.get('area-welcome-dialog').open,true);assert.equal(app.get('services').children.length,5);assert.ok(!app.get('services').children.some(node=>node.getAttribute('data-service')==='district'));app.get('area-welcome-skip').onclick();assert.equal(app.get('area-welcome-dialog').open,false);assert.equal(app.storage.get('verona-area-welcome-v1'),'seen');const reload=runAreaPreferences(app.storage);assert.ok(!reload.get('area-welcome-dialog').open);assert.equal(new Script('currentDistrict()').runInContext(reload.context),null);
+ const app=runAreaPreferences();assert.equal(app.get('area-welcome-dialog').open,true);assert.equal(app.get('services').children.length,0);assert.ok(!app.get('services').children.some(node=>node.getAttribute('data-service')==='district'));app.get('area-welcome-skip').onclick();assert.equal(app.get('area-welcome-dialog').open,false);assert.equal(app.storage.get('verona-area-welcome-v1'),'seen');const reload=runAreaPreferences(app.storage);assert.ok(!reload.get('area-welcome-dialog').open);assert.equal(new Script('currentDistrict()').runInContext(reload.context),null);
  app.get('open-settings').onclick();assert.equal(app.get('area-settings-zone').textContent,'Nessun quartiere scelto');app.get('area-settings-news').onclick();assert.equal(app.get('news-view').hidden,false);assert.equal(app.get('news-zone-tab').getAttribute('aria-pressed'),'true');
 });
 test('Zona facoltativa: annullare non applica bozze e confermare aggiorna impostazioni senza cambiare AMIA',()=>{
@@ -2196,6 +2198,34 @@ test('Data raccolta: date mancanti, invalide e future non diventano aggiornament
 });
 
 
+test('Montorio reale: amplia le fermate oltre 800 m senza perdere data e servizio festivo',async()=>{
+ const app=runEventBus();app.context.montorio={...structuredClone(catalog.events[0]),id:'montorio-regression',title:'Ex campo di Montorio',startsAt:'2026-10-25T10:30:00+01:00',endsAt:'2026-10-25T12:00:00+01:00',coordinates:{lat:45.444864,lon:11.053501},mapDisabled:false};
+ await new Script('openEventBus(montorio)').runInContext(app.context);
+ assert.match(app.get('event-bus-status').textContent,/Ricerca ampliata/);
+ assert.match(app.get('event-bus-status').textContent,/1,5 km/);
+ const stops=new Script('eventBusCurrent.stops').runInContext(app.context);
+ assert.ok(stops.some(stop=>stop.code==='505'&&stop.lines.includes('98')&&stop.distance>800));
+ assert.equal(app.get('event-bus-date').value,'2026-10-25');
+ app.context.montorio.coordinates={lat:46.2,lon:11.9};await new Script('openEventBus(montorio)').runInContext(app.context);
+ assert.match(app.get('event-bus-status').textContent,/entro 2 km/);assert.match(app.get('event-bus-status').textContent,/non esclude altri collegamenti/);
+});
+
+test('Duomo–Montorio: GPS conserva anche San Fermo oltre le cinque fermate più vicine e cerca la 98',async()=>{
+ const app=runDirectUi();useRomeInstant(app,'2026-10-25T10:20:00Z');
+ app.context.realIndex=structuredClone(eventBusIndexData);
+ new Script('eventBusStops=realIndex;eventBusEvent={...parkingFixture,id:"montorio-planner",startsAt:"2026-10-25T10:30:00+01:00",endsAt:"2026-10-25T12:00:00+01:00",coordinates:{lat:45.444864,lon:11.053501}};$("event-bus-date").value="2026-10-25"').runInContext(app.context);
+ let done;app.context.isSecureContext=true;app.context.navigator={geolocation:{getCurrentPosition(ok){done=ok;}}};await app.get('event-bus-plan').onclick();app.get('event-direct-locate').onclick();done({coords:{latitude:45.4477,longitude:10.9978,accuracy:20}});
+ const origins=new Script('eventDirectState.gpsOrigins').runInContext(app.context);assert.ok(origins.length>5);assert.ok(origins.some(stop=>stop.code==='1920'));
+ const line98=JSON.parse(await readFile(new URL('../data/bus-official/98.json',import.meta.url),'utf8'));
+ const queried=[];app.context.directBusTrips=(assets,options)=>{queried.push(options);return directBusTrips([line98],options);};
+ app.context.fetch=async url=>({ok:true,json:async()=>JSON.parse(await readFile(new URL('../public/'+url,import.meta.url),'utf8'))});
+ await app.get('event-direct-search').onclick();
+ assert.ok(queried.some(options=>options.origin==='1920'&&options.radius===2000&&options.notBeforeSeconds>11*3600+29*60));
+ assert.ok(app.get('event-direct-results').children.some(card=>card.children[0]?.textContent.includes('98')));
+ assert.match(app.get('event-direct-limit-note').textContent,/a piedi da verificare/);
+});
+
+
 test('Confronto percorsi: arrivo arrotondato in avanti e camminata nulla senza minuto inventato',()=>{
  const app=runTravel();new Script('openEventTravel(parkingFixture)').runInContext(app.context);
  assert.equal(new Script('travelMinutes(0)').runInContext(app.context),'0 min');assert.equal(new Script('travelArrivalClock(Date.parse("2026-10-22T15:20:24+02:00"))').runInContext(app.context),'15:21');
@@ -2222,9 +2252,9 @@ test('Auto evento: ricerca entro 5 km e scelta sul tempo totale, non sul primo p
 });
 
 
-test('A piedi e mezzi: un bus realmente conveniente diventa la proposta con dettaglio accessibile',()=>{
+test('Alternative separate: bus consigliato resta consultabile nella propria scheda',()=>{
  const app=runTravel();app.context.busDisplayName=value=>value;new Script('openEventTravel(parkingFixture);travelState.start={lat:45.43,lon:10.98};travelState.departureAt=Date.parse("2026-10-22T12:00:00+02:00");travelState.results={walk:{duration:3600,route:{distance:4000}},bus:{duration:1200,row:{number:"24",row:{time:"12:05:00"},arrivalTime:"12:15:00",origin:{name:"Partenza"},arrival:{name:"Arrivo"},assessment:{leaveAt:Date.parse("2026-10-22T12:01:00+02:00"),venueAt:Date.parse("2026-10-22T12:20:00+02:00")},startWalk:{duration:120,distance:150},endWalk:{duration:300,distance:400}}}};renderTravelChoices()').runInContext(app.context);
- assert.equal(new Script('travelState.results.active.kind').runInContext(app.context),'bus');assert.equal(app.get('event-travel-walk').hidden,true);assert.equal(app.get('event-travel-bus-start').hidden,false);assert.match(app.get('event-travel-modes').children[0].children[1].textContent,/Autobus 24/);assert.match(app.get('event-travel-modes').children[0].children[2].textContent,/Risparmi 40 min/);
+ assert.equal(new Script('travelState.results.active.kind').runInContext(app.context),'bus');new Script('switchEventTravel("bus")').runInContext(app.context);assert.equal(app.get('event-travel-walk').hidden,true);assert.equal(app.get('event-travel-bus-start').hidden,false);assert.match(app.get('event-travel-modes').children[1].children[1].textContent,/Linea 24/);assert.match(app.get('event-travel-modes').children[1].children[2].textContent,/Consigliato/);
 });
 
 
@@ -2234,40 +2264,33 @@ test('Duomo verso Dorothea Lange: NoRoute auto conserva parcheggi e camminate se
  app.context.testSignal={aborted:false};const result=await new Script('calculateTravelCar({event:parkingFixture,start:{lat:45.4467113,lon:10.9962222},end:{lat:45.442993,lon:10.998253}},{signal:testSignal})').runInContext(app.context);
  assert.equal(app.context.walksChecked,2);assert.equal(result.parkingCandidates.length,2);assert.equal(result.parking.name,'Isolo');assert.equal(result.duration,undefined);assert.equal(result.route,null);assert.match(result.error,/non trova il percorso auto/);
  app.context.parkingFallback=result;new Script('openEventTravel(parkingFixture);travelState.start={lat:45.4467113,lon:10.9962222};travelState.results.car=parkingFallback;travelMode="car";renderTravelChoices()').runInContext(app.context);
- assert.equal(app.get('event-travel-modes').children[1].children[0].children[1].textContent,'2 parcheggi trovati');assert.equal(app.get('event-travel-parking').hidden,false);assert.match(app.get('event-travel-walk').href,/destination=45.444718%2C11.003412/);
+ assert.equal(app.get('event-travel-modes').children[2].children[0].children[1].textContent,'2 parcheggi trovati');assert.equal(app.get('event-travel-parking').hidden,false);assert.match(app.get('event-travel-walk').href,/destination=45.444718%2C11.003412/);
  app.get('event-travel-bus-details').children[2].onclick();assert.match(app.get('event-travel-walk').href,/destination=45.44307%2C10.98923/);
 });
 test('Auto: guida valida con camminata non disponibile non conferma l’arrivo completo',async()=>{
  const app=runTravel();app.context.nearbyParking=()=>[{id:'one',name:'Parcheggio',lat:45.44,lon:10.99}];new Script('travelRouteClient.load=async(start,end,options={})=>{if(options.mode!=="car")throw Error("Offline");return {duration:300,distance:1000,coordinates:[]};}').runInContext(app.context);app.context.testSignal={aborted:false};const result=await new Script('calculateTravelCar({event:parkingFixture,start:{lat:45.43,lon:10.98},end:{lat:45.44,lon:10.99}},{signal:testSignal})').runInContext(app.context);assert.equal(result.duration,undefined);assert.equal(result.route.duration,300);assert.equal(result.finalWalk,null);assert.match(result.error,/viaggio completo non è verificato/);
 });
 
-test('Montorio reale: amplia le fermate oltre 800 m senza perdere data e servizio festivo',async()=>{
- const app=runEventBus();app.context.montorio={...structuredClone(catalog.events[0]),id:'montorio-regression',title:'Ex campo di Montorio',startsAt:'2026-10-25T10:30:00+01:00',endsAt:'2026-10-25T12:00:00+01:00',coordinates:{lat:45.444864,lon:11.053501},mapDisabled:false};
- await new Script('openEventBus(montorio)').runInContext(app.context);
- assert.match(app.get('event-bus-status').textContent,/Ricerca ampliata/);
- assert.match(app.get('event-bus-status').textContent,/1,5 km/);
- const stops=new Script('eventBusCurrent.stops').runInContext(app.context);
- assert.ok(stops.some(stop=>stop.code==='505'&&stop.lines.includes('98')&&stop.distance>800));
- assert.equal(app.get('event-bus-date').value,'2026-10-25');
- app.context.montorio.coordinates={lat:46.2,lon:11.9};await new Script('openEventBus(montorio)').runInContext(app.context);
- assert.match(app.get('event-bus-status').textContent,/entro 2 km/);assert.match(app.get('event-bus-status').textContent,/non esclude altri collegamenti/);
+test('Alternative separate: bus verificato visibile anche quando è consigliato camminare',()=>{
+ const app=runTravel();app.context.busDisplayName=value=>value;
+ new Script('openEventTravel(parkingFixture);travelState.start={lat:45.43,lon:10.98};travelState.departureAt=Date.parse("2026-10-22T12:00:00+02:00");travelState.results={walk:{duration:600,route:{distance:700}},bus:{duration:1200,pending:true,row:{number:"33",row:{time:"12:10:00"},arrivalTime:"12:15:00",origin:{name:"Salita"},arrival:{name:"Discesa"},assessment:{leaveAt:Date.parse("2026-10-22T12:06:00+02:00"),departAt:Date.parse("2026-10-22T12:10:00+02:00"),venueAt:Date.parse("2026-10-22T12:20:00+02:00")},startWalk:{duration:120,distance:150},endWalk:{duration:300,distance:400}}}};renderTravelChoices();switchEventTravel("bus")').runInContext(app.context);
+ assert.equal(new Script('travelState.results.active.kind').runInContext(app.context),'walk');assert.equal(app.get('event-travel-modes').children.length,3);assert.match(app.get('event-travel-modes').children[1].children[1].textContent,/Linea 33/);assert.equal(app.get('event-travel-bus-start').hidden,false);
+ const texts=app.get('event-travel-bus-details').children.map(n=>n.textContent).join(' ');assert.match(texts,/Totale 20 min/);assert.match(texts,/salita 8 min/);assert.match(texts,/2 min fino alla fermata e 5 min/);
+ app.get('event-travel-cancel').onclick();assert.equal(new Script('travelState.results.bus.pending').runInContext(app.context),false);assert.equal(new Script('travelState.results.bus.incomplete').runInContext(app.context),true);assert.equal(app.get('event-travel-bus-start').hidden,false);assert.equal(app.get('event-travel-retry').hidden,false);
 });
 
-test('Duomo–Montorio: GPS conserva anche San Fermo oltre le cinque fermate più vicine e cerca la 98',async()=>{
- const app=runDirectUi();useRomeInstant(app,'2026-10-25T10:20:00Z');
- app.context.realIndex=structuredClone(eventBusIndexData);
- new Script('eventBusStops=realIndex;eventBusEvent={...parkingFixture,id:"montorio-planner",startsAt:"2026-10-25T10:30:00+01:00",endsAt:"2026-10-25T12:00:00+01:00",coordinates:{lat:45.444864,lon:11.053501}};$("event-bus-date").value="2026-10-25"').runInContext(app.context);
- let done;app.context.isSecureContext=true;app.context.navigator={geolocation:{getCurrentPosition(ok){done=ok;}}};await app.get('event-bus-plan').onclick();app.get('event-direct-locate').onclick();done({coords:{latitude:45.4477,longitude:10.9978,accuracy:20}});
- const origins=new Script('eventDirectState.gpsOrigins').runInContext(app.context);assert.ok(origins.length>5);assert.ok(origins.some(stop=>stop.code==='1920'));
- const line98=JSON.parse(await readFile(new URL('../data/bus-official/98.json',import.meta.url),'utf8'));
- const queried=[];app.context.directBusTrips=(assets,options)=>{queried.push(options);return directBusTrips([line98],options);};
- app.context.fetch=async url=>({ok:true,json:async()=>JSON.parse(await readFile(new URL('../public/'+url,import.meta.url),'utf8'))});
- await app.get('event-direct-search').onclick();
- assert.ok(queried.some(options=>options.origin==='1920'&&options.radius===2000&&options.notBeforeSeconds>11*3600+29*60));
- assert.ok(app.get('event-direct-results').children.some(card=>card.children[0]?.textContent.includes('98')));
- assert.match(app.get('event-direct-limit-note').textContent,/verifica come raggiungere/);
+test('Confronto diretto: bus cercato con camminata breve, annullamento scarta progressi tardivi',async()=>{
+ const app=runTravel();Object.assign(app.context,{AbortController,directBusTrips,eventTripAssessment});app.get('event-travel-date').checkValidity=()=>true;
+ new Script('openEventTravel(parkingFixture);travelState.start={lat:45.43,lon:10.98};travelState.timeEdited=true;$("event-travel-date").value="2026-10-22";$("event-travel-time").value="12:05";travelRouteClient.load=async()=>({duration:60,distance:80,coordinates:[]});calculateTravelCar=async()=>({route:{distance:100,coordinates:[]},duration:100});loadEventBusStops=async()=>({});searchDirectTravel=async options=>{globalThis.searchOptions=options;return new Promise(resolve=>globalThis.finishSearch=resolve)}').runInContext(app.context);
+ const pending=new Script('calculateEventTravel()').runInContext(app.context);await new Promise(r=>setImmediate(r));assert.equal(typeof app.context.finishSearch,'function');app.get('event-travel-cancel').onclick();const message=app.get('event-travel-status').textContent;
+ app.context.searchOptions.onProgress({search:{radius:800,pairsChecked:1},pending:true});app.context.finishSearch({error:'late response'});await pending;
+ assert.equal(app.get('event-travel-status').textContent,message);assert.match(new Script('travelState.results.bus.error').runInContext(app.context),/annullata/);
 });
 
+test('Alternative separate: una scelta esplicita non cambia palina durante l’ampliamento',()=>{
+ const app=runTravel();new Script('openEventTravel(parkingFixture);travelState.departureAt=Date.now();globalThis.chosen={number:"33",row:{trip:"chosen",serviceDay:"2026-10-22"},origin:{code:"O"},arrival:{code:"A"},assessment:{leaveAt:Date.now()+600000,venueAt:Date.now()+1200000}};travelState.results.bus={row:chosen};travelState.busChoice="33|chosen|2026-10-22|O|A";globalThis.refined={...chosen,origin:{code:"OTHER"}};globalThis.preserved=travelPreserveBusChoice(travelState,{row:refined,rows:[refined],incomplete:true})').runInContext(app.context);
+ assert.equal(app.context.preserved.row.origin.code,'O');assert.equal(app.context.preserved.rows.length,2);
+});
 
 const localMapsLogic=await readFile(new URL('../public/local-maps.js',import.meta.url),'utf8');
 function runLocalMaps(storage=new Map()){const app=runTravel(storage);new Script(localMapsLogic).runInContext(app.context);return app;}
@@ -2295,4 +2318,94 @@ test('Mappe esterne: nessuna preferenza app o memoria richiesta per le alternati
 
 test('Ciclabili: senza libreria mappa resta disponibile il ritorno e non si chiede la posizione',()=>{
  const app=runLocalMaps();let gps=0;app.context.navigator={geolocation:{getCurrentPosition(){gps++;}}};app.get('utilities-cycle').onclick();assert.equal(app.get('cycle-dialog').open,true);assert.match(app.get('cycle-status').textContent,/non disponibile/);assert.equal(app.get('cycle-retry').hidden,false);assert.equal(gps,0);app.get('cycle-close').onclick();assert.equal(app.get('cycle-dialog').open,false);
+});
+
+test('Verona oggi: nessun evento inventato, stato vuoto e accesso contestuale al calendario',()=>{
+ const app=runHomePersonal();new Script('events.splice(0);preferences={};savedSnapshots={};renderHome()').runInContext(app.context);
+ assert.equal(app.get('home-personal-section').hidden,false);
+ assert.equal(app.get('home-event-suggestions').children.length,1);
+ assert.match(app.get('home-event-suggestions').children[0].textContent,/Nessuna proposta verificata/);
+ app.get('home-all-events').onclick();assert.equal(app.get('calendar-view').hidden,false);
+});
+
+test('Altro: chiusura senza cambio sezione e stato attivo delle destinazioni secondarie',()=>{
+ const app=runHomePersonal();app.get('more').onclick();assert.equal(app.get('more-dialog').open,true);assert.equal(app.get('more').getAttribute('aria-expanded'),'true');
+ app.get('more-close').onclick();assert.equal(app.get('more-dialog').open,false);assert.equal(app.get('home-view').hidden,false);
+ app.get('more').onclick();app.get('news').onclick();assert.equal(app.get('more-dialog').open,false);assert.equal(app.get('news-view').hidden,false);assert.equal(app.get('more').getAttribute('aria-pressed'),'true');
+ app.get('home').onclick();assert.equal(app.get('more').getAttribute('aria-pressed'),'false');assert.equal(app.get('services').children.length,0);
+});
+
+test('Altro: servizi diretti senza sottomenu e ritorno alla navigazione',()=>{
+ const app=runParking();
+ for(const [service,dialog] of [['pharmacies','pharmacy'],['parking','parking'],['waste','waste'],['ztl','ztl']]){
+  app.get('more').onclick();app.get('more-'+service).onclick();assert.equal(app.get('more-dialog').open,false);assert.ok(!app.get('utilities-dialog').open);assert.equal(app.get(dialog+'-dialog').open,true);assert.equal(app.get('more').getAttribute('aria-pressed'),'true');
+  app.get(dialog+'-dialog').close();assert.equal(app.get(dialog+'-dialog').open,false);
+ }
+ assert.match(builtHtml,/<dialog id="more-dialog" aria-label="Altre sezioni">/);
+ assert.ok(!builtHtml.includes('id="more-title"'));
+});
+
+test('Scopri pulita: filtri visibili, bozza annullabile e stato vuoto recuperabile',()=>{
+ const app=run();assert.match(app.get('discover-filter-summary').textContent,/Entro 30 giorni/);
+ app.get('discover-filters').onclick();app.get('search').value='evento-inesistente-test';app.get('period').value='7';app.get('source').value='Comune di Verona';app.get('collection').value='local';app.get('apply-filters').onclick();
+ assert.match(app.get('discover-filter-summary').textContent,/7 giorni.*evento-inesistente-test.*Comune di Verona.*Luoghi controllati/);
+ assert.equal(app.get('like').disabled,true);assert.match(app.get('deck').children[0].children[0].textContent,/Nessun evento con questi filtri/);
+ app.get('discover-filters').onclick();app.get('reset-filters').onclick();app.get('close-filters').onclick();assert.equal(app.get('search').value,'evento-inesistente-test');
+ app.get('discover-filters').onclick();app.get('reset-filters').onclick();app.get('apply-filters').onclick();assert.equal(app.get('search').value,'');assert.match(app.get('discover-filter-summary').textContent,/30 giorni/);assert.equal(app.get('like').disabled,false);
+});
+
+test('Scopri editoriale: titolo e informazioni reali anche senza locandina o decorazioni',()=>{
+ const app=run();new Script('delete currentDiscovery.image;delete currentDiscovery.imageId;renderDiscovery()').runInContext(app.context);
+ const card=app.get('deck').children[0],heading=card.children.find(node=>node.className==='discovery-editorial-heading'),cover=card.children.find(node=>node.className==='card-cover'),body=card.children.find(node=>node.className==='card-body');
+ assert.equal(heading.children[1].textContent,new Script('currentDiscovery.title').runInContext(app.context));assert.equal(cover.children.length,0);
+ const facts=body.children.filter(node=>node.className==='discovery-fact');assert.deepEqual(facts.map(node=>node.children[0].textContent),['Quando','Dove']);assert.equal(facts[1].children[1].textContent,new Script('currentDiscovery.location||"Sede da verificare sulla fonte"').runInContext(app.context));
+ body.children.find(node=>node.className==='details-trigger').onclick();assert.equal(app.get('detail-dialog').open,true);
+});
+
+test('Calendario mensile: cinque e sei settimane, cambio mese e tastiera senza perdere il giorno',()=>{
+ const app=runAgenda();new Script('setView("calendar");selectAgendaDay("2026-10-15")').runInContext(app.context);assert.equal(app.get('inline-month-grid').children.length,35);assert.equal(app.get('inline-month').hidden,false);
+ app.get('inline-month-next').onclick();assert.equal(new Script('selected').runInContext(app.context),'2026-11-15');assert.equal(app.get('inline-month-grid').children.length,42);
+ const day=app.get('inline-month-grid').children.find(button=>button.getAttribute('data-day')==='2026-11-15');let prevented=false;day.listeners.keydown({key:'ArrowRight',preventDefault(){prevented=true;}});assert.equal(prevented,true);assert.equal(new Script('selected').runInContext(app.context),'2026-11-16');
+ app.get('home').onclick();app.get('all').onclick();assert.equal(new Script('selected').runInContext(app.context),'2026-11-16');app.get('inline-month-today').onclick();assert.equal(new Script('selected===today').runInContext(app.context),true);
+});
+test('Calendario mensile: salvati distinguibili, filtri e dettagli con esportazione conservati',()=>{
+ const app=runAgenda();new Script('setView("calendar");preferences[events[0].id]="interested";selectAgendaDay(eventDay(events[0].startsAt))').runInContext(app.context);
+ const day=app.get('inline-month-grid').children.find(button=>button.getAttribute('aria-pressed')==='true');assert.match(day.getAttribute('aria-label'),/salvati/);assert.equal(day.children[1].textContent,'♥');
+ app.get('inline-month-filters').onclick();app.get('search').value='nessun-risultato-mese';app.get('apply-filters').onclick();assert.equal(app.get('inline-month-grid').children.length>=28,true);assert.ok(app.get('events').children.some(node=>node.className==='agenda-empty'));
+ app.get('inline-month-filters').onclick();app.get('reset-filters').onclick();app.get('apply-filters').onclick();new Script('openDetails(events[0])').runInContext(app.context);assert.ok(detailNodes(app).some(node=>node.className==='dialog-save agenda-export'));
+});
+
+
+test('Salvati aggiornamenti: l’avvio conserva la vecchia sede finché si accettano i dettagli nuovi',()=>{
+ const app=runSaved();new Script('payload.importReport={from:"2026-10-17",sources:[{source:events[0].source,status:"ok"}]};preferences={[events[0].id]:"interested"};savedSnapshots={[events[0].id]:{...events[0],location:"Sede precedente verificata"}};storeSavedSnapshots();localStorage.setItem("verona-events-v1",JSON.stringify(preferences));setView("saved");openDetails(events[0])').runInContext(app.context);
+ assert.equal(new Script('savedSnapshots[events[0].id].location').runInContext(app.context),'Sede precedente verificata');
+ assert.ok(detailNodes(app).some(n=>n.textContent.includes('il luogo è cambiato')));
+ const acknowledge=detailNodes(app).find(n=>n.textContent==='Ho verificato i nuovi dettagli');assert.ok(acknowledge);acknowledge.onclick();
+ assert.equal(new Script('savedSnapshots[events[0].id].location===events[0].location').runInContext(app.context),true);
+ assert.ok(!detailNodes(app).some(n=>n.textContent.includes('il luogo è cambiato')));
+});
+
+test('Salvati aggiornamenti: nuovo ID dopo spostamento orario richiede conferma e migra la preferenza',()=>{
+ const app=runSaved();new Script('payload.importReport={from:"2026-10-17",sources:[{source:events[0].source,status:"ok"}]};const old={...events[0]};preferences={[old.id]:"going"};savedSnapshots={[old.id]:old};const next={...old,id:"changed-time-ui",startsAt:new Date(Date.parse(old.startsAt)+1800000).toISOString()};events.splice(0,1,next);openDetails(old)').runInContext(app.context);
+ assert.ok(detailNodes(app).some(n=>n.textContent.includes('l’orario è cambiato')));
+ assert.equal(app.get('detail-travel').hidden,true);
+ detailNodes(app).find(n=>n.textContent==='Ho verificato i nuovi dettagli').onclick();
+ assert.equal(new Script('preferences["changed-time-ui"]').runInContext(app.context),'going');
+ assert.equal(new Script('Object.keys(savedSnapshots).length').runInContext(app.context),1);
+ assert.equal(JSON.parse(app.storage.get('verona-events-v1'))['changed-time-ui'],'going');
+});
+
+test('Salvati aggiornamenti: rimosso dall’API conserva lo snapshot e blocca vecchie indicazioni',()=>{
+ const app=runSaved();new Script('const absent={...events[0],id:"missing-future",startsAt:"2026-11-30T10:00:00+01:00",endsAt:"2026-11-30T12:00:00+01:00"};payload.importReport={from:"2026-10-17",sources:[{source:absent.source,status:"ok"}]};preferences={[absent.id]:"interested"};savedSnapshots={[absent.id]:absent};storeSavedSnapshots();openDetails(absent)').runInContext(app.context);
+ assert.ok(detailNodes(app).some(n=>n.textContent.includes('Non più presente nel catalogo attuale')));
+ assert.ok(detailNodes(app).some(n=>n.textContent.includes('Non significa che sia annullato')));
+ assert.equal(app.get('detail-travel').hidden,true);
+ assert.equal(new Script('Boolean(savedSnapshots["missing-future"])').runInContext(app.context),true);
+});
+
+
+test('Salvati aggiornamenti: fusione di due ID conserva una presenza già confermata',()=>{
+ const app=runSaved();new Script('const original={...events[0]};const current={...original,id:"merged-save",startsAt:new Date(Date.parse(original.startsAt)+1800000).toISOString()};events.splice(0,1,current);preferences={[original.id]:"going",[current.id]:"interested"};savedSnapshots={[original.id]:original,[current.id]:current};acknowledgeSavedEvent(original.id)').runInContext(app.context);
+ assert.equal(new Script('preferences["merged-save"]').runInContext(app.context),'going');
+ assert.equal(new Script('Object.keys(savedSnapshots).length').runInContext(app.context),1);
 });

@@ -17,8 +17,8 @@
 .news-redesign .news-card .news-title.news-title-with-image{display:grid;grid-template-columns:82px minmax(0,1fr);align-items:start;gap:12px;padding:12px 0 4px}
 .news-redesign .news-card-image{width:82px;height:100px;object-fit:contain;background:var(--page-bg);margin:0;border-radius:9px}
 .news-redesign .news-title-text{display:block;-webkit-line-clamp:unset;overflow:visible;overflow-wrap:anywhere}
-.news-redesign .news-card .news-card-validity{display:block;font-size:14px;line-height:1.45;margin:10px 0 2px;padding:9px 10px;background:#eef1f4;color:#254b72;border-radius:9px;overflow:visible;-webkit-line-clamp:unset}
-.news-redesign .news-card-validity[data-state=open]{border-left:3px solid #315b83;font-weight:700}
+.news-redesign .news-card .news-card-validity{display:block;font-size:14px;line-height:1.45;margin:10px 0 2px;padding:9px 10px;background:var(--selected-surface);color:var(--primary);border-radius:9px;overflow:visible;-webkit-line-clamp:unset}
+.news-redesign .news-card-validity[data-state=open]{border-left:3px solid var(--primary);font-weight:700}
 .news-redesign .news-card-validity[data-state=expired]{background:#f1efea;color:#555954}
 .news-redesign .news-card-validity[data-state=unknown]{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
 .news-redesign .news-card-validity[data-state=withdrawn]{background:#f3ebe7;color:#713f2d;font-weight:700}

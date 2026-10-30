@@ -5,18 +5,56 @@
     "location": "Sede della giornata da verificare nel programma ufficiale",
     "summary": "Rassegna in teatri diversi secondo la data. La sede indicata per ogni giornata segue il programma comunale; indirizzi e punti sulla mappa restano da verificare.",
     "locationsByDay": {
-      "2026-11-08": "Teatro S. Giovanni Evangelista · Circoscrizione 4",
+      "2026-11-08": "Teatro Parrocchiale di San Giovanni Evangelista · Via del Quadrato , 37137 Verona Italia",
       "2026-11-13": "Teatro Autrora · Circoscrizione 6 (denominazione riportata dalla fonte; da verificare)",
-      "2026-11-19": "Teatro Camploy · Circoscrizione 1",
+      "2026-11-19": "Teatro Camploy · Via Cantarane n. 32 37129 Verona",
       "2026-12-08": "Teatro David · Circoscrizione 5",
       "2026-12-12": "Teatro San Benedetto · Circoscrizione 2"
     },
     "occurrences": {
-      "2026-11-08": {"location": "Teatro S. Giovanni Evangelista · Circoscrizione 4", "coordinates": null, "verified": false, "reviewedOn": "2026-10-26"},
-      "2026-11-13": {"location": "Teatro Autrora · Circoscrizione 6 (denominazione riportata dalla fonte; da verificare)", "coordinates": null, "verified": false, "reviewedOn": "2026-10-26"},
-      "2026-11-19": {"location": "Teatro Camploy · Circoscrizione 1", "coordinates": null, "verified": false, "reviewedOn": "2026-10-26"},
-      "2026-12-08": {"location": "Teatro David · Circoscrizione 5", "coordinates": null, "verified": false, "reviewedOn": "2026-10-26"},
-      "2026-12-12": {"location": "Teatro San Benedetto · Circoscrizione 2", "coordinates": null, "verified": false, "reviewedOn": "2026-10-26"}
+      "2026-11-08": {
+        "location": "Teatro Parrocchiale di San Giovanni Evangelista · Via del Quadrato , 37137 Verona Italia",
+        "verified": true,
+        "venueId": 17970,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-13": {
+        "location": "Teatro Autrora · Circoscrizione 6 (denominazione riportata dalla fonte; da verificare)",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-19": {
+        "location": "Teatro Camploy · Via Cantarane n. 32 37129 Verona",
+        "verified": true,
+        "venueId": 352,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-08": {
+        "location": "Teatro David · Circoscrizione 5",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-12": {
+        "location": "Teatro San Benedetto · Circoscrizione 2",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      }
+    },
+    "verification": {
+      "sourceRevision": "3c284b27031a04aee65d02e5726b23a7b5427a71736cc06c52791770f858faaf",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24748"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Il-Teatro-nei-Quartieri-2026"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
     }
   },
   "https://www.comune.verona.it/Vivere-il-comune/Eventi/Hostaria-XII-Festival-del-vino-2026": {
@@ -39,6 +77,33 @@
     "locationsByDay": {
       "2026-10-17": "Lungadige XXVI Luglio 1944 · Parona, Verona",
       "2026-11-07": "Piazza Isolo · Verona"
+    },
+    "verification": {
+      "sourceRevision": "13339d285a2bfab73330b5f9c90988ff51f26deeb826649bd1cc8c912819b675",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Soffitte-in-Piazza-2026"
+        },
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/17809"
+        }
+      ]
+    },
+    "occurrences": {
+      "2026-10-17": {
+        "location": "Lungadige XXVI Luglio 1944 · Parona, Verona",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-07": {
+        "location": "Piazza Isolo · Verona",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      }
     }
   },
   "https://www.comune.verona.it/Vivere-il-comune/Eventi/Nachleben-Festival-Internazionale-di-fotografia-e-arti-visive-2026": {
@@ -50,5 +115,1734 @@
     "priceLabel": "Condizioni di accesso nel programma",
     "theme": "art",
     "categoryLabel": "Arte e fotografia"
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Corso-di-Burraco": {
+    "verification": {
+      "sourceRevision": "83fda30b56d7c1a12a2322ab1d00ba5f96722e0ed2283db91989c1780c27c38d",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24501"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Corso-di-Burraco"
+        },
+        {
+          "kind": "attachment",
+          "url": "https://www.comune.verona.it/content/download/24501/582310/6/CORSO+DI+BURRACO+TOMBETTA.png",
+          "sha256": "0d1f8b28cdc3dbbe8e043651f98b6d3d460ec90530093387e03dd3aaa6979255"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-10-29": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-05": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-12": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-19": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-26": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-03": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-10": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-17": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-24": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-31": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona"
+    },
+    "occurrences": {
+      "2026-10-29": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-05": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-12": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-19": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-26": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-03": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-10": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-17": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-24": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-31": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Il-Mercoledi-della-Scienza2": {
+    "verification": {
+      "sourceRevision": "cb3cfeec6bc2c9b4d13c65a709b34b9567c4ad929e22cd6049f60e1ce20e8b56",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24241"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Il-Mercoledi-della-Scienza2"
+        },
+        {
+          "kind": "attachment",
+          "url": "https://www.comune.verona.it/content/download/24241/576262/2/volantino+scienza+CORRETTO+2026-27.pdf",
+          "sha256": "a943a32d40ca037a2f05b88f62d5ad3c498eb4562c31919de4d65eb425c0c3f1"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-10-29": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2026-11-11": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2026-11-18": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2026-12-09": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2026-12-16": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-01-13": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-01-20": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-01-28": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-02-10": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-02-17": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-03-03": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-03-17": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-03-31": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-04-14": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-04-21": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-05-12": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-05-19": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+      "2027-05-27": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona"
+    },
+    "occurrences": {
+      "2026-10-29": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-11": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-18": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-09": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-16": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-13": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-20": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-28": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-02-10": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-02-17": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-03": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-17": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-31": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-04-14": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-04-21": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-12": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-19": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-27": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Ginnasticamente.-La-ginnastica-per-menti-attive": {
+    "verification": {
+      "sourceRevision": "3b4bb5437fd51383a3d50f209406e8b82a081c2c407562c1a1a280be83c02c0d",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24514"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Ginnasticamente.-La-ginnastica-per-menti-attive"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-10-30": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-06": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-13": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-20": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-27": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-04": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-11": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-18": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona"
+    },
+    "occurrences": {
+      "2026-10-30": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-06": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-13": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-20": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-27": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-04": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-11": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-18": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Leggiamo-in-compagnia-momenti-di-lettura-condivisa": {
+    "verification": {
+      "sourceRevision": "e542b95d19bc608b737e1eacd4b442be7aaee6e4eabbdc87486abdfac2b1052c",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24503"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Leggiamo-in-compagnia-momenti-di-lettura-condivisa"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-10-30": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-06": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-13": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-20": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-27": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-04": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-11": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-18": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona"
+    },
+    "occurrences": {
+      "2026-10-30": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-06": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-13": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-20": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-27": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-04": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-11": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-18": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Compagna-chitarra.-Corsi-di-chitarra-per-tutti-e": {
+    "verification": {
+      "sourceRevision": "7d5d5d594044eea340575d9e7f28ba60e32130f1c8f54e6b6215603ad67c0ec3",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24512"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Compagna-chitarra.-Corsi-di-chitarra-per-tutti-e"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-10-30": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-06": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-13": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-20": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-27": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-04": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-11": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-18": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-25": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2027-01-01": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2027-01-08": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2027-01-15": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2027-01-22": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona"
+    },
+    "occurrences": {
+      "2026-10-30": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-06": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-13": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-20": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-27": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-04": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-11": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-18": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-25": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-01": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-08": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-15": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-22": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Bulbetto-o-scherzetto": {
+    "verification": {
+      "sourceRevision": "d0b123c57fc9dfa74d873197b48c365a633a323a8efcb2ee0f8026b89c29cac8",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24957"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Bulbetto-o-scherzetto"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-10-31": "Otto punti di distribuzione in città · scegli la sede nel programma ufficiale"
+    },
+    "occurrences": {
+      "2026-10-31": {
+        "location": "Otto punti di distribuzione in città · scegli la sede nel programma ufficiale",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Centro-di-ascolto": {
+    "verification": {
+      "sourceRevision": "017e4dd13445835581ca2fe5ad49baa59834889a7c9e059c5abe332eff2308e7",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/25196"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Centro-di-ascolto"
+        },
+        {
+          "kind": "attachment",
+          "url": "https://www.comune.verona.it/ocmultibinary/download/25196/598461/3/959afa17b589f0dd7db6ddb2652f0fd0.pdf/file/Centro%2Bascolto.pdf",
+          "sha256": "831e83873466182314581d44dc2f83a75c4f8689dba4aca9293aad2ef02ce9c0"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-02": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2026-11-09": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2026-11-16": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2026-11-23": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2026-11-30": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2026-12-07": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2026-12-14": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2026-12-21": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2026-12-28": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-01-04": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-01-11": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-01-18": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-01-25": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-02-01": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-02-08": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-02-15": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-02-22": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-03-01": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-03-08": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-03-15": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-03-22": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-03-29": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-04-05": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-04-12": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-04-19": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-04-26": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-05-03": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-05-10": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-05-17": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-05-24": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-05-31": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-06-07": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-06-14": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-06-21": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+      "2027-06-28": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135"
+    },
+    "occurrences": {
+      "2026-11-02": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-09": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-16": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-23": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-30": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-07": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-14": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-21": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-28": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-04": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-11": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-18": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-25": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-02-01": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-02-08": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-02-15": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-02-22": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-01": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-08": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-15": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-22": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-29": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-04-05": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-04-12": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-04-19": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-04-26": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-03": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-10": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-17": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-24": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-31": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-06-07": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-06-14": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-06-21": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-06-28": {
+        "location": "Centro di Comunità di Cadidavid · Piazza Roma 8, 37135",
+        "verified": true,
+        "venueId": 6554,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Ginnasticamente-La-Ginnastica-per-le-menti-attive": {
+    "verification": {
+      "sourceRevision": "9ccc7971be076c2da841f738ccaf51be9206b75f0e3c96b90df19e8f64000f4a",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24913"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Ginnasticamente-La-Ginnastica-per-le-menti-attive"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-02": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+      "2026-11-09": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+      "2026-11-16": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+      "2026-11-23": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+      "2026-11-30": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+      "2026-12-07": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona"
+    },
+    "occurrences": {
+      "2026-11-02": {
+        "location": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+        "verified": true,
+        "venueId": 6542,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-09": {
+        "location": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+        "verified": true,
+        "venueId": 6542,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-16": {
+        "location": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+        "verified": true,
+        "venueId": 6542,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-23": {
+        "location": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+        "verified": true,
+        "venueId": 6542,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-30": {
+        "location": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+        "verified": true,
+        "venueId": 6542,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-07": {
+        "location": "Centro di Comunità di Via Velino · Via Velino 22, 37136 Verona",
+        "verified": true,
+        "venueId": 6542,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Giovani-menti-in-gioco-tra-scacchi-e-creativita": {
+    "verification": {
+      "sourceRevision": "12fc91b156207e6f93ce30a9ef8d1f5b6223c8e49ddb3251cf9aa069255e87f4",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/25194"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Giovani-menti-in-gioco-tra-scacchi-e-creativita"
+        },
+        {
+          "kind": "attachment",
+          "url": "https://www.comune.verona.it/ocmultibinary/download/25194/598400/3/d0178c867c026b13c03698ee3f24951e.pdf/file/Menti%2Bin%2Bgioco%2B%25282%2529.pdf",
+          "sha256": "81a6448655ad6171ef29659a8dcbcd5e3b78b99e2b4c0a74484faaa2d91885a1"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-02": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-11-09": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-11-16": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-11-23": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-11-30": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona"
+    },
+    "occurrences": {
+      "2026-11-02": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-09": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-16": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-23": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-30": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Yoga-sulla-sedia": {
+    "verification": {
+      "sourceRevision": "683f1ed79960e08378bb5a5a1b9f6ade59ef2ed520f2f2034b9a001998c2b66c",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24498"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Yoga-sulla-sedia"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-03": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-10": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-17": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-24": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-01": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-08": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-15": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-22": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-29": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona"
+    },
+    "occurrences": {
+      "2026-11-03": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-10": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-17": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-24": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-01": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-08": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-15": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-22": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-29": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Armonia-e-benessere": {
+    "verification": {
+      "sourceRevision": "c33c20d58e1b8013d402ee8af1bd351260d63891eb078a2c2f0f5843fb019573",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24499"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Armonia-e-benessere"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-03": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-10": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-17": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-24": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-01": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-08": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-15": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-22": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-29": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona"
+    },
+    "occurrences": {
+      "2026-11-03": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-10": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-17": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-24": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-01": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-08": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-15": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-22": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-29": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Misurazione-della-glicemia": {
+    "verification": {
+      "sourceRevision": "d3e734aba18324b9892d4a031586a84029b186c9bf65afb18e748dff7aa3bb85",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/25175"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Misurazione-della-glicemia"
+        },
+        {
+          "kind": "attachment",
+          "url": "https://www.comune.verona.it/ocmultibinary/download/25175/597929/2/d11caba702a2b6eebd9d9b4ee248c928.pdf/file/Glicemia%2B%25284%2529.pdf",
+          "sha256": "153dd7cf093c1f2b2910cc729a47b1084f9b2b63bb933ad17a1425423d3fc545"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-04": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona"
+    },
+    "occurrences": {
+      "2026-11-04": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Impariamo-l-italiano": {
+    "verification": {
+      "sourceRevision": "31ffba1a96c87b9dd7985fd01a4261ae870de7e69597f9e07da0d6c9601231f3",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24502"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Impariamo-l-italiano"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-04": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-11": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-18": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-25": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-02": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona"
+    },
+    "occurrences": {
+      "2026-11-04": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-11": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-18": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-25": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-02": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Parliamo-in-italiano2": {
+    "verification": {
+      "sourceRevision": "1e4e2e16dfe846dbc792bcb9c1b430d6a0da5575497406f3f6bce2c6e6837074",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24307"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Parliamo-in-italiano2"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-04": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-11-11": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-11-18": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-11-25": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-12-02": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-12-09": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-12-16": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-12-23": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-12-30": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-01-06": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-01-13": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-01-20": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-01-27": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-02-03": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-02-10": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-02-17": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-02-24": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-03-03": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-03-10": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-03-17": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-03-24": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-03-31": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-04-07": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-04-14": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-04-21": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-04-28": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-05-05": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-05-12": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-05-19": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-05-26": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-06-02": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-06-09": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-06-16": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-06-23": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2027-06-30": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona"
+    },
+    "occurrences": {
+      "2026-11-04": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-11": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-18": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-25": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-02": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-09": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-16": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-23": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-30": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-06": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-13": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-20": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-01-27": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-02-03": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-02-10": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-02-17": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-02-24": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-03": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-10": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-17": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-24": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-03-31": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-04-07": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-04-14": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-04-21": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-04-28": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-05": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-12": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-19": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-05-26": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-06-02": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-06-09": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-06-16": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-06-23": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2027-06-30": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Terza-eta.-Intrecci-di-storie-e-speranza": {
+    "verification": {
+      "sourceRevision": "82a68d7cb14e81939cdb93e5d9ed7175cb849692fa03015b5e78f82347f24855",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/24518"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Terza-eta.-Intrecci-di-storie-e-speranza"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-04": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-11": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-18": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-11-25": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+      "2026-12-02": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona"
+    },
+    "occurrences": {
+      "2026-11-04": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-11": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-18": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-25": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-12-02": {
+        "location": "Centro di Comunità di Tombetta · Via Volturno 22, 37135 Verona",
+        "verified": true,
+        "venueId": 6543,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Pillole-digitali": {
+    "verification": {
+      "sourceRevision": "59672b975520dac5245ae18f2b28544a1ac315ddff397d98031e47a436c95174",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/25193"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Pillole-digitali"
+        },
+        {
+          "kind": "attachment",
+          "url": "https://www.comune.verona.it/content/download/25193/598360/3/Pillole+Digitali+%282%29.pdf",
+          "sha256": "d430552eff15c58651c29990a43c67144e4705ef9cb9967a903a7e597fe0fb17"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-04": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-11-11": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-11-18": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+      "2026-11-25": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona"
+    },
+    "occurrences": {
+      "2026-11-04": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-11": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-18": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-25": {
+        "location": "Centro di Comunità di Palazzina · Via Copparo 19, 37134 Verona",
+        "verified": true,
+        "venueId": 6552,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Verona-Piano-Festival-2026": {
+    "verification": {
+      "sourceRevision": "7c3628a62bb51343b5562238be7e14968bda84244b3d6133ab9e12982259fd71",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/17911"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Verona-Piano-Festival-2026"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-10": "Teatro DIM · Castelnuovo del Garda · punto della sede da verificare",
+      "2026-11-23": "Sala Maffeiana · via roma 1/ G Verona"
+    },
+    "occurrences": {
+      "2026-11-10": {
+        "location": "Teatro DIM · Castelnuovo del Garda · punto della sede da verificare",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-23": {
+        "location": "Sala Maffeiana · via roma 1/ G Verona",
+        "verified": true,
+        "venueId": 9371,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Teoderico-e-Verona-526-d.C.-2026": {
+    "verification": {
+      "sourceRevision": "ac0a01901a7e16416a99080e2c985a7d3e8f488b41ef8fdbe35d14c11146de2f",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/18953"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Teoderico-e-Verona-526-d.C.-2026"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-12": "Museo Storia Naturale · Lungadige Porta Vittoria 9, 37129 Verona"
+    },
+    "occurrences": {
+      "2026-11-12": {
+        "location": "Museo Storia Naturale · Lungadige Porta Vittoria 9, 37129 Verona",
+        "verified": true,
+        "venueId": 6620,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Primo-soccorso-un-incontro-per-imparare-a-salvare-una-vita": {
+    "verification": {
+      "sourceRevision": "8501d97b4232e7678602f5fc67f28b4ad81b077814efa49999590286498475ff",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/25321"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Primo-soccorso-un-incontro-per-imparare-a-salvare-una-vita"
+        },
+        {
+          "kind": "attachment",
+          "url": "https://www.comune.verona.it/content/download/25321/601991/1/Incontro+Formativo+BLS.pdf",
+          "sha256": "4c01682edd541c900df28dee23ad6d0c37c2aae2d17a562f5525c96c3b79c763"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-14": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona"
+    },
+    "occurrences": {
+      "2026-11-14": {
+        "location": "Sala consiliare della Circoscrizione 7 · Piazza del Popolo 15, Verona",
+        "verified": true,
+        "venueId": 645,
+        "reviewedOn": "2026-10-29"
+      }
+    }
+  },
+  "https://www.comune.verona.it/Vivere-il-comune/Eventi/Shakespeare-2026": {
+    "verification": {
+      "sourceRevision": "c2e7018f337de764c8756f5f7ddf8d652f9771b5a4efc149caa9c83accaf9d14",
+      "reviewedOn": "2026-10-29",
+      "validUntil": "2026-11-28",
+      "evidence": [
+        {
+          "kind": "event-api",
+          "url": "https://www.comune.verona.it/api/opendata/v2/content/read/15851"
+        },
+        {
+          "kind": "programme-page",
+          "url": "https://www.comune.verona.it/Vivere-il-comune/Eventi/Shakespeare-2026"
+        }
+      ],
+      "scope": "Associazione sede alle sole date esplicite revisionate; orari API conservati, ingresso esatto e accessibilità non certificati."
+    },
+    "locationsByDay": {
+      "2026-11-19": "Sede del singolo appuntamento da verificare nel programma Casa Shakespeare",
+      "2026-11-20": "Sede del singolo appuntamento da verificare nel programma Casa Shakespeare",
+      "2026-11-21": "Sede del singolo appuntamento da verificare nel programma Casa Shakespeare",
+      "2026-11-22": "Sede del singolo appuntamento da verificare nel programma Casa Shakespeare"
+    },
+    "occurrences": {
+      "2026-11-19": {
+        "location": "Sede del singolo appuntamento da verificare nel programma Casa Shakespeare",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-20": {
+        "location": "Sede del singolo appuntamento da verificare nel programma Casa Shakespeare",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-21": {
+        "location": "Sede del singolo appuntamento da verificare nel programma Casa Shakespeare",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      },
+      "2026-11-22": {
+        "location": "Sede del singolo appuntamento da verificare nel programma Casa Shakespeare",
+        "verified": false,
+        "reviewedOn": "2026-10-29"
+      }
+    }
   }
 }

@@ -19,9 +19,18 @@ function homePersonalItems(){
 function renderHomePersonal(){
   $('home-personal-legacy').hidden=true;
   const feed=$('home-personal-feed');feed.replaceChildren();
-  const items=homePersonalItems();$('home-personal-section').hidden=!items.length;
+  const items=homePersonalItems();$('home-personal-section').hidden=false;
+  $('home-all-events').onclick=()=>setView('calendar');
+  const suggestions=$('home-event-suggestions');suggestions.replaceChildren();
+  const candidates=events.filter(e=>e.localVerified&&eventDay(e.endsAt)>=today&&(e.endsAt.length===10||Date.parse(e.endsAt)<=Date.parse(e.startsAt)||Date.parse(e.endsAt)>Date.now())).sort((a,b)=>a.startsAt.localeCompare(b.startsAt));
+  const shown=new Set(items.filter(row=>row.kind==='event').map(row=>row.title));
+  for(const item of candidates){if(shown.size===2)break;if(shown.has(item.title))continue;shown.add(item.title);const button=el('button','','home-personal-row home-smart-row');button.type='button';button.setAttribute('data-focus-key','home-idea-'+item.id);button.append(el('strong',item.title),el('span',eventWhen(item),'home-row-note'));button.onclick=()=>openDetails(item);suggestions.append(button);}
+  $('home-events-title').hidden=!suggestions.children.length;
+  if(!shown.size)suggestions.append(el('p','Nessuna proposta verificata al momento. Consulta il calendario.','home-events-empty'));
   for(const row of items){const button=el('button','','home-personal-row home-smart-row');button.setAttribute('data-focus-key','home-smart-'+row.kind);button.setAttribute('aria-label',row.label+': '+row.title+'. '+row.note);button.append(el('span',row.label,'home-row-label'),el('strong',row.title),el('span',row.note,'home-row-note'));button.onclick=row.open;feed.append(button);}
 }
 const previousHomeWasteEntry=renderWasteEntry;
 renderWasteEntry=()=>{previousHomeWasteEntry();if(view==='home')renderHomePersonal();};
+const homeMoreGamesAction=$('games').onclick;
+$('games').onclick=event=>{$('more-dialog').close();homeMoreGamesAction?.call($('games'),event);};
 if(view==='home')renderHome();

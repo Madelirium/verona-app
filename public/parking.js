@@ -105,7 +105,7 @@ function drawParkingMap(point,rows){
       L.circleMarker([item.lat,item.lon],{radius:parkingSelected===item.id?12:9,color:'#fff',weight:2,fillColor:color,fillOpacity:1,interactive:false}).addTo(parkingLayer);
     }
     if(!parkingMap.parkingClickBound){parkingMap.on?.('click',event=>{if(parkingPicking)setParkingTarget({lat:event.latlng.lat,lon:event.latlng.lng,name:'Punto scelto sulla mappa'});});parkingMap.parkingClickBound=true;}
-    parkingMap.fitBounds([...(point||!rows.length?[[center.lat,center.lon]]:[]),...rows.map(item=>[item.lat,item.lon])],{padding:[24,24],maxZoom:16});
+    parkingMap.fitBounds([...(point||!rows.length?[[center.lat,center.lon]]:[]),...rows.map(item=>[item.lat,item.lon])],{padding:[24,24],maxZoom:16,animate:false});
   }catch{note.textContent='Mappa non disponibile. Puoi usare l’elenco e le indicazioni.';parkingView='list';parkingLayout();}
 }
 function selectParking(id,fromMap){

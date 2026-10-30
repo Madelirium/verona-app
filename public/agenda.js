@@ -25,6 +25,7 @@ function agendaCard(e,day,past=false){
   if(!timed&&eventDay(e.startsAt)!==eventDay(e.endsAt))text.append(el('small','Fino al '+formatDay(eventDay(e.endsAt),{day:'numeric',month:'short'})+' · verifica i giorni nel programma','agenda-period-note'));
   const tags=el('div','','agenda-tags');if(e.category?.length)tags.append(el('span',e.category[0]));if(agendaFree(e))tags.append(el('span','Gratuito','agenda-free'));else if(e.priceLabel&&!/verificare|non indicat|consult/i.test(e.priceLabel))tags.append(el('span',e.priceLabel));if(agendaAlreadyStarted(e,day)&&Date.parse(e.endsAt)>Date.now())tags.append(el('span','Già iniziato'));else if(agendaAlreadyStarted(e,day)&&Date.parse(e.endsAt)<=Date.parse(e.startsAt))tags.append(el('span','Fine non indicata'));
   text.append(tags);body.append(text);const image=eventImage(e);if(image){const thumb=makeEventImage(e,'event-thumbnail');thumb.loading='lazy';body.append(thumb);}card.append(body);
+  const savedReview=savedEventReviewFor(e);if(savedReview?.message)card.append(el('p',savedReview.message,'detail-note'));
   const footer=el('div','','agenda-card-footer'),saveButton=el('button',state?'✓ Salvato':'♡ Salva',state?'chosen':'');saveButton.setAttribute('data-focus-key','event-save-'+e.id+'-'+day);saveButton.setAttribute('aria-label',(state?'Gestisci evento salvato: ':'Salva: ')+e.title);saveButton.onclick=()=>{const scroll=$('events').scrollTop||0;if(state)openDetails(e);else{save(e.id,'interested');$('events').scrollTop=scroll;}};
   const detail=el('button','Apri →');detail.setAttribute('data-focus-key','event-read-'+e.id+'-'+day);detail.setAttribute('aria-label','Apri evento: '+e.title);detail.onclick=open.onclick;footer.append(saveButton,detail);card.append(footer);
   const credit=el('small',image?eventImageCredit(image)+' · Crediti nei dettagli':e.source,'agenda-credit');card.append(credit);
@@ -89,3 +90,34 @@ if(typeof document.addEventListener==='function'){
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')update();});
   const tick=()=>setTimeout(()=>{update();tick();},60000);tick();
 }
+
+function renderInlineMonth(filtered){
+ const first=month+'-01',offset=(new Date(first+'T12:00:00Z').getUTCDay()+6)%7,days=new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5)),0)).getUTCDate();
+ $('inline-month-title').replaceChildren(el('span',formatDay(first,{month:'long'})),el('span',' '+month.slice(0,4),'inline-month-year'));
+ const grid=$('inline-month-grid');grid.replaceChildren();
+ for(let i=0;i<Math.ceil((offset+days)/7)*7;i++){
+  const day=shiftDay(first,i-offset),rows=filtered.filter(e=>occursOn(e,day)),saved=rows.filter(isSavedEvent).length,button=el('button','','inline-month-day');
+  button.type='button';button.setAttribute('data-day',day);button.setAttribute('aria-pressed',String(day===selected));button.setAttribute('tabindex',day===selected?'0':'-1');
+  button.classList.toggle('outside',!day.startsWith(month));button.classList.toggle('today',day===today);button.classList.toggle('selected',day===selected);
+  button.setAttribute('aria-label',formatDay(day,{weekday:'long',day:'numeric',month:'long',year:'numeric'})+', '+rows.length+' eventi'+(saved?', '+saved+' salvati':''));
+  button.append(el('span',String(Number(day.slice(-2))),'inline-day-number'),el('span',saved?'♥':rows.length?'•':'','inline-day-indicator'+(saved?' has-saved':'')));
+  button.onclick=()=>{selectAgendaDay(day);focusInlineDay(day);};
+  button.addEventListener('keydown',event=>{
+   let target;const delta={ArrowLeft:-1,ArrowRight:1,ArrowUp:-7,ArrowDown:7}[event.key];
+   if(delta)target=shiftDay(day,delta);
+   if(event.key==='Home')target=shiftDay(day,-((new Date(day+'T12:00:00Z').getUTCDay()+6)%7));
+   if(event.key==='End')target=shiftDay(day,6-((new Date(day+'T12:00:00Z').getUTCDay()+6)%7));
+   if(['PageUp','PageDown'].includes(event.key)){event.preventDefault();changeInlineMonth(event.key==='PageUp'?-1:1);focusInlineDay(selected);return;}
+   if(target){event.preventDefault();selectAgendaDay(target);focusInlineDay(target);}
+  });grid.append(button);
+ }
+}
+function focusInlineDay(day){Array.from($('inline-month-grid').children).find(button=>button.getAttribute('data-day')===day)?.focus({preventScroll:true});}
+function changeInlineMonth(delta){
+ const next=shiftMonth(month,delta),last=new Date(Date.UTC(Number(next.slice(0,4)),Number(next.slice(5)),0)).getUTCDate();
+ selectAgendaDay(next+'-'+String(Math.min(Number(selected.slice(-2)),last)).padStart(2,'0'));
+}
+$('inline-month-prev').onclick=()=>changeInlineMonth(-1);$('inline-month-next').onclick=()=>changeInlineMonth(1);
+$('inline-month-today').onclick=()=>agendaSelection('today');
+$('inline-month-filters').onclick=()=>$('open-filters').onclick();
+$('inline-month-map').onclick=()=>{$('filters-dialog').close();$('calendar-event-map').onclick();};

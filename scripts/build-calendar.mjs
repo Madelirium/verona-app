@@ -1,4 +1,6 @@
 import {eventVenueForDay} from './event-occurrence.mjs';
+import {applyEventEditorial,editorialSummary} from './event-editorial.mjs';
+import {eventChangeReview} from './event-changes.mjs';
 import {directBusTrips} from './direct-bus.mjs';
 import {walkingPreviewAvailable,createWalkingClient,walkingEventArrival} from './walking-route.mjs';
 import {eventTripAssessment} from './event-trip-plan.mjs';
@@ -68,17 +70,13 @@ export async function buildCalendar() {
   data.waste.zones.forEach(zone=>{zone.validFrom=data.waste.validFrom;});data.waste.zones.push(...amia.zones);data.waste.validFrom='2026-01-01';data.waste.calendarsCheckedOn=amia.checkedOn;validateWasteData(data.waste);
   data.pharmacies=JSON.parse(await readFile(new URL('data/pharmacies.json',root),'utf8'));validatePharmacies(data.pharmacies);
   const editorial=JSON.parse(editorialJson);
+  let verifiedVenues={venues:{}};try{verifiedVenues=JSON.parse(await readFile(new URL('data/event-venue-verifications.json',root),'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
+  const venueChecks=data.importReport?.sources?.find(s=>s.source==='Comune di Verona')?.diagnostics?.editorialVenues||{};
+  const documentChecks=data.importReport?.sources?.find(s=>s.source==='Comune di Verona')?.diagnostics?.editorialDocuments||{};
   data.events=data.events.map(e=>{
-    const review=editorial[e.sourceUrl];
-    if(!review)return e;
-    const {locationsByDay,...fields}=review;
-    const day=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Rome',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(e.startsAt));
-    if(locationsByDay&&!locationsByDay[day]){
-      if(!fields.occurrences)return e;
-      return {...e,...fields,locationsByDay,location:fields.location||'Sede della giornata da verificare nel programma ufficiale',coordinates:null,mapDisabled:true};
-    }
-    return {...e,...fields,...(locationsByDay?{locationsByDay}:{}),...(locationsByDay?{location:locationsByDay[day]}:{}),area:'Verona',areaConfirmed:true};
+    return applyEventEditorial(e,editorial[e.sourceUrl],{venues:verifiedVenues.venues,venueChecks,documentChecks});
   });
+  data.editorialReport=editorialSummary(data.events);
   data.districts=districtCatalog;
   data.events=data.events.map(e=>({...e,districtMatches:districtMatches(e.location||'')}));
   data.news.items=data.news.items.map(i=>{const value=`${i.title} ${i.summary}`,zone=explicitDistricts(value)[0];return {...i,timing:i.timing||extractNewsTiming(i),area:zone?`Circoscrizione ${zone}`:null,districtMatches:districtMatches(value)};});
@@ -108,7 +106,7 @@ export async function buildCalendar() {
   const rankedLogic=await readFile(new URL('public/ranked.js',root),'utf8');
   const analyticsLogic=await readFile(new URL('public/analytics.js',root),'utf8');
   const pwaLogic=await readFile(new URL('public/pwa.js',root),'utf8');
-  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>[eventVenueForDay,datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+logic+'\n'+newsLogic+'\n'+wasteLogic+'\n'+pharmacyLogic+'\n'+districtLogic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+parkingLogic+'\n'+travelLogic+'\n'+weatherLogic+'\n'+exploreNeedsLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic+'\n'+savedLogic+'\n'+homePersonalLogic+'\n'+navigationLogic+'\n'+areaPreferencesLogic+'\n'+pwaLogic+'\n'+analyticsLogic);
+  const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>[eventChangeReview,eventVenueForDay,datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+logic+'\n'+newsLogic+'\n'+wasteLogic+'\n'+pharmacyLogic+'\n'+districtLogic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+parkingLogic+'\n'+travelLogic+'\n'+weatherLogic+'\n'+exploreNeedsLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic+'\n'+savedLogic+'\n'+homePersonalLogic+'\n'+navigationLogic+'\n'+areaPreferencesLogic+'\n'+pwaLogic+'\n'+analyticsLogic);
   await writeFile(new URL('public/index.html',root),html);
   await buildPwa();
   return data.events.length;

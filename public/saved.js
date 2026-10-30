@@ -30,6 +30,7 @@ function renderSavedHub(){
       card.append(el('p',when,'saved-hub-meta'),
         savedHubOpen(item.title,row.kind+'-'+item.id,()=>deadline?openNews(item):openDetails(item)),el('p',status,'saved-hub-status'));
       if(deadline&&item.needsReview)card.append(el('p','Data salvata da ricontrollare sulla fonte ufficiale.','saved-hub-meta'));
+      if(!deadline){const review=savedEventReviewFor(item);if(review?.message){const notice=el('p',review.message,'saved-hub-note');notice.setAttribute('role','status');card.append(notice);}}
       if(!deadline){if(item.location)card.append(el('p',item.location,'saved-hub-meta'));if(eventDay(item.startsAt)!==eventDay(item.endsAt))card.append(el('p','Fino al '+formatDay(eventDay(item.endsAt),{day:'numeric',month:'long'}),'saved-hub-meta'));}
       if(deadline){const remove=el('button','Rimuovi scadenza','saved-hub-remove');remove.setAttribute('data-focus-key','saved-remove-deadline-'+item.id);remove.setAttribute('aria-label','Rimuovi scadenza: '+item.title);remove.onclick=()=>{toggleNewsDeadline(item);$('saved-feedback').textContent=$('news-feedback').textContent;};card.append(remove);}
     }else if(category==='news'){

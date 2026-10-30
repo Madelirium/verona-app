@@ -1,51 +1,56 @@
 import { createHash } from 'node:crypto';
+import {eventSourceRevision} from './event-editorial.mjs';
+import {text,publicEventText,comuneDetails} from './event-text.mjs';
+import {narrativeVenueAddresses,addressConflict,disableUncertainLocation,variableVenueProgramme} from './event-location-quality.mjs';
+export {text} from './event-text.mjs';
 
 export const sources = {
   comune: { name: 'Comune di Verona', url: 'https://www.comune.verona.it/Vivere-il-comune/Eventi', license: 'CC BY 4.0 salvo eccezioni e contenuti di terzi', licenseUrl: 'https://www.comune.verona.it/Note-legali' },
   fiere: { name: 'Veronafiere', url: 'https://www.veronafiere.it/', license: 'Riutilizzo da verificare prima della pubblicazione', licenseUrl: 'https://www.veronafiere.it/copyright-disclaimer/' }
 };
-export function text(value = '') {
-  const entities = { amp: '&', quot: '"', apos: "'", lt: '<', gt: '>', nbsp: ' ', rsquo: '’', ndash: '–', egrave: 'è', agrave: 'à', ograve: 'ò', ugrave: 'ù', igrave: 'ì' };
-  return String(value).replace(/<[^>]*>/g, ' ').replace(/&(#x[\da-f]+|#\d+|\w+);/gi, (m, key) => {
-    if (key.startsWith('#')) { const n = key[1] === 'x' ? parseInt(key.slice(2), 16) : Number(key.slice(1)); return n > 0 && n <= 0x10ffff ? String.fromCodePoint(n) : ''; }
-    return entities[key] ?? m;
-  }).replace(/\s+/g, ' ').trim();
-}
 export function romeDay(date = new Date()) {
   return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
 }
-function validDate(value) { return typeof value === 'string' && Number.isFinite(Date.parse(value)); }
+function validDate(value) {
+  if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2}))?$/.test(value)||!Number.isFinite(Date.parse(value)))return false;
+  const day=value.slice(0,10);return new Date(day).toISOString().slice(0,10)===day;
+}
 function base(source, key, title, url, checkedAt) {
   const parsed = new URL(url);
   if (parsed.protocol !== 'https:') throw new Error('La fonte deve usare HTTPS');
   return { id: `${source}-${createHash('sha256').update(String(key)).digest('hex').slice(0, 20)}`, title: text(title), source: sources[source].name, sourceUrl: url, checkedAt, timezone: 'Europe/Rome', price: null, image: null, publicationStatus: 'draft', reviewReasons: [], license: sources[source].license, licenseUrl: sources[source].licenseUrl };
 }
 export function comuneAccess(data){
-  const free=data.is_accessible_for_free===1||data.is_accessible_for_free==='1'||data.is_accessible_for_free===true,notes=text(data.cost_notes||'');
+  const free=data.is_accessible_for_free===1||data.is_accessible_for_free==='1'||data.is_accessible_for_free===true,notes=publicEventText(data.cost_notes,600);
   return {price:free?0:null,...free?{priceLabel:'Ingresso gratuito'}:notes?{priceLabel:'Costi e condizioni indicati dalla fonte'}:{},...notes?{accessNotes:notes}:{} };
 }
-export function parseComune(hits, { from, checkedAt }) {
+export function parseComune(hits, { from, checkedAt, onIssue=()=>{} }) {
   const result = [];
   for (const hit of hits) {
     const d = hit.data?.['ita-IT'];
     if (!d?.event_title) continue;
     const t = d.time_interval ?? {};
     // Gli eventi espliciti includono le modifiche alle singole ricorrenze.
-    const occurrences = t.events?.length ? t.events : t.recurrences?.length ? t.recurrences : [{ start: t.input?.startDateTime, end: t.input?.endDateTime }];
+    const occurrences = Array.isArray(t.events) ? t.events : Array.isArray(t.recurrences) ? t.recurrences : [{ start: t.input?.startDateTime, end: t.input?.endDateTime }];
     const alias = hit.extradata?.['ita-IT']?.urlAlias;
     const url = new URL(alias || `/openpa/object/${hit.metadata.id}`, 'https://www.comune.verona.it').href;
     if (new URL(url).hostname !== 'www.comune.verona.it') throw new Error('URL Comune inatteso');
+    const sourceRevision=eventSourceRevision(hit);
     for (const o of occurrences) {
-      if (!validDate(o.start) || !validDate(o.end) || Date.parse(o.end) < Date.parse(o.start)) continue;
+      if (!o || !validDate(o.start) || !validDate(o.end) || Date.parse(o.end) < Date.parse(o.start)) {onIssue({code:'invalid-occurrence',sourceId:hit.metadata.id});continue;}
       if (romeDay(new Date(o.end)) < from) continue;
-      const e = base('comune', `${hit.metadata.id}:${o.start}`, d.event_title, url, checkedAt);
-      Object.assign(e,comuneAccess(d));
+      let e = base('comune', `${hit.metadata.id}:${o.start}`, d.event_title, url, checkedAt);
+      Object.assign(e,comuneAccess(d),comuneDetails(d));
+      e.sourceEventId=hit.metadata.id;
+      e.sourceRevision=sourceRevision;
+      if(typeof o.id==='string'&&/^[A-Za-z0-9:_-]{1,100}$/.test(o.id))e.sourceOccurrenceId=o.id;
+      if(validDate(hit.metadata.modified))e.sourceModifiedAt=hit.metadata.modified;
       const imageId=d.image?.[0]?.classIdentifier==='image'?d.image[0].id:null;
       if(Number.isSafeInteger(imageId)&&imageId>0)e.imageId=imageId;
-      e.startsAt = o.start; e.endsAt = o.end; e.datePrecision = 'datetime';
-      e.category = d.has_public_event_typology ?? [];
+      e.startsAt = o.start; e.endsAt = o.end; e.datePrecision = o.start.length===10?'date':'datetime';
+      e.category = Array.isArray(d.has_public_event_typology)?d.has_public_event_typology.filter(v=>typeof v==='string').map(v=>publicEventText(v,100)):[];
       const venues=Array.isArray(d.takes_place_in)?d.takes_place_in:[];
-      e.location = venues.map(p => p?.name?.['ita-IT']).filter(Boolean).join(' · ') || null;
+      e.location = venues.map(p => p?.name?.['ita-IT']).filter(Boolean).map(v=>publicEventText(v,180)).join(' · ') || publicEventText(d.geo?.address,300) || null;
       if(venues.length&&venues.every(p=>p?.classIdentifier==='place'&&Number.isSafeInteger(p.id)&&p.id>0))e.venueIds=[...new Set(venues.map(p=>p.id))];
       const lat=Number(d.geo?.latitude),lon=Number(d.geo?.longitude);
       if(Number.isFinite(lat)&&Number.isFinite(lon)&&lat>=44.5&&lat<=46.3&&lon>=10&&lon<=12){
@@ -54,6 +59,18 @@ export function parseComune(hits, { from, checkedAt }) {
       }
       e.area = 'Verona'; e.areaConfirmed = false;
       e.reviewReasons = ['Verificare luogo, orari e accesso sulla scheda originale'];
+      e.locationEvidence={address:publicEventText(d.geo?.address,300),narrativeAddresses:narrativeVenueAddresses(d.description)};
+      if(venues.length>1)e=disableUncertainLocation(e,'multiple-linked-venues','la fonte collega più luoghi senza assegnarli alla singola data.');
+      const narrative=e.locationEvidence.narrativeAddresses;
+      if(narrative.length===1&&addressConflict(e.locationEvidence.address,narrative[0]))e=disableUncertainLocation(e,'narrative-address-conflict','indirizzo dell’evento e descrizione non coincidono.');
+      if(narrative.length>1||variableVenueProgramme(d.description,d.geo?.address))e=disableUncertainLocation(e,'multiple-programme-venues','il programma indica luoghi diversi; il punto generico non identifica la sede del giorno.');
+      const recurrenceDay=t.input?.recurrencePattern?.match(/(?:^|;)BYDAY=(MO|TU|WE|TH|FR|SA|SU)(?:;|$)/)?.[1];
+      if(recurrenceDay&&new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Rome',weekday:'short'}).format(new Date(o.start)).slice(0,2).toUpperCase()!==recurrenceDay){
+        e.dateIssues=['recurrence-weekday-exception'];
+        const warning='Data da verificare: questa ricorrenza differisce dal giorno settimanale della regola della fonte; potrebbe essere una modifica. Non è stata spostata automaticamente.';
+        e.reviewReasons.push(warning);e.accessNotes=[e.accessNotes,warning].filter(Boolean).join(' ');
+      }
+      for(const code of [...(e.locationIssues||[]),...(e.dateIssues||[]),...(e.contentIssues||[])])onIssue({code,sourceId:hit.metadata.id});
       result.push(e);
     }
   }

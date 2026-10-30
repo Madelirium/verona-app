@@ -57,3 +57,115 @@
 .news-validity{padding:12px;border:1px solid var(--control-border);border-radius:12px;margin:12px 0;background:var(--page-bg)}.news-validity>strong{font-size:16px}.news-validity p{font-size:15px;line-height:1.5}.news-validity small{display:block;font-size:13px;line-height:1.5;color:var(--text-secondary)}.news-validity .dialog-save{font-size:15px;min-height:44px;margin-top:12px}
 .news-deadline-card{padding:12px;border:1px solid var(--control-border);border-left:4px solid var(--primary);border-radius:12px;background:var(--surface);margin:8px 0}.news-deadline-card>strong{font-size:14px;color:var(--primary)}.news-deadline-card p{font-size:13px;line-height:1.4}.news-deadline-card .news-title{font-size:16px}
 #news-detail-dialog .detail-bar{position:sticky;top:0;z-index:1;background:var(--surface);padding:10px 0}.home-news{min-height:44px!important;font-size:13px!important}
+/* Il mese è la vista principale; solo gli appuntamenti del giorno scorrono. */
+.inline-month{display:none}.calendar-month-layout #inline-month{display:block;flex:none;background:var(--surface);border-radius:16px;padding:3px 4px 4px}
+.calendar-month-layout{grid-template-rows:auto minmax(0,1fr) auto}
+.calendar-month-layout .agenda-workspace{padding:6px 7px 0;gap:5px;background:#f0f3f5}
+.calendar-month-layout #agenda-picker,.calendar-month-layout #agenda-shortcuts,.calendar-month-layout #events-updated{display:none}
+.inline-month-toolbar{display:flex;align-items:center;gap:0;min-height:44px;padding:0 2px}
+.inline-month-toolbar h1{flex:1;min-width:0;font-size:16px;font-weight:750;line-height:1.2;letter-spacing:-.3px;text-transform:capitalize;margin:0;padding-left:5px}
+.inline-month-toolbar button{min-width:44px;min-height:44px;padding:5px;border:0;border-radius:10px;background:transparent;color:var(--primary);font-size:12px}
+#inline-month-prev,#inline-month-next{font-size:26px}#inline-month-today{font-weight:650}
+.inline-month-weekdays,.inline-month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.inline-month-weekdays{font-size:11px;line-height:18px;color:var(--text-secondary);text-align:center;font-weight:600}
+.inline-month-grid .inline-month-day{min-width:0;min-height:44px;height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border:0;border-radius:10px;background:transparent;color:var(--text);padding:1px 0}
+.inline-day-number{font-size:15px;font-weight:600;line-height:25px;width:26px;border-radius:50%}.inline-day-indicator{font-size:12px;line-height:12px;min-height:12px;color:var(--text-secondary)}.inline-day-indicator.has-saved{color:var(--primary)}
+.inline-month-day.outside .inline-day-number{opacity:.4}.inline-month-day.today .inline-day-number{box-shadow:inset 0 0 0 1px var(--primary)}.inline-month-grid .inline-month-day.selected{background:var(--primary);color:var(--on-primary)}.inline-month-day.selected .inline-day-indicator{color:var(--on-primary)}
+.inline-month-legend{display:flex;justify-content:flex-end;gap:12px;margin:1px 5px 0;font-size:10px;line-height:16px;color:var(--text-secondary)}
+.inline-month-day:focus-visible,.inline-month-toolbar button:focus-visible{outline:3px solid var(--primary);outline-offset:-3px}
+.calendar-month-layout .sidebar{min-height:0;overflow:hidden}.calendar-month-layout .sidebar-head{padding:1px 4px 3px;gap:0 4px;min-height:38px}.calendar-month-layout .sidebar-head h2{font-size:14px}.calendar-month-layout .sidebar-head p{font-size:11px}
+.calendar-month-layout #agenda-day-mode{font-size:11px;border:0;background:transparent;min-height:44px;padding:3px;max-width:94px}
+.calendar-month-layout #events{background:var(--surface);border-radius:12px 12px 0 0;padding:0 8px 8px}
+.calendar-month-layout .agenda-suggestion,.calendar-month-layout .agenda-group-heading,.calendar-month-layout .agenda-rich-card .event-thumbnail,.calendar-month-layout .agenda-place,.calendar-month-layout .agenda-tags,.calendar-month-layout .agenda-period-note,.calendar-month-layout .agenda-card-footer,.calendar-month-layout .agenda-credit{display:none}
+.calendar-month-layout .agenda-rich-card{display:grid;grid-template-columns:65px minmax(0,1fr);column-gap:9px;padding:5px 0!important;margin:0!important;border:0!important;border-bottom:1px solid var(--border)!important;border-radius:0!important;background:transparent}
+.calendar-month-layout .agenda-meta{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px}.calendar-month-layout .agenda-time{font-size:13px;line-height:1.3}.calendar-month-layout .agenda-state{font-size:9px;line-height:1.3;padding:2px 3px}
+.calendar-month-layout .agenda-card-body{margin:0;min-width:0}.calendar-month-layout .agenda-rich-card h3{margin:0!important}.calendar-month-layout .agenda-title-button{min-height:44px;font-size:14px;line-height:1.35;font-weight:600;-webkit-line-clamp:2;width:100%}
+.calendar-month-layout .agenda-empty{padding:12px 4px}.calendar-month-layout .agenda-empty h3{font-size:16px;margin:0 0 5px}.calendar-month-layout .agenda-empty p{font-size:13px;margin:3px 0 7px}
+.calendar-month-layout #event-update-warning{font-size:11px;line-height:1.35;margin:0}
+.calendar-month-layout #agenda-filters{flex:none;max-height:44px;overflow:auto;margin:0}
+@media(max-width:360px){.inline-month-toolbar h1{font-size:14px;padding-left:1px}.inline-month-toolbar button{min-width:44px}.calendar-month-layout .agenda-workspace{padding-left:4px;padding-right:4px}}
+@media(max-height:560px){.calendar-month-layout>header{display:none}.calendar-month-layout .agenda-workspace{padding-top:2px;gap:2px}.calendar-month-layout .sidebar-head{min-height:28px;display:flex;gap:5px}.calendar-month-layout .sidebar-head h2{font-size:12px}.calendar-month-layout .sidebar-head p{font-size:10px}.calendar-month-layout #agenda-day-mode{display:none}.inline-month-legend{display:none}}
+@media(max-width:360px){.calendar-month-layout .agenda-workspace{padding-left:2px;padding-right:2px}.calendar-month-layout #inline-month{padding-left:0;padding-right:0}}
+@media(max-height:560px){.calendar-month-layout>.app-top>header{display:none}.calendar-month-layout .agenda-workspace{padding-top:0;gap:0}.calendar-month-layout #inline-month{padding-top:0;padding-bottom:0}.inline-month-weekdays{line-height:14px}.calendar-month-layout .sidebar-head{min-height:20px;padding-top:0;padding-bottom:0}.calendar-month-layout #event-update-warning{font-size:10px;line-height:14px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}}
+@media(max-height:560px){.calendar-month-layout .view-nav{min-height:60px;padding-top:4px;padding-bottom:calc(4px + env(safe-area-inset-bottom))}.calendar-month-layout .view-nav button{min-height:48px}}
+@media(min-height:701px){.inline-month-grid .inline-month-day{height:clamp(44px,6dvh,58px)}}.calendar-month-layout #events{flex:1}
+/* Rifinitura del mese: selezione circolare e ritmo più leggero. */
+.calendar-month-layout .agenda-workspace{background:var(--surface)}
+.calendar-month-layout #inline-month{background:transparent;border-radius:0}
+.inline-month-toolbar h1{font-size:17px;font-weight:700;letter-spacing:-.45px;color:var(--text)}
+.inline-month-toolbar h1 .inline-month-year{font-weight:450;color:var(--text-secondary);letter-spacing:-.2px}
+#inline-month-prev,#inline-month-next{font-size:25px;font-weight:350}#inline-month-today{font-weight:500;color:var(--text-secondary);font-size:12px}
+.inline-month-weekdays{font-weight:500;color:var(--text-secondary);font-size:10px}
+.inline-month-grid .inline-month-day{border-radius:0;gap:0}
+.inline-month-grid .inline-month-day.selected{background:transparent;color:var(--text)}
+.inline-month-day .inline-day-number{width:30px;height:30px;line-height:30px;border-radius:50%;font-size:14px;font-weight:550;display:block;text-align:center}
+.inline-month-day.outside .inline-day-number{opacity:1;color:var(--text-secondary);font-weight:400}
+.inline-month-day.selected .inline-day-number{background:var(--primary);color:var(--on-primary);font-weight:700}
+.inline-month-day.today .inline-day-number{box-shadow:inset 0 0 0 1px var(--primary)}
+.inline-month-day.today.selected .inline-day-number{box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--primary)}
+.inline-month-day .inline-day-indicator{font-size:11px;line-height:10px;min-height:10px;color:var(--primary)}
+.inline-month-day.selected .inline-day-indicator{color:var(--primary)}
+.inline-month-legend{color:var(--text-secondary);font-size:10px}
+.calendar-month-layout .sidebar-head{background:#f0f3f5;border-radius:9px;padding-left:8px;padding-right:8px}
+.calendar-month-layout .sidebar-head h2{font-weight:650;letter-spacing:-.15px}
+.calendar-month-layout #events{border-radius:0;padding-left:8px;padding-right:8px}
+.calendar-month-layout .agenda-rich-card{border-bottom-color:#e7ecf0!important;column-gap:12px}
+.calendar-month-layout .agenda-time{font-variant-numeric:tabular-nums;font-weight:600;color:var(--primary)}
+.calendar-month-layout .agenda-title-button{font-weight:500;letter-spacing:-.1px}
+.calendar-month-layout .agenda-state{background:transparent;padding:0;color:var(--primary)}
+@media(max-width:360px){.inline-month-toolbar h1{font-size:14px;letter-spacing:-.25px}}
+/* Ultima passata: gerarchia del mese, indicatori uniformi e ritmo della lista. */
+.inline-month-toolbar h1{font-size:19px;font-weight:720;letter-spacing:-.55px}.inline-month-toolbar h1 .inline-month-year{font-size:.82em;margin-left:3px;font-weight:450}
+.inline-month-weekdays{font-size:11px;letter-spacing:.2px}
+.inline-month-day .inline-day-number{width:32px;height:32px;line-height:32px;flex:none;font-size:15px;font-weight:500;font-variant-numeric:tabular-nums}
+.inline-month-day .inline-day-indicator{position:relative;flex:none;width:14px;height:10px;min-height:10px;line-height:10px;text-align:center}
+.inline-month-day .inline-day-indicator:not(.has-saved){color:transparent}
+.inline-month-day .inline-day-indicator:not(.has-saved):not(:empty):after{content:'';position:absolute;width:3px;height:3px;border-radius:50%;background:var(--primary);left:50%;top:3px;transform:translateX(-50%)}
+.inline-month-day .inline-day-indicator.has-saved{font-size:11px}
+.calendar-month-layout .sidebar-head{border-radius:0;background:transparent;border-top:1px solid #dce3e9}
+.calendar-month-layout .sidebar-head h2{font-size:15px;font-weight:650}.calendar-month-layout .sidebar-head h2:first-letter{text-transform:uppercase}
+.calendar-month-layout .agenda-rich-card{grid-template-columns:62px minmax(0,1fr);column-gap:14px}
+.calendar-month-layout .agenda-time{font-size:13px;font-weight:650;letter-spacing:-.2px}
+.calendar-month-layout .agenda-title-button{font-size:14px;font-weight:550;line-height:1.4}
+@media(min-height:561px){.calendar-month-layout .sidebar-head{min-height:44px;padding-top:4px;padding-bottom:4px}}
+@media(max-width:360px){.inline-month-toolbar h1{font-size:15px;letter-spacing:-.35px}}
+@media(max-height:560px){.calendar-month-layout .sidebar-head h2{font-size:12px}}
+/* Palette calendario: superfici fredde e accento petrolio. */
+.calendar-month-layout{color:var(--text)}
+.calendar-month-layout .agenda-workspace{background:#edf4f7}
+.calendar-month-layout #inline-month{background:#ffffff;border-radius:18px}
+.calendar-month-layout .inline-month-toolbar h1{color:var(--primary)}
+.calendar-month-layout .inline-month-day.outside .inline-day-number{color:#71818b}
+.calendar-month-layout .sidebar-head{background:#deedf3;border-top:0;border-radius:12px;color:var(--text)}
+.calendar-month-layout #events{background:#ffffff}
+.calendar-month-layout .agenda-rich-card{border-bottom-color:#e1ebef!important}
+@media(max-height:560px){.calendar-month-layout #inline-month{border-radius:10px}.calendar-month-layout .sidebar-head{border-radius:6px}}
+/* Alternanza discreta delle celle del mese, su sette colonne. */
+.calendar-month-layout .inline-month-grid .inline-month-day{background:#ffffff;border-radius:6px}
+.calendar-month-layout .inline-month-grid .inline-month-day:nth-child(even){background:var(--secondary-surface)}
+.calendar-month-layout .inline-month-grid .inline-month-day.selected{background:var(--selected-surface)}
+.calendar-month-layout .inline-month-grid .inline-month-day:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
+/* Le righe degli appuntamenti riprendono l'alternanza del mese. */
+.calendar-month-layout #events .agenda-rich-card{background:#ffffff;padding-left:8px!important;padding-right:8px!important}
+.calendar-month-layout #events .agenda-rich-card:nth-child(even of .agenda-rich-card){background:var(--secondary-surface)}
+/* Calendario salvia: gerarchia e superfici coerenti, senza cambiare la griglia. */
+.calendar-month-layout .agenda-workspace{background:var(--page-bg);padding:8px 8px 0;gap:8px}
+.calendar-month-layout #inline-month{border:1px solid var(--border);border-radius:20px;padding:6px 3px 4px;box-shadow:0 3px 14px var(--text)06}
+.calendar-month-layout .inline-month-toolbar{padding:0 3px 6px}
+.calendar-month-layout .inline-month-toolbar h1{font-size:22px;letter-spacing:-.65px}
+.calendar-month-layout .inline-month-toolbar h1 .inline-month-year{font-size:.7em;color:var(--text-secondary)}
+.calendar-month-layout #inline-month-today{background:var(--secondary-surface);border-radius:22px;color:#345346;font-weight:600}
+.calendar-month-layout .inline-month-weekdays{font-size:10px;line-height:22px;letter-spacing:0;color:var(--text-secondary);font-weight:600}
+.calendar-month-layout .inline-month-grid .inline-month-day{border-radius:8px}
+.calendar-month-layout .inline-month-day.outside .inline-day-number{color:#7b867d}
+.calendar-month-layout .inline-month-legend{padding:2px 5px 0;color:var(--text-secondary)}
+.calendar-month-layout .sidebar{background:#fff;border:1px solid var(--border);border-radius:16px 16px 0 0;overflow:hidden}
+.calendar-month-layout .sidebar-head{background:#e7eee2;border-radius:0;padding:8px 12px;min-height:52px}
+.calendar-month-layout .sidebar-head h2{font-size:16px;letter-spacing:-.25px;color:var(--text)}
+.calendar-month-layout .sidebar-head p{color:var(--text-secondary)}
+.calendar-month-layout #events{padding:0 0 8px}
+.calendar-month-layout #events .agenda-rich-card{padding:6px 12px!important;border-bottom:0!important;grid-template-columns:48px minmax(0,1fr);column-gap:12px}
+.calendar-month-layout .agenda-time{font-size:12px;font-weight:700;color:var(--primary)}
+.calendar-month-layout .agenda-title-button{font-size:14px;line-height:1.45;font-weight:550}
+@media(max-width:360px){.calendar-month-layout .agenda-workspace{padding-left:0;padding-right:0}.calendar-month-layout #inline-month{padding-left:0;padding-right:0;border-left:0;border-right:0}.calendar-month-layout .inline-month-toolbar h1{font-size:18px}}
+@media(max-height:560px){.calendar-month-layout .agenda-workspace{padding-top:0;gap:2px}.calendar-month-layout #inline-month{padding-top:0;padding-bottom:0;border:0;border-radius:10px}.calendar-month-layout .inline-month-toolbar{padding-bottom:0}.calendar-month-layout .inline-month-toolbar h1{font-size:17px}.calendar-month-layout .inline-month-weekdays{line-height:14px}.calendar-month-layout .sidebar-head{min-height:20px;padding:0 8px}.calendar-month-layout .sidebar-head h2{font-size:12px}.calendar-month-layout #events .agenda-rich-card{padding-top:2px!important;padding-bottom:2px!important}}

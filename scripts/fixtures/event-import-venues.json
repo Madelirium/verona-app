@@ -1,0 +1,65 @@
+{
+  "6543": {
+    "metadata": {
+      "id": 6543,
+      "classIdentifier": "place"
+    },
+    "data": {
+      "ita-IT": {
+        "name": "Centro di Comunità di Tombetta",
+        "has_address": {
+          "latitude": 45.41579,
+          "longitude": 10.986878,
+          "address": "Via Volturno 22, 37135 Verona"
+        }
+      }
+    },
+    "extradata": {
+      "ita-IT": {
+        "urlAlias": "/Vivere-il-comune/Luoghi/Centro-di-Comunita-di-Tombetta"
+      }
+    }
+  },
+  "6544": {
+    "metadata": {
+      "id": 6544,
+      "classIdentifier": "place"
+    },
+    "data": {
+      "ita-IT": {
+        "name": "Centro di Comunità di San Michele",
+        "has_address": {
+          "latitude": 45.434512,
+          "longitude": 11.045153,
+          "address": "Via Aldo Fedeli 12, 37132"
+        }
+      }
+    },
+    "extradata": {
+      "ita-IT": {
+        "urlAlias": "/Vivere-il-comune/Luoghi/Centro-di-Comunita-di-San-Michele"
+      }
+    }
+  },
+  "17970": {
+    "metadata": {
+      "id": 17970,
+      "classIdentifier": "place"
+    },
+    "data": {
+      "ita-IT": {
+        "name": "Teatro Parrocchiale di San Giovanni Evangelista",
+        "has_address": {
+          "latitude": 45.418368,
+          "longitude": 10.956183,
+          "address": "Via del Quadrato , 37137 Verona Italia"
+        }
+      }
+    },
+    "extradata": {
+      "ita-IT": {
+        "urlAlias": "/Vivere-il-comune/Luoghi/Teatro-Parrocchiale-di-San-Giovanni-Evangelista"
+      }
+    }
+  }
+}

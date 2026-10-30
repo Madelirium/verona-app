@@ -1,0 +1,408 @@
+[
+  {
+    "metadata": {
+      "id": 23465,
+      "modified": "2026-09-28T10:49:52+02:00"
+    },
+    "extradata": {
+      "ita-IT": {
+        "geo": [],
+        "urlAlias": "/Vivere-il-comune/Eventi/Dorothea-Lange"
+      }
+    },
+    "data": {
+      "ita-IT": {
+        "event_title": "Dorothea Lange",
+        "event_abstract": "Mostra al Centro Internazionale di Fotografia Scavi Scaligeri, dal 30 luglio al 1 novembre 2026",
+        "description": "Dal 30 luglio al 1 novembre 2026, i suggestivi spazi del Centro Internazionale di Fotografia Scavi Scaligeri accolgono una grande mostra dedicata a Dorothea Lange (Hoboken, New Jersey, 1895 – San Francisco, 1965), tra le figure più significative della fotografia documentaria del Novecento e autrice di alcune delle immagini che hanno segnato in maniera indelebile l’immaginario del XX secolo. Realizzata dal Comune di Verona e prodotta da Camera Torino , la mostra, curata da Walter Guadagnini e Monica Poggi, riunisce circa 200 fotografie e ripercorre il periodo più intenso della ricerca di Lange, dagli anni della Grande Depressione all’internamento dei cittadini statunitensi di origine giapponese durante la Seconda guerra mondiale. Migrazioni, disuguaglianze sociali, discriminazioni e crisi ambientali attraversano un percorso che restituisce tutta la straordinaria attualità di uno sguardo capace di osservare i grandi mutamenti della storia a partire dalle vite delle persone . Per maggiori info: scaviscaligeri.comune.verona.it",
+        "target_audience": [
+          "Adulti",
+          "Anziani",
+          "Famiglie",
+          "Bambini",
+          "Giovani"
+        ],
+        "about_target_audience": "",
+        "typical_age_range": [],
+        "is_accessible_for_free": 0,
+        "cost_notes": "Info biglietti e riduzioni: [link sulla fonte] Biglietteria anche on line su vivaticket.it",
+        "takes_place_in": [],
+        "geo": {
+          "latitude": 45.442993,
+          "longitude": 10.998253,
+          "address": "Centro Internazionale di Fotografia Scavi Scaligeri, Cortile del Mercato Vecchio 8 - 37121 Verona"
+        },
+        "time_interval": {
+          "input": {
+            "recurrencePattern": "DTSTART=20260730T080000Z;DTEND=20260730T170000Z;FREQ=DAILY;INTERVAL=1;UNTIL=20261031T230000Z"
+          },
+          "events": [
+            {
+              "id": "1793264400-1793296800",
+              "start": "2026-10-29T11:00:00+02:00",
+              "end": "2026-10-29T20:00:00+02:00"
+            },
+            {
+              "id": "1793350800-1793383200",
+              "start": "2026-10-30T11:00:00+02:00",
+              "end": "2026-10-30T20:00:00+02:00"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "metadata": {
+      "id": 19204,
+      "modified": "2026-10-06T10:41:19+02:00"
+    },
+    "extradata": {
+      "ita-IT": {
+        "geo": [],
+        "urlAlias": "/Vivere-il-comune/Eventi/Pensieri-parole-emozioni"
+      }
+    },
+    "data": {
+      "ita-IT": {
+        "event_title": "Pensieri, parole, emozioni",
+        "event_abstract": "Dal 1° ottobre a fine anno, ogni giovedì Corso di scrittura creativa al Centro di Comunità di Borgo Trento",
+        "description": "L'Associazione UISP aps con il sostegno di Fondazione CariVerona nell'ambito del bando \"RigenerAzioni\" per il progetto \"La Comunità al Centro\" organizza presso il Centro di Comunità di Borgo Trento un percorso guidato per giocare con le parole ed esprimere le emozioni attraverso la scrittura. L'attività è gratuita ma i posti sono limitati",
+        "target_audience": [
+          "Adulti",
+          "Anziani",
+          "Giovani"
+        ],
+        "about_target_audience": "",
+        "typical_age_range": [],
+        "is_accessible_for_free": 1,
+        "cost_notes": "",
+        "takes_place_in": [],
+        "geo": {
+          "latitude": 45.446798,
+          "longitude": 10.986527,
+          "address": "Centro di Comunit&agrave; di Borgo Trento - Via Aspromonte 4 37126 Verona"
+        },
+        "time_interval": {
+          "input": {
+            "recurrencePattern": "DTSTART=20261001T073000Z;DTEND=20261001T090000Z;FREQ=WEEKLY;INTERVAL=1;UNTIL=20261230T230000Z;BYDAY=TH"
+          },
+          "events": [
+            {
+              "id": "1793262600-1793268000",
+              "start": "2026-10-29T10:30:00+02:00",
+              "end": "2026-10-29T12:00:00+02:00"
+            },
+            {
+              "id": "1793867400-1793872800",
+              "start": "2026-11-05T10:30:00+02:00",
+              "end": "2026-11-05T12:00:00+02:00"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "metadata": {
+      "id": 23941,
+      "modified": "2026-10-21T10:06:08+02:00"
+    },
+    "extradata": {
+      "ita-IT": {
+        "geo": [],
+        "urlAlias": "/Vivere-il-comune/Eventi/Sportello-digitale"
+      }
+    },
+    "data": {
+      "ita-IT": {
+        "event_title": "Sportello digitale",
+        "event_abstract": "Ogni giovedì, dall’ 8 ottobre, dalle 9:30 alle 12:00 al CdC Parona",
+        "description": "Sportello digitale Partecipazione gratuita - necessaria iscrizione",
+        "target_audience": [
+          "Adulti",
+          "Anziani",
+          "Giovani"
+        ],
+        "about_target_audience": "",
+        "typical_age_range": [],
+        "is_accessible_for_free": 1,
+        "cost_notes": "",
+        "takes_place_in": [],
+        "geo": {
+          "latitude": 45.478381,
+          "longitude": 10.946939,
+          "address": "Centro di Comunit&agrave; di Parona - Largo Stazione Vecchia 16 37124 Verona"
+        },
+        "time_interval": {
+          "input": {
+            "recurrencePattern": "DTSTART=20261008T073000Z;DTEND=20261008T100000Z;FREQ=WEEKLY;INTERVAL=1;UNTIL=20261230T230000Z;BYDAY=TH"
+          },
+          "events": [
+            {
+              "id": "1793262600-1793271600",
+              "start": "2026-10-29T10:30:00+02:00",
+              "end": "2026-10-29T13:00:00+02:00"
+            },
+            {
+              "id": "1793867400-1793876400",
+              "start": "2026-11-05T10:30:00+02:00",
+              "end": "2026-11-05T13:00:00+02:00"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "metadata": {
+      "id": 24241,
+      "modified": "2026-09-11T12:24:07+02:00"
+    },
+    "extradata": {
+      "ita-IT": {
+        "geo": [
+          {
+            "longitude": "11.045153",
+            "latitude": "45.434512"
+          }
+        ],
+        "urlAlias": "/Vivere-il-comune/Eventi/Il-Mercoledi-della-Scienza2"
+      }
+    },
+    "data": {
+      "ita-IT": {
+        "event_title": "Il Mercoledì della Scienza",
+        "event_abstract": "L’evento si svolge settimanalmente dal 14 ottobre 2026 fino al 27 maggio 2027",
+        "description": "L'Associazione Cultura e Territorio con il prof. Renzo Giovanni Cailotto organizza delle conferenze culturali denominate \"Il Mercoledì della Scienza\", alle ore 21.00, dal 14 ottobre 2026 al 27 maggio 2027 in Sala Consiliare, Piazza del Popolo 15 a San Michele.",
+        "target_audience": [
+          "Adulti",
+          "Anziani",
+          "Famiglie",
+          "Giovani"
+        ],
+        "about_target_audience": "",
+        "typical_age_range": [],
+        "is_accessible_for_free": 1,
+        "cost_notes": "",
+        "takes_place_in": [
+          {
+            "id": 6544,
+            "classIdentifier": "place",
+            "name": {
+              "ita-IT": "Centro di Comunità di San Michele"
+            }
+          }
+        ],
+        "geo": {
+          "latitude": 45.434403,
+          "longitude": 11.043373,
+          "address": "Piazza del Popolo 15"
+        },
+        "time_interval": {
+          "input": {
+            "recurrencePattern": "DTSTART=20261014T190000Z;DTEND=20261014T210000Z;FREQ=WEEKLY;INTERVAL=1;UNTIL=20270526T220000Z;BYDAY=WE"
+          },
+          "events": [
+            {
+              "id": "1793217600-1793224800",
+              "start": "2026-10-29T21:00:00+01:00",
+              "end": "2026-10-29T23:00:00+01:00"
+            },
+            {
+              "id": "1794427200-1794434400",
+              "start": "2026-11-11T21:00:00+01:00",
+              "end": "2026-11-11T23:00:00+01:00"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "metadata": {
+      "id": 24799,
+      "modified": "2026-10-07T11:50:20+02:00"
+    },
+    "extradata": {
+      "ita-IT": {
+        "geo": [
+          {
+            "longitude": "10.956183",
+            "latitude": "45.418368"
+          }
+        ],
+        "urlAlias": "/Vivere-il-comune/Eventi/Progetto-Imparo-io-Impariamo-noi"
+      }
+    },
+    "data": {
+      "ita-IT": {
+        "event_title": "Progetto Imparo io - Impariamo noi",
+        "event_abstract": "Corso di italiano gratuito per donne straniere con baby parking per bambini: due lezioni a settimana dal 20 ottobre 2026 al 5 giugno 2027, dalle ore 9.30 alle ore 11.30",
+        "description": "l'Associazione Gruppi di Volontariato Vincenziano AIC Italia – Regione Veneto- Trentino ODV ETS in collaborazione con il Rotary Club Verona, con il patrocinio della 4ª Circoscrizione, realizza il progetto “Imparo io – Impariamo insieme”, corsi di Lingua Italiana gratuito per mamme alloglotte con servizio di baby parking per i loro figli in età prescolare (0-3 anni) durante le lezioni, nei locali della Parrocchia di San Giovanni Evangelista, via del Quadrato n. 2, dal 20 ottobre 2026 al 5 giugno 2027, dalle ore 9.30 alle ore 11.30, due lezioni alla settimana. I corsi sono tenuti da insegnanti abilitati del Cestim e la custodia dei bambini, nelle ore di formazione in aula, è affidata alle Volontarie della San Vincenzo formate da una pedagogista del Cestim. collaborano al progetto: Istituto Comprensivo 12, Rete Tante Tinte, Cestim, Comune di Verona-Servizio Bibliotecario",
+        "target_audience": [
+          "Adulti",
+          "Anziani",
+          "Giovani"
+        ],
+        "about_target_audience": "",
+        "typical_age_range": [],
+        "is_accessible_for_free": 1,
+        "cost_notes": "",
+        "takes_place_in": [
+          {
+            "id": 17970,
+            "classIdentifier": "place",
+            "name": {
+              "ita-IT": "Teatro Parrocchiale di San Giovanni Evangelista"
+            }
+          }
+        ],
+        "geo": {
+          "latitude": 0,
+          "longitude": 0,
+          "address": ""
+        },
+        "time_interval": {
+          "input": {
+            "recurrencePattern": "DTSTART=20261020T073000Z;DTEND=20261020T093000Z;FREQ=WEEKLY;INTERVAL=1;UNTIL=20270604T220000Z;BYDAY=TU,TH"
+          },
+          "events": [
+            {
+              "id": "1793262600-1793269800",
+              "start": "2026-10-29T09:30:00+01:00",
+              "end": "2026-10-29T11:30:00+01:00"
+            },
+            {
+              "id": "1793694600-1793701800",
+              "start": "2026-11-03T09:30:00+01:00",
+              "end": "2026-11-03T11:30:00+01:00"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "metadata": {
+      "id": 25194,
+      "modified": "2026-10-22T10:17:10+02:00"
+    },
+    "extradata": {
+      "ita-IT": {
+        "geo": [
+          {
+            "longitude": "10.986878",
+            "latitude": "45.41579"
+          }
+        ],
+        "urlAlias": "/Vivere-il-comune/Eventi/Giovani-menti-in-gioco-tra-scacchi-e-creativita"
+      }
+    },
+    "data": {
+      "ita-IT": {
+        "event_title": "Giovani menti in gioco tra scacchi e creatività",
+        "event_abstract": "Da lunedì 2 novembre dalle ore 16.15 alle ore 17.45 al Cdc Palazzina, via Copparo 19, per tutti i lunedì del mese di novembre 2026",
+        "description": "Da lunedì 2 novembre dalle ore 16.15 alle ore 17.45 presso il Cdc Palazzina via Copparo 19 per tutti i lunedì del mese di novembre 2026, pomeriggi speciali dedicarti ai bambini di seconda e terza elementare, per allenare la mente e liberare la fantasia attraverso due attività complementari ed entusiasmanti: laboratorio di nozioni di scacchi e laboratorio creativo. Partecipazione gratuita - posti limitati Le iscrizioni si ricevono al cell. [contatto sulla fonte] oppure al Centro di Comunità il lunedì dalle 16 alle 17 o il mercoledì dalle 9 alle 11",
+        "target_audience": [
+          "Bambini"
+        ],
+        "about_target_audience": "Bambini della seconda e terza elementare",
+        "typical_age_range": [],
+        "is_accessible_for_free": 1,
+        "cost_notes": "",
+        "takes_place_in": [
+          {
+            "id": 6543,
+            "classIdentifier": "place",
+            "name": {
+              "ita-IT": "Centro di Comunità di Tombetta"
+            }
+          }
+        ],
+        "geo": {
+          "latitude": 45.225648,
+          "longitude": 11.355585,
+          "address": "Via Copparo 9 37046 verona"
+        },
+        "time_interval": {
+          "input": {
+            "recurrencePattern": "DTSTART=20261102T151500Z;DTEND=20261102T164500Z;FREQ=WEEKLY;INTERVAL=1;UNTIL=20261129T230000Z;BYDAY=MO"
+          },
+          "events": [
+            {
+              "id": "1793632500-1793637900",
+              "start": "2026-11-02T16:15:00+01:00",
+              "end": "2026-11-02T17:45:00+01:00"
+            },
+            {
+              "id": "1794237300-1794242700",
+              "start": "2026-11-09T16:15:00+01:00",
+              "end": "2026-11-09T17:45:00+01:00"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "metadata": {
+      "id": 25321,
+      "modified": "2026-10-27T11:31:20+01:00"
+    },
+    "extradata": {
+      "ita-IT": {
+        "geo": [
+          {
+            "longitude": "11.045153",
+            "latitude": "45.434512"
+          }
+        ],
+        "urlAlias": "/Vivere-il-comune/Eventi/Primo-soccorso-un-incontro-per-imparare-a-salvare-una-vita"
+      }
+    },
+    "data": {
+      "ita-IT": {
+        "event_title": "Primo soccorso: un incontro per imparare a salvare una vita",
+        "event_abstract": "In Settima Circoscrizione si impara ad aiutare chi è in pericolo di vita.",
+        "description": "Sapere come intervenire in caso di emergenza può fare la differenza. Per questo, la Commissione Sport della 7ª Circoscrizione , con il supporto della Croce Blu O.D.V. Verona , organizza un incontro dedicato alle manovre di primo soccorso, alla rianimazione cardiopolmonare e alla disostruzione delle vie aeree. L'appuntamento è per sabato 14 novembre 2026 , dalle 9 alle 12, nella sala consiliare della 7ª Circoscrizione, in piazza del Popolo 15 , a San Michele Extra. Durante la mattinata si parlerà di come prestare il primo soccorso, cosa fare quando le vie aeree sono ostruite, quali manovre possono salvare una vita e come utilizzare il defibrillatore. L'incontro è aperto alla cittadinanza ed è rivolto in particolare ai soci delle società e delle associazioni sportive e di volontariato del territorio. Per partecipare è necessario essere maggiorenni. I posti sono limitati. L'iscrizione è obbligatoria e va effettuata inviando una mail a [contatto sulla fonte]. L'iniziativa offre l'opportunità di imparare nozioni utili per affrontare un'emergenza e sapere come comportarsi in attesa dell'arrivo dei soccorsi.",
+        "target_audience": [
+          "Adulti",
+          "Famiglie",
+          "Giovani",
+          "Anziani"
+        ],
+        "about_target_audience": "",
+        "typical_age_range": [],
+        "is_accessible_for_free": 1,
+        "cost_notes": "",
+        "takes_place_in": [
+          {
+            "id": 6544,
+            "classIdentifier": "place",
+            "name": {
+              "ita-IT": "Centro di Comunità di San Michele"
+            }
+          }
+        ],
+        "geo": {
+          "latitude": 0,
+          "longitude": 0,
+          "address": ""
+        },
+        "time_interval": {
+          "input": {
+            "recurrencePattern": "DTSTART=20261114T080000Z;DTEND=20261114T110000Z;FREQ=DAILY;INTERVAL=1;COUNT=1"
+          },
+          "events": [
+            {
+              "id": "1794643200-1794654000",
+              "start": "2026-11-14T09:00:00+01:00",
+              "end": "2026-11-14T12:00:00+01:00"
+            }
+          ]
+        }
+      }
+    }
+  }
+]

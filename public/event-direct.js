@@ -15,7 +15,7 @@ function selectEventDirectOrigin(stop,point=null){
   cancelEventDirectLocation();++eventDirectVersion;eventDirectState.origin=stop;eventDirectState.startPoint=point;eventDirectState.gpsOrigins=null;
   $('event-direct-origin').value=busDisplayName(stop.name)+' · '+stop.code;
   $('event-direct-origins').replaceChildren();$('event-direct-origins').hidden=true;$('event-direct-search').disabled=false;
-  $('event-direct-status').textContent='Partenza da '+busDisplayName(stop.name)+'. Cerca le corse dirette verso l’evento.';$('event-direct-search').focus();
+  $('event-direct-status').textContent='Partenza selezionata.';$('event-direct-search').focus();
 }
 function locateEventDirectOrigin(){
   const state=eventDirectState,feedback=$('event-direct-location-status');if(!state?.index||$('event-direct-origin').disabled)return;
@@ -23,7 +23,7 @@ function locateEventDirectOrigin(){
   if(typeof isSecureContext!=='undefined'&&!isSecureContext){feedback.textContent='La posizione richiede HTTPS. Nell’anteprima Wi-Fi HTTP cerca la fermata per nome oppure usa il sito online.';return;}
   if(typeof navigator==='undefined'||!navigator.geolocation){feedback.textContent='Posizione non disponibile. Puoi cercare la fermata per nome o codice.';return;}
   const request=++eventDirectLocationVersion,active=()=>request===eventDirectLocationVersion&&eventDirectState===state&&$('event-direct-dialog').open;
-  $('event-direct-locate').disabled=true;$('event-direct-locate').textContent='Cerco la posizione…';feedback.textContent='Attendo la posizione del dispositivo. Puoi continuare anche cercando per nome.';
+  $('event-direct-locate').disabled=true;$('event-direct-locate').textContent='Cerco la posizione…';feedback.textContent='Attendo la posizione. Puoi anche cercare una fermata.';
   const fail=error=>{if(!active())return;cancelEventDirectLocation();feedback.textContent=error?.code===1?'Posizione non autorizzata. Puoi cercare la fermata per nome o codice.':error?.code===3?'La posizione non arriva. Riprova oppure cerca la fermata per nome.':'Non riesco a rilevare la posizione. Riprova oppure cerca la fermata per nome.';};
   try{navigator.geolocation.getCurrentPosition(position=>{
     if(!active())return;const {latitude:lat,longitude:lon,accuracy}=position.coords||{};
@@ -35,7 +35,7 @@ function locateEventDirectOrigin(){
     list.hidden=true;state.startPoint=null;state.gpsOrigins=null;
     if(stops.length){state.origin=stops[0];state.startPoint={lat,lon};state.gpsOrigins=stops;$('event-direct-origin').value='La mia posizione';$('event-direct-search').disabled=false;}
     feedback.textContent=!stops.length?'Nessuna fermata con servizio nell’archivio entro 2 km. Cerca per nome o codice.':(accuracy>200?'Posizione approssimativa: le distanze possono essere imprecise. ':'')+'Partenza dalla tua posizione. Confronterò '+stops.length+' fermate vicine: non devi sceglierle tu.';
-    $('event-direct-status').textContent=stops.length?'Controlla l’orario e premi Mostra autobus. Le distanze a piedi restano da verificare se non attivi il calcolo.':'Puoi cercare un’altra fermata per nome.';
+    $('event-direct-status').textContent=stops.length?'Partenza pronta. Controlla l’orario.':'Puoi cercare un’altra fermata per nome.';
   },fail,{enableHighAccuracy:true,timeout:12000,maximumAge:0});}catch{fail({code:2});}
 }
 function resetEventDirectResults(){
@@ -68,9 +68,9 @@ function eventDirectSetMode(mode){
   $('event-direct-departure-mode').setAttribute('aria-pressed',String(mode==='departure'));
   $('event-direct-arrival-mode').setAttribute('aria-pressed',String(mode==='arrival'));
   $('event-direct-before-label').textContent=$('event-direct-walk-mode').checked?'Arrivo alla sede entro':'Arrivo alla fermata entro';
-  $('event-direct-mode-note').textContent=$('event-direct-walk-mode').checked?'Saranno valutati camminate, margine di salita e anticipo scelto.':mode==='arrival'?'Arrivo alla fermata vicina: il tratto a piedi fino all’evento non è incluso.':'Cerca le partenze dall’orario scelto. Il tratto finale a piedi resta da verificare.';
+  $('event-direct-mode-note').textContent=$('event-direct-walk-mode').checked?'Include camminate e anticipo scelto.':mode==='arrival'?'Arrivo alla fermata, non all’evento.':'Il tratto finale a piedi non è incluso.';
   resetEventDirectResults();$('event-direct-search').disabled=!eventDirectState.origin;
-  $('event-direct-status').textContent=mode==='arrival'&&!$('event-direct-before').value?'L’orario di inizio non è disponibile per questo giorno. Imposta tu l’arrivo alla fermata.':'Imposta l’orario e premi Mostra autobus dopo aver scelto la fermata.';
+  $('event-direct-status').textContent=mode==='arrival'&&!$('event-direct-before').value?'L’orario di inizio non è disponibile per questo giorno. Imposta tu l’arrivo alla fermata.':'';
 }
 function eventDirectNow(day){
   if(day!==dayInRome(new Date()))return 0;
@@ -86,7 +86,7 @@ async function openEventDirect(){
   $('event-direct-day-field').hidden=eventDay(event.startsAt)===eventDay(event.endsAt);
   $('event-direct-close').setAttribute('aria-label',$('event-bus-dialog').open?'Torna alla mappa delle fermate':'Torna all’evento');
   $('event-direct-walk-disclosure').textContent='Cercando con le camminate attive invii a '+(payload.walking?.endpoint?'openrouteservice/HeiGIT':'FOSSGIS/OpenStreetMap')+' le coordinate dei punti di partenza (anche GPS, se usato) e della sede. Sono verificate le fermate di salita dei collegamenti trovati e fino a sei punti di discesa per ricerca.';
-  $('event-direct-limit-note').textContent='Orari programmati ATV, senza ritardi in tempo reale. Camminate non incluse finché non scegli di calcolarle.';
+  $('event-direct-limit-note').textContent='Orari programmati ATV · camminate escluse.';
   $('event-direct-walk-options').hidden=typeof eventWalkingEnabled!=='function'||!eventWalkingEnabled();$('event-direct-walk-mode').checked=false;$('event-direct-margin').value='10';
   $('event-direct-event').textContent=event.title+' · '+(typeof eventTravelWhen==='function'?eventTravelWhen(event,day):eventWhen(event));
   $('event-direct-origin').value='';$('event-direct-origins').replaceChildren();$('event-direct-origins').hidden=true;
@@ -107,8 +107,8 @@ async function openEventDirect(){
     eventDirectState.index=index;
     if(!officialBus.alightingAvailable){$('event-direct-status').textContent='L’archivio non include i permessi di discesa necessari per questa ricerca.';return;}
     if(!index.days.includes(day)){$('event-direct-status').textContent='Il giorno scelto non è coperto dall’archivio ATV. Torna alle fermate e scegli un altro giorno dell’evento.';return;}
-    $('event-direct-origin').disabled=false;$('event-direct-locate').disabled=false;$('event-direct-status').textContent='Usa la posizione oppure scrivi il nome della fermata da cui vuoi salire.';
-    if(draft){const origin=index.stops.find(stop=>stop.code===draft.origin);if(origin){eventDirectState.origin=origin;$('event-direct-origin').value=busDisplayName(origin.name)+' · '+origin.code;$('event-direct-search').disabled=false;$('event-direct-status').textContent='Fermata e orario conservati. Premi Mostra autobus per aggiornare i risultati.';}}
+    $('event-direct-origin').disabled=false;$('event-direct-locate').disabled=false;$('event-direct-status').textContent='';
+    if(draft){const origin=index.stops.find(stop=>stop.code===draft.origin);if(origin){eventDirectState.origin=origin;$('event-direct-origin').value=busDisplayName(origin.name)+' · '+origin.code;$('event-direct-search').disabled=false;$('event-direct-status').textContent='Partenza e orario conservati.';}}
   }catch{if(loadState!==eventDirectState)return;$('event-direct-status').textContent='Fermate non disponibili. Controlla la connessione e riprova.';const retry=el('button','Riprova','dialog-save');retry.onclick=openEventDirect;$('event-direct-results').append(retry);}
 }
 function eventDirectOriginSearch(){
@@ -135,7 +135,7 @@ async function searchEventDirect(){
   const assets=[],failed=[];let next=0;
   await Promise.all(Array.from({length:Math.min(3,numbers.length)},async()=>{while(next<numbers.length){const number=numbers[next++];if(!valid())return;try{assets.push(await getOfficialBusLine(number));}catch{failed.push(number);}}}));
   if(!valid())return;
-  // Optimistic access bound: exclude impossible GPS departures; walking routes still need verification.
+  // Optimistic access bound (2 m/s in a straight line + boarding): exclude impossible GPS departures; this does not verify a walking route.
   let candidates=origins.flatMap(origin=>directBusTrips(assets,{origin:origin.code,point:eventPosition(state.event,state.day),day:state.day,after,before,notBeforeSeconds:state.startPoint&&!complete?Math.max(eventDirectNow(state.day),Number(after.slice(0,2))*3600+Number(after.slice(3,5))*60)+Math.ceil(busDistance(state.startPoint,origin)/2)+120:eventDirectNow(state.day),allowOvernight:!arrivalMode,radius:2000,allTargets:complete,limit:complete?120:24}));
   let walkingIncomplete=false;
   if(complete&&candidates.length){
@@ -146,7 +146,7 @@ async function searchEventDirect(){
   if(!complete)candidates=bestEventConnections(candidates,state.startPoint||state.origin,false);
   if(!valid())return;$('event-direct-search').disabled=false;$('event-direct-cancel').hidden=true;
   const rows=candidates.sort((a,b)=>(complete?Number(b.assessment.state==='compatible')-Number(a.assessment.state==='compatible'):0)||(arrivalMode?(complete?b.departureSeconds-a.departureSeconds:b.arrivalSeconds-a.arrivalSeconds||b.departureSeconds-a.departureSeconds):a.departureSeconds-b.departureSeconds)||a.duration-b.duration||busDistance(state.origin,a.origin)-busDistance(state.origin,b.origin)).slice(0,12),list=$('event-direct-results');
-  $('event-direct-limit-note').textContent=complete?'Orari programmati ATV, senza ritardi in tempo reale. Camminate stimate, due minuti per salire e anticipo scelto inclusi solo nelle schede verificate. Controlla accessi e attraversamenti.':'Orari programmati ATV, senza ritardi in tempo reale. Fermate entro 2 km in linea d’aria dalla destinazione. Il tempo a piedi non è incluso: verifica come raggiungere la fermata e la sede.';
+  $('event-direct-limit-note').textContent=complete?'Orari programmati ATV · ritardi non disponibili. Camminate incluse solo nelle proposte verificate.':'Orari programmati ATV · fermate entro 2 km in linea d’aria dalla destinazione · tempi e percorsi a piedi da verificare.';
   const partial=failed.length?' Ricerca incompleta: non ho caricato le linee '+failed.join(', ')+'. Puoi riprovare.':'';
   $('event-direct-status').textContent=(rows.length?(arrivalMode?(rows.length===12?'Fino a 12 corse':'Corse')+' con arrivo alla fermata entro le '+before+', ordinate dalle più vicine a quell’orario.':rows.length===12?'Prime 12 corse dirette disponibili.':rows.length+' corse dirette trovate.') :failed.length?'Nessuna corsa trovata nei dati caricati.':arrivalMode?'Nessuna corsa diretta con arrivo alla fermata entro le '+before+'. Prova un altro orario o Parti dalle. Non esclude viaggi con cambi.':'Nessuna corsa diretta trovata con questi criteri nell’archivio: non significa che non esistano viaggi con cambi.')+partial;
   if(complete)$('event-direct-status').textContent=(rows.length?'Risultati con verifica delle camminate e '+margin+' minuti di anticipo'+(before?' sulle '+before:'')+'.':'Nessun viaggio compatibile con i tempi indicati nei limiti della ricerca. Prova un altro orario o un anticipo minore.')+(walkingIncomplete?' Alcuni percorsi a piedi non sono disponibili: le schede non verificate non confermano l’arrivo.':'')+partial;

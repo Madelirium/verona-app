@@ -42,7 +42,7 @@ const dayCache = new Map();
 let today = dayInRome(new Date());
 let selected = today, month = today.slice(0,7), onlySaved = false, preferences = {};
 let savedMode='upcoming',savedSnapshots={},savedHistoryFailed=false;
-let savedVisited=false,eventMapReturn=null,filterSnapshot=null;
+let savedVisited=false,eventMapReturn=null,filterSnapshot=null,filterReturnFocus=null;
 let currentUserLocation=null;const mapLocationStates=new Map();
 let eventMap=null,eventMapLayer=null,eventMapSignature=null,eventMapSaved=false,eventMapFocus=null;
 try { preferences = JSON.parse(localStorage.getItem('verona-events-v1') || '{}') || {}; } catch {}
@@ -63,7 +63,21 @@ try{const cached=JSON.parse(localStorage.getItem('verona-saved-snapshots-v1')||'
 function isSavedEvent(e){return ['interested','going'].includes(preferences[e.id]);}
 function isPastSavedEvent(e){return eventDay(e.endsAt)<today;}
 function savedEvents(){const catalog=new Map(Object.values(savedSnapshots).map(e=>[e.id,e]));for(const e of events)if(isSavedEvent(e))catalog.set(e.id,e);return [...catalog.values()].filter(isSavedEvent);}
-function storeSavedSnapshots(){const next={};for(const e of savedEvents())next[e.id]=e;savedSnapshots=next;try{localStorage.setItem('verona-saved-snapshots-v1',JSON.stringify(next));savedHistoryFailed=false;}catch{savedHistoryFailed=true;}}
+function storeSavedSnapshots(){const next={};for(const e of savedEvents())next[e.id]=savedSnapshots[e.id]||JSON.parse(JSON.stringify(e));savedSnapshots=next;try{localStorage.setItem('verona-saved-snapshots-v1',JSON.stringify(next));savedHistoryFailed=false;}catch{savedHistoryFailed=true;}}
+function savedEventReviewFor(e){
+  if(!isSavedEvent(e)||typeof eventChangeReview!=='function')return null;
+  const snapshot=savedSnapshots[e.id]||e;return {...eventChangeReview(snapshot,events,{sources:payload.importReport?.sources||[],from:payload.importReport?.from||''}),snapshot};
+}
+function acknowledgeSavedEvent(id){
+  const snapshot=savedSnapshots[id]||events.find(e=>e.id===id);if(!snapshot)return null;
+  const review=eventChangeReview(snapshot,events,{sources:payload.importReport?.sources||[],from:payload.importReport?.from||''});
+  if(!review.current)return null;
+  const current=review.current,state=preferences[id];if(!state)return null;
+  if(current.id!==id){preferences[current.id]=state==='going'||preferences[current.id]==='going'?'going':state;delete preferences[id];delete savedSnapshots[id];}
+  savedSnapshots[current.id]=JSON.parse(JSON.stringify(current));storeSavedSnapshots();
+  try{localStorage.setItem('verona-events-v1',JSON.stringify(preferences));$('feedback').textContent='Salvataggio aggiornato ai dettagli verificati.';}catch{$('feedback').textContent='Aggiornamento valido per questa visita; il browser non consente il salvataggio permanente.';}
+  render();return current;
+}
 function refreshSavedDay(){const next=dayInRome(new Date());if(next===today)return;const followToday=selected===today;today=next;if((onlySaved&&savedMode==='upcoming')||(agendaReady&&followToday&&agendaRange==='day')){selected=today;month=today.slice(0,7);}render();if($('waste-dialog').open&&wasteTab==='collection'&&!wasteEditing)renderWasteCollection();}
 function dayInRome(value) { return dayFormatter.format(new Date(value)); }
 function eventDay(value) { if(!dayCache.has(value))dayCache.set(value,value.length===10?value:dayInRome(value));return dayCache.get(value); }
@@ -84,8 +98,10 @@ function save(id, state) {
   render();
 }
 function render() {
-  $('page-heading').hidden=view==='home'||view==='bus';
+  $('page-heading').hidden=view==='home'||view==='bus'||view==='calendar';
+  $('app-shell').classList.toggle('calendar-month-layout',view==='calendar');
   $('app-shell').classList.toggle('home-layout',view==='home'||view==='bus');
+  $('app-shell').classList.toggle('discover-layout',view==='discover');
   $('app-shell').classList.toggle('game-session-layout',view==='games'&&Boolean(globalThis.veronaGameSession));
   $('app-shell').classList.toggle('game-lobby-layout',view==='games'&&!globalThis.veronaGameSession);
   const filtered=visibleEvents();
@@ -94,6 +110,13 @@ function render() {
   for(const [id,target] of [['home','home'],['discover','discover'],['news','news'],['all','calendar'],['saved','saved'],['games','games']]){
     const active=view===target||(target==='calendar'&&view==='eventmap');$(id).classList.toggle('active',active);$(id).setAttribute('aria-pressed',String(active));
   }
+  const moreServiceOpen=['utilities','pharmacy','parking','waste','cycle','ztl'].some(id=>Boolean($(id+'-dialog').open));
+  const moreActive=['bus','news','explore','district','games'].includes(view)||moreServiceOpen;
+  $('more').classList.toggle('active',moreActive);$('more').setAttribute('aria-pressed',String(moreActive));
+  if(moreServiceOpen){$('home').classList.toggle('active',false);$('home').setAttribute('aria-pressed','false');}
+  for(const [id,target] of [['more-bus','bus'],['more-explore','explore']]){
+    $(id).classList.toggle('active',view===target);$(id).setAttribute('aria-pressed',String(view===target));
+  }
   $('home-view').hidden=view!=='home';$('news-view').hidden=view!=='news';$('discover-view').hidden=view!=='discover';$('calendar-view').hidden=!['calendar','saved'].includes(view)||Boolean(view==='saved'&&typeof savedHubReady!=='undefined'&&savedHubReady);
   $('saved-view').hidden=view!=='saved'||typeof savedHubReady==='undefined'||!savedHubReady;
   $('bus-view').hidden=view!=='bus';
@@ -101,9 +124,9 @@ function render() {
   $('explore-view').hidden=view!=='explore';
   $('district-view').hidden=view!=='district';
   $('games-view').hidden=view!=='games';
-  $('open-filters').hidden=['home','explore','district','news','bus','games'].includes(view)||Boolean(view==='saved'&&typeof savedHubReady!=='undefined'&&savedHubReady);
-  $('page-title').textContent=view==='home'?'':view==='district'?'Il mio quartiere':view==='explore'?'Esplora Verona':view==='bus'?'Autobus':view==='news'?'Notizie e Comune':view==='discover'?'Scopri Verona':onlySaved?'I tuoi salvati':'Il calendario';
-  $('page-intro').textContent=view==='home'?'':view==='district'?'Notizie e iniziative della tua zona.':view==='explore'?'Piccole scoperte, vicino a te.':view==='bus'?'ATV · percorsi e orari programmati':view==='news'?'Ultime pubblicazioni · Comune di Verona':view==='discover'?'Il tuo prossimo programma è qui.':onlySaved?'Da “mi interessa” a “ci vediamo lì”.':'Scegli un giorno. Trova qualcosa di bello.';
+  $('open-filters').hidden=['home','discover','explore','district','news','bus','games'].includes(view)||Boolean(view==='saved'&&typeof savedHubReady!=='undefined'&&savedHubReady);
+  $('page-title').textContent=view==='home'?'':view==='district'?'Il mio quartiere':view==='explore'?'Esplora Verona':view==='bus'?'Autobus':view==='news'?'Notizie e Comune':view==='discover'?'Scopri':onlySaved?'I tuoi salvati':'Il calendario';
+  $('page-intro').textContent=view==='home'?'':view==='district'?'Notizie e iniziative della tua zona.':view==='explore'?'Piccole scoperte, vicino a te.':view==='bus'?'ATV · percorsi e orari programmati':view==='news'?'Ultime pubblicazioni · Comune di Verona':view==='discover'?'':onlySaved?'Da “mi interessa” a “ci vediamo lì”.':'Scegli un giorno. Trova qualcosa di bello.';
   $('filter-dot').hidden=!($('search').value||$('source').value||($('period').value&&$('period').value!=='30')||($('collection').value&&$('collection').value!=='all'));
   if(view!=='saved'||typeof savedHubReady==='undefined'||!savedHubReady)renderAgenda(filtered);
   if(view==='saved'&&typeof savedHubReady!=='undefined'&&savedHubReady){$('page-intro').textContent='Tutto quello che vuoi ritrovare.';renderSavedHub();}
@@ -192,6 +215,8 @@ function agendaTime(e){
   return new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit'}).format(new Date(e.startsAt));
 }
 function renderAgenda(filtered){
+  $('inline-month').hidden=view!=='calendar';
+  if(view==='calendar'&&typeof renderInlineMonth==='function')renderInlineMonth(filtered);
   const past=onlySaved&&savedMode==='past';
   $('saved-event-tabs').hidden=!onlySaved;$('agenda-picker').hidden=past;
   for(const [id,mode]of [['saved-upcoming','upcoming'],['saved-past','past']]){const button=$(id);button.setAttribute('aria-pressed',String(savedMode===mode));button.classList.toggle('active',savedMode===mode);}
@@ -289,7 +314,7 @@ function renderDistrict(){
     list.append(card);
   }
 }
-function eventPosition(e,day){if(!day&&e.occurrences){const first=e.startsAt.slice(0,10),last=e.endsAt.slice(0,10);day=typeof selected!=='undefined'&&selected>=first&&selected<=last?selected:typeof today!=='undefined'&&today>=first&&today<=last?today:first;}if(day&&typeof eventVenueForDay==='function'&&(e.occurrences||e.locationsByDay)){const venue=eventVenueForDay(e,day);return venue.usable?venue.coordinates:null;}const p=e.coordinates;if(e.mapDisabled||!p||!Number.isFinite(p.lat)||!Number.isFinite(p.lon)||p.lat<44.5||p.lat>46.3||p.lon<10||p.lon>12)return null;return p;}
+function eventPosition(e,day){if(isSavedEvent(e)&&!events.some(item=>item.id===e.id))return null;if(!day&&e.occurrences){const first=e.startsAt.slice(0,10),last=e.endsAt.slice(0,10);day=typeof selected!=='undefined'&&selected>=first&&selected<=last?selected:typeof today!=='undefined'&&today>=first&&today<=last?today:first;}if(day&&typeof eventVenueForDay==='function'&&(e.occurrences||e.locationsByDay)){const venue=eventVenueForDay(e,day);return venue.usable?venue.coordinates:null;}const p=e.coordinates;if(e.mapDisabled||!p||!Number.isFinite(p.lat)||!Number.isFinite(p.lon)||p.lat<44.5||p.lat>46.3||p.lon<10||p.lon>12)return null;return p;}
 function eventMapEvents(){const days=Number($('event-map-period').value||1);const end=new Date(Date.parse(selected+'T12:00:00Z')+(days-1)*86400000).toISOString().slice(0,10);return visibleEvents().filter(e=>eventDay(e.startsAt)<=end&&eventDay(e.endsAt)>=selected&&(!eventMapSaved||['interested','going'].includes(preferences[e.id])));}
 function openEventMap(event=null){if(view!=='eventmap')eventMapReturn={view:['calendar','saved','explore'].includes(view)?view:'calendar',selected,search:$('search').value,source:$('source').value,scroll:$('events').scrollTop||0,agenda:agendaReady?captureAgendaState():null};if(event){if(agendaReady){agendaRange='day';for(const id of agendaFilterIds)$(id).value='';}selected=eventDay(event.startsAt);month=selected.slice(0,7);eventMapFocus=event.id;eventMapSaved=false;$('search').value='';$('source').value='';$('event-map-period').value='1';}else eventMapFocus=null;setView('eventmap');}
 function renderEventMap(){
@@ -384,7 +409,7 @@ function renderHome(){
   const todayCount=new Set(events.filter(e=>occursOn(e,today)).map(e=>e.sourceUrl)).size;
   $('home-today').textContent=`${todayCount} eventi oggi →`;
   $('services').replaceChildren();
-  for(const service of services){
+  for(const service of []){
     const tile=el('button','','service-tile'+(service.ready?' ready':''));tile.type='button';tile.setAttribute('aria-label',service.name+(service.ready?'':' · in preparazione'));tile.setAttribute('data-service',service.id);tile.setAttribute('data-focus-key','service-'+service.id);
     const icon=el('span',service.icon,'service-icon');icon.setAttribute('aria-hidden','true');
     const compactDescription={events:'Scopri e salva',bus:'Fermate e orari',news:'Avvisi della città',utilities:'Farmacie e altro',explore:'Luoghi e attività'};
@@ -466,7 +491,7 @@ function renderTimetable(){
   if(!timetableLine){list.append(el('p','Orari interni non disponibili per questa scheda. Puoi consultare la fonte originale.','timetable-prompt'));return;}
   if(timetableMapStopKey&&$('timetable-direction').value&&key&&!$('timetable-service').value){
     const services=[...new Set(timetableLine.blocks.filter(b=>b.direction===$('timetable-direction').value).map(b=>b.service))];let count=0;
-    for(const service of services){const rows=timetableDepartures({service,key}),section=el('section','','timetable-service-group');section.append(el('h3',service));count+=rows.length;if(rows.length)appendTimetableRows(section,rows);else section.append(el('p','Nessun orario riportato per questa fermata in questo servizio.','timetable-prompt'));list.append(section);}
+    for(const service of services.filter(service=>!["events","news"].includes(service.id))){const rows=timetableDepartures({service,key}),section=el('section','','timetable-service-group');section.append(el('h3',service));count+=rows.length;if(rows.length)appendTimetableRows(section,rows);else section.append(el('p','Nessun orario riportato per questa fermata in questo servizio.','timetable-prompt'));list.append(section);}
     $('timetable-summary').textContent=count+' orari · '+services.length+' servizi separati';return;
   }
   if(!$('timetable-direction').value||!$('timetable-service').value||!key){list.append(el('p',!$('timetable-direction').value?'Scegli una direzione per consultare gli orari.':!$('timetable-service').value?'Scegli il giorno di servizio indicato da ATV.':'Scegli una fermata della tabella.','timetable-prompt'));return;}
@@ -659,6 +684,9 @@ function openDetails(e) {
   const content=$('detail-content');content.replaceChildren();content.scrollTop=0;
   const title=el('h2',e.title);title.id='detail-title';
   content.append(el('span',e.source,'source'),title);
+  const savedReview=savedEventReviewFor(e);
+  if(savedReview?.message){const notice=el('section','','event-access-notes');notice.setAttribute('role','status');notice.append(el('h3','Controlla il tuo salvataggio'),el('p',savedReview.message));if(savedReview.current){const acknowledge=el('button','Ho verificato i nuovi dettagli','dialog-save');acknowledge.onclick=()=>{const focus=detailReturnFocus,current=acknowledgeSavedEvent(e.id);if(current){closeDetails();openDetails(current);detailReturnFocus=focus;}};notice.append(acknowledge);}content.append(notice);}
+  if(savedReview?.kind==='changed'&&savedReview.current){if(savedReview.fields.includes('time'))content.append(el('p','Salvato: '+eventWhen(savedReview.snapshot)+' · Ora: '+eventWhen(savedReview.current),'detail-note'));if(savedReview.fields.includes('location'))content.append(el('p','Luogo salvato: '+(savedReview.snapshot.location||'non indicato')+' · Luogo attuale: '+(savedReview.current.location||'da verificare'),'detail-note'));}
   if(eventImage(e)){const cover=makeEventImage(e,'event-detail-cover');cover.onerror=()=>{cover.hidden=true;};content.append(cover,el('small',eventImageCredit(eventImage(e)),'event-detail-image-credit'));}
   content.append(el('p','📅 '+eventWhen(e),'event-detail-date'),el('p','📍 '+(e.location||'Sede da verificare sulla fonte ufficiale.'),'event-detail-place'),el('p','🎟️ '+(e.priceLabel||'Prezzo da verificare'),'event-detail-access'));
   const options=el('details','','event-detail-options');options.append(el('summary','Altre opzioni e calendario'));
@@ -695,20 +723,30 @@ function openDetails(e) {
 function closeDetails() {$('detail-dialog').close();}
 function renderDiscovery() {
   const queue=discoveryEvents();currentDiscovery=queue[0]||null;
+  const filterLabels=[$('period').value==='all'?'Tutte le date':$('period').value==='7'?'Entro 7 giorni':'Entro 30 giorni'];
+  if($('search').value.trim())filterLabels.push('“'+$('search').value.trim()+'”');
+  if($('source').value)filterLabels.push($('source').value);
+  if($('collection').value==='local')filterLabels.push('Luoghi controllati');
+  $('discover-filter-summary').textContent=filterLabels.join(' · ');
+  $('discover-filters').setAttribute('aria-label','Filtri eventi: '+filterLabels.join(', ')+'. Modifica filtri');
   $('discovery-count').textContent=`${queue.length} ${queue.length===1?'evento da scoprire':'eventi da scoprire'}`;
   $('undo').disabled=!lastChoice;$('like').disabled=!currentDiscovery;$('skip').disabled=!currentDiscovery;
   const deck=$('deck');deck.replaceChildren();
   if(!currentDiscovery){
-    const empty=el('div','','deck-empty');empty.append(el('h3','Per ora è tutto.'),el('p','Hai visto gli eventi disponibili con questi filtri. Puoi cambiare periodo o esplorare il catalogo completo.'));
+    const constrained=Boolean($('search').value||$('source').value||$('collection').value==='local');
+    const empty=el('div','','deck-empty');empty.append(el('h3',constrained?'Nessun evento con questi filtri.':'Per ora è tutto.'),el('p',constrained?'Prova un’altra ricerca o amplia la selezione. I tuoi eventi salvati restano in Salvati.':'Non ci sono altre proposte nella selezione attuale. Puoi cambiare periodo o esplorare il catalogo completo.'));
     if(Object.keys(dismissed).length){const review=el('button','Rivedi gli eventi saltati');review.onclick=()=>{dismissed={};lastChoice=null;const stored=persistChoices();showDiscoveryFeedback('Eventi saltati nuovamente disponibili. I tuoi salvati sono conservati.'+(stored?'':' Scelta valida solo per questa visita.'));render()};empty.append(review);}
     const button=el('button','Esplora il catalogo completo');button.onclick=()=>{$('collection').value='all';$('period').value='all';$('source').value='';$('search').value='';render()};empty.append(button);deck.append(empty);return;
   }
   const e=currentDiscovery,p= presentation(e),card=el('article','','discover-card');
-  const cover=el('div','',`card-cover theme-${p.theme}`);cover.setAttribute('aria-hidden','true');cover.append(el('span','Verona · da vivere','cover-label'),el('div','','cover-art'),el('span',p.label,'cover-type'));
-  const coverImage=eventImage(e);if(coverImage){const fallback=[...cover.children],image=makeEventImage(e,'event-cover-image');image.hidden=true;cover.append(image);const credit=el('span',eventImageCredit(coverImage),'event-cover-credit');credit.hidden=true;image.onload=()=>{for(const node of fallback)node.hidden=true;cover.setAttribute('aria-hidden','false');cover.style.background='var(--page-bg)';image.hidden=false;credit.hidden=false};image.onerror=()=>{image.hidden=true;credit.hidden=true;for(const node of fallback)node.hidden=false;cover.setAttribute('aria-hidden','true');cover.style.background=''};cover.append(credit);}
+  const heading=el('div','','discovery-editorial-heading');heading.append(el('span',p.label,'discovery-category'),el('h3',e.title));
+  const cover=el('div','','card-cover');cover.setAttribute('aria-hidden','true');
+  const coverImage=eventImage(e);if(coverImage){const image=makeEventImage(e,'event-cover-image');image.hidden=true;cover.append(image);const credit=el('span',eventImageCredit(coverImage),'event-cover-credit');credit.hidden=true;image.onload=()=>{if(image.naturalWidth&&image.naturalHeight)cover.style.aspectRatio=image.naturalWidth+'/'+image.naturalHeight;card.classList.toggle('has-poster',true);cover.setAttribute('aria-hidden','false');image.hidden=false;credit.hidden=false};image.onerror=()=>{card.classList.toggle('has-poster',false);image.hidden=true;credit.hidden=true;cover.setAttribute('aria-hidden','true')};cover.append(credit);}
   const likeStamp=el('span','MI INTERESSA','swipe-stamp'),skipStamp=el('span','PASSO','swipe-stamp skip');likeStamp.setAttribute('aria-hidden','true');skipStamp.setAttribute('aria-hidden','true');
-  const body=el('div','','card-body');body.append(el('span',e.localVerified?'Luogo controllato · '+e.source:'Da verificare · '+e.source,'local-label'),el('h3',e.title),el('p',eventWhen(e),'card-meta'),el('p',e.location||'Sede da verificare sulla fonte','card-meta'),el('span',e.priceLabel||'Prezzo da verificare','card-price'));
-  const detail=el('button','i','details-trigger');detail.type='button';detail.setAttribute('aria-label',`Apri i dettagli di ${e.title}`);detail.title='Dettagli evento';detail.onclick=()=>openDetails(e);card.append(cover,likeStamp,skipStamp,body,detail);deck.append(card);
+  const body=el('div','','card-body');
+  for(const [label,value]of [['Quando',eventWhen(e)],['Dove',e.location||'Sede da verificare sulla fonte']]){const row=el('div','','discovery-fact');row.append(el('span',label,'discovery-fact-label'),el('p',value,'card-meta'));body.append(row);}
+  body.append(el('span',e.priceLabel||'Prezzo da verificare','card-price'),el('span',e.localVerified?'Luogo controllato':'Luogo da verificare','local-label'));
+  const detail=el('button','Dettagli evento →','details-trigger');detail.type='button';detail.setAttribute('data-focus-key','discovery-detail');detail.setAttribute('aria-label',`Apri i dettagli di ${e.title}`);detail.title='Dettagli evento';detail.onclick=()=>openDetails(e);body.append(detail);card.append(cover,heading,likeStamp,skipStamp,body);deck.append(card);
   attachSwipe(card,e,likeStamp,skipStamp);
 }
 function attachSwipe(card,e,likeStamp,skipStamp) {
@@ -741,11 +779,11 @@ $('utilities-pharmacies').onclick=()=>openPharmacies();
 $('utilities-parking').onclick=()=>openParkingCatalog();
 $('utilities-waste').onclick=()=>openWaste();
 $('utilities-ztl').onclick=()=>openService({id:'ztl'});
-$('open-filters').onclick=()=>{if(view==='news')openNewsFilters();else if(view==='bus')openBusMore();else{filterSnapshot=Object.fromEntries(['search','source','period','collection'].map(id=>[id,$(id).value]));$('event-period-field').hidden=$('event-collection-field').hidden=view!=='discover';$('filters-dialog').showModal()}};
+$('open-filters').onclick=()=>{filterReturnFocus=document.activeElement||$('open-filters');if(view==='news')openNewsFilters();else if(view==='bus')openBusMore();else{filterSnapshot=Object.fromEntries(['search','source','period','collection'].map(id=>[id,$(id).value]));$('event-period-field').hidden=$('event-collection-field').hidden=view!=='discover';$('filters-dialog').showModal()}};
 $('close-filters').onclick=()=>$('filters-dialog').close();
 $('apply-filters').onclick=()=>{filterSnapshot=null;render();$('filters-dialog').close()};
 $('reset-filters').onclick=()=>{$('search').value='';$('source').value='';$('period').value='30';$('collection').value='all'};
-$('filters-dialog').addEventListener('close',()=>{if(filterSnapshot){for(const [id,value]of Object.entries(filterSnapshot))$(id).value=value;filterSnapshot=null;render()}$('open-filters').focus()});
+$('filters-dialog').addEventListener('close',()=>{if(filterSnapshot){for(const [id,value]of Object.entries(filterSnapshot))$(id).value=value;filterSnapshot=null;render()}(filterReturnFocus||$('open-filters')).focus()});
 $('open-info').onclick=openDataHealth;$('network-data-warning').onclick=openDataHealth;$('close-info').onclick=()=>$('info-dialog').close();
 $('home-news').onclick=()=>{const item=homeNewsSelection();if(item)openNews(item);else setView('news');};
 $('news').onclick=()=>setView('news');
@@ -911,3 +949,54 @@ function requestMapLocation(key,options={}){
     options.onSuccess?.(currentUserLocation);
   },fail,{enableHighAccuracy:true,timeout:12000,maximumAge:0});}catch{fail({code:2});}
 }
+
+function positionMoreMenu(){
+  if(typeof $('more').getBoundingClientRect!=='function')return;
+  const anchor=$('more').getBoundingClientRect(),menu=$('more-dialog');
+  const width=Math.min(288,innerWidth-20),left=Math.max(10,Math.min(anchor.right-width,innerWidth-width-10));
+  menu.style.setProperty('--more-left',left+'px');menu.style.setProperty('--more-width',width+'px');
+  menu.style.setProperty('--more-bottom',(innerHeight-anchor.top+8)+'px');
+  menu.style.setProperty('--more-height',Math.max(44,anchor.top-20)+'px');
+  menu.style.setProperty('--more-origin',Math.max(16,Math.min(width-16,anchor.left+anchor.width/2-left))+'px');
+}
+$('more').onclick=()=>{
+  $('more').setAttribute('aria-expanded','true');
+  positionMoreMenu();
+  $('more-dialog').showModal();$('more-close').focus();
+};
+$('more-close').onclick=()=>$('more-dialog').close();
+$('more-dialog').addEventListener('click',event=>{
+  if(event.target!==$('more-dialog'))return;
+  const rect=$('more-dialog').getBoundingClientRect();
+  if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)$('more-dialog').close();
+});
+if(typeof addEventListener==='function')addEventListener('resize',()=>{if($('more-dialog').open)positionMoreMenu();});
+$('more-dialog').addEventListener('keydown',event=>{
+  if(event.key!=='Tab')return;
+  const first=$('more-close'),last=$('games');
+  if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+  else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+});
+$('more-dialog').addEventListener('close',()=>{
+  $('more').setAttribute('aria-expanded','false');$('more').focus({preventScroll:true});
+});
+for(const [id,target] of [['more-bus','bus'],['news','news'],['more-explore','explore'],['games','games']]){
+  const button=$(id),original=button.onclick;
+  button.onclick=event=>{$('more-dialog').close();if(original)original.call(button,event);else setView(target);};
+}
+$('more-utilities').onclick=()=>{
+  $('more-dialog').close();openService({id:'utilities'});utilityReturnFocus=$('more');render();
+};
+$('utilities-dialog').addEventListener('close',()=>render());
+for(const [service,dialog] of [['pharmacies','pharmacy'],['parking','parking'],['waste','waste'],['cycle','cycle'],['ztl','ztl']]){
+  let openedFromMore=false;
+  $('more-'+service).onclick=()=>{
+    $('more-dialog').close();$('more').focus({preventScroll:true});
+    openedFromMore=true;$('utilities-'+service).onclick();render();
+  };
+  $(dialog+'-dialog').addEventListener('close',()=>{
+    if(!openedFromMore)return;openedFromMore=false;render();$('more').focus({preventScroll:true});
+  });
+}
+
+$('discover-filters').onclick=()=>$('open-filters').onclick();
