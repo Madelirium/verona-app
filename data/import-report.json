@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-30T10:53:31.812Z",
+  "checkedAt": "2026-10-30T16:43:33.394Z",
   "from": "2026-10-30",
   "status": "ok",
   "sources": [
@@ -7,17 +7,191 @@
       "source": "Comune di Verona",
       "status": "ok",
       "count": 1318,
-      "lastSuccessAt": "2026-10-30T10:53:31.812Z",
-      "added": 8,
-      "removed": 0
+      "lastSuccessAt": "2026-10-30T16:43:33.394Z",
+      "added": 0,
+      "updated": 1318,
+      "removed": 0,
+      "diagnostics": {
+        "recordsRead": 512,
+        "pagesRead": 6,
+        "editorialVenues": {
+          "352": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "revision": "9435b6b2bcd8663a669e313ac91b1fa6e47a715ace63c68cc50253ca74332ea8"
+          },
+          "645": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "revision": "729cf1c3b79a679b8a012bd9a64e0efb4095d0afadb8008098d4a55f024d235a"
+          },
+          "6542": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "revision": "ff37fc856fc9e05f7d79d228cb95d8884e815de3841f1be233e0f82ed4b6e6f2"
+          },
+          "6543": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "revision": "3eb5e1731378447b62f37ec0a25c0dcd62f86aa6161dcde7e1653918d6765f65"
+          },
+          "6552": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "revision": "7783e57796baac21f943bbbe9f5b32c2a8924cdecd423050bde0756d433a8057"
+          },
+          "6554": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "revision": "26abedc7082df7fa63f3f93ab6cbcde4143541f4498b59c8f151daf95d712240"
+          },
+          "6620": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "revision": "62de025882326c6da9083ba8099b8e7c9cbcb5858c38c6fa6d2aa09434f991b7"
+          },
+          "9371": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "revision": "4230ddb7d7a8dabfc08cdd6c0e997726989e84f65fccff260d4631c89169442e"
+          },
+          "17970": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "revision": "cff23a435e7e830e19d490eaf2b3bf9c2676891c7f549876aa417d4257bb0a96"
+          }
+        },
+        "editorialDocuments": {
+          "https://www.comune.verona.it/content/download/24501/582310/6/CORSO+DI+BURRACO+TOMBETTA.png": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "sha256": "0d1f8b28cdc3dbbe8e043651f98b6d3d460ec90530093387e03dd3aaa6979255"
+          },
+          "https://www.comune.verona.it/content/download/24241/576262/2/volantino+scienza+CORRETTO+2026-27.pdf": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "sha256": "a943a32d40ca037a2f05b88f62d5ad3c498eb4562c31919de4d65eb425c0c3f1"
+          },
+          "https://www.comune.verona.it/ocmultibinary/download/25196/598461/3/959afa17b589f0dd7db6ddb2652f0fd0.pdf/file/Centro%2Bascolto.pdf": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "sha256": "831e83873466182314581d44dc2f83a75c4f8689dba4aca9293aad2ef02ce9c0"
+          },
+          "https://www.comune.verona.it/ocmultibinary/download/25194/598400/3/d0178c867c026b13c03698ee3f24951e.pdf/file/Menti%2Bin%2Bgioco%2B%25282%2529.pdf": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "sha256": "81a6448655ad6171ef29659a8dcbcd5e3b78b99e2b4c0a74484faaa2d91885a1"
+          },
+          "https://www.comune.verona.it/ocmultibinary/download/25175/597929/2/d11caba702a2b6eebd9d9b4ee248c928.pdf/file/Glicemia%2B%25284%2529.pdf": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "sha256": "153dd7cf093c1f2b2910cc729a47b1084f9b2b63bb933ad17a1425423d3fc545"
+          },
+          "https://www.comune.verona.it/content/download/25193/598360/3/Pillole+Digitali+%282%29.pdf": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "sha256": "d430552eff15c58651c29990a43c67144e4705ef9cb9967a903a7e597fe0fb17"
+          },
+          "https://www.comune.verona.it/content/download/25321/601991/1/Incontro+Formativo+BLS.pdf": {
+            "checkedAt": "2026-10-30T16:43:33.394Z",
+            "sha256": "4c01682edd541c900df28dee23ad6d0c37c2aae2d17a562f5525c96c3b79c763"
+          }
+        },
+        "quality": {
+          "issues": [
+            {
+              "code": "invalid-occurrence",
+              "sourceRecords": 4,
+              "sourceIds": [
+                16780,
+                13860,
+                20247,
+                25117
+              ]
+            },
+            {
+              "code": "multiple-programme-venues",
+              "sourceRecords": 4,
+              "sourceIds": [
+                15851,
+                17911,
+                24748,
+                24957
+              ]
+            },
+            {
+              "code": "recurrence-weekday-exception",
+              "sourceRecords": 3,
+              "sourceIds": [
+                17911,
+                24241,
+                24732
+              ]
+            },
+            {
+              "code": "narrative-address-conflict",
+              "sourceRecords": 4,
+              "sourceIds": [
+                24913,
+                25194,
+                25175,
+                25193
+              ]
+            },
+            {
+              "code": "linked-address-conflict",
+              "sourceRecords": 2,
+              "sourceIds": [
+                18953,
+                24241
+              ]
+            },
+            {
+              "code": "linked-coordinate-conflict",
+              "sourceRecords": 10,
+              "sourceIds": [
+                24501,
+                24514,
+                24503,
+                24498,
+                24499,
+                24307,
+                24502,
+                24518,
+                24512,
+                25196
+              ]
+            },
+            {
+              "code": "linked-narrative-conflict",
+              "sourceRecords": 1,
+              "sourceIds": [
+                25321
+              ]
+            }
+          ],
+          "venueFailures": 0,
+          "imageFailures": 0,
+          "sourceEvents": 91,
+          "withSummary": 1318,
+          "withAccessNotes": 1318,
+          "navigationDisabled": 183
+        }
+      }
     },
     {
       "source": "Veronafiere",
       "status": "ok",
       "count": 21,
-      "lastSuccessAt": "2026-10-30T10:53:31.812Z",
+      "lastSuccessAt": "2026-10-30T16:43:33.394Z",
       "added": 0,
-      "removed": 0
+      "updated": 0,
+      "removed": 0,
+      "diagnostics": {
+        "years": [
+          {
+            "year": 2026,
+            "status": "ok",
+            "count": 5
+          },
+          {
+            "year": 2027,
+            "status": "ok",
+            "count": 16
+          }
+        ]
+      }
     }
-  ]
+  ],
+  "significantChanges": {
+    "count": 183,
+    "time": 0,
+    "location": 183,
+    "notPresent": 0
+  }
 }
