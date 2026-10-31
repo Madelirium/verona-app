@@ -1,14 +1,8 @@
 {
   "sourceUrl": "https://www.ordinefarmacisti.vr.it/turni-farmacie/",
-  "attemptedAt": "2026-10-30T11:01:59.245Z",
+  "attemptedAt": "2026-10-31T10:32:46.406Z",
   "status": "error",
   "items": [
-    {
-      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/14_Dalle-ore-9.00-del-28.10.2026-alle-ore-9.00-del-30.10.2026.pdf",
-      "sha256": "488539d01c9efce32cbb1058fd45d9ef22332b92a9ed2622cd170bd495a62822",
-      "count": 13,
-      "extraction": "unchanged"
-    },
     {
       "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/09/15_Dalle-ore-9.00-del-30.10.2026-alle-ore-9.00-del-01.11.2026.pdf",
       "sha256": "e1a5d12321e77fca8d518bc6967130478762594e4ccec6c6a543d4360d475a27",
