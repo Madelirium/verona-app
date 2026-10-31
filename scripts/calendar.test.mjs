@@ -76,21 +76,21 @@ test('Farmacie: mappa parziale, punto della farmacia, navigazione conservata e p
 });
 function wasteForm(app){const form=app.get('waste-collection-panel').children.find(c=>c.className==='waste-address-form');return {form,street:form.children[0].children[0],civic:form.children[3].children[0],result:form.children[5]};}
 test('Trova zona: ricerca, scelta via, civico, conferma e persistenza della sola zona',()=>{
-  const app=run(new Map(),'home');app.get('district-waste').onclick();wasteFind(app,'Trova la zona di raccolta').onclick();let fields=wasteForm(app);fields.street.value='tiber';fields.street.oninput();wasteFind(app,'Via Tiberghien').onclick();fields=wasteForm(app);fields.civic.value='12';fields.civic.oninput();fields.form.onsubmit({preventDefault(){}});
+  const app=run(new Map(),'home');app.get('district-waste').onclick();let fields=wasteForm(app);fields.street.value='tiber';fields.street.oninput();wasteFind(app,'Via Tiberghien').onclick();fields=wasteForm(app);fields.civic.value='12';fields.civic.oninput();fields.form.onsubmit({preventDefault(){}});
   assert.ok(wasteFind(app,'Via Tiberghien, civico 12'));assert.equal(app.storage.has('verona-waste-v1'),false);wasteFind(app,'Torna indietro').onclick();assert.equal(wasteForm(app).civic.value,'12');wasteForm(app).form.onsubmit({preventDefault(){}});wasteFind(app,'Conferma zona').onclick();
   const saved=JSON.parse(app.storage.get('verona-waste-v1'));assert.equal(saved.zoneId,'c7-brown');assert.deepEqual(Object.keys(saved).sort(),['confirmedAt','version','zoneId']);app.get('waste-close').onclick();assert.equal(new Script('wasteAddress').runInContext(app.context),null);
   const reload=run(app.storage,'home');assert.equal(reload.get('home-waste').hidden,true);
 });
 test('Trova zona: civico mancante, intervallo escluso, ambiguità e nessun risultato non salvano',()=>{
-  const app=run(new Map(),'home');app.get('district-waste').onclick();wasteFind(app,'Trova la zona di raccolta').onclick();let fields=wasteForm(app);fields.street.value='tiber';fields.street.oninput();wasteFind(app,'Via Tiberghien').onclick();fields=wasteForm(app);fields.form.onsubmit({preventDefault(){}});assert.match(fields.result.textContent,/Scrivi il numero/);
+  const app=run(new Map(),'home');app.get('district-waste').onclick();let fields=wasteForm(app);fields.street.value='tiber';fields.street.oninput();wasteFind(app,'Via Tiberghien').onclick();fields=wasteForm(app);fields.form.onsubmit({preventDefault(){}});assert.match(fields.result.textContent,/Scrivi il numero/);
   fields.civic.value='39';fields.form.onsubmit({preventDefault(){}});assert.match(fields.result.textContent,/non è coperto/);assert.equal(wasteFind(app,'Conferma zona'),undefined);
   fields.street.value='monte bianco';fields.street.oninput();wasteFind(app,'Via Monte Bianco').onclick();fields=wasteForm(app);fields.civic.value='5';fields.form.onsubmit({preventDefault(){}});assert.match(fields.result.textContent,/Non possiamo scegliere/);
-  fields.street.value='nome inesistente';fields.street.oninput();assert.equal(fields.form.children[1].children.length,0);assert.equal(fields.form.children[4].hidden,true);assert.equal(app.storage.has('verona-waste-v1'),false);
-  fields.form.onsubmit({preventDefault(){}});assert.match(fields.result.textContent,/Scegli prima una via/);
+  fields.street.value='nome inesistente';fields.street.oninput();assert.equal(fields.form.children[1].children.length,0);assert.equal(fields.form.children[4].hidden,false);assert.equal(app.storage.has('verona-waste-v1'),false);
+  fields.form.onsubmit({preventDefault(){}});assert.match(fields.result.textContent,/Non abbiamo ancora il calendario per questo indirizzo/);
 });
 test('Raccolta semplice: scelta e conferma separate, persistenza e annullamento',()=>{
   const app=run(new Map(),'home');assert.equal(app.get('home-waste').hidden,true);app.get('district-waste').onclick();
-  assert.equal(wasteFind(app,'Conferma zona'),undefined);wasteFind(app,'Zona Marrone').onclick();assert.equal(app.storage.has('verona-waste-v1'),false);
+  assert.equal(wasteFind(app,'Conferma zona'),undefined);wasteFind(app,'Torna alla scelta della zona').onclick();wasteFind(app,'Zona Marrone').onclick();assert.equal(app.storage.has('verona-waste-v1'),false);
   assert.ok(wasteFind(app,'Conferma solo se la tua via e il tuo civico appartengono a questa zona.'));
   wasteFind(app,'Conferma zona').onclick();assert.equal(JSON.parse(app.storage.get('verona-waste-v1')).zoneId,'c7-brown');assert.equal(app.get('home-waste').hidden,true);
   const cards=app.get('waste-collection-panel').children;assert.equal(cards.filter(c=>c.className==='waste-next').length,1);assert.equal(cards.filter(c=>c.className==='waste-day').length,2);assert.equal(cards.find(c=>c.className==='waste-more').children.length,4);
@@ -99,7 +99,7 @@ test('Raccolta semplice: scelta e conferma separate, persistenza e annullamento'
 });
 test('Raccolta semplice: aiuto, ritorno indietro, versione obsoleta e memoria bloccata',()=>{
   const app=run(new Map([['verona-waste-v1','{"version":"old","zoneId":"c7-red","confirmedAt":"2026-10-22"}']]),'home');assert.equal(app.get('home-waste').hidden,true);app.get('district-waste').onclick();
-  wasteFind(app,'Trova la zona di raccolta').onclick();assert.ok(wasteFind(app,'Trova la zona di raccolta'));assert.ok(wasteFind(app,'Cerca le altre zone sul sito AMIA ↗'));assert.equal(wasteFind(app,'Conferma zona'),undefined);
+  assert.ok(wasteFind(app,'Trova la zona di raccolta'));assert.ok(wasteFind(app,'Cerca le altre zone sul sito AMIA ↗'));assert.equal(wasteFind(app,'Conferma zona'),undefined);
   wasteFind(app,'Torna alla scelta della zona').onclick();wasteFind(app,'Zona Gialla').onclick();wasteFind(app,'Torna indietro').onclick();assert.equal(app.storage.get('verona-waste-v1').includes('old'),true);
   wasteFind(app,'Zona Gialla').onclick();app.context.localStorage.setItem=()=>{throw Error('blocked')};wasteFind(app,'Conferma zona').onclick();assert.match(app.get('waste-feedback').textContent,/questa visita/);assert.equal(app.get('home-waste').hidden,true);
 });

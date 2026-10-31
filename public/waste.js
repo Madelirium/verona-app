@@ -12,12 +12,12 @@ function renderWasteEntry(){
   const tomorrow=new Date(Date.parse(today+'T12:00:00Z')+86400000).toISOString().slice(0,10);
   const when=first?(first.day===today?'oggi':first.day===tomorrow?'domani':formatDay(first.day,{weekday:'short',day:'numeric',month:'short'})):'';
   $('home-collection-label').textContent=first?(zone.dates?'Esponi ':'Raccolta ')+when:'Raccolta';
-  $('home-collection-value').textContent=!zone?'Scegli zona':!covered?'Da aggiornare':first?[...new Set(upcoming.filter(item=>item.day===first.day).map(item=>item.material))].join(' · '):'Nessun ritiro previsto';
+  $('home-collection-value').textContent=!zone?'Inserisci indirizzo':!covered?'Da aggiornare':first?[...new Set(upcoming.filter(item=>item.day===first.day).map(item=>item.material))].join(' · '):'Nessun ritiro previsto';
   compact.setAttribute('aria-label','Raccolta porta a porta: '+$('home-collection-value').textContent+(first?' · '+$('home-collection-label').textContent+(zone.dates?' · '+zone.exposureTime:''):'')+' · Apri calendario');compact.onclick=()=>openWaste();
   $('district-waste').textContent=zone?'♻ Rifiuti · '+zone.name:'♻ Rifiuti e raccolta';
 }
 function openWaste(tab='collection'){
-  wasteReturnFocus=document.activeElement;wasteTab=tab;wasteEditing=!wasteSelection;wasteDraft='';wasteAddress=null;$('waste-feedback').textContent='';
+  wasteReturnFocus=document.activeElement;wasteTab=tab;wasteEditing=!wasteSelection;wasteDraft=wasteSelection?'':'help';wasteAddress=null;$('waste-feedback').textContent='';
   renderWasteDialog();$('waste-dialog').showModal();$('waste-close').focus();
 }
 function renderWasteDialog(){
@@ -38,7 +38,7 @@ function renderWasteCollection(){
     }else if(wasteDraft==='help'){
       renderWasteAddress(body);
     }else if(draftZone){
-      body.append(wasteHeading('Confermi '+draftZone.name.toLowerCase()+'?'));
+      body.append(wasteHeading('Il tuo calendario'),el('p',draftZone.name,'waste-coverage'));
       const recap=el('div','','waste-recap');
       if(draftZone.dates){recap.append(el('p',draftZone.area),el('p','Carta, plastica/metalli, umido e secco'),el('p',draftZone.exposureDayOffset===-1?'Esposizione la sera precedente al ritiro, '+draftZone.exposureTime+'.':'Esposizione il giorno del calendario, '+draftZone.exposureTime+'.'));}
       else for(const rule of draftZone.rules){const weekday=formatDay('2026-02-'+String(1+rule.weekday).padStart(2,'0'),{weekday:'long'});recap.append(el('p',rule.material+' · '+weekday));}
@@ -65,7 +65,7 @@ function renderWasteCollection(){
     else{
       const next=el('article','','waste-next');next.append(el('span',zone.dates?'Da esporre':'Prossima raccolta','waste-kicker'),el('strong',wasteDayLabel(rows[0].day)),el('span',rows[0].material,'waste-material'));if(zone.dates)next.append(el('span',zone.exposureTime,'waste-exposure'));body.append(next);
       body.append(el('p','Poi, nei prossimi giorni','waste-kicker'));for(const row of rows.slice(1,3))body.append(wasteDayCard(row));
-      const more=el('details','','waste-more');more.append(el('summary','Vedi tutti i giorni'));for(const row of rows.slice(3))more.append(wasteDayCard(row));body.append(more);
+      const more=el('details','','waste-more');more.append(el('summary','Altre raccolte in programma'));for(const row of rows.slice(3))more.append(wasteDayCard(row));body.append(more);
     }
     body.append(el('p',zone.dates?(zone.exposureDayOffset===-1?'Le date qui mostrate sono le sere di esposizione. Il ritiro avviene la mattina successiva.':'Esponi la sera del giorno indicato, tra le 19 e le 21.')+' Calendario domestico 2026: controlla eventuali avvisi AMIA.':'Qui trovi carta e plastica/metalli. Orari di esposizione e variazioni festive: verifica con AMIA.','waste-note'));
     if(zone.dates)body.append(wasteLink('Il tuo calendario AMIA (PDF) ↗',zone.sourceUrl));
@@ -78,22 +78,22 @@ function wasteDayCard(row){const card=el('article','','waste-day');card.append(e
 function renderWasteAddress(body){
   if(!wasteAddress)wasteAddress={query:'',street:'',civic:'',result:null};
   const address=wasteAddress;
-  body.append(wasteHeading('Trova la zona di raccolta'),el('p','Cerca la tua via. La prova copre solo alcune vie della Circoscrizione 7.','waste-note'));
+  body.append(wasteHeading('Trova la zona di raccolta'),el('p','Cerca il calendario per casa tua.','waste-note'),el('p','Ricerca disponibile per alcune vie della Circoscrizione 7.','waste-coverage'));
   const form=el('form','','waste-address-form');form.noValidate=true;
-  const streetLabel=el('label','1. Come si chiama la tua via?','waste-address-field'),input=el('input');input.type='search';input.id='waste-street';input.value=address.query;input.autocomplete='off';input.placeholder='Per esempio: Tiberghien';streetLabel.htmlFor=input.id;streetLabel.append(input);
+  const streetLabel=el('label','Via o piazza','waste-address-field'),input=el('input');input.type='search';input.id='waste-street';input.value=address.query;input.autocomplete='off';input.placeholder='Per esempio: Tiberghien';streetLabel.htmlFor=input.id;streetLabel.append(input);
   const suggestions=el('div','','waste-street-results');suggestions.setAttribute('role','group');suggestions.setAttribute('aria-label','Vie trovate');
   const searchStatus=el('p','','waste-note');searchStatus.setAttribute('role','status');
-  const civicLabel=el('label','2. Qual è il numero civico?','waste-address-field'),civic=el('input');civic.id='waste-civic';civic.type='text';civic.inputMode='numeric';civic.autocomplete='off';civic.value=address.civic;civic.placeholder='Per esempio: 12';civicLabel.htmlFor=civic.id;civicLabel.append(civic);civicLabel.hidden=!address.street;
-  const submit=el('button','Trova il calendario','dialog-save');submit.type='submit';submit.hidden=!address.street;
+  const civicLabel=el('label','Numero civico','waste-address-field'),civic=el('input');civic.id='waste-civic';civic.type='text';civic.inputMode='numeric';civic.autocomplete='off';civic.value=address.civic;civic.placeholder='Per esempio: 12';civicLabel.htmlFor=civic.id;civicLabel.append(civic);civicLabel.hidden=false;
+  const submit=el('button','Trova il calendario','dialog-save');submit.type='submit';submit.hidden=false;
   const result=el('p','','waste-address-result');result.setAttribute('role','status');result.tabIndex=-1;result.hidden=true;
   const help=el('div','','waste-address-help');help.hidden=true;help.append(wasteLink('Verifica sull’elenco ufficiale (PDF) ↗',wasteData.links.streets),wasteLink('Cerca le altre zone sul sito AMIA ↗',wasteData.links.calendars));
-  const showResult=message=>{result.textContent=message;result.hidden=false;help.hidden=false;result.focus();};
+  const showResult=message=>{searchStatus.textContent='';result.textContent=message;result.hidden=false;help.hidden=false;result.focus();};
   const suggest=()=>{
-    suggestions.replaceChildren();civicLabel.hidden=!address.street;submit.hidden=!address.street;
+    suggestions.replaceChildren();civicLabel.hidden=false;submit.hidden=false;
     if(address.street){searchStatus.textContent='Via scelta: '+address.street;return;}
     const names=searchWasteStreets(wasteData,address.query);
-    searchStatus.textContent=!address.query.trim()?'Scrivi almeno due lettere del nome della via.':names.length?(names.length>8?'Ci sono altre vie: scrivi qualche lettera in più.':'Tocca la tua via tra i risultati.'):'Non trovi la via? Controlla il nome: potrebbe non essere coperta da questa prova.';
-    for(const name of names.slice(0,8)){const choice=wasteAction(name,()=>{address.query=name;address.street=name;address.civic='';address.result=null;renderWasteCollection();$('waste-civic').focus();});choice.className='waste-street-choice';suggestions.append(choice);}
+    searchStatus.textContent=result.hidden===false?'':!address.query.trim()?'Digita almeno due lettere per vedere le vie coperte.':names.length?(names.length>8?'Ci sono altre vie: scrivi qualche lettera in più.':'Tocca la tua via tra i risultati.'):address.query.trim().length<2?'Scrivi almeno due lettere del nome della via.':'Via non presente nell’elenco verificato. Puoi comunque controllare su AMIA.';
+    for(const name of names.slice(0,8)){const choice=wasteAction(name,()=>{address.query=name;address.street=name;address.result=null;renderWasteCollection();$('waste-civic').focus();});choice.className='waste-street-choice';suggestions.append(choice);}
     help.hidden=Boolean(names.length)||!address.query.trim();
   };
   input.oninput=()=>{address.query=input.value;address.street='';address.result=null;result.hidden=true;suggest();};
@@ -101,19 +101,21 @@ function renderWasteAddress(body){
   form.onsubmit=event=>{
     event.preventDefault();
     if(today<wasteData.validFrom||today>wasteData.validTo){wasteStep('help');return;}
-    if(!address.street){showResult('Scegli prima una via tra i risultati.');return;}
+    if(!address.query.trim()){showResult('Scrivi il nome della via per continuare.');input.focus();return;}
+    if(!civic.value.trim()){showResult('Scrivi il numero civico per continuare.');civic.focus();return;}
+    if(!address.street){const names=searchWasteStreets(wasteData,address.query);showResult(names.length?'Scegli la via corretta tra i risultati.':'Non abbiamo ancora il calendario per questo indirizzo. Puoi comunque consultare le informazioni AMIA o la sezione Dove portare.');return;}
     address.civic=civic.value.trim();address.result=resolveWasteAddress(wasteData,address.street,address.civic);
     if(address.result.status==='matched'){wasteStep(address.result.zoneId);return;}
     if(address.result.status==='missing-civic'){showResult('Scrivi il numero civico per continuare.');civic.focus();return;}
     if(address.result.status==='review')showResult(address.result.reason==='civic'?'Il civico contiene lettere o un formato da verificare. Controlla il tratto nell’elenco ufficiale.':'Questa via ha più zone o tratti delimitati da incroci. Non possiamo scegliere un colore con certezza: verifica nell’elenco ufficiale.');
-    else showResult('Questo civico non è coperto dall’elenco verificato. Consulta i calendari AMIA.');
+    else showResult('Non abbiamo ancora il calendario per questo indirizzo: il civico non è coperto dall’elenco verificato. Consulta le informazioni AMIA o la sezione Dove portare.');
   };
-  form.append(streetLabel,suggestions,searchStatus,civicLabel,submit,result,help);body.append(form,el('p','La ricerca resta su questo dispositivo. Salviamo solo la zona che confermi.','waste-note'),wasteAction('Torna alla scelta della zona',()=>wasteStep('')));suggest();
+  form.append(streetLabel,suggestions,searchStatus,civicLabel,submit,result,help);body.append(form,el('p','L’indirizzo resta su questo dispositivo. Salviamo solo la zona confermata.','waste-note'));const alternative=el('details','','waste-more');alternative.append(el('summary','Conosci già il colore della zona?'),wasteAction('Torna alla scelta della zona',()=>wasteStep('')));body.append(alternative);suggest();
 }
 function saveWasteSelection(){try{localStorage.setItem('verona-waste-v1',JSON.stringify(wasteSelection));$('waste-feedback').textContent=wasteSelection?'Zona salvata.':'Zona rimossa.';}catch{$('waste-feedback').textContent='Scelta valida per questa visita: il browser non consente il salvataggio.';}}
 function renderWasteCenters(){
-  const body=$('waste-centers-panel');body.replaceChildren();body.append(wasteHeading('Le isole ecologiche'),el('p','Per portare i rifiuti nei centri di raccolta. Controlla con AMIA cosa puoi consegnare e le aperture festive.','waste-note'));
-  for(const center of wasteData.centers){const card=el('article','','waste-center');card.append(el('h3',center.name),el('p',center.address));for(const hours of center.hours)card.append(el('p',hours,'waste-hours'));
+  const body=$('waste-centers-panel');body.replaceChildren();body.append(wasteHeading('Centri di raccolta'),el('p','Indirizzi e orari ordinari. Prima di partire, verifica sul sito AMIA i materiali ammessi, le modalità di accesso e le aperture festive.','waste-note'));
+  for(const center of wasteData.centers){const card=el('article','','waste-center');card.append(el('h3',center.name),el('p',center.address));const schedule=el('details','','waste-more');schedule.append(el('summary','Orari ordinari'));for(const hours of center.hours)schedule.append(el('p',hours,'waste-hours'));card.append(schedule);
     const directions=wasteLink('Come arrivare ↗','https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(center.address));directions.className+=' waste-directions';card.append(directions);
     const info=el('details','','waste-source');info.append(el('summary','Accesso e informazioni AMIA'),wasteLink('Verifica sul sito AMIA ↗',center.sourceUrl),el('p','Orari ordinari · fonte AMIA · controllo del '+formatDay(center.checkedOn,{day:'numeric',month:'long',year:'numeric'})+'. Le aperture festive possono cambiare.'));card.append(info);body.append(card);
   }
