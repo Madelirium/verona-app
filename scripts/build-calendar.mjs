@@ -1,3 +1,4 @@
+import {buildSeo} from './build-seo.mjs';
 import {eventVenueForDay} from './event-occurrence.mjs';
 import {applyEventEditorial,editorialSummary} from './event-editorial.mjs';
 import {eventChangeReview} from './event-changes.mjs';
@@ -108,6 +109,7 @@ export async function buildCalendar() {
   const pwaLogic=await readFile(new URL('public/pwa.js',root),'utf8');
   const html=template.replace('__GAMES_CSS__',()=>gamesCss).replace('__MAP_ASSETS__',()=>assets).replace('__EVENT_DATA__',()=>safe).replace('__CALENDAR_LOGIC__',()=>[eventChangeReview,eventVenueForDay,datasetStatus,newsDeadlineInstant,newsValidity,newsPastSeason,validateWasteSelection,wasteUpcoming,normalizeWasteStreet,searchWasteStreets,resolveWasteAddress,pharmacyPeriods].map(fn=>fn.toString()).join('\n')+'\n'+logic+'\n'+newsLogic+'\n'+wasteLogic+'\n'+pharmacyLogic+'\n'+districtLogic+'\n'+officialLogic+'\n'+eventBusLogic+'\n'+parkingLogic+'\n'+travelLogic+'\n'+weatherLogic+'\n'+exploreNeedsLogic+'\n'+networkLogic+'\n'+catalogLogic+'\n'+agendaLogic+'\n'+authLogic+'\n'+gamesLogic+'\n'+rankedLogic+'\n'+savedLogic+'\n'+homePersonalLogic+'\n'+navigationLogic+'\n'+areaPreferencesLogic+'\n'+pwaLogic+'\n'+analyticsLogic);
   await writeFile(new URL('public/index.html',root),html);
+  await buildSeo();
   await buildPwa();
   return data.events.length;
 }

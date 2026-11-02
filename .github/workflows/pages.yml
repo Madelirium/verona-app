@@ -141,6 +141,8 @@ jobs:
         run: |
           mkdir -p _site
           cp public/index.html _site/index.html
+          cp public/robots.txt _site/robots.txt
+          cp public/sitemap.xml _site/sitemap.xml
           cp public/sw.js _site/sw.js
           cp public/manifest.webmanifest _site/manifest.webmanifest
           cp -r public/assets _site/assets
