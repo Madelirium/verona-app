@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-05T02:33:14.513Z",
+  "checkedAt": "2026-11-05T12:26:22.320Z",
   "from": "2026-08-07",
   "to": "2026-11-05",
   "scope": "Prime due pagine per fonte, pubblicazioni negli ultimi 90 giorni. Non è un archivio completo.",
@@ -8,13 +8,13 @@
       "source": "notizie",
       "status": "ok",
       "count": 48,
-      "lastSuccessAt": "2026-11-05T02:33:14.513Z"
+      "lastSuccessAt": "2026-11-05T12:26:22.320Z"
     },
     {
       "source": "avvisi",
       "status": "ok",
       "count": 12,
-      "lastSuccessAt": "2026-11-05T02:33:14.513Z"
+      "lastSuccessAt": "2026-11-05T12:26:22.320Z"
     }
   ],
   "status": "ok"
