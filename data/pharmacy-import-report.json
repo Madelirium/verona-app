@@ -1,14 +1,8 @@
 {
   "sourceUrl": "https://www.ordinefarmacisti.vr.it/turni-farmacie/",
-  "attemptedAt": "2026-11-17T13:36:15.330Z",
+  "attemptedAt": "2026-11-18T13:12:13.604Z",
   "status": "error",
   "items": [
-    {
-      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/08_Dalle-ore-9.00-del-15.11.2026-alle-ore-9.00-del-17.11.2026.pdf",
-      "sha256": "06229e0db860e2342f5f98c9cf13c8cabeb400a4b8fb1d6b09b9952a12e656c7",
-      "count": 13,
-      "extraction": "parsed"
-    },
     {
       "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/10/09_Dalle-ore-9.00-del-17.11.2026-alle-ore-9.00-del-19.11.2026.pdf",
       "sha256": "d93ca495aeb2599f0273bb70696e92ed15e4e1a5f8028a9dd2ae2907a5f6b9b6",
