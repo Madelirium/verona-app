@@ -1,7 +1,7 @@
 {
-  "status": "ok",
-  "updatedAt": "2026-11-21T17:38:46.038Z",
-  "checkedAt": "2026-11-21T17:38:46.038Z",
+  "status": "partial",
+  "updatedAt": "2026-11-22T02:19:31.327Z",
+  "checkedAt": "2026-11-22T02:19:31.327Z",
   "scope": "Prime due pagine per fonte, pubblicazioni negli ultimi 90 giorni. Non è un archivio completo.",
   "items": [
     {
@@ -9,7 +9,7 @@
       "title": "Autovelox e Ufficio Mobile di Prossimità: postazioni dal 23 al 29 novembre",
       "summary": "I controlli della Polizia Locale per contrastare la velocità eccessiva dei veicoli sulle strade cittadine",
       "publishedOn": "2026-11-20",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Autovelox-e-Ufficio-Mobile-di-Prossimita-postazioni-dal-23-al-29-novembre",
       "sourceKey": "notizie",
@@ -20,21 +20,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 9293,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/polizia-locale-e-protezione-civile/autovelox/197185-1-ita-IT/Autovelox.png",
-        "alt": "Autovelox",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Polizia-locale-e-Protezione-civile/Autovelox",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -49,7 +35,7 @@
       "title": "Festa della Verza Michelina - rimandata al 6 Dicembre 2026",
       "summary": "Festa della Verza Michelina e dei prodotti della nostra terra - Domenica 06 Dicembre 2026",
       "publishedOn": "2026-11-20",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Festa-della-Verza-Michelina-rimandata-al-6-Dicembre-2026",
       "sourceKey": "notizie",
@@ -60,21 +46,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 25951,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/circoscrizione-7-festa-della-verza-michelina-2026-rimandata2/616705-1-ita-IT/Circoscrizione-7-Festa-della-Verza-Michelina-2026-Rimandata.jpg",
-        "alt": "Circoscrizione 7 - Festa della Verza Michelina 2026 - Rimandata",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Circoscrizione-7/Circoscrizione-7-Festa-della-Verza-Michelina-2026-Rimandata",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -89,7 +61,7 @@
       "title": "Seduta straordinaria del Consiglio comunale lunedì 23 novembre 2026 ore 17.30",
       "summary": "Il Consiglio si riunisce in Sala Gozzi di Palazzo Barbieri: i lavori dell'assemblea sono trasmessi in diretta streaming sul canale YouTube del Consiglio comunale",
       "publishedOn": "2026-11-20",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Seduta-straordinaria-del-Consiglio-comunale-lunedi-23-novembre-2026-ore-17.30",
       "sourceKey": "notizie",
@@ -100,21 +72,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 10542,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/organi-istituzionali/sala-gozzi/225504-4-ita-IT/Sala-Gozzi.png",
-        "alt": "Sala Gozzi",
-        "author": "Comune di Verona",
-        "caption": "Sala Gozzi: l'aula in cui si svolge il Consiglio comunale",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Organi-Istituzionali/Sala-Gozzi",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -129,7 +87,7 @@
       "title": "Camminando insieme",
       "summary": "Gruppo di cammino - Tutti i giovedì partendo dalla sede della Circoscrizione 3^",
       "publishedOn": "2026-11-19",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Camminando-insieme3",
       "sourceKey": "notizie",
@@ -140,21 +98,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 12915,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizi-sociali/immagini-centri-di-comunita/sport/gruppo-cammino/286343-3-ita-IT/Gruppo-cammino.png",
-        "alt": "Gruppo cammino",
-        "author": "Comune di Verona e Aribandus",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Sport-e-benessere/Gruppo-cammino",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -169,7 +113,7 @@
       "title": "Camminando insieme",
       "summary": "Gruppo di cammino - Tutti i lunedì partendo dal C.d.C. Casetta Maritati",
       "publishedOn": "2026-11-19",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Camminando-insieme2",
       "sourceKey": "notizie",
@@ -180,21 +124,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 12915,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizi-sociali/immagini-centri-di-comunita/sport/gruppo-cammino/286343-3-ita-IT/Gruppo-cammino.png",
-        "alt": "Gruppo cammino",
-        "author": "Comune di Verona e Aribandus",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Sport-e-benessere/Gruppo-cammino",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -209,7 +139,7 @@
       "title": "Cities Helpdesk",
       "summary": "Cities Helpdesk è un'iniziativa della Commissione europea, attuata dalla European Urban Initiative su Portico per assistere le città e le autorità urbane nell’individuare gli strumenti di sostegno urbano disponibili nell’ambito di diverse iniziative dell’UE e le relative opportunità di finanziamento.",
       "publishedOn": "2026-11-19",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Cities-Helpdesk",
       "sourceKey": "notizie",
@@ -220,21 +150,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 25939,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/banner-cities-helpdesk/616482-1-ita-IT/banner-cities-helpdesk.png",
-        "alt": "banner cities helpdesk",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/banner-cities-helpdesk",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -249,7 +165,7 @@
       "title": "Contributi per soggiorni climatici per anziani con disabilità - anno 2026",
       "summary": "Contributi per soggiorni di persone anziane con disabilità, rimborso fino a 20 euro al giorno per un massimo di 15 giorni. Scadenza 31/12/2026",
       "publishedOn": "2026-11-19",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Contributi-per-soggiorni-climatici-per-anziani-con-disabilita-anno-2026",
       "sourceKey": "notizie",
@@ -260,21 +176,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 9214,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/turismo-sociale/carrozzina-in-spiaggia/195596-1-ita-IT/CARROZZINA-IN-SPIAGGIA.jpg",
-        "alt": "signora in sedia a rotelle di fronte al mare",
-        "author": "sconosciuto",
-        "caption": "sedia a rotelle in spiaggia",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Turismo-Sociale/CARROZZINA-IN-SPIAGGIA",
-        "width": 1536,
-        "height": 1024
-      },
+      "image": null,
       "timing": {
         "deadline": {
           "day": "2026-12-31",
@@ -293,7 +195,7 @@
       "title": "Convocazione Consiglio di Circoscrizione 6^",
       "summary": "Seduta ordinaria e pubblica presso la Sala Consiliare di piazza Zagata 2",
       "publishedOn": "2026-11-19",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Convocazione-Consiglio-di-Circoscrizione-6",
       "sourceKey": "notizie",
@@ -319,7 +221,7 @@
       "title": "Mercatini di Natale: attivi bus navetta da e per i parcheggi principali",
       "summary": "Tutte le informazioni sugli orari dei bus navetta gratuiti, che collegano i park Genovesa e Fiera con le zone del Centro storico, tutti i sabati e i festivi dal 21 novembre al 20 dicembre",
       "publishedOn": "2026-11-19",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Mercatini-di-Natale-attivi-bus-navetta-da-e-per-i-parcheggi-principali",
       "sourceKey": "notizie",
@@ -330,21 +232,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 15394,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizio-bus-navetta-mercatini-di-natale/332838-2-ita-IT/Servizio-bus-navetta-Mercatini-di-Natale.png",
-        "alt": "Servizio bus navetta Mercatini di Natale",
-        "author": "Comune di Verona e ATV",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizio-bus-navetta-Mercatini-di-Natale",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -359,7 +247,7 @@
       "title": "Prima Social Run",
       "summary": "Appuntamenti gratuiti destinati a persone che non praticano abitualmente attività sportiva, a partire dal 7 dicembre.",
       "publishedOn": "2026-11-19",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Prima-Social-Run",
       "sourceKey": "notizie",
@@ -370,21 +258,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 25925,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/prima-social-run/616110-1-ita-IT/Prima-Social-Run.png",
-        "alt": "Prima Social Run",
-        "author": "Circoscrizione 1^",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Prima-Social-Run",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -399,7 +273,7 @@
       "title": "Your Europe",
       "summary": "Your Europe è il portale ufficiale dove trovare informazioni sui diritti dei cittadini europei e sulle norme e procedure amministrative in tutti i paesi dell’UE",
       "publishedOn": "2026-11-19",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Your-Europe",
       "sourceKey": "notizie",
@@ -410,21 +284,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 25929,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/banner-ye/616185-1-ita-IT/banner-YE.png",
-        "alt": "banner YE",
-        "author": "Your Europe",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/banner-YE",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -439,7 +299,7 @@
       "title": "Asfaltatura di via dei Mille: provvedimenti viabilistici",
       "summary": "Dal 23 al 28 novembre 2026 sono previste modifiche temporanee alla circolazione per consentire i lavori di fresatura e successiva asfaltatura della strada",
       "publishedOn": "2026-11-18",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Asfaltatura-di-via-dei-Mille-provvedimenti-viabilistici",
       "sourceKey": "notizie",
@@ -450,21 +310,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 25899,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/asfaltatura-in-via-dei-mille/615382-1-ita-IT/Asfaltatura-in-via-dei-Mille.png",
-        "alt": "Asfaltatura in via dei Mille",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Asfaltatura-in-via-dei-Mille",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -479,7 +325,7 @@
       "title": "Camminando insieme: il gruppo di cammino della Circoscrizione 5^",
       "summary": "Ritrovo in via Volturno, ogni martedì alle ore 9.00",
       "publishedOn": "2026-11-18",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Camminando-insieme-il-gruppo-di-cammino-della-Circoscrizione-52",
       "sourceKey": "notizie",
@@ -490,21 +336,7 @@
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
       "imageId": 25251,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/gruppi-di-cammino/599951-1-ita-IT/Gruppi-di-cammino.png",
-        "alt": "Gruppi di cammino",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Gruppi-di-cammino",
-        "width": 1600,
-        "height": 900
-      },
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
@@ -519,7 +351,7 @@
       "title": "Consiglio Circoscrizione 2ª - Convocazione ordinaria del 23 novembre 2026 alle ore 21:00",
       "summary": "A norma dell'art. 8 del Regolamento dei Consigli di Circoscrizione, il Consiglio di Circoscrizione è convocato in sessione ordinaria e in seduta pubblica.",
       "publishedOn": "2026-11-18",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Consiglio-Circoscrizione-2a-Convocazione-ordinaria-del-23-novembre-2026-alle-ore-21-00",
       "sourceKey": "notizie",
@@ -534,11 +366,10 @@
       "timing": {
         "deadline": null,
         "ambiguous": false,
-        "publicationExpiresOn": null,
+        "publicationExpiresOn": "2026-11-24",
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": null,
-        "detailUnavailable": true
+        "sourceUpdatedAt": "2026-11-18T13:38:44+01:00"
       }
     },
     {
@@ -546,7 +377,7 @@
       "title": "Convocazione Consiglio di Circoscrizione 8^",
       "summary": "Sessione straordinaria",
       "publishedOn": "2026-11-18",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Convocazione-Consiglio-di-Circoscrizione-813",
       "sourceKey": "notizie",
@@ -613,7 +444,7 @@
       "title": "Rinuncia ai Botti",
       "summary": "Campagna contro l'uso di l'uso di botti, petardi e fuochi d'artificio a Capodanno",
       "publishedOn": "2026-11-18",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Rinuncia-ai-Botti",
       "sourceKey": "notizie",
@@ -640,7 +471,7 @@
       "title": "Governare le transizioni: come il nuovo PAT di Verona orienta lo sviluppo, valorizza il territorio e guida le trasformazioni della città",
       "summary": "Incontro, sabato 21 novembre alle ore 9.30, nell'Aula Magna, Silos di Ponente, dell'Università degli Studi di Verona",
       "publishedOn": "2026-11-17",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Governare-le-transizioni-come-il-nuovo-PAT-di-Verona-orienta-lo-sviluppo-valorizza-il-territorio-e-guida-le-trasformazioni-della-citta",
       "sourceKey": "notizie",
@@ -667,7 +498,7 @@
       "title": "Il dolce di Verona",
       "summary": "Mercoledì 25 novembre alle ore 16 al Centro di Comunità Dell'Isolo, incontro dedicato alla storia e alle origini del dolce tipico veronese",
       "publishedOn": "2026-11-17",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Il-dolce-di-Verona",
       "sourceKey": "notizie",
@@ -694,7 +525,7 @@
       "title": "Incontri con l'arte: Caravaggio e i suoi seguaci, il vero e la tenebra",
       "summary": "Giovedì 26 novembre 2026 alle ore 16.00 al Centro di Comunità Dell'Isolo",
       "publishedOn": "2026-11-17",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Incontri-con-l-arte-Caravaggio-e-i-suoi-seguaci-il-vero-e-la-tenebra",
       "sourceKey": "notizie",
@@ -721,7 +552,7 @@
       "title": "Natale a Verona: eventi e mercatini",
       "summary": "Le iniziative in città per le festività natalizie",
       "publishedOn": "2026-11-17",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Natale-a-Verona-eventi-e-mercatini2",
       "sourceKey": "notizie",
@@ -748,7 +579,7 @@
       "title": "Sportelli Polifunzionali e Uffici Demografici: modalità di accesso e prenotazione appuntamenti",
       "summary": "I servizi sono erogati su appuntamento on line o telefonico",
       "publishedOn": "2026-11-17",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Sportelli-Polifunzionali-e-Uffici-Demografici-modalita-di-accesso-e-prenotazione-appuntamenti",
       "sourceKey": "notizie",
@@ -775,7 +606,7 @@
       "title": "Convocazione Consiglio Ordinario di Circoscrizione 5^ del 20/11/2026",
       "summary": "Convocazione Consiglio Ordinario della 5^ Circoscrizione il 20/11/2026 alle ore 18.30 nella Sala Consiliare di via Benedetti 26/b",
       "publishedOn": "2026-11-16",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Convocazione-Consiglio-Ordinario-di-Circoscrizione-5-del-20-11-2026",
       "sourceKey": "notizie",
@@ -802,7 +633,7 @@
       "title": "Gioco d'azzardo e sovraindebitamento. Il ruolo delle Amministrazioni Locali",
       "summary": "Il convegno si svolge mercoledì 18 novembre dalle 16 alle 18 nella Sala Arazzi di Palazzo Barbieri ed è promosso dal Comune con Avviso Pubblico e Federconsumatori Verona APS",
       "publishedOn": "2026-11-16",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Gioco-d-azzardo-e-sovraindebitamento.-Il-ruolo-delle-Amministrazioni-Locali",
       "sourceKey": "notizie",
@@ -829,7 +660,7 @@
       "title": "Storia e natura dei giardini urbani",
       "summary": "Domenica 22 novembre alle ore 9.30, visita guidata ai giardini pubblici di Verona",
       "publishedOn": "2026-11-14",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Storia-e-natura-dei-giardini-urbani",
       "sourceKey": "notizie",
@@ -856,7 +687,7 @@
       "title": "25^ Verona Run Marathon: i provvedimenti viabilistici",
       "summary": "Domenica 15 novembre si svolge a Verona l'importante gara podistica di richiamo internazionale Verona Run Marathon",
       "publishedOn": "2026-11-12",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/25-Verona-Run-Marathon-i-provvedimenti-viabilistici",
       "sourceKey": "notizie",
@@ -883,7 +714,7 @@
       "title": "Spazio rigenera",
       "summary": "Benessere e armonia incontri con la naturopata Alessia Rigo",
       "publishedOn": "2026-11-12",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Spazio-rigenera",
       "sourceKey": "notizie",
@@ -910,7 +741,7 @@
       "title": "Vendite di fine stagione invernale",
       "summary": "Saldi invernali 2027 dal 5 gennaio",
       "publishedOn": "2026-11-12",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Vendite-di-fine-stagione-invernale",
       "sourceKey": "notizie",
@@ -981,7 +812,7 @@
       "title": "Il diabete: la malattia del secolo",
       "summary": "Martedì 24 novembre 2026 il C.d.C. Casetta Maritati organizza un incontro a cura di Maurizio Poli",
       "publishedOn": "2026-11-11",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Il-diabete-la-malattia-del-secolo",
       "sourceKey": "notizie",
@@ -1008,7 +839,7 @@
       "title": "Il Natale nell’Arte",
       "summary": "Martedì 1 dicembre 2026 il C.d.C. Casetta Maritati organizza un incontro a cura di Pierantonio Bimbato",
       "publishedOn": "2026-11-11",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Il-Natale-nell-Arte",
       "sourceKey": "notizie",
@@ -1018,29 +849,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25074,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/natale-nell-arte/595451-1-ita-IT/Natale-nell-arte.png",
-        "alt": "Natale nell'arte",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "Licenza non specificata",
-        "licenseUrl": null,
-        "rightsStatus": "unverified",
-        "sourceLicense": [
-          "Licenza sconosciuta"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Natale-nell-arte",
-        "width": 1600,
-        "height": 900
-      },
+      "imageId": null,
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
-        "publicationExpiresOn": "2026-12-02",
+        "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-10-19T08:36:52+02:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1092,7 +910,7 @@
       "title": "Presentazione Libro: RACCONTARE - RACCONTARSI",
       "summary": "Mercoledì 18 novembre 2026 alle 16 al Centro di Comunità Dell'Isolo",
       "publishedOn": "2026-11-09",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Presentazione-Libro-RACCONTARE-RACCONTARSI",
       "sourceKey": "notizie",
@@ -1102,29 +920,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 13025,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/servizi-sociali/immagini-centri-di-comunita/lettura/ragazzo-che-legge-da-solo/288550-1-ita-IT/Ragazzo-che-legge-da-solo.png",
-        "alt": "Ragazzo che legge da solo",
-        "author": "Comune di Verona e Aribandus",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Servizi-Sociali/Immagini-Centri-di-Comunita/Lettura/Ragazzo-che-legge-da-solo",
-        "width": 1600,
-        "height": 900
-      },
+      "imageId": null,
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
-        "publicationExpiresOn": "2026-12-31",
+        "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-09T13:53:47+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1132,7 +937,7 @@
       "title": "Conoscere per stare bene - Ictus: riconoscerlo, curarlo, prevenirlo.",
       "summary": "Giovedì 19 novembre 2026 il C.d.C. Borgo Nuovo organizza un incontro a cura del dottor Daniele Orrico",
       "publishedOn": "2026-11-06",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Conoscere-per-stare-bene-Ictus-riconoscerlo-curarlo-prevenirlo",
       "sourceKey": "notizie",
@@ -1142,29 +947,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25140,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/ictus/597191-2-ita-IT/Ictus.png",
-        "alt": "Ictus",
-        "author": "Sconosciuto",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Ictus",
-        "width": 1600,
-        "height": 900
-      },
+      "imageId": null,
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-06T13:53:54+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1198,7 +990,7 @@
       "title": "èVRgreen in the city: per una città più verde e sostenibile",
       "summary": "Dal 10 novembre al 1° dicembre, quattro incontri aperti alla cittadinanza sulle prospettive di trasformazione dei quartieri",
       "publishedOn": "2026-11-05",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/eVRgreen-in-the-city-per-una-citta-piu-verde-e-sostenibile",
       "sourceKey": "notizie",
@@ -1208,29 +1000,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25592,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/evrgreen-in-the-city4/608169-1-ita-IT/eVRgreen-in-the-city.png",
-        "alt": "èVRgreen in the city",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/eVRgreen-in-the-city4",
-        "width": 1600,
-        "height": 900
-      },
+      "imageId": null,
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-06T08:17:19+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1238,7 +1017,7 @@
       "title": "Percorso di arteterapia con ceramica raku",
       "summary": "13 novembre, 4-11 e 18 dicembre 2026 in piazza Mura Gallieno, 5",
       "publishedOn": "2026-11-05",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Percorso-di-arteterapia-con-ceramica-raku",
       "sourceKey": "notizie",
@@ -1248,29 +1027,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25559,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/corso-ceramica-raku/607612-1-ita-IT/Corso-Ceramica-Raku.png",
-        "alt": "Corso Ceramica Raku",
-        "author": "Circoscrizione 1^",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Corso-Ceramica-Raku",
-        "width": 1600,
-        "height": 900
-      },
+      "imageId": null,
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
-        "publicationExpiresOn": "2026-12-31",
+        "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-06T09:10:41+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1278,7 +1044,7 @@
       "title": "Verona Capitale Italiana del Volontariato 2027",
       "summary": "Gli eventi in programma, propedeutici a Verona Capitale del Volontariato 2027",
       "publishedOn": "2026-11-05",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Verona-Capitale-Italiana-del-Volontariato-2027",
       "sourceKey": "notizie",
@@ -1288,29 +1054,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25523,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/verona-capitale-italiana-del-volontariato-20275/606986-1-ita-IT/Verona-Capitale-Italiana-del-Volontariato-2027.png",
-        "alt": "Verona Capitale Italiana del Volontariato 2027",
-        "author": "Comune di Verona",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Verona-Capitale-Italiana-del-Volontariato-20275",
-        "width": 1600,
-        "height": 900
-      },
+      "imageId": null,
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-06T09:08:36+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1318,7 +1071,7 @@
       "title": "Natale per Verona – Parole di Luce: aperta l'open call per le attività natalizie",
       "summary": "Le candidature dovranno essere inviate entro martedì 10 novembre 2026, alle ore 16:00",
       "publishedOn": "2026-11-04",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Natale-per-Verona-Parole-di-Luce-aperta-l-open-call-per-le-attivita-natalizie",
       "sourceKey": "notizie",
@@ -1328,29 +1081,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25545,
-      "image": {
-        "url": "https://s3-eu-west-1.amazonaws.com/static.opencity.opencontent.it/var/verona/storage/images/media/images/banner-open-call2/607503-1-ita-IT/Banner-Open-call.png",
-        "alt": "Banner Open call",
-        "author": "Agenzia So Bright",
-        "caption": "",
-        "license": "CC BY 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-        "rightsStatus": "declared",
-        "sourceLicense": [
-          "Creative Commons Attribution 4.0 International (CC BY 4.0)"
-        ],
-        "sourceUrl": "https://www.comune.verona.it/Media/Images/Banner-Open-call2",
-        "width": 1619,
-        "height": 911
-      },
+      "imageId": null,
+      "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-05T13:06:23+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1358,7 +1098,7 @@
       "title": "Ciclo di incontri sull’Intelligenza Artificiale",
       "summary": "Martedì 10, 17, 24 novembre e 1° dicembre 2026, ore 20.45 · Sala Ater, piazza Pozza 1, Verona",
       "publishedOn": "2026-11-03",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Ciclo-di-incontri-sull-Intelligenza-Artificiale",
       "sourceKey": "notizie",
@@ -1368,7 +1108,7 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25490,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
@@ -1376,7 +1116,8 @@
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-06T13:40:02+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1384,7 +1125,7 @@
       "title": "Iscrizione all'Albo degli Scrutatori di Seggio Elettorale",
       "summary": "Nel mese di Novembre è possibile presentare domanda di inclusione nell'Albo delle persone idonee ad essere nominate Scrutatore di Seggio Elettorale",
       "publishedOn": "2026-11-03",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Iscrizione-all-Albo-degli-Scrutatori-di-Seggio-Elettorale",
       "sourceKey": "notizie",
@@ -1394,15 +1135,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 24425,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
-        "publicationExpiresOn": "2026-11-30",
+        "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-03T11:40:10+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1410,7 +1152,7 @@
       "title": "Le attività di Novembre a DesTEENazione!",
       "summary": "Tantissime le attività in programma nel mese di novembre presso lo spazio multidimensionale DesTEENazione - Desideri in azione, aperto dal lunedì al giovedì dalle 13 alle 20 mentre venerdì e sabato dalle 13 alle 22.",
       "publishedOn": "2026-11-03",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Le-attivita-di-Novembre-a-DesTEENazione",
       "sourceKey": "notizie",
@@ -1420,7 +1162,7 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25495,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
@@ -1428,7 +1170,8 @@
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-04T13:36:22+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1436,7 +1179,7 @@
       "title": "Quattro Passi al Cinema",
       "summary": "Rassegna cinematografica domenicale al Centro di Comunità Dell'Isolo, da domenica 15 novembre 2026 e fino al 4 aprile 2027",
       "publishedOn": "2026-11-03",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Quattro-Passi-al-Cinema",
       "sourceKey": "notizie",
@@ -1446,15 +1189,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 13113,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
-        "publicationExpiresOn": "2027-04-05",
+        "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-04T15:18:31+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1502,7 +1246,7 @@
       "title": "Storie Piccine Picciò",
       "summary": "Tutti i giovedì di novembre il C.d.C. Casetta Maritati organizza degli incontri per bambini e bambine 0/3 anni con i loro genitori o nonni",
       "publishedOn": "2026-10-30",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Storie-Piccine-Piccio",
       "sourceKey": "notizie",
@@ -1512,15 +1256,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25427,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
-        "publicationExpiresOn": "2026-11-27",
+        "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-10-30T11:54:35+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1528,7 +1273,7 @@
       "title": "SUAP e SUEP: Pagamento tramite PagoPA dei versamenti per pratiche edilizie, paesaggio, accesso agli atti e attività sanitarie LRV 22/2002",
       "summary": "Istruzioni per effettuare I pagamenti relativi alle pratiche edilizie, pratiche paesaggistiche, accesso agli atti e attività sanitarie LRV 22/2002",
       "publishedOn": "2026-10-29",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/SUAP-e-SUEP-Pagamento-tramite-PagoPA-dei-versamenti-per-pratiche-edilizie-paesaggio-accesso-agli-atti-e-attivita-sanitarie-LRV-22-2002",
       "sourceKey": "notizie",
@@ -1546,7 +1291,8 @@
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-10-29T15:15:15+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1554,7 +1300,7 @@
       "title": "Ben-essere",
       "summary": "Dall' 8 ottobre, tutti i giovedì alle ore 10.30 al Centro di Comunità Dell'Isolo",
       "publishedOn": "2026-10-27",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Ben-essere2",
       "sourceKey": "notizie",
@@ -1564,15 +1310,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 13046,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
-        "publicationExpiresOn": "2026-12-31",
+        "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-10-30T13:49:29+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1580,7 +1327,7 @@
       "title": "Centro di Consulenza Educativa L'Arca. Nuove iniziative mensili per genitori e bambine/i fino ai 6 anni di età",
       "summary": "Gli incontri del mese di novembre: appuntamenti gratuiti con iscrizione obbligatoria",
       "publishedOn": "2026-10-27",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Centro-di-Consulenza-Educativa-L-Arca.-Nuove-iniziative-mensili-per-genitori-e-bambine-i-fino-ai-6-anni-di-eta",
       "sourceKey": "notizie",
@@ -1590,7 +1337,7 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 23574,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
@@ -1598,7 +1345,8 @@
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-10-27T15:11:26+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1606,7 +1354,7 @@
       "title": "Energia di comunità: a Verona l’incontro dei partner del progetto europeo SHINE",
       "summary": "Il 14 e 15 ottobre Verona ha ospitato il secondo incontro in presenza di SHINE. Riunite le delegazioni di Spagna, Belgio e Polonia",
       "publishedOn": "2026-10-27",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Energia-di-comunita-a-Verona-l-incontro-dei-partner-del-progetto-europeo-SHINE",
       "sourceKey": "notizie",
@@ -1616,7 +1364,7 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25323,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
@@ -1624,7 +1372,8 @@
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-10-27T13:37:34+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1632,7 +1381,7 @@
       "title": "Ginnasticamente",
       "summary": "Dal 5 ottobre 2026 tutti i lunedì dalle 10.30 alle 12 al Centro di Comunità Dell'Isolo",
       "publishedOn": "2026-10-27",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Ginnasticamente9",
       "sourceKey": "notizie",
@@ -1642,15 +1391,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 13123,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
-        "publicationExpiresOn": "2026-12-31",
+        "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-10-27T14:14:58+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1658,7 +1408,7 @@
       "title": "Laboratorio di scrittura creativa e lettura espressiva",
       "summary": "Da martedì 13 ottobre dalle ore 10 al Centro di Comunità Dell'Isolo",
       "publishedOn": "2026-10-27",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Laboratorio-di-scrittura-creativa-e-lettura-espressiva",
       "sourceKey": "notizie",
@@ -1668,15 +1418,16 @@
       "area": null,
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 13018,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
         "ambiguous": false,
-        "publicationExpiresOn": "2026-12-31",
+        "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-11-03T09:53:44+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1684,7 +1435,7 @@
       "title": "Nascere in 4^ Circoscrizione: Informazioni per i genitori",
       "summary": "Opuscolo informativo sui servizi per i nuovi nati nella 4^ Circoscrizione",
       "publishedOn": "2026-10-27",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Nascere-in-4-Circoscrizione-Informazioni-per-i-genitori",
       "sourceKey": "notizie",
@@ -1694,7 +1445,7 @@
       "area": "Circoscrizione 4",
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25326,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
@@ -1702,7 +1453,8 @@
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-10-27T12:47:51+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1710,7 +1462,7 @@
       "title": "Camminando insieme: il gruppo di cammino della Circoscrizione 7^",
       "summary": "Ritrovo in via Fedeli, ogni mercoledì e venerdì alle ore 9.00",
       "publishedOn": "2026-10-26",
-      "checkedAt": "2026-11-21T17:38:46.038Z",
+      "checkedAt": "2026-11-22T02:19:31.327Z",
       "source": "Comune di Verona",
       "sourceUrl": "https://www.comune.verona.it/Novita/Notizie/Camminando-insieme-il-gruppo-di-cammino-della-Circoscrizione-7",
       "sourceKey": "notizie",
@@ -1720,7 +1472,7 @@
       "area": "Circoscrizione 7",
       "license": "CC BY 4.0 salvo eccezioni",
       "licenseUrl": "https://www.comune.verona.it/Note-legali",
-      "imageId": 25285,
+      "imageId": null,
       "image": null,
       "timing": {
         "deadline": null,
@@ -1728,7 +1480,8 @@
         "publicationExpiresOn": null,
         "withdrawn": false,
         "method": "not-established",
-        "sourceUpdatedAt": "2026-10-26T13:32:54+01:00"
+        "sourceUpdatedAt": null,
+        "detailUnavailable": true
       }
     },
     {
@@ -1979,12 +1732,13 @@
       "source": "notizie",
       "status": "ok",
       "count": 48,
-      "lastSuccessAt": "2026-11-21T17:38:46.038Z"
+      "lastSuccessAt": "2026-11-22T02:19:31.327Z"
     },
     {
       "source": "avvisi",
-      "status": "ok",
-      "count": 11,
+      "status": "error",
+      "error": "fetch failed",
+      "retained": 11,
       "lastSuccessAt": "2026-11-21T17:38:46.038Z"
     }
   ]
