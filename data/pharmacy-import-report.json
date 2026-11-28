@@ -1,9 +1,127 @@
 {
   "sourceUrl": "https://www.ordinefarmacisti.vr.it/turni-farmacie/",
-  "attemptedAt": "2026-11-27T13:58:37.200Z",
-  "status": "error",
-  "items": [],
-  "warnings": [],
-  "error": "Nessun calendario riconosciuto o elenco PDF inatteso",
-  "preservedPrevious": true
+  "attemptedAt": "2026-11-28T13:05:07.671Z",
+  "status": "ok",
+  "items": [
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-01_Dalle-ore-9.00-del-01.12.2026-alle-ore-9.00-del-03.12.2026.pdf",
+      "sha256": "20b0404cfbf0ea4792c9e23bb20cf9218dad8191149fad65559ff8b612e93780",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-02_Dalle-ore-9.00-del-03.12.2026-alle-ore-9.00-del-05.12.2026.pdf",
+      "sha256": "2b6889b118664348050ab118a34b878abfa70dd8b2e952241c575da6c3994a75",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-03_Dalle-ore-9.00-del-05.12.2026-alle-ore-9.00-del-07.12.2026.pdf",
+      "sha256": "5f8ddd5b257ff222ce5cf699095445cbc55a20f8fd99250fa727fa525eeddb7e",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-04_Dalle-ore-9.00-del-07.12.2026-alle-ore-9.00-del-09.12.2026.pdf",
+      "sha256": "5915e1ddb1ce3d58abc6d4e9a4f272f1e1cabc0bfb4c776d83f615b33fb5605c",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-05_Dalle-ore-9.00-del-09.12.2026-alle-ore-9.00-del-11.12.2026.pdf",
+      "sha256": "05143af992e781b6463893164fdfb754f8d0327350d2c49ba468b6d09a3cef32",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-06_Dalle-ore-9.00-del-11.12.2026-alle-ore-9.00-del-13.12.2026.pdf",
+      "sha256": "f5184ee3734a20cdc1274363f0cf9959025870ecb38b63d37d0616de0916c8b6",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-07_Dalle-ore-9.00-del-13.12.2026-alle-ore-9.00-del-15.12.2026.pdf",
+      "sha256": "b44831e2798e90dd6ec6d0e05365ed539c32f43779155fdd4fac4b18831ffe12",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-08_Dalle-ore-9.00-del-15.12.2026-alle-ore-9.00-del-17.12.2026.pdf",
+      "sha256": "6ec3ef4d6251aa843b88b1578235317bd4749bb08fee2346949746d5f22d7aa3",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-09_Dalle-ore-9.00-del-17.12.2026-alle-ore-9.00-del-19.12.2026.pdf",
+      "sha256": "16c3a812768cd68786d6b2daee9610332efe3835a0fed5353638a87ec3ec0093",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-10_Dalle-ore-9.00-del-19.12.2026-alle-ore-9.00-del-21.12.2026.pdf",
+      "sha256": "6c079f58029cfa20f54cbf51ed06fb0901127c7c3bbb8c51636e79cc9d98d1d3",
+      "count": 14,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-11_Dalle-ore-9.00-del-21.12.2026-alle-ore-9.00-del-23.12.2026.pdf",
+      "sha256": "d468a7be445c47c86f18fab39c7a8267ac957792f6132d71548233bc60af23c0",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-12_Dalle-ore-9.00-del-23.12.2026-alle-ore-9.00-del-25.12.2026.pdf",
+      "sha256": "0f89f3d99bdf0a0b1a4ed9b39439f5688c40511eff6194269474d98583fe1d8f",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-13_Dalle-ore-9.00-del-25.12.2026-alle-ore-9.00-del-27.12.2026.pdf",
+      "sha256": "e013fc59f81c25ae3573d90592907f041f14c45e90dc5571424344f6b3f7eae8",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-14_Dalle-ore-9.00-del-27.12.2026-alle-ore-9.00-del-29.12.2026.pdf",
+      "sha256": "f9e7ba2cd297994f5c947bfc53e5087f459429dd7385c04785f368264ae3d0c9",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-15_Dalle-ore-9.00-del-29.12.2026-alle-ore-9.00-del-31.12.2026.pdf",
+      "sha256": "1d104505fb84f22e9022a6d49b1118196e56bddfb89207aa01eed479a05a6dc4",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/08/verona-turni-16_Dalle-ore-9.00-del-31.12.2026-alle-ore-9.00-del-02.01.2027.pdf",
+      "sha256": "7e655a92c7b85990b14dd4136b004eeaa0b397e40f607dc40be488e52df92262",
+      "count": 12,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/11/wp21-turni-14_Dalle-ore-9.00-del-27.11.2026-alle-ore-9.00-del-29.11.2026.pdf",
+      "sha256": "eaff79ade73696fced91fda613e08389b52b4d47c87d1df5f1a7073fb444cbdb",
+      "count": 13,
+      "extraction": "parsed"
+    },
+    {
+      "sourceUrl": "https://www.ordinefarmacisti.vr.it/wp-content/uploads/2026/11/wp21-turni-15_Dalle-ore-9.00-del-29.11.2026-alle-ore-9.00-del-01.12.2026.pdf",
+      "sha256": "b1cccaab30543384a4c4f1a328704b091bec5d33f33ca6c99723d3de64f29358",
+      "count": 13,
+      "extraction": "parsed"
+    }
+  ],
+  "warnings": [
+    "Coordinate non aggiornate; conservati i punti già associati. HTTP 502 dalla fonte overpass-api.de"
+  ],
+  "error": null,
+  "preservedPrevious": false,
+  "coverage": {
+    "currentPeriodId": "turno-2026-11-27T08:00:00.000Z",
+    "startsAt": "2026-11-27T08:00:00.000Z",
+    "endsAt": "2027-01-02T08:00:00.000Z",
+    "remainingHours": 834
+  },
+  "positionStatus": "cached"
 }
